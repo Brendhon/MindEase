@@ -71,7 +71,18 @@ All technical decisions **must support**:
 
 ## 🎨 UI & Styling
 
-* **Tailwind CSS is mandatory** — define styles as constants at the end of the file (no inline classes in JSX)
+### Tailwind CSS
+
+- Use **Tailwind CSS exclusively** for all component styling
+- **Do not use Tailwind classes directly inside TSX components**
+- Define component styles as a `const` object at the end of the file with `as const`
+
+```typescript
+const styles = {
+  container: `flex flex-col items-center`,
+  image: `h-auto object-contain`,
+} as const;
+```
 * **Headless UI** for accessible primitives (Menu, Dialog, Switch, Listbox)
 * **lucide-react** for all icons (consistent + low visual noise)
 * **Framer Motion allowed** — must be optional, subtle, and disableable (no mandatory animations)
