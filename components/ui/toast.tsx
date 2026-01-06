@@ -1,10 +1,11 @@
 "use client";
 
-import { Fragment, useEffect, useState } from "react";
-import { Transition } from "@headlessui/react";
-import { X, CheckCircle2, AlertCircle, Info, AlertTriangle } from "lucide-react";
-import type { FeedbackType } from "@/hooks/useFeedback";
 import { useFeedbackContext } from "@/contexts/feedback-context";
+import type { FeedbackType } from "@/hooks/useFeedback";
+import { cn } from "@/lib/utils/common";
+import { Transition } from "@headlessui/react";
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
+import { Fragment, useEffect, useState } from "react";
 
 interface ToastProps {
   id: string;
@@ -45,21 +46,15 @@ function Toast({ id, type, message, duration }: ToastProps) {
 
   useEffect(() => {
     if (duration > 0) {
-      const timer = setTimeout(() => {
-        removeFeedback(id);
-      }, duration);
+      const timer = setTimeout(() => removeFeedback(id), duration);
       return () => clearTimeout(timer);
     }
-  }, [id, duration, removeFeedback]);
+  }, [id, duration]);
 
-  const handleDismiss = () => {
-    removeFeedback(id);
-  };
+  const handleDismiss = () => removeFeedback(id);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") {
-      handleDismiss();
-    }
+    if (e.key === "Escape") handleDismiss();
   };
 
   const iconConfig = {
@@ -96,17 +91,6 @@ function Toast({ id, type, message, duration }: ToastProps) {
   const config = iconConfig[type];
   const Icon = config.icon;
 
-  // Styles defined as constants (following project guidelines)
-  const toastStyles = {
-    container:
-      "relative flex items-start gap-3 w-full max-w-md p-4 rounded-lg shadow-medium",
-    iconContainer: "flex-shrink-0",
-    content: "flex-1 min-w-0",
-    message: "text-sm font-medium leading-normal",
-    dismissButton:
-      "flex-shrink-0 p-1 rounded-md hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
-  };
-
   return (
     <Transition
       appear
@@ -131,26 +115,26 @@ function Toast({ id, type, message, duration }: ToastProps) {
         role="alert"
         aria-live={type === "error" ? "assertive" : "polite"}
         aria-atomic="true"
-        className={`${toastStyles.container} ${config.bgColor} ${config.textColor}`}
+        className={cn(toastStyles.toastCard, config.bgColor, config.textColor)}
         onKeyDown={handleKeyDown}
         tabIndex={-1}
       >
-        <div className={toastStyles.iconContainer}>
+        <div className={toastStyles.toastIconWrapper}>
           <Icon
-            className={`w-5 h-5 ${config.iconColor}`}
+            className={`${toastStyles.toastTypeIcon} ${config.iconColor}`}
             aria-hidden="true"
           />
         </div>
-        <div className={toastStyles.content}>
-          <p className={toastStyles.message}>{message}</p>
+        <div className={toastStyles.toastContent}>
+          <p className={toastStyles.toastMessage}>{message}</p>
         </div>
         <button
           type="button"
           onClick={handleDismiss}
-          className={toastStyles.dismissButton}
+          className={toastStyles.toastDismissButton}
           aria-label={`Dismiss ${config.ariaLabel} message`}
         >
-          <X className="w-4 h-4" aria-hidden="true" />
+          <X className={toastStyles.toastDismissIcon} aria-hidden="true" />
         </button>
       </div>
     </Transition>
@@ -165,23 +149,20 @@ export function ToastContainer() {
   const { feedbacks } = useFeedbackContext();
 
   // Styles defined as constants
-  const containerStyles =
-    "fixed top-4 right-4 z-50 flex flex-col gap-3 pointer-events-none";
-
   if (feedbacks.length === 0) {
     return null;
   }
 
   return (
     <div
-      className={containerStyles}
+      className={toastStyles.toastContainer}
       aria-live="polite"
       aria-atomic="false"
       role="region"
       aria-label="Notifications"
     >
       {feedbacks.map((feedback) => (
-        <div key={feedback.id} className="pointer-events-auto">
+        <div key={feedback.id} className={toastStyles.toastItem}>
           <Toast
             id={feedback.id}
             type={feedback.type}
@@ -193,4 +174,19 @@ export function ToastContainer() {
     </div>
   );
 }
+
+// Styles defined as constants (following project guidelines)
+const toastStyles = {
+  toastContainer: "fixed top-4 right-4 z-50 flex flex-col gap-3 pointer-events-none",
+  toastItem: "pointer-events-auto",
+  toastCard:
+    "relative flex items-start gap-3 w-full max-w-md p-4 rounded-lg shadow-medium",
+  toastIconWrapper: "flex-shrink-0",
+  toastTypeIcon: "w-5 h-5",
+  toastContent: "flex-1 min-w-0",
+  toastMessage: "text-sm font-medium leading-normal",
+  toastDismissButton:
+    "flex-shrink-0 p-1 rounded-md hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
+  toastDismissIcon: "w-4 h-4",
+};
 

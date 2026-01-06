@@ -1,8 +1,8 @@
+import { ToastContainer } from "@/components/ui/toast";
+import { FeedbackProvider } from "@/contexts/feedback-context";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { FeedbackProvider } from "@/contexts/feedback-context";
-import { ToastContainer } from "@/components/ui/toast";
 
 const inter = Inter({
   variable: "--font-family-base",
