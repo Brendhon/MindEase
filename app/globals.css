@@ -103,9 +103,10 @@
  * Dark Mode Adjustments
  * Following same low-stimulation principles
  */
+/*
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Backgrounds */
+    // Backgrounds
     --color-bg-primary: #0a0a0a;
     --color-bg-secondary: #171717;
     --color-bg-tertiary: #262626;
@@ -116,25 +117,26 @@
     --color-border-subtle: #262626;
     --color-border-strong: #404040;
 
-    /* Text */
+    // Text
     --color-text-primary: #f9fafb;
     --color-text-secondary: #d1d5db;
     --color-text-muted: #9ca3af;
     --color-text-inverse: #111827;
 
-    /* Actions - slightly brighter for dark mode */
+    // Actions - slightly brighter for dark mode
     --color-action-primary: #3b82f6;
     --color-action-primary-hover: #60a5fa;
     --color-action-secondary: #64748b;
     --color-action-secondary-hover: #94a3b8;
 
-    /* Feedback - adjusted for dark backgrounds */
+    // Feedback - adjusted for dark backgrounds
     --color-feedback-success: #22c55e;
     --color-feedback-warning: #f59e0b;
     --color-feedback-error: #ef4444;
     --color-feedback-info: #06b6d4;
   }
 }
+ */
 
 /**
  * Tailwind v4 Theme Integration
