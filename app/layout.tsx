@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { FeedbackProvider } from "@/contexts/feedback-context";
+import { ToastContainer } from "@/components/ui/toast";
 
 const inter = Inter({
   variable: "--font-family-base",
@@ -103,7 +105,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        {children}
+        <FeedbackProvider>
+          {children}
+          <ToastContainer />
+        </FeedbackProvider>
       </body>
     </html>
   );
