@@ -28,8 +28,8 @@ export function Sidebar({ items = defaultItems }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 bg-surface-primary border-r border-border-subtle p-4">
-      <nav className="flex flex-col gap-2" aria-label="Main navigation">
+    <aside className="w-64 bg-surface-primary border-r border-border-subtle p-4" data-testid="sidebar-container">
+      <nav className="flex flex-col gap-2" aria-label="Main navigation" data-testid="sidebar-nav">
         {items.map((item) => {
           // Check if current pathname matches the item href (exact match)
           const isActive = pathname === item.href;
@@ -47,6 +47,7 @@ export function Sidebar({ items = defaultItems }: SidebarProps) {
                   : "text-text-secondary hover:bg-surface-secondary hover:text-text-primary"
               }`}
               aria-current={isActive ? "page" : undefined}
+              data-testid={`sidebar-link-${item.label.toLowerCase()}`}
             >
               {item.icon && <span className="mr-2" aria-hidden="true">{item.icon}</span>}
               {item.label}

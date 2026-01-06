@@ -118,7 +118,7 @@ export function FormInput<
       control={control}
       rules={rules}
       render={({ field }) => (
-        <InputRoot className={className}>
+        <InputRoot className={className} data-testid={`form-input-${name}`}>
           <InputRoot.Label htmlFor={inputId}>
             {label}
             {required && <span className="text-feedback-error ml-1" aria-label="required">*</span>}
@@ -137,19 +137,21 @@ export function FormInput<
               errorMessage && "border-feedback-error focus:ring-feedback-error",
               inputClassName
             )}
+            data-testid={`form-input-field-${name}`}
           />
           
           {helperText && !errorMessage && (
             <p
               id={helperId}
               className="text-sm text-text-muted"
+              data-testid={`form-input-helper-${name}`}
             >
               {helperText}
             </p>
           )}
           
           {errorMessage && (
-            <InputRoot.Error id={errorId}>
+            <InputRoot.Error id={errorId} data-testid={`form-input-error-${name}`}>
               {errorMessage}
             </InputRoot.Error>
           )}

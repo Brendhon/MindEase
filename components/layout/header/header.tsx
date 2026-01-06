@@ -25,8 +25,8 @@ export function Header({ title = "MindEase" }: HeaderProps) {
   };
 
   return (
-    <header className="h-16 bg-surface-primary border-b border-border-subtle flex items-center justify-between px-6">
-      <div className="flex items-center gap-3">
+    <header className="h-16 bg-surface-primary border-b border-border-subtle flex items-center justify-between px-6" data-testid="header-container">
+      <div className="flex items-center gap-3" data-testid="header-branding">
         <Image
           src="/logo.png"
           alt="MindEase Logo"
@@ -34,8 +34,9 @@ export function Header({ title = "MindEase" }: HeaderProps) {
           height={32}
           className="object-contain"
           priority
+          data-testid="header-logo"
         />
-        <h1 className="text-lg font-semibold text-text-primary">{title}</h1>
+        <h1 className="text-lg font-semibold text-text-primary" data-testid="header-title">{title}</h1>
       </div>
       <Button
         variant="ghost"
@@ -44,6 +45,7 @@ export function Header({ title = "MindEase" }: HeaderProps) {
         disabled={isLoading}
         isLoading={isLoading}
         aria-label="Sair da conta"
+        data-testid="header-button-logout"
       >
         {isLoading ? (
           <>

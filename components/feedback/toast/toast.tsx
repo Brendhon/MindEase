@@ -118,21 +118,24 @@ function Toast({ id, type, message, duration }: ToastProps) {
         className={cn(toastStyles.toastCard, config.bgColor, config.textColor)}
         onKeyDown={handleKeyDown}
         tabIndex={-1}
+        data-testid={`toast-${type}-${id}`}
       >
         <div className={toastStyles.toastIconWrapper}>
           <Icon
             className={`${toastStyles.toastTypeIcon} ${config.iconColor}`}
             aria-hidden="true"
+            data-testid={`toast-icon-${type}`}
           />
         </div>
         <div className={toastStyles.toastContent}>
-          <p className={toastStyles.toastMessage}>{message}</p>
+          <p className={toastStyles.toastMessage} data-testid={`toast-message-${id}`}>{message}</p>
         </div>
         <button
           type="button"
           onClick={handleDismiss}
           className={toastStyles.toastDismissButton}
           aria-label={`Dismiss ${config.ariaLabel} message`}
+          data-testid={`toast-button-dismiss-${id}`}
         >
           <X className={toastStyles.toastDismissIcon} aria-hidden="true" />
         </button>
@@ -160,6 +163,7 @@ export function ToastContainer() {
       aria-atomic="false"
       role="region"
       aria-label="Notifications"
+      data-testid="toast-container"
     >
       {feedbacks.map((feedback) => (
         <div key={feedback.id} className={toastStyles.toastItem}>

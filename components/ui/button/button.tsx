@@ -41,6 +41,7 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   children?: ReactNode; // Only accepts Button subcomponents
+  "data-testid"?: string;
 }
 
 const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -71,6 +72,7 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         aria-busy={isLoading}
         aria-disabled={isDisabled}
+        data-testid={props["data-testid"]}
         {...props}
       >
         {isLoading ? (

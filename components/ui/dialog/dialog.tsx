@@ -12,12 +12,13 @@ export interface DialogProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  "data-testid"?: string;
 }
 
-export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
+export function Dialog({ isOpen, onClose, title, children, "data-testid": dataTestId = "dialog" }: DialogProps) {
   return (
     <Transition show={isOpen} as={Fragment}>
-      <HeadlessDialog onClose={onClose} className={styles.dialog}>
+      <HeadlessDialog onClose={onClose} className={styles.dialog} data-testid={dataTestId}>
         <TransitionChild
           as={Fragment}
           enter={styles.backdropEnter}
@@ -27,7 +28,7 @@ export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
           leaveFrom={styles.backdropLeaveFrom}
           leaveTo={styles.backdropLeaveTo}
         >
-          <div className={styles.backdrop} aria-hidden="true" />
+          <div className={styles.backdrop} aria-hidden="true" data-testid={`${dataTestId}-backdrop`} />
         </TransitionChild>
 
         <div className={styles.container}>
@@ -40,11 +41,11 @@ export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
             leaveFrom={styles.panelLeaveFrom}
             leaveTo={styles.panelLeaveTo}
           >
-            <DialogPanel className={styles.panel}>
-              <DialogTitle className={styles.title}>
+            <DialogPanel className={styles.panel} data-testid={`${dataTestId}-panel`}>
+              <DialogTitle className={styles.title} data-testid={`${dataTestId}-title`}>
                 {title}
               </DialogTitle>
-              {children}
+              <div data-testid={`${dataTestId}-content`}>{children}</div>
             </DialogPanel>
           </TransitionChild>
         </div>

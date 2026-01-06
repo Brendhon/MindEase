@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-testid="login-page-container">
       <Image 
         className={styles.logo} 
         src="/logo.png" 
@@ -47,13 +47,14 @@ export default function LoginPage() {
         width={80} 
         height={80}
         priority
+        data-testid="login-page-logo"
       />
       <main className={styles.main} role="main">
-        <section className={styles.card} aria-labelledby="login-title">
-          <h1 id="login-title" className={styles.title}>
+        <section className={styles.card} aria-labelledby="login-title" data-testid="login-card">
+          <h1 id="login-title" className={styles.title} data-testid="login-title">
             Bem-vindo ao MindEase
           </h1>
-          <p className={styles.description}>
+          <p className={styles.description} data-testid="login-description">
             Plataforma de acessibilidade cognitiva para reduzir a carga mental e melhorar seu foco.
           </p>
 
@@ -66,13 +67,14 @@ export default function LoginPage() {
               isLoading={isLoading}
               className={styles.button}
               aria-label="Entrar com sua conta do Google"
+              data-testid="login-button-signin"
             >
               <Button.Icon icon={LogIn} position="left" size="lg" />
               <Button.Text>Entrar com Google</Button.Text>
             </Button>
           </div>
 
-          <p className={styles.disclaimer}>
+          <p className={styles.disclaimer} data-testid="login-disclaimer">
             Ao entrar, você concorda com nossos termos de uso e política de privacidade.
           </p>
         </section>

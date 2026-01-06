@@ -131,6 +131,18 @@ docs/
 * Component tests for shared UI and accessibility behavior
 * Tests are required for CI to pass
 
+### Test Identifiers
+
+* **All testable components must include `data-testid` attributes**
+* Use consistent naming pattern: `{component-name}-{element-type}`
+* Examples:
+  * `data-testid="button-submit"`
+  * `data-testid="input-email"`
+  * `data-testid="task-card-checkbox"`
+  * `data-testid="header-logout-button"`
+* For lists or repeated elements, append an identifier: `data-testid="task-card-${task.id}"`
+* Avoid generic names like "button" or "div" — be specific about the element's purpose
+
 ---
 
 ## 🔁 CI/CD

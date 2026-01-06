@@ -46,23 +46,23 @@ export function TaskTimer({ initialMinutes = 25, onComplete }: TaskTimerProps) {
   const displayTime = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
   return (
-    <div className="p-4 rounded-md border border-border-subtle bg-surface-primary">
+    <div className="p-4 rounded-md border border-border-subtle bg-surface-primary" data-testid="task-timer-container">
       <div className="text-center mb-4">
-        <div className="text-4xl font-mono font-semibold text-text-primary">
+        <div className="text-4xl font-mono font-semibold text-text-primary" data-testid="task-timer-display">
           {displayTime}
         </div>
       </div>
-      <div className="flex gap-2 justify-center">
+      <div className="flex gap-2 justify-center" data-testid="task-timer-controls">
         {!isRunning ? (
-          <Button onClick={handleStart} variant="primary">
+          <Button onClick={handleStart} variant="primary" data-testid="task-timer-button-start">
             <Button.Text>Start</Button.Text>
           </Button>
         ) : (
-          <Button onClick={handlePause} variant="secondary">
+          <Button onClick={handlePause} variant="secondary" data-testid="task-timer-button-pause">
             <Button.Text>Pause</Button.Text>
           </Button>
         )}
-        <Button onClick={handleReset} variant="ghost">
+        <Button onClick={handleReset} variant="ghost" data-testid="task-timer-button-reset">
           <Button.Text>Reset</Button.Text>
         </Button>
       </div>

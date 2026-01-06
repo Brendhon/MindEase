@@ -15,14 +15,14 @@ export interface TaskListProps {
 export function TaskList({ tasks, onToggle, onEdit, onDelete }: TaskListProps) {
   if (tasks.length === 0) {
     return (
-      <div className="text-center py-8">
-        <p className="text-text-secondary">No tasks found</p>
+      <div className="text-center py-8" data-testid="task-list-empty">
+        <p className="text-text-secondary" data-testid="task-list-empty-message">No tasks found</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3" role="list">
+    <div className="flex flex-col gap-3" role="list" data-testid="task-list-container">
       {tasks.map((task) => (
         <div key={task.id} role="listitem">
           <TaskCard
