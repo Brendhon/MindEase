@@ -279,19 +279,6 @@ Framer Motion deve respeitar esses tokens.
 
 ---
 
-## 11. Integração com Tailwind
-
-Tokens são mapeados via `tailwind.config.ts`:
-
-* `colors`
-* `fontSize`
-* `spacing`
-* `borderRadius`
-
-🚫 Nunca usar valores mágicos (`#fff`, `16px`) diretamente no JSX.
-
----
-
 ## 12. Conclusão
 
 Este sistema de Design Tokens:
