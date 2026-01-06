@@ -1,7 +1,7 @@
 "use client";
 
+import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
 import { Fragment, ReactNode } from "react";
-import { Dialog as HeadlessDialog, Transition } from "@headlessui/react";
 
 /**
  * Dialog Component - MindEase
@@ -18,7 +18,7 @@ export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
   return (
     <Transition show={isOpen} as={Fragment}>
       <HeadlessDialog onClose={onClose} className="relative z-50">
-        <Transition.Child
+        <TransitionChild
           as={Fragment}
           enter="ease-out duration-150"
           enterFrom="opacity-0"
@@ -28,10 +28,10 @@ export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
           leaveTo="opacity-0"
         >
           <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-        </Transition.Child>
+        </TransitionChild>
 
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-150"
             enterFrom="opacity-0 scale-95"
@@ -40,13 +40,13 @@ export function Dialog({ isOpen, onClose, title, children }: DialogProps) {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            <HeadlessDialog.Panel className="w-full max-w-md rounded-lg bg-surface-primary p-6 shadow-lg">
-              <HeadlessDialog.Title className="text-lg font-semibold text-text-primary mb-4">
+            <DialogPanel className="w-full max-w-md rounded-lg bg-surface-primary p-6 shadow-lg">
+              <DialogTitle className="text-lg font-semibold text-text-primary mb-4">
                 {title}
-              </HeadlessDialog.Title>
+              </DialogTitle>
               {children}
-            </HeadlessDialog.Panel>
-          </Transition.Child>
+            </DialogPanel>
+          </TransitionChild>
         </div>
       </HeadlessDialog>
     </Transition>
