@@ -96,6 +96,18 @@ export const viewport: Viewport = {
   colorScheme: "light dark",
 };
 
+/**
+ * Root Layout - MindEase
+ * 
+ * Global layout that wraps all pages in the application.
+ * Provides:
+ * - AuthProvider: NextAuth session management
+ * - FeedbackProvider: Toast notifications and user feedback
+ * - ToastContainer: Visual feedback component
+ * 
+ * This layout applies to all routes, including public and authenticated pages.
+ * Route-specific layouts (e.g., authenticated layout) are nested within this.
+ */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -103,9 +115,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${inter.variable} antialiased`}
-      >
+      <body className={`${inter.variable} antialiased`}>
         <AuthProvider>
           <FeedbackProvider>
             {children}
