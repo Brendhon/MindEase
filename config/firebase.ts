@@ -2,8 +2,9 @@
  * Firebase Configuration - MindEase
  * Firebase initialization and configuration
  */
-import { FirebaseApp, getApps, initializeApp } from "firebase/app";
-import { Firestore, getFirestore } from "firebase/firestore";
+import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getAuth, Auth } from "firebase/auth";
 
 /**
  * Firebase configuration object
@@ -32,6 +33,11 @@ if (getApps().length === 0) {
  * Initialize Firestore
  */
 export const db: Firestore = getFirestore(app);
+
+/**
+ * Initialize Auth
+ */
+export const auth: Auth = getAuth(app);
 
 /**
  * Export Firebase app instance
