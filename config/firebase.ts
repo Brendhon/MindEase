@@ -2,9 +2,8 @@
  * Firebase Configuration - MindEase
  * Firebase initialization and configuration
  */
-import { initializeApp, getApps, FirebaseApp } from "firebase/app";
-import { getFirestore, Firestore } from "firebase/firestore";
-import { getAuth, Auth } from "firebase/auth";
+import { FirebaseApp, getApps, initializeApp } from "firebase/app";
+import { Firestore, getFirestore } from "firebase/firestore";
 
 /**
  * Firebase configuration object
@@ -16,6 +15,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 /**
@@ -32,11 +32,6 @@ if (getApps().length === 0) {
  * Initialize Firestore
  */
 export const db: Firestore = getFirestore(app);
-
-/**
- * Initialize Auth
- */
-export const auth: Auth = getAuth(app);
 
 /**
  * Export Firebase app instance
