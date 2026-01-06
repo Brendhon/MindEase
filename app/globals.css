@@ -1,26 +1,239 @@
 @import "tailwindcss";
 
+/**
+ * MindEase Design Tokens
+ * Based on cognitive accessibility principles
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ========================================
+     🎨 COLOR TOKENS - Base Neutral (Low Stimulation)
+     ======================================== */
+  --color-bg-primary: #f9fafb;
+  --color-bg-secondary: #f3f4f6;
+  --color-bg-tertiary: #e5e7eb;
+  
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f9fafb;
+  
+  --color-border-subtle: #e5e7eb;
+  --color-border-strong: #d1d5db;
+
+  /* ========================================
+     🔤 TEXT TOKENS - Cognitive Readability
+     ======================================== */
+  --color-text-primary: #111827;
+  --color-text-secondary: #374151;
+  --color-text-muted: #6b7280;
+  --color-text-inverse: #f9fafb;
+
+  /* ========================================
+     🎯 ACTION TOKENS - Low Saturation
+     ======================================== */
+  --color-action-primary: #2563eb;
+  --color-action-primary-hover: #1d4ed8;
+  --color-action-secondary: #475569;
+  --color-action-secondary-hover: #334155;
+
+  /* ========================================
+     ✅ FEEDBACK TOKENS - Semantic Colors
+     ======================================== */
+  --color-feedback-success: #16a34a;
+  --color-feedback-warning: #d97706;
+  --color-feedback-error: #dc2626;
+  --color-feedback-info: #0284c7;
+
+  /* ========================================
+     📏 SPACING TOKENS - Density Control
+     ======================================== */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+
+  /* ========================================
+     🧱 RADIUS TOKENS - Soft Interfaces
+     ======================================== */
+  --radius-sm: 0.375rem;  /* 6px */
+  --radius-md: 0.5rem;    /* 8px */
+  --radius-lg: 0.75rem;   /* 12px */
+  --radius-full: 9999px;
+
+  /* ========================================
+     🔤 TYPOGRAPHY TOKENS
+     ======================================== */
+  --font-family-base: "Inter", system-ui, -apple-system, sans-serif;
+  
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-md: 1rem;       /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
+  --font-size-3xl: 1.875rem;  /* 30px */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* ========================================
+     🌫 ELEVATION TOKENS - Soft Shadows
+     ======================================== */
+  --elevation-none: none;
+  --elevation-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --elevation-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+
+  /* ========================================
+     🎞 MOTION TOKENS - Controlled Animation
+     ======================================== */
+  --motion-duration-fast: 150ms;
+  --motion-duration-normal: 250ms;
+  --motion-duration-slow: 350ms;
+  --motion-easing-base: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/**
+ * Dark Mode Adjustments
+ * Following same low-stimulation principles
+ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Backgrounds */
+    --color-bg-primary: #0a0a0a;
+    --color-bg-secondary: #171717;
+    --color-bg-tertiary: #262626;
+    
+    --color-surface-primary: #171717;
+    --color-surface-secondary: #262626;
+    
+    --color-border-subtle: #262626;
+    --color-border-strong: #404040;
+
+    /* Text */
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-text-muted: #9ca3af;
+    --color-text-inverse: #111827;
+
+    /* Actions - slightly brighter for dark mode */
+    --color-action-primary: #3b82f6;
+    --color-action-primary-hover: #60a5fa;
+    --color-action-secondary: #64748b;
+    --color-action-secondary-hover: #94a3b8;
+
+    /* Feedback - adjusted for dark backgrounds */
+    --color-feedback-success: #22c55e;
+    --color-feedback-warning: #f59e0b;
+    --color-feedback-error: #ef4444;
+    --color-feedback-info: #06b6d4;
   }
 }
 
+/**
+ * Tailwind v4 Theme Integration
+ * Mapping design tokens to Tailwind utilities
+ */
+@theme {
+  /* ========================================
+     COLOR TOKENS → Tailwind Classes
+     Usage: bg-bg-primary, text-text-primary, border-border-subtle
+     ======================================== */
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-tertiary: var(--color-bg-tertiary);
+  
+  --color-surface-primary: var(--color-surface-primary);
+  --color-surface-secondary: var(--color-surface-secondary);
+  
+  --color-border-subtle: var(--color-border-subtle);
+  --color-border-strong: var(--color-border-strong);
+  
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+  --color-text-inverse: var(--color-text-inverse);
+  
+  --color-action-primary: var(--color-action-primary);
+  --color-action-primary-hover: var(--color-action-primary-hover);
+  --color-action-secondary: var(--color-action-secondary);
+  --color-action-secondary-hover: var(--color-action-secondary-hover);
+  
+  --color-feedback-success: var(--color-feedback-success);
+  --color-feedback-warning: var(--color-feedback-warning);
+  --color-feedback-error: var(--color-feedback-error);
+  --color-feedback-info: var(--color-feedback-info);
+
+  /* ========================================
+     SPACING TOKENS → Tailwind Classes
+     Usage: p-4, m-6, gap-8, space-x-12
+     ======================================== */
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-6: var(--space-6);
+  --spacing-8: var(--space-8);
+  --spacing-12: var(--space-12);
+  --spacing-16: var(--space-16);
+
+  /* ========================================
+     RADIUS TOKENS → Tailwind Classes
+     Usage: rounded-sm, rounded-md, rounded-lg, rounded-full
+     ======================================== */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-full: var(--radius-full);
+
+  /* ========================================
+     TYPOGRAPHY TOKENS → Tailwind Classes
+     Usage: font-sans, text-sm, text-lg, font-medium
+     ======================================== */
+  --font-sans: var(--font-family-base);
+  
+  --font-size-xs: var(--font-size-xs);
+  --font-size-sm: var(--font-size-sm);
+  --font-size-md: var(--font-size-md);
+  --font-size-lg: var(--font-size-lg);
+  --font-size-xl: var(--font-size-xl);
+  --font-size-2xl: var(--font-size-2xl);
+  --font-size-3xl: var(--font-size-3xl);
+
+  --font-weight-regular: var(--font-weight-regular);
+  --font-weight-medium: var(--font-weight-medium);
+  --font-weight-semibold: var(--font-weight-semibold);
+
+  /* ========================================
+     SHADOW TOKENS → Tailwind Classes
+     Usage: shadow-soft, shadow-medium
+     ======================================== */
+  --shadow-soft: var(--elevation-soft);
+  --shadow-medium: var(--elevation-medium);
+
+  /* ========================================
+     ANIMATION TOKENS → Tailwind Classes
+     Usage: duration-fast, duration-normal, ease-base
+     ======================================== */
+  --animate-duration-fast: var(--motion-duration-fast);
+  --animate-duration-normal: var(--motion-duration-normal);
+  --animate-duration-slow: var(--motion-duration-slow);
+}
+
+/**
+ * Base Styles
+ * Using semantic tokens
+ */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
 }
