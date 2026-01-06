@@ -1,7 +1,8 @@
 "use client";
 
-import { useCallback } from "react";
 import { useFeedbackContext } from "@/contexts/feedback-context";
+import { generateRandomUUID } from "@/lib/utils/common";
+import { useCallback } from "react";
 
 /**
  * Feedback types for semantic meaning
@@ -47,14 +48,8 @@ export function useFeedback() {
       message: string;
       duration?: number;
     }) => {
-      // Generate unique ID (fallback for environments without crypto.randomUUID)
-      const id =
-        typeof crypto !== "undefined" && crypto.randomUUID
-          ? crypto.randomUUID()
-          : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-
       context.addFeedback({
-        id,
+        id: generateRandomUUID(),
         type: options.type,
         message: options.message,
         duration: options.duration ?? 5000,
