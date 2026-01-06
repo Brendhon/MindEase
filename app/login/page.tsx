@@ -15,6 +15,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { LogIn } from "lucide-react";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
   const { signIn, isAuthenticated, isLoading } = useAuth();
@@ -37,57 +38,57 @@ export default function LoginPage() {
     }
   };
 
-  // Style constants (following project guidelines - no inline classes in JSX)
-  const containerStyles = "flex min-h-screen items-center justify-center bg-bg-secondary font-sans";
-  const mainStyles = "flex flex-col items-center justify-center gap-8 p-8 max-w-md w-full";
-  const cardStyles = "w-full bg-surface-primary border border-border-subtle rounded-lg shadow-soft p-8";
-  const titleStyles = "text-3xl font-semibold text-text-primary leading-tight text-center mb-2";
-  const descriptionStyles = "text-md text-text-secondary leading-relaxed text-center mb-8";
-  const buttonContainerStyles = "w-full flex flex-col gap-4";
-  const buttonStyles = "w-full flex items-center justify-center gap-3";
-  const disclaimerStyles = "text-sm text-text-muted text-center mt-6";
-
   return (
-    <div className={containerStyles}>
-      <main className={mainStyles} role="main">
-        <div className={cardStyles}>
-          <h1 className={titleStyles}>
+    <div className={styles.container}>
+      <Image 
+        className={styles.logo} 
+        src="/logo.png" 
+        alt="MindEase Logo" 
+        width={80} 
+        height={80}
+        priority
+      />
+      <main className={styles.main} role="main">
+        <section className={styles.card} aria-labelledby="login-title">
+          <h1 id="login-title" className={styles.title}>
             Bem-vindo ao MindEase
           </h1>
-          <p className={descriptionStyles}>
+          <p className={styles.description}>
             Plataforma de acessibilidade cognitiva para reduzir a carga mental e melhorar seu foco.
           </p>
-          
-          <div className={buttonContainerStyles}>
+
+          <div className={styles.buttonContainer}>
             <Button
               variant="primary"
               size="lg"
               onClick={handleSignIn}
               disabled={isLoading}
               isLoading={isLoading}
-              className={buttonStyles}
-              aria-label="Entrar com Google"
+              className={styles.button}
+              aria-label="Entrar com sua conta do Google"
             >
-              {isLoading ? (
-                <>
-                  <Button.Loading size="lg" />
-                  <Button.Text>Carregando...</Button.Text>
-                </>
-              ) : (
-                <>
-                  <Button.Icon icon={LogIn} position="left" size="lg" />
-                  <Button.Text>Entrar com Google</Button.Text>
-                </>
-              )}
+              <Button.Icon icon={LogIn} position="left" size="lg" />
+              <Button.Text>Entrar com Google</Button.Text>
             </Button>
           </div>
 
-          <p className={disclaimerStyles}>
+          <p className={styles.disclaimer}>
             Ao entrar, você concorda com nossos termos de uso e política de privacidade.
           </p>
-        </div>
+        </section>
       </main>
     </div>
   );
 }
 
+const styles = {
+  container: `flex min-h-screen items-center justify-center bg-bg-secondary font-sans`,
+  logo: `absolute top-8 left-8`,
+  main: `flex flex-col items-center justify-center gap-8 p-8 max-w-md w-full`,
+  card: `w-full bg-surface-primary border border-border-subtle rounded-lg shadow-soft p-8`,
+  title: `text-3xl font-semibold text-text-primary leading-tight text-center mb-4`,
+  description: `text-md text-text-secondary leading-relaxed text-center mb-8`,
+  buttonContainer: `w-full flex flex-col gap-4`,
+  button: `w-full`,
+  disclaimer: `text-sm text-text-muted text-center mt-6`,
+} as const;
