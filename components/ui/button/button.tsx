@@ -37,7 +37,7 @@ import { ButtonLoading } from "./button-loading";
  * ```
  */
 export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
-  variant?: "primary" | "secondary" | "ghost";
+  variant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   children?: ReactNode; // Only accepts Button subcomponents
@@ -98,6 +98,8 @@ const styles = {
     primary: "bg-action-primary text-text-inverse hover:opacity-90 focus:ring-action-primary active:opacity-80",
     secondary: "bg-surface-secondary text-text-primary hover:bg-surface-tertiary focus:ring-action-primary active:bg-surface-tertiary",
     ghost: "bg-transparent text-text-primary hover:bg-surface-secondary focus:ring-action-primary active:bg-surface-secondary",
+    danger: "bg-action-danger text-text-inverse hover:opacity-90 focus:ring-action-danger active:opacity-80",
+    warning: "bg-action-warning text-text-inverse hover:opacity-90 focus:ring-action-warning active:opacity-80",
   } as const,
   sizes: {
     sm: "h-8 px-3 text-sm gap-1.5",

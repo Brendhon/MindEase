@@ -118,7 +118,7 @@ export const Confirmation: Story = {
           <Button variant="ghost" onClick={fn()}>
             <Button.Text>Cancel</Button.Text>
           </Button>
-          <Button variant="secondary" onClick={fn()}>
+          <Button variant="danger" onClick={fn()}>
             <Button.Icon icon={XCircle} position="left" />
             <Button.Text>Delete</Button.Text>
           </Button>

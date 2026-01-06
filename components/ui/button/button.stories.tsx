@@ -13,7 +13,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'ghost'],
+      options: ['primary', 'secondary', 'ghost', 'danger', 'warning'],
       description: 'Button variant style',
     },
     size: {
@@ -65,6 +65,22 @@ export const Ghost: Story = {
     variant: 'ghost',
     size: 'md',
     children: <Button.Text>Ghost Button</Button.Text>,
+  },
+};
+
+export const Danger: Story = {
+  args: {
+    variant: 'danger',
+    size: 'md',
+    children: <Button.Text>Danger Button</Button.Text>,
+  },
+};
+
+export const Warning: Story = {
+  args: {
+    variant: 'warning',
+    size: 'md',
+    children: <Button.Text>Warning Button</Button.Text>,
   },
 };
 
@@ -188,7 +204,7 @@ export const SaveWithIcon: Story = {
 
 export const DeleteWithIcon: Story = {
   args: {
-    variant: 'secondary',
+    variant: 'danger',
     size: 'md',
     children: (
       <>
@@ -212,6 +228,32 @@ export const UploadWithIcon: Story = {
   },
 };
 
+export const DangerWithIcon: Story = {
+  args: {
+    variant: 'danger',
+    size: 'md',
+    children: (
+      <>
+        <Button.Icon icon={Trash2} position="left" />
+        <Button.Text>Delete Item</Button.Text>
+      </>
+    ),
+  },
+};
+
+export const WarningWithIcon: Story = {
+  args: {
+    variant: 'warning',
+    size: 'md',
+    children: (
+      <>
+        <Button.Icon icon={Settings} position="left" />
+        <Button.Text>Warning Action</Button.Text>
+      </>
+    ),
+  },
+};
+
 // All variants showcase
 export const AllVariants: Story = {
   render: () => (
@@ -225,6 +267,12 @@ export const AllVariants: Story = {
         </Button>
         <Button variant="ghost" size="md">
           <Button.Text>Ghost</Button.Text>
+        </Button>
+        <Button variant="danger" size="md">
+          <Button.Text>Danger</Button.Text>
+        </Button>
+        <Button variant="warning" size="md">
+          <Button.Text>Warning</Button.Text>
         </Button>
       </div>
       <div className="flex gap-3 items-center">

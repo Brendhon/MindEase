@@ -33,6 +33,10 @@
   --color-action-primary-hover: #1d4ed8;
   --color-action-secondary: #475569;
   --color-action-secondary-hover: #334155;
+  --color-action-danger: #dc2626;
+  --color-action-danger-hover: #b91c1c;
+  --color-action-warning: #d97706;
+  --color-action-warning-hover: #b45309;
 
   /* ========================================
      ✅ FEEDBACK TOKENS - Semantic Colors
@@ -166,6 +170,10 @@
   --color-action-primary-hover: var(--color-action-primary-hover);
   --color-action-secondary: var(--color-action-secondary);
   --color-action-secondary-hover: var(--color-action-secondary-hover);
+  --color-action-danger: var(--color-action-danger);
+  --color-action-danger-hover: var(--color-action-danger-hover);
+  --color-action-warning: var(--color-action-warning);
+  --color-action-warning-hover: var(--color-action-warning-hover);
   
   --color-feedback-success: var(--color-feedback-success);
   --color-feedback-warning: var(--color-feedback-warning);
