@@ -1,62 +1,63 @@
-import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef } from "react";
+"use client";
+
+import { ReactNode, useId } from "react";
+import { Field as HeadlessField } from "@headlessui/react";
+import { cn } from "@/utils/ui";
+import { InputLabel } from "./input-label";
+import { InputField } from "./input-field";
+import { InputError } from "./input-error";
 
 /**
  * Input Component - MindEase
  * Accessible input with cognitive accessibility features
+ * 
+ * Uses composition pattern exclusively - only accepts Input subcomponents:
+ * - Input.Label for labels
+ * - Input.Field for input/textarea elements
+ * - Input.Error for error messages
+ * 
+ * @example
+ * ```tsx
+ * // Basic input
+ * <Input>
+ *   <Input.Label htmlFor="email">Email</Input.Label>
+ *   <Input.Field id="email" type="email" />
+ * </Input>
+ * 
+ * // With error
+ * <Input>
+ *   <Input.Label htmlFor="email">Email</Input.Label>
+ *   <Input.Field id="email" type="email" />
+ *   <Input.Error>Please enter a valid email</Input.Error>
+ * </Input>
+ * 
+ * // Textarea
+ * <Input>
+ *   <Input.Label htmlFor="description">Description</Input.Label>
+ *   <Input.Field id="description" as="textarea" />
+ * </Input>
+ * ```
  */
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label?: string;
-  error?: string;
-  type?: "text" | "email" | "password" | "number" | "textarea";
+export interface InputProps {
+  children: ReactNode; // Only accepts Input subcomponents
+  className?: string;
 }
 
-export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
-  ({ className = "", label, error, id, type = "text", ...props }, ref) => {
-    const inputId = id || `input-${Math.random().toString(36).substr(2, 9)}`;
-    const isTextarea = type === "textarea";
+export function Input({ children, className }: InputProps) {
+  return (
+    <HeadlessField className={cn(styles.container, className)}>
+      {children}
+    </HeadlessField>
+  );
+}
 
-    const baseStyles = "px-4 rounded-md border border-border-subtle bg-surface-primary text-text-primary placeholder:text-text-tertiary focus:outline-none focus:ring-2 focus:ring-action-primary focus:border-transparent";
-    const inputStyles = isTextarea ? `min-h-24 py-2 ${baseStyles}` : `h-10 ${baseStyles}`;
+// Compose Input with subcomponents
+export const InputRoot = Object.assign(Input, {
+  Label: InputLabel,
+  Field: InputField,
+  Error: InputError,
+});
 
-    return (
-      <div className="flex flex-col gap-2">
-        {label && (
-          <label
-            htmlFor={inputId}
-            className="text-sm font-medium text-text-primary"
-          >
-            {label}
-          </label>
-        )}
-        {isTextarea ? (
-          <textarea
-            ref={ref as React.ForwardedRef<HTMLTextAreaElement>}
-            id={inputId}
-            className={`${inputStyles} ${className}`}
-            aria-invalid={error ? "true" : "false"}
-            aria-describedby={error ? `${inputId}-error` : undefined}
-            {...(props as TextareaHTMLAttributes<HTMLTextAreaElement>)}
-          />
-        ) : (
-          <input
-            ref={ref as React.ForwardedRef<HTMLInputElement>}
-            id={inputId}
-            type={type}
-            className={`${inputStyles} ${className}`}
-            aria-invalid={error ? "true" : "false"}
-            aria-describedby={error ? `${inputId}-error` : undefined}
-            {...(props as InputHTMLAttributes<HTMLInputElement>)}
-          />
-        )}
-        {error && (
-          <p id={`${inputId}-error`} className="text-sm text-feedback-error" role="alert">
-            {error}
-          </p>
-        )}
-      </div>
-    );
-  }
-);
-
-Input.displayName = "Input";
-
+const styles = {
+  container: "flex flex-col gap-2",
+} as const;

@@ -40,19 +40,25 @@ export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialo
       title={initialTask ? "Edit Task" : "Create Task"}
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <Input
-          label="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-          autoFocus
-        />
-        <Input
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          type="textarea"
-        />
+        <Input>
+          <Input.Label htmlFor="task-title">Title</Input.Label>
+          <Input.Field
+            id="task-title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            autoFocus
+          />
+        </Input>
+        <Input>
+          <Input.Label htmlFor="task-description">Description</Input.Label>
+          <Input.Field
+            id="task-description"
+            as="textarea"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </Input>
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="ghost" onClick={onClose}>
             <Button.Text>Cancel</Button.Text>
