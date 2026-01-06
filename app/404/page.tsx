@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/layout/page-container";
@@ -29,12 +31,12 @@ export default function NotFound404Page() {
             <div className={styles.actions}>
               <Link href={PAGE_ROUTES.HOME}>
                 <Button variant="primary" size="lg" className={styles.primaryButton}>
-                  Voltar para a página inicial
+                  <Button.Text>Voltar para a página inicial</Button.Text>
                 </Button>
               </Link>
               <Link href={PAGE_ROUTES.LOGIN}>
                 <Button variant="ghost" size="md" className={styles.secondaryButton}>
-                  Ir para o login
+                  <Button.Text>Ir para o login</Button.Text>
                 </Button>
               </Link>
             </div>

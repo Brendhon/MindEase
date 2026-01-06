@@ -55,15 +55,15 @@ export function TaskTimer({ initialMinutes = 25, onComplete }: TaskTimerProps) {
       <div className="flex gap-2 justify-center">
         {!isRunning ? (
           <Button onClick={handleStart} variant="primary">
-            Start
+            <Button.Text>Start</Button.Text>
           </Button>
         ) : (
           <Button onClick={handlePause} variant="secondary">
-            Pause
+            <Button.Text>Pause</Button.Text>
           </Button>
         )}
         <Button onClick={handleReset} variant="ghost">
-          Reset
+          <Button.Text>Reset</Button.Text>
         </Button>
       </div>
     </div>

@@ -55,10 +55,10 @@ export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialo
         />
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="ghost" onClick={onClose}>
-            Cancel
+            <Button.Text>Cancel</Button.Text>
           </Button>
           <Button type="submit" variant="primary">
-            {initialTask ? "Save" : "Create"}
+            <Button.Text>{initialTask ? "Save" : "Create"}</Button.Text>
           </Button>
         </div>
       </form>

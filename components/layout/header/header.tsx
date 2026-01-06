@@ -42,11 +42,20 @@ export function Header({ title = "MindEase" }: HeaderProps) {
         size="sm"
         onClick={handleLogout}
         disabled={isLoading}
+        isLoading={isLoading}
         aria-label="Sair da conta"
-        className="flex items-center gap-2"
       >
-        <LogOut className="w-4 h-4" aria-hidden="true" />
-        <span>Sair</span>
+        {isLoading ? (
+          <>
+            <Button.Loading size="sm" />
+            <Button.Text>Saindo...</Button.Text>
+          </>
+        ) : (
+          <>
+            <Button.Icon icon={LogOut} position="left" size="sm" />
+            <Button.Text>Sair</Button.Text>
+          </>
+        )}
       </Button>
     </header>
   );

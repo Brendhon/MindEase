@@ -10,7 +10,7 @@
  */
 "use client";
 
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { LogIn } from "lucide-react";
 import { useEffect } from "react";
@@ -64,11 +64,21 @@ export default function LoginPage() {
               size="lg"
               onClick={handleSignIn}
               disabled={isLoading}
+              isLoading={isLoading}
               className={buttonStyles}
               aria-label="Entrar com Google"
             >
-              <LogIn className="w-5 h-5" aria-hidden="true" />
-              <span>{isLoading ? "Carregando..." : "Entrar com Google"}</span>
+              {isLoading ? (
+                <>
+                  <Button.Loading size="lg" />
+                  <Button.Text>Carregando...</Button.Text>
+                </>
+              ) : (
+                <>
+                  <Button.Icon icon={LogIn} position="left" size="lg" />
+                  <Button.Text>Entrar com Google</Button.Text>
+                </>
+              )}
             </Button>
           </div>
 
