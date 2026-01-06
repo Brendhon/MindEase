@@ -23,6 +23,7 @@
       "@/services/*": ["./services/*"],
       "@/utils/*": ["./utils/*"],
       "@/models/*": ["./models/*"],
+      "@/providers/*": ["./providers/*"],
       "@/hooks/*": ["./hooks/*"],
       "@/contexts/*": ["./contexts/*"],
       "@/components/*": ["./components/*"]

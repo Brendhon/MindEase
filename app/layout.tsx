@@ -1,5 +1,6 @@
 import { ToastContainer } from "@/components/feedback/toast";
-import { FeedbackProvider } from "@/contexts/feedback-context";
+import { AuthProvider } from "@/providers/auth-provider";
+import { FeedbackProvider } from "@/providers/feedback-provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -105,10 +106,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        <FeedbackProvider>
-          {children}
-          <ToastContainer />
-        </FeedbackProvider>
+        <AuthProvider>
+          <FeedbackProvider>
+            {children}
+            <ToastContainer />
+          </FeedbackProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,57 +1,44 @@
 /**
  * Auth Service - MindEase
- * Authentication service for Firebase Auth
+ * Authentication service using NextAuth
  */
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  User,
-} from "firebase/auth";
-import { auth } from "@/config/firebase";
-
-/**
- * Google Auth Provider instance
- */
-const googleProvider = new GoogleAuthProvider();
+import { signIn, signOut, getSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 /**
  * Auth Service interface
  */
 export interface AuthService {
-  signInWithGoogle: () => Promise<{ uid: string; email: string | null }>;
+  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   getCurrentUser: () => Promise<{ uid: string; email: string | null } | null>;
-  onAuthStateChange: (callback: (user: { uid: string; email: string | null } | null) => void) => () => void;
+  getSession: () => Promise<Session | null>;
 }
 
 /**
- * Convert Firebase User to our user format
+ * Convert NextAuth Session to our user format
  */
-const convertUser = (user: User | null): { uid: string; email: string | null } | null => {
-  if (!user) return null;
+const convertSession = (session: Session | null): { uid: string; email: string | null } | null => {
+  if (!session?.user) return null;
   return {
-    uid: user.uid,
-    email: user.email,
+    uid: session.user.id,
+    email: session.user.email || null,
   };
 };
 
 /**
- * Auth Service implementation
+ * Auth Service implementation using NextAuth
  */
 export const authService: AuthService = {
   /**
-   * Sign in with Google using popup
+   * Sign in with Google using NextAuth
    */
-  signInWithGoogle: async (): Promise<{ uid: string; email: string | null }> => {
+  signInWithGoogle: async (): Promise<void> => {
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const user = convertUser(result.user);
-      if (!user) {
-        throw new Error("Failed to get user information after sign in");
-      }
-      return user;
+      await signIn("google", {
+        callbackUrl: "/dashboard",
+        redirect: true,
+      });
     } catch (error) {
       console.error("Error signing in with Google:", error);
       throw error;
@@ -63,7 +50,10 @@ export const authService: AuthService = {
    */
   signOut: async (): Promise<void> => {
     try {
-      await firebaseSignOut(auth);
+      await signOut({
+        callbackUrl: "/login",
+        redirect: true,
+      });
     } catch (error) {
       console.error("Error signing out:", error);
       throw error;
@@ -75,12 +65,8 @@ export const authService: AuthService = {
    */
   getCurrentUser: async (): Promise<{ uid: string; email: string | null } | null> => {
     try {
-      return new Promise((resolve) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-          unsubscribe();
-          resolve(convertUser(user));
-        });
-      });
+      const session = await getSession();
+      return convertSession(session);
     } catch (error) {
       console.error("Error getting current user:", error);
       return null;
@@ -88,15 +74,15 @@ export const authService: AuthService = {
   },
 
   /**
-   * Listen to authentication state changes
-   * @returns Unsubscribe function
+   * Get current session (includes full session data)
    */
-  onAuthStateChange: (
-    callback: (user: { uid: string; email: string | null } | null) => void
-  ): (() => void) => {
-    return onAuthStateChanged(auth, (user) => {
-      callback(convertUser(user));
-    });
+  getSession: async (): Promise<Session | null> => {
+    try {
+      return await getSession();
+    } catch (error) {
+      console.error("Error getting session:", error);
+      return null;
+    }
   },
 };
 

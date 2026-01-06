@@ -1,7 +1,5 @@
-"use client";
-
-import React, { createContext, useContext, useState, useCallback } from "react";
 import type { FeedbackMessage } from "@/hooks/useFeedback";
+import { createContext, useContext } from "react";
 
 interface FeedbackContextValue {
   feedbacks: FeedbackMessage[];
@@ -9,7 +7,7 @@ interface FeedbackContextValue {
   removeFeedback: (id: string) => void;
 }
 
-const FeedbackContext = createContext<FeedbackContextValue | undefined>(
+export const FeedbackContext = createContext<FeedbackContextValue | undefined>(
   undefined
 );
 
@@ -23,37 +21,5 @@ export function useFeedbackContext(): FeedbackContextValue {
     throw new Error("useFeedbackContext must be used within FeedbackProvider");
   }
   return context;
-}
-
-interface FeedbackProviderProps {
-  children: React.ReactNode;
-}
-
-/**
- * Provider for global feedback/toast management
- * Manages state and lifecycle of feedback messages
- */
-export function FeedbackProvider({ children }: FeedbackProviderProps) {
-  const [feedbacks, setFeedbacks] = useState<FeedbackMessage[]>([]);
-
-  const addFeedback = useCallback((feedback: FeedbackMessage) => {
-    setFeedbacks((prev) => [...prev, feedback]);
-  }, []);
-
-  const removeFeedback = useCallback((id: string) => {
-    setFeedbacks((prev) => prev.filter((f) => f.id !== id));
-  }, []);
-
-  return (
-    <FeedbackContext.Provider
-      value={{
-        feedbacks,
-        addFeedback,
-        removeFeedback,
-      }}
-    >
-      {children}
-    </FeedbackContext.Provider>
-  );
 }
 
