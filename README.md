@@ -94,35 +94,69 @@ Todos os componentes interativos utilizam **Headless UI**, garantindo:
 O projeto segue os princípios de **Clean Architecture**, adaptados para um escopo acadêmico, priorizando clareza e manutenibilidade sem complexidade excessiva.
 
 ```
-src/
- ├── app/                # Rotas (Next App Router)
- │   ├── login/
+app/
+ ├── login/
+ │   └── page.tsx
+ │
+ ├── (authenticated)/    # Route group para rotas autenticadas
+ │   ├── layout.tsx      # Layout com sidebar + header
+ │   │
  │   ├── dashboard/
+ │   │   └── page.tsx
+ │   │
  │   ├── tasks/
- │   └── layout.tsx
+ │   │   └── page.tsx
+ │   │
+ │   └── profile/
+ │       └── page.tsx
  │
- ├── domain/             # Regras de negócio
- │   ├── entities/
- │   │   ├── Task.ts
- │   │   └── Preferences.ts
- │   ├── usecases/
- │   │   ├── getTasks.ts
- │   │   ├── createTask.ts
- │   │   └── savePreferences.ts
+ └── layout.tsx          # Layout público
+
+components/
+ ├── ui/                 # Componentes base
+ │   ├── button/
+ │   ├── input/
+ │   ├── dialog/
+ │   ├── toast/
+ │   └── alert-banner/
  │
- ├── infra/              # Infraestrutura
- │   └── firebase/
- │       ├── auth.ts
- │       ├── firestore.ts
- │       └── repositories/
+ ├── feedback/
+ │   ├── toast/
+ │   ├── alert/
+ │   └── inline-error/
  │
- ├── components/
- │   ├── ui/             # Headless UI + Tailwind
- │   ├── cognitive/      # Componentes focados em acessibilidade
- │   └── layout/
+ ├── tasks/
+ │   ├── task-card/
+ │   ├── task-list/
+ │   ├── task-dialog/    # Create/Edit modal
+ │   └── task-timer/
  │
- ├── tokens/             # Design Tokens (cores, fontes, espaçamento)
- └── tests/              # Testes automatizados
+ └── layout/
+     ├── header/
+     ├── sidebar/
+     └── page-container/
+
+hooks/
+ ├── useTasks.ts
+ ├── useCognitiveSettings.ts
+ ├── useFeedback.ts
+ └── useFocusMode.ts
+
+services/
+ ├── auth/
+ ├── firestore/
+ └── tasks/
+
+models/
+ ├── Task.ts
+ └── UserPreferences.ts
+
+utils/
+ ├── accessibility/
+ └── formatting/
+
+styles/
+ └── tokens/             # Design tokens (globals.css)
 ```
 
 ---

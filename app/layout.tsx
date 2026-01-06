@@ -1,4 +1,4 @@
-import { ToastContainer } from "@/components/ui/toast";
+import { ToastContainer } from "@/components/feedback/toast";
 import { FeedbackProvider } from "@/contexts/feedback-context";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";

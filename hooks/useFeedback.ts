@@ -1,7 +1,7 @@
 "use client";
 
 import { useFeedbackContext } from "@/contexts/feedback-context";
-import { generateRandomUUID } from "@/lib/utils/common";
+import { generateRandomUUID } from "@/utils/uuid";
 import { useCallback } from "react";
 
 /**

@@ -2,7 +2,7 @@
 
 import { useFeedbackContext } from "@/contexts/feedback-context";
 import type { FeedbackType } from "@/hooks/useFeedback";
-import { cn } from "@/lib/utils/common";
+import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";

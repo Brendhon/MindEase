@@ -20,7 +20,12 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@/lib": ["./lib/*"]
+      "@/services/*": ["./services/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/models/*": ["./models/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/contexts/*": ["./contexts/*"],
+      "@/components/*": ["./components/*"]
     }
   },
   "include": [
