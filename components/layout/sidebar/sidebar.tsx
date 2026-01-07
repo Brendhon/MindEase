@@ -1,14 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
-import { PROTECTED_ROUTES } from "@/utils/routes";
-import { LayoutDashboard, CheckSquare, User, LucideIcon } from "lucide-react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { PROTECTED_ROUTES } from "@/utils/routes";
 import { cn } from "@/utils/ui/ui";
-import { styles, getSpacingClasses } from "./sidebar-styles";
-import { SidebarItem } from "./sidebar-item";
+import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
+import { useMemo } from "react";
 import { SidebarIcon } from "./sidebar-icon";
+import { SidebarItem } from "./sidebar-item";
 import { SidebarLabel } from "./sidebar-label";
+import { getSpacingClasses, styles } from "./sidebar-styles";
 
 /**
  * Sidebar Component - MindEase
@@ -56,11 +56,8 @@ const defaultItems: SidebarItemData[] = [
 ];
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
-  // Use hook in read-only mode to observe accessibility settings
-  const { settings } = useCognitiveSettings(undefined, {
-    readOnly: true,
-    autoApply: false,
-  });
+  // Read cognitive accessibility settings
+  const { settings } = useCognitiveSettings();
 
   // Memoize computed classes to avoid recalculation on every render
   const spacingClasses = useMemo(

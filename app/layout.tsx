@@ -1,5 +1,6 @@
 import { ToastContainer } from "@/components/feedback/toast";
 import { AuthProvider } from "@/providers/auth-provider";
+import { CognitiveSettingsProvider } from "@/providers/cognitive-settings-provider";
 import { FeedbackProvider } from "@/providers/feedback-provider";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
@@ -102,6 +103,7 @@ export const viewport: Viewport = {
  * Global layout that wraps all pages in the application.
  * Provides:
  * - AuthProvider: NextAuth session management
+ * - CognitiveSettingsProvider: Global cognitive accessibility settings
  * - FeedbackProvider: Toast notifications and user feedback
  * - ToastContainer: Visual feedback component
  * 
@@ -117,10 +119,12 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body className={`${inter.variable} antialiased`}>
         <AuthProvider>
-          <FeedbackProvider>
-            {children}
-            <ToastContainer />
-          </FeedbackProvider>
+          <CognitiveSettingsProvider>
+            <FeedbackProvider>
+              {children}
+              <ToastContainer />
+            </FeedbackProvider>
+          </CognitiveSettingsProvider>
         </AuthProvider>
       </body>
     </html>
