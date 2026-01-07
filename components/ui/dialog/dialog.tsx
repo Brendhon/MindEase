@@ -1,7 +1,10 @@
 "use client";
 
 import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useMemo } from "react";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { cn } from "@/utils/ui";
+import { styles, getContrastClasses, getTransitionClasses } from "./dialog-styles";
 
 /**
  * Dialog Component - MindEase
@@ -16,33 +19,80 @@ export interface DialogProps {
 }
 
 export function Dialog({ isOpen, onClose, title, children, "data-testid": dataTestId = "dialog" }: DialogProps) {
+  // Use cognitive settings hook for automatic accessibility class generation
+  // These classes automatically update when user preferences change
+  const { 
+    settings, 
+    spacingClasses, // Recalculates when settings.spacing changes
+    fontSizeClasses, // Recalculates when settings.fontSize changes
+  } = useCognitiveSettings();
+
+  // Generate contrast classes with dialog-specific logic
+  const contrastClasses = useMemo(
+    () => getContrastClasses(settings.contrast),
+    [settings.contrast]
+  );
+
+  // Generate transition classes based on animation preference
+  const transitionClasses = useMemo(
+    () => getTransitionClasses(settings.animations),
+    [settings.animations]
+  );
+
+  // Generate container classes with spacing preference
+  const containerClasses = useMemo(
+    () => cn(styles.container, spacingClasses.padding),
+    [spacingClasses.padding]
+  );
+
+  // Generate panel classes with spacing and contrast
+  const panelClasses = useMemo(
+    () => cn(
+      styles.panel,
+      spacingClasses.padding, // Dynamically updates based on settings.spacing
+      contrastClasses.panel
+    ),
+    [spacingClasses.padding, contrastClasses.panel]
+  );
+
+  // Generate title classes with fontSize and contrast
+  const titleClasses = useMemo(
+    () => cn(
+      styles.title,
+      fontSizeClasses.lg, // Dynamically updates based on settings.fontSize
+      contrastClasses.title,
+      "mb-4" // Margin bottom for spacing
+    ),
+    [fontSizeClasses.lg, contrastClasses.title]
+  );
+
   return (
     <Transition show={isOpen} as={Fragment}>
       <HeadlessDialog onClose={onClose} className={styles.dialog} data-testid={dataTestId}>
         <TransitionChild
           as={Fragment}
-          enter={styles.backdropEnter}
-          enterFrom={styles.backdropEnterFrom}
-          enterTo={styles.backdropEnterTo}
-          leave={styles.backdropLeave}
-          leaveFrom={styles.backdropLeaveFrom}
-          leaveTo={styles.backdropLeaveTo}
+          enter={transitionClasses.backdrop.enter}
+          enterFrom={transitionClasses.backdrop.enterFrom}
+          enterTo={transitionClasses.backdrop.enterTo}
+          leave={transitionClasses.backdrop.leave}
+          leaveFrom={transitionClasses.backdrop.leaveFrom}
+          leaveTo={transitionClasses.backdrop.leaveTo}
         >
           <div className={styles.backdrop} aria-hidden="true" data-testid={`${dataTestId}-backdrop`} />
         </TransitionChild>
 
-        <div className={styles.container}>
+        <div className={containerClasses}>
           <TransitionChild
             as={Fragment}
-            enter={styles.panelEnter}
-            enterFrom={styles.panelEnterFrom}
-            enterTo={styles.panelEnterTo}
-            leave={styles.panelLeave}
-            leaveFrom={styles.panelLeaveFrom}
-            leaveTo={styles.panelLeaveTo}
+            enter={transitionClasses.panel.enter}
+            enterFrom={transitionClasses.panel.enterFrom}
+            enterTo={transitionClasses.panel.enterTo}
+            leave={transitionClasses.panel.leave}
+            leaveFrom={transitionClasses.panel.leaveFrom}
+            leaveTo={transitionClasses.panel.leaveTo}
           >
-            <DialogPanel className={styles.panel} data-testid={`${dataTestId}-panel`}>
-              <DialogTitle className={styles.title} data-testid={`${dataTestId}-title`}>
+            <DialogPanel className={panelClasses} data-testid={`${dataTestId}-panel`}>
+              <DialogTitle className={titleClasses} data-testid={`${dataTestId}-title`}>
                 {title}
               </DialogTitle>
               <div data-testid={`${dataTestId}-content`}>{children}</div>
@@ -54,22 +104,3 @@ export function Dialog({ isOpen, onClose, title, children, "data-testid": dataTe
   );
 }
 
-const styles = {
-  dialog: "relative z-50",
-  backdrop: "fixed inset-0 bg-black/30",
-  container: "fixed inset-0 flex items-center justify-center p-4",
-  panel: "w-full max-w-md rounded-lg bg-surface-primary p-6 shadow-lg",
-  title: "text-lg font-semibold text-text-primary mb-4",
-  backdropEnter: "ease-out duration-150",
-  backdropEnterFrom: "opacity-0",
-  backdropEnterTo: "opacity-100",
-  backdropLeave: "ease-in duration-150",
-  backdropLeaveFrom: "opacity-100",
-  backdropLeaveTo: "opacity-0",
-  panelEnter: "ease-out duration-150",
-  panelEnterFrom: "opacity-0 scale-95",
-  panelEnterTo: "opacity-100 scale-100",
-  panelLeave: "ease-in duration-150",
-  panelLeaveFrom: "opacity-100 scale-100",
-  panelLeaveTo: "opacity-0 scale-95",
-} as const;

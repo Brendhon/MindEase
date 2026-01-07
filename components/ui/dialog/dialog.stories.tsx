@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
 import { useState } from 'react';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { SessionProvider } from 'next-auth/react';
 import { Dialog } from './index';
 import { Button } from '../button';
 import { AlertCircle, Info, CheckCircle2, XCircle } from 'lucide-react';
@@ -11,7 +13,15 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <Story />
+        </CognitiveSettingsProvider>
+      </SessionProvider>
+    ),
+  ],
   argTypes: {
     isOpen: {
       control: 'boolean',
@@ -273,6 +283,259 @@ export const Interactive: Story = {
         />
       </>
     );
+  },
+};
+
+// Showcase different accessibility settings
+export const AccessibilityShowcase: Story = {
+  args: {
+    isOpen: false,
+    title: 'Accessibility Showcase',
+    onClose: fn(),
+    children: null,
+  },
+  render: () => {
+    const [normalOpen, setNormalOpen] = useState(false);
+    const [highContrastOpen, setHighContrastOpen] = useState(false);
+    const [compactSpacingOpen, setCompactSpacingOpen] = useState(false);
+    const [relaxedSpacingOpen, setRelaxedSpacingOpen] = useState(false);
+    const [largeFontOpen, setLargeFontOpen] = useState(false);
+    const [noAnimationsOpen, setNoAnimationsOpen] = useState(false);
+
+    return (
+      <div className="flex gap-6 flex-col p-6">
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'normal',
+              spacing: 'normal',
+              fontSize: 'normal',
+              animations: true,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setNormalOpen(true)}>
+              <Button.Text>Open Normal Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={normalOpen}
+              onClose={() => setNormalOpen(false)}
+              title="Normal Dialog"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog uses normal accessibility settings.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setNormalOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setNormalOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'high',
+              spacing: 'normal',
+              fontSize: 'normal',
+              animations: true,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setHighContrastOpen(true)}>
+              <Button.Text>Open High Contrast Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={highContrastOpen}
+              onClose={() => setHighContrastOpen(false)}
+              title="High Contrast Dialog"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog has stronger borders and outlines for better visibility.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setHighContrastOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setHighContrastOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'normal',
+              spacing: 'compact',
+              fontSize: 'normal',
+              animations: true,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setCompactSpacingOpen(true)}>
+              <Button.Text>Open Compact Spacing Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={compactSpacingOpen}
+              onClose={() => setCompactSpacingOpen(false)}
+              title="Compact Spacing"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog uses compact spacing for tighter layout.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setCompactSpacingOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setCompactSpacingOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'normal',
+              spacing: 'relaxed',
+              fontSize: 'normal',
+              animations: true,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setRelaxedSpacingOpen(true)}>
+              <Button.Text>Open Relaxed Spacing Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={relaxedSpacingOpen}
+              onClose={() => setRelaxedSpacingOpen(false)}
+              title="Relaxed Spacing"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog uses relaxed spacing for more breathing room.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setRelaxedSpacingOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setRelaxedSpacingOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'normal',
+              spacing: 'normal',
+              fontSize: 'large',
+              animations: true,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setLargeFontOpen(true)}>
+              <Button.Text>Open Large Font Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={largeFontOpen}
+              onClose={() => setLargeFontOpen(false)}
+              title="Large Font Dialog"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog uses larger font sizes for better readability.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setLargeFontOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setLargeFontOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+          <CognitiveSettingsProvider
+            isolated={true}
+            initialSettings={{
+              contrast: 'normal',
+              spacing: 'normal',
+              fontSize: 'normal',
+              animations: false,
+              focusMode: false,
+              textDetail: 'detailed',
+            }}
+          >
+            <Button variant="primary" onClick={() => setNoAnimationsOpen(true)}>
+              <Button.Text>Open No Animations Dialog</Button.Text>
+            </Button>
+            <Dialog
+              isOpen={noAnimationsOpen}
+              onClose={() => setNoAnimationsOpen(false)}
+              title="No Animations"
+            >
+              <div className="space-y-4">
+                <p className="text-text-secondary">
+                  This dialog uses minimal transitions when animations are disabled.
+                </p>
+                <div className="flex justify-end gap-3">
+                  <Button variant="ghost" onClick={() => setNoAnimationsOpen(false)}>
+                    <Button.Text>Cancel</Button.Text>
+                  </Button>
+                  <Button variant="primary" onClick={() => setNoAnimationsOpen(false)}>
+                    <Button.Text>Confirm</Button.Text>
+                  </Button>
+                </div>
+              </div>
+            </Dialog>
+          </CognitiveSettingsProvider>
+        </div>
+      </div>
+    );
+  },
+  parameters: {
+    layout: 'fullscreen',
   },
 };
 
