@@ -42,7 +42,7 @@ import { getSpacingClasses, styles } from "./sidebar-styles";
 export interface SidebarItemData {
   href: string;
   label: string;
-  icon?: LucideIcon | React.ReactNode;
+  icon?: LucideIcon;
 }
 
 export interface SidebarProps {

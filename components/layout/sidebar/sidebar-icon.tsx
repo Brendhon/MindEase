@@ -18,29 +18,20 @@ import { styles } from "./sidebar-styles";
  * ```
  */
 export interface SidebarIconProps {
-  icon?: LucideIcon | React.ReactNode;
+  icon?: LucideIcon;
 }
 
 export function SidebarIcon({ icon }: SidebarIconProps) {
   if (!icon) return null;
 
   // Check if it's a LucideIcon component
-  if (typeof icon === "function" || (icon as unknown as { render?: unknown })?.render) {
-    const IconComponent = icon as LucideIcon;
-    return (
-      <IconComponent
-        className={styles.icon}
-        size={20}
-        aria-hidden="true"
-      />
-    );
-  }
-
-  // Otherwise, treat as ReactNode
+  const IconComponent = icon as LucideIcon;
   return (
-    <span className={styles.icon} aria-hidden="true">
-      {icon}
-    </span>
+    <IconComponent
+      className={styles.icon}
+      size={20}
+      aria-hidden="true"
+    />
   );
 }
 
