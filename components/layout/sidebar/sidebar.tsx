@@ -1,61 +1,115 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useMemo } from "react";
 import { PROTECTED_ROUTES } from "@/utils/routes";
+import { LayoutDashboard, CheckSquare, User, LucideIcon } from "lucide-react";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { cn } from "@/utils/ui/ui";
+import { styles, getSpacingClasses } from "./sidebar-styles";
+import { SidebarItem } from "./sidebar-item";
+import { SidebarIcon } from "./sidebar-icon";
+import { SidebarLabel } from "./sidebar-label";
 
 /**
  * Sidebar Component - MindEase
  * 
- * Navigation sidebar for authenticated layout.
+ * Navigation sidebar for authenticated layout with cognitive accessibility support.
  * 
- * Uses Next.js Link component with automatic prefetching for optimal performance.
- * Active state is determined by exact pathname matching.
+ * Features:
+ * - Responsive to user accessibility preferences (contrast, spacing, font size, animations)
+ * - Keyboard navigation support
+ * - ARIA labels and semantic HTML
+ * - Low visual stimulation design
+ * - Uses design tokens for consistent styling
+ * 
+ * Uses composition pattern - accepts Sidebar subcomponents:
+ * - Sidebar.Item for navigation items
+ * - Sidebar.Icon for icons
+ * - Sidebar.Label for text labels
+ * 
+ * @example
+ * ```tsx
+ * <Sidebar>
+ *   <Sidebar.Item href="/dashboard">
+ *     <Sidebar.Icon icon={LayoutDashboard} />
+ *     <Sidebar.Label>Dashboard</Sidebar.Label>
+ *   </Sidebar.Item>
+ * </Sidebar>
+ * ```
  * 
  * @see https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating
  */
-export interface SidebarProps {
-  items?: Array<{ href: string; label: string; icon?: React.ReactNode }>;
+export interface SidebarItemData {
+  href: string;
+  label: string;
+  icon?: LucideIcon | React.ReactNode;
 }
 
-const defaultItems = [
-  { href: PROTECTED_ROUTES.DASHBOARD, label: "Dashboard" },
-  { href: PROTECTED_ROUTES.TASKS, label: "Tasks" },
-  { href: PROTECTED_ROUTES.PROFILE, label: "Profile" },
+export interface SidebarProps {
+  items?: SidebarItemData[];
+}
+
+const defaultItems: SidebarItemData[] = [
+  { href: PROTECTED_ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
+  { href: PROTECTED_ROUTES.TASKS, label: "Tasks", icon: CheckSquare },
+  { href: PROTECTED_ROUTES.PROFILE, label: "Profile", icon: User },
 ];
 
-export function Sidebar({ items = defaultItems }: SidebarProps) {
-  const pathname = usePathname();
+function SidebarRoot({ items = defaultItems }: SidebarProps) {
+  // Use hook in read-only mode to observe accessibility settings
+  const { settings } = useCognitiveSettings(undefined, {
+    readOnly: true,
+    autoApply: false,
+  });
+
+  // Memoize computed classes to avoid recalculation on every render
+  const spacingClasses = useMemo(
+    () => getSpacingClasses(settings.spacing),
+    [settings.spacing]
+  );
+
+  // Extract gap class from spacing for nav element
+  const navGapClass = useMemo(
+    () => spacingClasses.split(" ")[0],
+    [spacingClasses]
+  );
 
   return (
-    <aside className="w-64 bg-surface-primary border-r border-border-subtle p-4" data-testid="sidebar-container">
-      <nav className="flex flex-col gap-2" aria-label="Main navigation" data-testid="sidebar-nav">
-        {items.map((item) => {
-          // Check if current pathname matches the item href (exact match)
-          const isActive = pathname === item.href;
-
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              // Prefetch is enabled by default in Next.js Link
-              // This improves navigation performance by preloading route data
-              prefetch={true}
-              className={`px-4 py-2 rounded-md transition-colors duration-150 ${
-                isActive
-                  ? "bg-action-primary/10 text-action-primary font-medium"
-                  : "text-text-secondary hover:bg-surface-secondary hover:text-text-primary"
-              }`}
-              aria-current={isActive ? "page" : undefined}
-              data-testid={`sidebar-link-${item.label.toLowerCase()}`}
-            >
-              {item.icon && <span className="mr-2" aria-hidden="true">{item.icon}</span>}
-              {item.label}
-            </Link>
-          );
-        })}
+    <aside
+      className={cn(styles.aside, spacingClasses)}
+      data-testid="sidebar-container"
+      role="complementary"
+      aria-label="Navigation sidebar"
+    >
+      <nav
+        className={cn(styles.nav, navGapClass)}
+        aria-label="Main navigation"
+        data-testid="sidebar-nav"
+      >
+        {items.map((item) => (
+          <SidebarItem
+            key={item.href}
+            href={item.href}
+            label={item.label}
+            contrast={settings.contrast}
+            fontSize={settings.fontSize}
+            animations={settings.animations}
+            data-testid={`sidebar-link-${item.label.toLowerCase()}`}
+          >
+            {item.icon && <SidebarIcon icon={item.icon} />}
+            <SidebarLabel>{item.label}</SidebarLabel>
+          </SidebarItem>
+        ))}
       </nav>
     </aside>
   );
 }
 
+SidebarRoot.displayName = "Sidebar";
+
+// Compose Sidebar with subcomponents
+export const Sidebar = Object.assign(SidebarRoot, {
+  Item: SidebarItem,
+  Icon: SidebarIcon,
+  Label: SidebarLabel,
+});
