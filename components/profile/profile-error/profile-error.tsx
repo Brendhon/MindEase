@@ -1,0 +1,49 @@
+"use client";
+
+import { useMemo } from "react";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { cn } from "@/utils/ui";
+
+/**
+ * ProfileError Component - MindEase
+ * Error message display for profile page
+ */
+export interface ProfileErrorProps {
+  /** Error message to display */
+  message: string;
+  
+  /** Test ID for testing */
+  "data-testid"?: string;
+}
+
+export function ProfileError({ message, "data-testid": testId }: ProfileErrorProps) {
+  const { fontSizeClasses } = useCognitiveSettings();
+
+  // Generate error classes with fontSize preference
+  const errorClasses = useMemo(
+    () => cn(styles.error, fontSizeClasses.sm),
+    [fontSizeClasses.sm]
+  );
+
+  return (
+    <div
+      className={errorClasses}
+      role="alert"
+      data-testid={testId || "profile-error"}
+    >
+      {message}
+    </div>
+  );
+}
+
+ProfileError.displayName = "ProfileError";
+
+/**
+ * ProfileError Styles - MindEase
+ * Centralized styles for profile error component
+ */
+
+export const styles = {
+  error: "bg-action-danger/10 text-action-danger border border-action-danger rounded-lg p-4",
+} as const;
+
