@@ -32,6 +32,20 @@ const convertTimestamps = <T>(data: DocumentData): T => {
 };
 
 /**
+ * Remove undefined fields from an object
+ * Firestore does not accept undefined values
+ */
+const removeUndefinedFields = <T extends Record<string, any>>(data: T): Partial<T> => {
+  const cleaned: Partial<T> = {};
+  Object.keys(data).forEach((key) => {
+    if (data[key] !== undefined) {
+      cleaned[key as keyof T] = data[key];
+    }
+  });
+  return cleaned;
+};
+
+/**
  * Firestore Service interface
  */
 export interface FirestoreService {
@@ -125,7 +139,9 @@ export const firestoreService: FirestoreService = {
   ): Promise<T> => {
     try {
       const collectionRef = collection(db, collectionPath);
-      const docRef = await addDoc(collectionRef, data);
+      // Remove undefined fields before sending to Firestore
+      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      const docRef = await addDoc(collectionRef, cleanedData);
       
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {
@@ -153,7 +169,9 @@ export const firestoreService: FirestoreService = {
   ): Promise<T> => {
     try {
       const docRef = doc(db, collectionPath, id);
-      await updateDoc(docRef, data as DocumentData);
+      // Remove undefined fields before sending to Firestore
+      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      await updateDoc(docRef, cleanedData as DocumentData);
       
       const docSnap = await getDoc(docRef);
       if (!docSnap.exists()) {

@@ -89,7 +89,12 @@
     "profile_reset_button": "Restaurar Padrões",
     "profile_reset_button_aria": "Restaurar todas as configurações para os valores padrão",
     "profile_loading": "Carregando configurações...",
-    "profile_error": "Erro ao carregar configurações"
+    "profile_error": "Erro ao carregar configurações",
+    "tasks_description": "Organize suas tarefas de forma simples e acessível",
+    "tasks_column_todo": "A Fazer",
+    "tasks_column_done": "Concluídas",
+    "tasks_error": "Erro ao carregar tarefas",
+    "tasks_loading": "Carregando tarefas..."
   },
   "summary": {
     "welcome": "Bem-vindo",
@@ -181,7 +186,12 @@
     "profile_reset_button": "Restaurar",
     "profile_reset_button_aria": "Restaurar padrões",
     "profile_loading": "Carregando...",
-    "profile_error": "Erro"
+    "profile_error": "Erro",
+    "tasks_description": "Organize suas tarefas",
+    "tasks_column_todo": "A Fazer",
+    "tasks_column_done": "Concluídas",
+    "tasks_error": "Erro",
+    "tasks_loading": "Carregando..."
   }
 }
 

@@ -1,4 +1,5 @@
 import { Task } from "@/models/Task";
+import { useCallback } from "storybook/internal/preview-api";
 
 /**
  * Task Card Component - MindEase
@@ -12,13 +13,17 @@ export interface TaskCardProps {
 }
 
 export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
+  const handleToggle = () => {
+    console.log("Task toggled:", task);
+    onToggle?.(task.id);
+  };
   return (
     <div className="p-4 rounded-md border border-border-subtle bg-surface-primary" data-testid={`task-card-${task.id}`}>
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
           checked={task.completed}
-          onChange={() => onToggle?.(task.id)}
+          onChange={handleToggle}
           className="mt-1 h-4 w-4 rounded border-border-subtle text-action-primary focus:ring-2 focus:ring-action-primary"
           aria-label={`Mark task "${task.title}" as ${task.completed ? "incomplete" : "complete"}`}
           data-testid={`task-card-checkbox-${task.id}`}

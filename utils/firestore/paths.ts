@@ -32,17 +32,6 @@ export const getTaskDocumentPath = (userId: string, taskId: string): string => {
 };
 
 /**
- * Get tasks collection path (legacy function for backward compatibility)
- * @deprecated Use getTasksCollectionPath instead
- */
-export const getTasksPath = (taskId?: string): string => {
-  if (taskId) {
-    return `tasks/${taskId}`;
-  }
-  return "tasks";
-};
-
-/**
  * Get user preferences document path
  * @param userId - User ID
  * @returns Document path (e.g., "user-preferences/{userId}")
@@ -51,5 +40,5 @@ export const getUserPreferencesDocumentPath = (userId: string): string => {
   if (!userId || userId.trim() === "") {
     throw new Error("User ID is required");
   }
-  return `user-preferences/${userId}`;
+  return `users/${userId}`;
 };

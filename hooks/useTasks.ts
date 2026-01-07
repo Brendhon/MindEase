@@ -10,17 +10,20 @@ export function useTasks(initialTasks: Task[] = []) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addTask = useCallback((task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">) => {
+  const addTask = useCallback((task: Omit<Task, "userId" | "createdAt" | "updatedAt">) => {
     const newTask: Task = {
       ...task,
-      id: crypto.randomUUID(),
       userId: "", // This should be set by the caller or service
       createdAt: new Date(),
       updatedAt: new Date(),
     };
     setTasks((prev) => [...prev, newTask]);
     return newTask;
-  }, []);
+  }, []); 
+
+  const getTask = useCallback((id: string) => {
+    return tasks.find((task) => task.id === id);
+  }, [tasks]);
 
   const updateTask = useCallback((id: string, updates: Partial<Task>) => {
     setTasks((prev) =>
@@ -51,6 +54,7 @@ export function useTasks(initialTasks: Task[] = []) {
     loading,
     error,
     addTask,
+    getTask,
     updateTask,
     deleteTask,
     toggleTask,
