@@ -32,7 +32,7 @@ import { getSpacingClasses, styles } from "./sidebar-styles";
  * <Sidebar>
  *   <Sidebar.Item href="/dashboard">
  *     <Sidebar.Icon icon={LayoutDashboard} />
- *     <Sidebar.Label>Dashboard</Sidebar.Label>
+ *     <Sidebar.Label label={{ detailed: "Dashboard Overview", summary: "Dashboard" }} />
  *   </Sidebar.Item>
  * </Sidebar>
  * ```
@@ -41,7 +41,7 @@ import { getSpacingClasses, styles } from "./sidebar-styles";
  */
 export interface SidebarItemData {
   href: string;
-  label: string;
+  label: { detailed: string; summary: string };
   icon?: LucideIcon;
 }
 
@@ -50,9 +50,21 @@ export interface SidebarProps {
 }
 
 const defaultItems: SidebarItemData[] = [
-  { href: PROTECTED_ROUTES.DASHBOARD, label: "Dashboard", icon: LayoutDashboard },
-  { href: PROTECTED_ROUTES.TASKS, label: "Tasks", icon: CheckSquare },
-  { href: PROTECTED_ROUTES.PROFILE, label: "Profile", icon: User },
+  { 
+    href: PROTECTED_ROUTES.DASHBOARD, 
+    label: { detailed: "Dashboard Overview", summary: "Dashboard" }, 
+    icon: LayoutDashboard 
+  },
+  { 
+    href: PROTECTED_ROUTES.TASKS, 
+    label: { detailed: "Task Management", summary: "Tasks" }, 
+    icon: CheckSquare 
+  },
+  { 
+    href: PROTECTED_ROUTES.PROFILE, 
+    label: { detailed: "User Profile Settings", summary: "Profile" }, 
+    icon: User 
+  },
 ];
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
@@ -83,20 +95,25 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
         aria-label="Main navigation"
         data-testid="sidebar-nav"
       >
-        {items.map((item) => (
-          <SidebarItem
-            key={item.href}
-            href={item.href}
-            label={item.label}
-            contrast={settings.contrast}
-            fontSize={settings.fontSize}
-            animations={settings.animations}
-            data-testid={`sidebar-link-${item.label.toLowerCase()}`}
-          >
-            {item.icon && <SidebarIcon icon={item.icon} />}
-            <SidebarLabel>{item.label}</SidebarLabel>
-          </SidebarItem>
-        ))}
+        {items.map((item) => {
+          // Use detailed label for aria-label and testid
+          const labelString = item.label.detailed;
+          
+          return (
+            <SidebarItem
+              key={item.href}
+              href={item.href}
+              label={labelString}
+              contrast={settings.contrast}
+              fontSize={settings.fontSize}
+              animations={settings.animations}
+              data-testid={`sidebar-link-${labelString.toLowerCase().replace(/\s+/g, '-')}`}
+            >
+              {item.icon && <SidebarIcon icon={item.icon} />}
+              <SidebarLabel label={item.label} />
+            </SidebarItem>
+          );
+        })}
       </nav>
     </aside>
   );

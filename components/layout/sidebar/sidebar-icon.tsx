@@ -13,7 +13,7 @@ import { styles } from "./sidebar-styles";
  * ```tsx
  * <Sidebar.Item href="/dashboard">
  *   <Sidebar.Icon icon={LayoutDashboard} />
- *   <Sidebar.Label>Dashboard</Sidebar.Label>
+ *   <Sidebar.Label label={{ detailed: "Dashboard Overview", summary: "Dashboard" }} />
  * </Sidebar.Item>
  * ```
  */

@@ -6,7 +6,7 @@ import { UserPreferences } from "@/models/UserPreferences";
  */
 
 export const styles = {
-  aside: "w-64 bg-surface-primary border-r border-border-subtle",
+  aside: "bg-surface-primary border-r border-border-subtle",
   nav: "flex flex-col",
   link: "flex items-center px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-action-primary/50 focus:ring-offset-2 focus:ring-offset-surface-primary",
   icon: "mr-3 shrink-0",

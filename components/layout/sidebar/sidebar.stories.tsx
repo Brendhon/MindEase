@@ -45,9 +45,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     items: [
-      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { href: '/tasks', label: 'Tasks', icon: CheckSquare },
-      { href: '/profile', label: 'Profile', icon: User },
+      { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+      { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
+      { href: '/profile', label: { detailed: 'User Profile Settings', summary: 'Profile' }, icon: User },
     ],
   },
 };
@@ -56,9 +56,9 @@ export const Default: Story = {
 export const CustomItems: Story = {
   args: {
     items: [
-      { href: '/home', label: 'Home', icon: Home },
-      { href: '/calendar', label: 'Calendar', icon: Calendar },
-      { href: '/settings', label: 'Settings', icon: Settings },
+      { href: '/home', label: { detailed: 'Home Page', summary: 'Home' }, icon: Home },
+      { href: '/calendar', label: { detailed: 'Calendar View', summary: 'Calendar' }, icon: Calendar },
+      { href: '/settings', label: { detailed: 'Application Settings', summary: 'Settings' }, icon: Settings },
     ],
   },
 };
@@ -67,12 +67,12 @@ export const CustomItems: Story = {
 export const ManyItems: Story = {
   args: {
     items: [
-      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { href: '/tasks', label: 'Tasks', icon: CheckSquare },
-      { href: '/profile', label: 'Profile', icon: User },
-      { href: '/settings', label: 'Settings', icon: Settings },
-      { href: '/home', label: 'Home', icon: Home },
-      { href: '/calendar', label: 'Calendar', icon: Calendar },
+      { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+      { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
+      { href: '/profile', label: { detailed: 'User Profile Settings', summary: 'Profile' }, icon: User },
+      { href: '/settings', label: { detailed: 'Application Settings', summary: 'Settings' }, icon: Settings },
+      { href: '/home', label: { detailed: 'Home Page', summary: 'Home' }, icon: Home },
+      { href: '/calendar', label: { detailed: 'Calendar View', summary: 'Calendar' }, icon: Calendar },
     ],
   },
 };
@@ -81,7 +81,7 @@ export const ManyItems: Story = {
 export const SingleItem: Story = {
   args: {
     items: [
-      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+      { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
     ],
   },
 };
@@ -90,9 +90,9 @@ export const SingleItem: Story = {
 export const WithoutIcons: Story = {
   args: {
     items: [
-      { href: '/dashboard', label: 'Dashboard' },
-      { href: '/tasks', label: 'Tasks' },
-      { href: '/profile', label: 'Profile' },
+      { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' } },
+      { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' } },
+      { href: '/profile', label: { detailed: 'User Profile Settings', summary: 'Profile' } },
     ],
   },
 };
@@ -101,9 +101,9 @@ export const WithoutIcons: Story = {
 export const MixedItems: Story = {
   args: {
     items: [
-      { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-      { href: '/tasks', label: 'Tasks' }, // without icon
-      { href: '/profile', label: 'Profile', icon: User },
+      { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+      { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' } }, // without icon
+      { href: '/profile', label: { detailed: 'User Profile Settings', summary: 'Profile' }, icon: User },
     ],
   },
 };
@@ -127,8 +127,8 @@ export const AccessibilityShowcase: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
             ]}
           />
         </CognitiveSettingsProvider>
@@ -148,8 +148,8 @@ export const AccessibilityShowcase: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
             ]}
           />
         </CognitiveSettingsProvider>
@@ -169,8 +169,8 @@ export const AccessibilityShowcase: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
             ]}
           />
         </CognitiveSettingsProvider>
@@ -190,8 +190,8 @@ export const AccessibilityShowcase: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
             ]}
           />
         </CognitiveSettingsProvider>
@@ -211,8 +211,8 @@ export const AccessibilityShowcase: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
             ]}
           />
         </CognitiveSettingsProvider>
@@ -225,35 +225,9 @@ export const AccessibilityShowcase: Story = {
 };
 
 // Showcase text detail modes
-export const TextDetailModes: Story = {
+export const TextSummaryModes: Story = {
   render: () => (
-    <div className="flex gap-4 flex-col">
-      <div>
-        <h3 className="mb-2 text-sm font-medium text-text-secondary">Detailed Mode (Default)</h3>
-        <p className="mb-2 text-xs text-text-muted">
-          Shows full labels and descriptions. In detailed mode, developers can use longer, more descriptive labels.
-        </p>
-        <CognitiveSettingsProvider
-          isolated={true}
-          initialSettings={{
-            contrast: 'normal',
-            spacing: 'normal',
-            fontSize: 'normal',
-            animations: true,
-            focusMode: false,
-            textDetail: 'detailed',
-          }}
-        >
-          <Sidebar
-            items={[
-              { href: '/dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Task Management', icon: CheckSquare },
-              { href: '/profile', label: 'User Profile Settings', icon: User },
-            ]}
-          />
-        </CognitiveSettingsProvider>
-      </div>
-      <div>
+    <>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Summary Mode</h3>
         <p className="mb-2 text-xs text-text-muted">
           Shows shortened labels for reduced cognitive load. In summary mode, developers would use the useTextDetail hook to render shorter labels.
@@ -271,14 +245,13 @@ export const TextDetailModes: Story = {
         >
           <Sidebar
             items={[
-              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
-              { href: '/profile', label: 'Profile', icon: User },
+              { href: '/dashboard', label: { detailed: 'Dashboard Overview', summary: 'Dashboard' }, icon: LayoutDashboard },
+              { href: '/tasks', label: { detailed: 'Task Management', summary: 'Tasks' }, icon: CheckSquare },
+              { href: '/profile', label: { detailed: 'User Profile Settings', summary: 'Profile' }, icon: User },
             ]}
           />
         </CognitiveSettingsProvider>
-      </div>
-    </div>
+      </>
   ),
   parameters: {
     layout: 'fullscreen',
