@@ -1,11 +1,13 @@
 "use client";
 
-import { ButtonHTMLAttributes, ReactNode, forwardRef } from "react";
-import { Button as HeadlessButton } from "@headlessui/react";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
+import { Button as HeadlessButton } from "@headlessui/react";
+import { ButtonHTMLAttributes, ReactNode, forwardRef, useMemo } from "react";
 import { ButtonIcon } from "./button-icon";
-import { ButtonText } from "./button-text";
 import { ButtonLoading } from "./button-loading";
+import { getContrastClasses, getSizeClasses, styles } from "./button-styles";
+import { ButtonText } from "./button-text";
 
 /**
  * Button Component - MindEase
@@ -58,6 +60,38 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isDisabled = disabled || isLoading;
+    
+    // Use cognitive settings hook for automatic accessibility class generation
+    // These classes automatically update when user preferences change
+    const { 
+      settings, 
+      fontSizeClasses, // Recalculates when settings.fontSize changes
+      animationClasses, // Recalculates when settings.animations changes
+      spacingClasses, // Recalculates when settings.spacing changes
+    } = useCognitiveSettings();
+
+    // Generate size classes (height, padding, gap)
+    const sizeClasses = useMemo(
+      () => getSizeClasses(size),
+      [size]
+    );
+
+    // Generate contrast classes with button-specific logic (variant-based borders)
+    const contrastClasses = useMemo(
+      () => getContrastClasses(settings.contrast, variant),
+      [settings.contrast, variant]
+    );
+
+    // Get fontSize class based on size prop and user preference
+    // Map button size to fontSize context: sm -> sm, md -> base, lg -> lg
+    const fontSizeClass = useMemo(() => {
+      const sizeToFontContext: Record<typeof size, "sm" | "base" | "lg"> = {
+        sm: "sm",
+        md: "base",
+        lg: "lg",
+      };
+      return fontSizeClasses[sizeToFontContext[size]];
+    }, [fontSizeClasses, size]);
 
     return (
       <HeadlessButton
@@ -66,7 +100,11 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(
           styles.base,
           styles.variants[variant],
-          styles.sizes[size],
+          sizeClasses,
+          fontSizeClass, // Dynamically updates based on settings.fontSize
+          spacingClasses.gap, // Dynamically updates based on settings.spacing (internal spacing between icon/text)
+          animationClasses, // Dynamically updates based on settings.animations
+          contrastClasses,
           isDisabled && styles.disabled,
           className
         )}
@@ -93,20 +131,3 @@ export const Button = Object.assign(ButtonRoot, {
   Text: ButtonText,
   Loading: ButtonLoading,
 });
-
-const styles = {
-  base: "inline-flex items-center justify-center gap-2 font-medium rounded-md transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
-  variants: {
-    primary: "bg-action-primary text-text-inverse hover:opacity-90 focus:ring-action-primary active:opacity-80",
-    secondary: "bg-surface-secondary text-text-primary hover:bg-surface-tertiary focus:ring-action-primary active:bg-surface-tertiary",
-    ghost: "bg-transparent text-text-primary hover:bg-surface-secondary focus:ring-action-primary active:bg-surface-secondary",
-    danger: "bg-action-danger text-text-inverse hover:opacity-90 focus:ring-action-danger active:opacity-80",
-    warning: "bg-action-warning text-text-inverse hover:opacity-90 focus:ring-action-warning active:opacity-80",
-  } as const,
-  sizes: {
-    sm: "h-8 px-3 text-sm gap-1.5",
-    md: "h-10 px-4 text-base gap-2",
-    lg: "h-12 px-6 text-lg gap-2.5",
-  } as const,
-  disabled: "opacity-50 cursor-not-allowed pointer-events-none",
-} as const;

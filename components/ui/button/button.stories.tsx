@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { fn } from 'storybook/test';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { SessionProvider } from 'next-auth/react';
 import { Button } from './index';
 import { LogIn, Save, Trash2, Download, Upload, Settings } from 'lucide-react';
 
@@ -10,6 +12,15 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <Story />
+        </CognitiveSettingsProvider>
+      </SessionProvider>
+    ),
+  ],
   argTypes: {
     variant: {
       control: 'select',
@@ -296,5 +307,234 @@ export const AllVariants: Story = {
       </div>
     </div>
   ),
+};
+
+// Showcase different accessibility settings
+export const AccessibilityShowcase: Story = {
+  render: () => (
+    <div className="flex gap-6 flex-col p-6">
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Icon icon={Save} position="left" />
+              <Button.Text>Save Changes</Button.Text>
+            </Button>
+            <Button variant="secondary" size="md">
+              <Button.Text>Cancel</Button.Text>
+            </Button>
+            <Button variant="ghost" size="md">
+              <Button.Text>More Options</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Icon icon={Save} position="left" />
+              <Button.Text>Save Changes</Button.Text>
+            </Button>
+            <Button variant="secondary" size="md">
+              <Button.Text>Cancel</Button.Text>
+            </Button>
+            <Button variant="danger" size="md">
+              <Button.Icon icon={Trash2} position="left" />
+              <Button.Text>Delete</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'compact',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Icon icon={LogIn} position="left" />
+              <Button.Text>Sign In</Button.Text>
+            </Button>
+            <Button variant="secondary" size="md">
+              <Button.Text>Sign Up</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'relaxed',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Icon icon={Upload} position="left" />
+              <Button.Text>Upload File</Button.Text>
+            </Button>
+            <Button variant="secondary" size="md">
+              <Button.Text>Cancel</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'small',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Text>Small Font</Button.Text>
+            </Button>
+            <Button variant="primary" size="sm">
+              <Button.Text>Small Size</Button.Text>
+            </Button>
+            <Button variant="primary" size="lg">
+              <Button.Text>Large Size</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'large',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Text>Large Font</Button.Text>
+            </Button>
+            <Button variant="primary" size="sm">
+              <Button.Text>Small Size</Button.Text>
+            </Button>
+            <Button variant="primary" size="lg">
+              <Button.Text>Large Size</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: false,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Icon icon={Save} position="left" />
+              <Button.Text>Save</Button.Text>
+            </Button>
+            <Button variant="primary" size="md" isLoading>
+              <Button.Text>Loading</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">All Variants with High Contrast</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <div className="flex flex-wrap gap-3 items-center">
+            <Button variant="primary" size="md">
+              <Button.Text>Primary</Button.Text>
+            </Button>
+            <Button variant="secondary" size="md">
+              <Button.Text>Secondary</Button.Text>
+            </Button>
+            <Button variant="ghost" size="md">
+              <Button.Text>Ghost</Button.Text>
+            </Button>
+            <Button variant="danger" size="md">
+              <Button.Text>Danger</Button.Text>
+            </Button>
+            <Button variant="warning" size="md">
+              <Button.Text>Warning</Button.Text>
+            </Button>
+          </div>
+        </CognitiveSettingsProvider>
+      </div>
+    </div>
+  ),
+  parameters: {
+    layout: 'padded',
+  },
 };
 
