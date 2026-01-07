@@ -82,6 +82,7 @@ export function CognitiveSettingsProvider({
       fontSize: settings.fontSize,
       animations: settings.animations,
       focusMode: settings.focusMode,
+      textDetail: settings.textDetail,
     });
   }, [settings, isolated]);
 

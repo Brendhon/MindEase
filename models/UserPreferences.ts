@@ -8,5 +8,6 @@ export interface UserPreferences {
   fontSize: "normal" | "small" | "large";
   animations: boolean;
   focusMode: boolean;
+  textDetail: "detailed" | "summary";
 }
 

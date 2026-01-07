@@ -14,6 +14,7 @@ export const DEFAULT_ACCESSIBILITY_SETTINGS: UserPreferences = {
   fontSize: "normal",
   animations: true,
   focusMode: false,
+  textDetail: "detailed",
 };
 
 /**
@@ -30,6 +31,7 @@ export function applyAccessibilitySettings(settings: {
   fontSize?: UserPreferences["fontSize"];
   animations?: boolean;
   focusMode?: boolean;
+  textDetail?: UserPreferences["textDetail"];
 }) {
   if (typeof window === "undefined") {
     return;
@@ -59,6 +61,11 @@ export function applyAccessibilitySettings(settings: {
     } else {
       root.setAttribute("data-reduce-motion", "true");
     }
+  }
+
+  // Apply text detail setting
+  if (settings.textDetail !== undefined) {
+    root.setAttribute("data-text-detail", settings.textDetail);
   }
 
   // Apply focus mode setting (on body, not root)
@@ -92,6 +99,7 @@ export function readAccessibilitySettingsFromDOM(): UserPreferences {
     fontSize: (root.getAttribute("data-font-size") as UserPreferences["fontSize"]) || DEFAULT_ACCESSIBILITY_SETTINGS.fontSize,
     animations: !root.hasAttribute("data-reduce-motion"),
     focusMode: document.body.hasAttribute("data-focus-mode"),
+    textDetail: (root.getAttribute("data-text-detail") as UserPreferences["textDetail"]) || DEFAULT_ACCESSIBILITY_SETTINGS.textDetail,
   };
 }
 
@@ -104,7 +112,7 @@ export function readAccessibilitySettingsFromDOM(): UserPreferences {
  */
 export function getAccessibilityObserverConfig() {
   return {
-    rootAttributes: ["data-contrast", "data-spacing", "data-font-size", "data-reduce-motion"] as const,
+    rootAttributes: ["data-contrast", "data-spacing", "data-font-size", "data-reduce-motion", "data-text-detail"] as const,
     bodyAttributes: ["data-focus-mode"] as const,
   };
 }

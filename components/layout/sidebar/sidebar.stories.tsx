@@ -122,6 +122,7 @@ export const AccessibilityShowcase: Story = {
             fontSize: 'normal',
             animations: true,
             focusMode: false,
+            textDetail: 'detailed',
           }}
         >
           <Sidebar
@@ -142,6 +143,7 @@ export const AccessibilityShowcase: Story = {
             fontSize: 'normal',
             animations: true,
             focusMode: false,
+            textDetail: 'detailed',
           }}
         >
           <Sidebar
@@ -162,6 +164,7 @@ export const AccessibilityShowcase: Story = {
             fontSize: 'normal',
             animations: true,
             focusMode: false,
+            textDetail: 'detailed',
           }}
         >
           <Sidebar
@@ -182,6 +185,7 @@ export const AccessibilityShowcase: Story = {
             fontSize: 'normal',
             animations: true,
             focusMode: false,
+            textDetail: 'detailed',
           }}
         >
           <Sidebar
@@ -202,12 +206,74 @@ export const AccessibilityShowcase: Story = {
             fontSize: 'large',
             animations: true,
             focusMode: false,
+            textDetail: 'detailed',
           }}
         >
           <Sidebar
             items={[
               { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
               { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+            ]}
+          />
+        </CognitiveSettingsProvider>
+      </div>
+    </div>
+  ),
+  parameters: {
+    layout: 'fullscreen',
+  },
+};
+
+// Showcase text detail modes
+export const TextDetailModes: Story = {
+  render: () => (
+    <div className="flex gap-4 flex-col">
+      <div>
+        <h3 className="mb-2 text-sm font-medium text-text-secondary">Detailed Mode (Default)</h3>
+        <p className="mb-2 text-xs text-text-muted">
+          Shows full labels and descriptions. In detailed mode, developers can use longer, more descriptive labels.
+        </p>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Sidebar
+            items={[
+              { href: '/dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
+              { href: '/tasks', label: 'Task Management', icon: CheckSquare },
+              { href: '/profile', label: 'User Profile Settings', icon: User },
+            ]}
+          />
+        </CognitiveSettingsProvider>
+      </div>
+      <div>
+        <h3 className="mb-2 text-sm font-medium text-text-secondary">Summary Mode</h3>
+        <p className="mb-2 text-xs text-text-muted">
+          Shows shortened labels for reduced cognitive load. In summary mode, developers would use the useTextDetail hook to render shorter labels.
+        </p>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'summary',
+          }}
+        >
+          <Sidebar
+            items={[
+              { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+              { href: '/tasks', label: 'Tasks', icon: CheckSquare },
+              { href: '/profile', label: 'Profile', icon: User },
             ]}
           />
         </CognitiveSettingsProvider>

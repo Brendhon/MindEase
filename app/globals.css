@@ -353,3 +353,46 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ========================================
+   TEXT DETAIL MODES
+   ======================================== */
+/* Default: show detailed content, hide summary (when no mode is set or mode is "detailed") */
+[data-text-detail="detailed"],
+html:not([data-text-detail]) [data-text-detail="detailed"] {
+  display: block;
+}
+
+/* For inline contexts (like buttons, spans), use inline-block */
+span[data-text-detail="detailed"],
+button[data-text-detail="detailed"],
+a[data-text-detail="detailed"],
+html:not([data-text-detail]) span[data-text-detail="detailed"],
+html:not([data-text-detail]) button[data-text-detail="detailed"],
+html:not([data-text-detail]) a[data-text-detail="detailed"] {
+  display: inline-block;
+}
+
+/* Hide summary by default (when no data-text-detail is set or mode is "detailed") */
+[data-text-detail="summary"],
+html:not([data-text-detail]) [data-text-detail="summary"],
+html[data-text-detail="detailed"] [data-text-detail="summary"] {
+  display: none;
+}
+
+/* When html has data-text-detail="summary", hide all detailed elements */
+html[data-text-detail="summary"] [data-text-detail="detailed"] {
+  display: none !important;
+}
+
+/* When html has data-text-detail="summary", show all summary elements */
+html[data-text-detail="summary"] [data-text-detail="summary"] {
+  display: block !important;
+}
+
+/* For inline contexts in summary mode */
+html[data-text-detail="summary"] span[data-text-detail="summary"],
+html[data-text-detail="summary"] button[data-text-detail="summary"],
+html[data-text-detail="summary"] a[data-text-detail="summary"] {
+  display: inline-block !important;
+}
