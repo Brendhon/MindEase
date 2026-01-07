@@ -1,57 +1,38 @@
 "use client";
 
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { UserPreferences } from "@/models/UserPreferences";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
-import { useMemo } from "react";
 
 /**
  * Toast.Message - Message subcomponent
  * Displays the toast message with accessibility-aware font sizing
+ * Uses messageKey to get text from accessibility-texts.json based on user's textDetail preference
  * 
  * @example
  * ```tsx
  * <Toast type="success">
  *   <Toast.Icon />
- *   <Toast.Message>Success message</Toast.Message>
+ *   <Toast.Message messageKey="toast_success_task_created" />
  * </Toast>
  * ```
  */
 export interface ToastMessageProps {
-  children: string;
+  messageKey: AccessibilityTextKey;
   className?: string;
   "data-testid"?: string;
 }
 
-/**
- * Get font size classes based on user preference
- */
-function getToastFontSizeClasses(fontSize: UserPreferences["fontSize"]): string {
-  switch (fontSize) {
-    case "small":
-      return "text-xs";
-    case "large":
-      return "text-base";
-    default:
-      return "text-sm";
-  }
-}
-
-export function ToastMessage({ children, className, "data-testid": testId }: ToastMessageProps) {
-  const { settings } = useCognitiveSettings();
-
-  const fontSizeClasses = useMemo(
-    () => getToastFontSizeClasses(settings.fontSize),
-    [settings.fontSize]
-  );
+export function ToastMessage({ messageKey, className, "data-testid": testId }: ToastMessageProps) {
+  const { fontSizeClasses, textDetail } = useCognitiveSettings();
 
   return (
     <div className={styles.content}>
       <p
-        className={cn(styles.message, fontSizeClasses, className)}
+        className={cn(styles.message, fontSizeClasses.sm, className)}
         data-testid={testId}
       >
-        {children}
+        {textDetail.getText(messageKey)}
       </p>
     </div>
   );

@@ -4,6 +4,7 @@ import { useFeedbackContext } from "@/contexts/feedback-context";
 import type { FeedbackType } from "@/hooks/useFeedback";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { UserPreferences } from "@/models/UserPreferences";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
 import { Fragment, useEffect, useMemo } from "react";
@@ -14,24 +15,16 @@ import { ToastDismiss } from "./toast-dismiss";
 interface ToastProps {
   id: string;
   type: FeedbackType;
-  message: string;
+  messageKey: AccessibilityTextKey;
   duration: number;
 }
 
 /**
- * Get spacing classes based on user preference
+ * Get spacing classes for toast (padding + gap)
  */
-function getToastSpacingClasses(spacing: UserPreferences["spacing"]): string {
-  switch (spacing) {
-    case "compact":
-      return "gap-2 p-3";
-    case "relaxed":
-      return "gap-4 p-6";
-    default:
-      return "gap-3 p-4";
-  }
+function getToastSpacingClasses(spacingValue: number): string {
+  return `gap-${spacingValue} p-${spacingValue}`;
 }
-
 
 /**
  * Get transition classes based on animation preference
@@ -115,32 +108,15 @@ function getDismissAriaLabel(type: FeedbackType): string {
 
 
 /**
- * Get container gap classes based on spacing preference
- */
-function getToastContainerGapClasses(spacing: UserPreferences["spacing"]): string {
-  switch (spacing) {
-    case "compact":
-      return "gap-2";
-    case "relaxed":
-      return "gap-4";
-    default:
-      return "gap-3";
-  }
-}
-
-/**
  * Toast container that renders all active toasts
  * Positioned in a non-intrusive location (top-right by default)
  * Respects cognitive accessibility settings for spacing
  */
 export function ToastContainer() {
   const { feedbacks } = useFeedbackContext();
-  const { settings } = useCognitiveSettings();
+  const { spacingClasses } = useCognitiveSettings();
 
-  const containerGapClasses = useMemo(
-    () => getToastContainerGapClasses(settings.spacing),
-    [settings.spacing]
-  );
+  const containerGapClasses = spacingClasses.gap;
 
   // Styles defined as constants
   if (feedbacks.length === 0) {
@@ -161,7 +137,7 @@ export function ToastContainer() {
           <ToastRoot
             id={feedback.id}
             type={feedback.type}
-            message={feedback.message}
+            messageKey={feedback.messageKey}
             duration={feedback.duration ?? 5000}
           />
         </div>
@@ -171,14 +147,14 @@ export function ToastContainer() {
 }
 
 // Internal Toast component (used by ToastContainer)
-function ToastRoot({ id, type, message, duration }: ToastProps) {
+function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
   const { removeFeedback } = useFeedbackContext();
-  const { settings } = useCognitiveSettings();
+  const { settings, spacingValue } = useCognitiveSettings();
 
   // Memoize computed classes based on accessibility settings
   const spacingClasses = useMemo(
-    () => getToastSpacingClasses(settings.spacing),
-    [settings.spacing]
+    () => getToastSpacingClasses(spacingValue),
+    [spacingValue]
   );
 
   const transitionClasses = useMemo(
@@ -248,9 +224,10 @@ function ToastRoot({ id, type, message, duration }: ToastProps) {
         data-testid={`toast-${type}-${id}`}
       >
         <ToastIcon type={type} data-testid={`toast-icon-${type}`} />
-        <ToastMessage data-testid={`toast-message-${id}`}>
-          {message}
-        </ToastMessage>
+        <ToastMessage 
+          messageKey={messageKey}
+          data-testid={`toast-message-${id}`}
+        />
         <ToastDismiss
           onDismiss={handleDismiss}
           ariaLabel={getDismissAriaLabel(type)}

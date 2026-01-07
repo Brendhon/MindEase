@@ -252,95 +252,13 @@ body {
 }
 
 /**
- * Accessibility Settings - Cognitive Preferences
- * These styles respond to data-* attributes set by applyAccessibilitySettings()
+ * Accessibility Settings - System Preferences
+ * Respects user's system-level accessibility preferences
+ * 
+ * NOTE: Cognitive accessibility settings (contrast, spacing, fontSize, etc.)
+ * are now applied via Tailwind classes in React components.
+ * See: @/utils/accessibility/tailwind-classes.ts
  */
-
-/* ========================================
-   CONTRAST MODES
-   ======================================== */
-[data-contrast="high"] {
-  /* High contrast adjustments */
-  --color-text-primary: #000000;
-  --color-text-secondary: #1a1a1a;
-  --color-border-subtle: #000000;
-  --color-border-strong: #000000;
-  --color-action-primary: #0056b3;
-  
-  /* High contrast feedback colors - more saturated and vibrant */
-  --color-feedback-success: #15803d;  /* Darker, more saturated green */
-  --color-feedback-warning: #c2410c;  /* Darker, more saturated orange */
-  --color-feedback-error: #b91c1c;   /* Darker, more saturated red */
-  --color-feedback-info: #0369a1;     /* Darker, more saturated blue */
-}
-
-[data-contrast="low"] {
-  /* Low contrast adjustments */
-  --color-text-primary: #4a5568;
-  --color-text-secondary: #718096;
-  --color-border-subtle: #e2e8f0;
-  --color-action-primary: #4299e1;
-}
-
-/* ========================================
-   SPACING MODES
-   ======================================== */
-[data-spacing="compact"] {
-  --space-1: 0.125rem;  /* 2px */
-  --space-2: 0.25rem;   /* 4px */
-  --space-3: 0.375rem;  /* 6px */
-  --space-4: 0.5rem;    /* 8px */
-  --space-6: 0.75rem;   /* 12px */
-  --space-8: 1rem;      /* 16px */
-  --space-12: 1.5rem;   /* 24px */
-  --space-16: 2rem;     /* 32px */
-}
-
-[data-spacing="relaxed"] {
-  --space-1: 0.375rem;  /* 6px */
-  --space-2: 0.75rem;    /* 12px */
-  --space-3: 1rem;       /* 16px */
-  --space-4: 1.5rem;     /* 24px */
-  --space-6: 2rem;       /* 32px */
-  --space-8: 2.5rem;     /* 40px */
-  --space-12: 4rem;      /* 64px */
-  --space-16: 5rem;      /* 80px */
-}
-
-/* ========================================
-   FONT SIZE MODES
-   ======================================== */
-[data-font-size="small"] {
-  --font-size-xs: 0.625rem;   /* 10px */
-  --font-size-sm: 0.75rem;     /* 12px */
-  --font-size-md: 0.875rem;   /* 14px */
-  --font-size-lg: 1rem;        /* 16px */
-  --font-size-xl: 1.125rem;    /* 18px */
-  --font-size-2xl: 1.25rem;    /* 20px */
-  --font-size-3xl: 1.5rem;     /* 24px */
-}
-
-[data-font-size="large"] {
-  --font-size-xs: 0.875rem;    /* 14px */
-  --font-size-sm: 1rem;        /* 16px */
-  --font-size-md: 1.125rem;    /* 18px */
-  --font-size-lg: 1.25rem;     /* 20px */
-  --font-size-xl: 1.5rem;      /* 24px */
-  --font-size-2xl: 1.875rem;   /* 30px */
-  --font-size-3xl: 2.25rem;    /* 36px */
-}
-
-/* ========================================
-   REDUCE MOTION
-   ======================================== */
-[data-reduce-motion="true"] *,
-[data-reduce-motion="true"] *::before,
-[data-reduce-motion="true"] *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
-}
 
 /* Respect user's system preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -352,47 +270,4 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-}
-
-/* ========================================
-   TEXT DETAIL MODES
-   ======================================== */
-/* Default: show detailed content, hide summary (when no mode is set or mode is "detailed") */
-[data-text-detail="detailed"],
-html:not([data-text-detail]) [data-text-detail="detailed"] {
-  display: block;
-}
-
-/* For inline contexts (like buttons, spans), use inline-block */
-span[data-text-detail="detailed"],
-button[data-text-detail="detailed"],
-a[data-text-detail="detailed"],
-html:not([data-text-detail]) span[data-text-detail="detailed"],
-html:not([data-text-detail]) button[data-text-detail="detailed"],
-html:not([data-text-detail]) a[data-text-detail="detailed"] {
-  display: inline-block;
-}
-
-/* Hide summary by default (when no data-text-detail is set or mode is "detailed") */
-[data-text-detail="summary"],
-html:not([data-text-detail]) [data-text-detail="summary"],
-html[data-text-detail="detailed"] [data-text-detail="summary"] {
-  display: none;
-}
-
-/* When html has data-text-detail="summary", hide all detailed elements */
-html[data-text-detail="summary"] [data-text-detail="detailed"] {
-  display: none !important;
-}
-
-/* When html has data-text-detail="summary", show all summary elements */
-html[data-text-detail="summary"] [data-text-detail="summary"] {
-  display: block !important;
-}
-
-/* For inline contexts in summary mode */
-html[data-text-detail="summary"] span[data-text-detail="summary"],
-html[data-text-detail="summary"] button[data-text-detail="summary"],
-html[data-text-detail="summary"] a[data-text-detail="summary"] {
-  display: inline-block !important;
 }

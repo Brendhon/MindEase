@@ -41,3 +41,15 @@ export const getTasksPath = (taskId?: string): string => {
   }
   return "tasks";
 };
+
+/**
+ * Get user preferences document path
+ * @param userId - User ID
+ * @returns Document path (e.g., "user-preferences/{userId}")
+ */
+export const getUserPreferencesDocumentPath = (userId: string): string => {
+  if (!userId || userId.trim() === "") {
+    throw new Error("User ID is required");
+  }
+  return `user-preferences/${userId}`;
+};

@@ -3,10 +3,12 @@ import { ToastContainer } from './toast';
 import { FeedbackProvider } from '@/providers/feedback-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
 import { useFeedbackContext } from '@/contexts/feedback-context';
+import { useCognitiveSettings } from '@/hooks/useCognitiveSettings';
 import { useEffect } from 'react';
 import type { FeedbackMessage } from '@/hooks/useFeedback';
 import { useFeedback } from '@/hooks/useFeedback';
 import { Button } from '@/components/ui/button';
+import { SessionProvider } from 'next-auth/react';
 
 const meta = {
   title: 'Components/Feedback/Toast',
@@ -17,13 +19,15 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <CognitiveSettingsProvider>
-        <FeedbackProvider>
-          <div className="min-h-screen p-8">
-            <Story />
-          </div>
-        </FeedbackProvider>
-      </CognitiveSettingsProvider>
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <FeedbackProvider>
+            <div className="min-h-screen p-8">
+              <Story />
+            </div>
+          </FeedbackProvider>
+        </CognitiveSettingsProvider>
+      </SessionProvider>
     ),
   ],
 } satisfies Meta<typeof ToastContainer>;
@@ -48,23 +52,25 @@ function ToastInitializer({ feedbacks }: { feedbacks: FeedbackMessage[] }) {
 
 /**
  * Component with buttons to trigger different toast types
+ * Uses accessibility text keys for button labels
  */
 function ToastTriggerButtons() {
   const { success, error, warning, info } = useFeedback();
+  const { textDetail } = useCognitiveSettings();
 
   return (
     <div className="flex gap-2 flex-wrap">
-      <Button variant="primary" size="sm" onClick={() => success('Operation completed successfully', 0)}>
-        <Button.Text>Success</Button.Text>
+      <Button variant="primary" size="sm" onClick={() => success('toast_success_operation_completed', 0)}>
+        <Button.Text>{textDetail.getText('button_success')}</Button.Text>
       </Button>
-      <Button variant="danger" size="sm" onClick={() => error('An error occurred', 0)}>
-        <Button.Text>Error</Button.Text>
+      <Button variant="danger" size="sm" onClick={() => error('toast_error_processing', 0)}>
+        <Button.Text>{textDetail.getText('button_error')}</Button.Text>
       </Button>
-      <Button variant="warning" size="sm" onClick={() => warning('Warning message', 0)}>
-        <Button.Text>Warning</Button.Text>
+      <Button variant="warning" size="sm" onClick={() => warning('toast_warning_cannot_undo', 0)}>
+        <Button.Text>{textDetail.getText('button_warning')}</Button.Text>
       </Button>
-      <Button variant="secondary" size="sm" onClick={() => info('Information message', 0)}>
-        <Button.Text>Info</Button.Text>
+      <Button variant="secondary" size="sm" onClick={() => info('toast_info_new_features', 0)}>
+        <Button.Text>{textDetail.getText('button_info')}</Button.Text>
       </Button>
     </div>
   );
@@ -83,7 +89,7 @@ export const Success: Story = {
         {
           id: '1',
           type: 'success',
-          message: 'Task created successfully',
+          messageKey: 'toast_success_task_created',
           duration: 0, // Don't auto-dismiss in stories
         },
       ]}
@@ -99,7 +105,7 @@ export const Error: Story = {
         {
           id: '1',
           type: 'error',
-          message: 'Failed to save changes. Please try again.',
+          messageKey: 'toast_error_save_failed',
           duration: 0,
         },
       ]}
@@ -115,7 +121,7 @@ export const Warning: Story = {
         {
           id: '1',
           type: 'warning',
-          message: 'Your session will expire in 5 minutes',
+          messageKey: 'toast_warning_session_expiring',
           duration: 0,
         },
       ]}
@@ -131,7 +137,7 @@ export const Info: Story = {
         {
           id: '1',
           type: 'info',
-          message: 'New features are available. Check them out!',
+          messageKey: 'toast_info_new_features',
           duration: 0,
         },
       ]}
@@ -147,19 +153,19 @@ export const Multiple: Story = {
         {
           id: '1',
           type: 'success',
-          message: 'Profile updated successfully',
+          messageKey: 'toast_success_profile_updated',
           duration: 0,
         },
         {
           id: '2',
           type: 'info',
-          message: 'You have 3 new notifications',
+          messageKey: 'toast_info_new_notifications',
           duration: 0,
         },
         {
           id: '3',
           type: 'warning',
-          message: 'Please verify your email address',
+          messageKey: 'toast_warning_verify_email',
           duration: 0,
         },
       ]}
@@ -175,25 +181,25 @@ export const AllTypes: Story = {
         {
           id: '1',
           type: 'success',
-          message: 'Operation completed successfully',
+          messageKey: 'toast_success_operation_completed',
           duration: 0,
         },
         {
           id: '2',
           type: 'error',
-          message: 'An error occurred while processing your request',
+          messageKey: 'toast_error_processing',
           duration: 0,
         },
         {
           id: '3',
           type: 'warning',
-          message: 'This action cannot be undone',
+          messageKey: 'toast_warning_cannot_undo',
           duration: 0,
         },
         {
           id: '4',
           type: 'info',
-          message: 'Your changes have been saved automatically',
+          messageKey: 'toast_info_auto_saved',
           duration: 0,
         },
       ]}
@@ -209,8 +215,7 @@ export const LongMessage: Story = {
         {
           id: '1',
           type: 'info',
-          message:
-            'This is a very long message that demonstrates how the toast component handles extended text content. It should wrap properly and remain readable.',
+          messageKey: 'toast_info_long_message',
           duration: 0,
         },
       ]}
@@ -226,7 +231,7 @@ export const ShortMessage: Story = {
         {
           id: '1',
           type: 'success',
-          message: 'Done!',
+          messageKey: 'toast_success_done',
           duration: 0,
         },
       ]}
@@ -423,7 +428,7 @@ export const TextDetailModes: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Summary Mode</h3>
         <p className="mb-4 text-xs text-text-muted">
-          Shows concise messages for reduced cognitive load. In summary mode, developers would use the useTextDetail hook to render shorter messages. Click the buttons below to see summary toast messages.
+          Shows concise messages for reduced cognitive load. In summary mode, developers can use <code className="text-xs bg-gray-100 px-1 rounded">useCognitiveSettings().textDetail</code> to render shorter messages or access text content from the JSON system. Click the buttons below to see summary toast messages.
         </p>
         <CognitiveSettingsProvider
           isolated={true}

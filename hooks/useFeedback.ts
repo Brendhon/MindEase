@@ -2,6 +2,7 @@
 
 import { useFeedbackContext } from "@/contexts/feedback-context";
 import { generateRandomUUID } from "@/utils/uuid";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { useCallback } from "react";
 
 /**
@@ -11,11 +12,12 @@ export type FeedbackType = "success" | "error" | "warning" | "info";
 
 /**
  * Feedback message configuration
+ * Uses messageKey to reference text content from accessibility-texts.json
  */
 export interface FeedbackMessage {
   id: string;
   type: FeedbackType;
-  message: string;
+  messageKey: AccessibilityTextKey;
   duration?: number;
 }
 
@@ -27,6 +29,7 @@ export interface FeedbackMessage {
  * - Automatic cleanup
  * - Screen reader announcements
  * - Respects user motion preferences
+ * - Uses accessibility text keys for detailed/summary modes
  * - Simple API
  *
  * @example
@@ -35,7 +38,7 @@ export interface FeedbackMessage {
  *
  * showFeedback({
  *   type: "success",
- *   message: "Task created successfully"
+ *   messageKey: "toast_success_task_created"
  * });
  * ```
  */
@@ -45,13 +48,13 @@ export function useFeedback() {
   const showFeedback = useCallback(
     (options: {
       type: FeedbackType;
-      message: string;
+      messageKey: AccessibilityTextKey;
       duration?: number;
     }) => {
       context.addFeedback({
         id: generateRandomUUID(),
         type: options.type,
-        message: options.message,
+        messageKey: options.messageKey,
         duration: options.duration ?? 5000,
       });
     },
@@ -61,26 +64,26 @@ export function useFeedback() {
   return {
     showFeedback,
     success: useCallback(
-      (message: string, duration?: number) => {
-        showFeedback({ type: "success", message, duration });
+      (messageKey: AccessibilityTextKey, duration?: number) => {
+        showFeedback({ type: "success", messageKey, duration });
       },
       [showFeedback]
     ),
     error: useCallback(
-      (message: string, duration?: number) => {
-        showFeedback({ type: "error", message, duration });
+      (messageKey: AccessibilityTextKey, duration?: number) => {
+        showFeedback({ type: "error", messageKey, duration });
       },
       [showFeedback]
     ),
     warning: useCallback(
-      (message: string, duration?: number) => {
-        showFeedback({ type: "warning", message, duration });
+      (messageKey: AccessibilityTextKey, duration?: number) => {
+        showFeedback({ type: "warning", messageKey, duration });
       },
       [showFeedback]
     ),
     info: useCallback(
-      (message: string, duration?: number) => {
-        showFeedback({ type: "info", message, duration });
+      (messageKey: AccessibilityTextKey, duration?: number) => {
+        showFeedback({ type: "info", messageKey, duration });
       },
       [showFeedback]
     ),

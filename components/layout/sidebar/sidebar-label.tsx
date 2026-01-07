@@ -1,28 +1,29 @@
 "use client";
 
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 
 /**
  * Sidebar.Label - Label subcomponent
  * Renders text labels for sidebar navigation items
- * Supports detailed and summary modes based on user preferences
+ * Uses labelKey to get text from accessibility-texts.json based on user's textDetail preference
  * 
  * @example
  * ```tsx
  * <Sidebar.Item href="/dashboard">
  *   <Sidebar.Icon icon={LayoutDashboard} />
- *   <Sidebar.Label label={{ detailed: "Dashboard Overview", summary: "Dashboard" }} />
+ *   <Sidebar.Label labelKey="sidebar_dashboard" />
  * </Sidebar.Item>
  * ```
  */
 export interface SidebarLabelProps {
-  label: { detailed: string; summary: string };
+  labelKey: AccessibilityTextKey;
 }
 
-export function SidebarLabel({ label }: SidebarLabelProps) {
-  const { render } = useTextDetail();
+export function SidebarLabel({ labelKey }: SidebarLabelProps) {
+  const { textDetail } = useCognitiveSettings();
 
-  return <span>{render(label.detailed, label.summary)}</span>;
+  return <span>{textDetail.getText(labelKey)}</span>;
 }
 
 SidebarLabel.displayName = "Sidebar.Label";

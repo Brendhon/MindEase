@@ -15,6 +15,8 @@ interface CognitiveSettingsContextValue {
   ) => void;
   updateSettings: (newSettings: Partial<UserPreferences>) => void;
   resetSettings: () => void;
+  isLoading: boolean;
+  error: Error | null;
 }
 
 export const CognitiveSettingsContext = createContext<

@@ -1,14 +1,10 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 import { CognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
-import { UserPreferences } from "@/models/UserPreferences";
-import {
-  applyAccessibilitySettings,
-  readAccessibilitySettingsFromDOM,
-  getAccessibilityObserverConfig,
-  DEFAULT_ACCESSIBILITY_SETTINGS,
-} from "@/utils/accessibility/accessibility";
+import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPreferences";
+import { userPreferencesService } from "@/services/user-preferences";
 
 interface CognitiveSettingsProviderProps {
   children: React.ReactNode;
@@ -29,13 +25,13 @@ interface CognitiveSettingsProviderProps {
  * 
  * Features:
  * - Manages user preferences state globally
- * - Automatically applies settings to DOM when changed (unless isolated)
- * - Reads initial settings from DOM on mount (unless isolated)
- * - Watches for external DOM changes (for sync, unless isolated)
+ * - Automatically loads preferences from Firestore for authenticated users
+ * - Debounced auto-save to Firestore on changes
+ * - Isolated mode for Storybook/testing (no Firestore integration)
  * 
  * @example
  * ```tsx
- * // Normal usage - applies to global DOM
+ * // Normal usage - syncs with Firestore
  * <CognitiveSettingsProvider>
  *   <App />
  * </CognitiveSettingsProvider>
@@ -51,84 +47,72 @@ export function CognitiveSettingsProvider({
   initialSettings,
   isolated = false,
 }: CognitiveSettingsProviderProps) {
-  // Initialize state: use initialSettings if provided, otherwise read from DOM
-  const [settings, setSettings] = useState<UserPreferences>(() => {
-    if (initialSettings) {
-      return initialSettings;
-    }
+  const { data: session, status } = useSession();
+  const [settings, setSettings] = useState<UserPreferences>(
+    initialSettings || DEFAULT_ACCESSIBILITY_SETTINGS
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  
+  // Debounce timer ref for auto-save
+  const saveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialLoadRef = useRef(true);
 
-    // In isolated mode, don't read from DOM
-    if (isolated) {
-      return DEFAULT_ACCESSIBILITY_SETTINGS;
-    }
-
-    // In client-side, try to read from DOM
-    if (typeof window !== "undefined") {
-      return readAccessibilitySettingsFromDOM();
-    }
-
-    return DEFAULT_ACCESSIBILITY_SETTINGS;
-  });
-
-  // Apply settings to DOM whenever they change (skip if isolated)
+  // Load preferences from Firestore on mount (for authenticated users)
   useEffect(() => {
-    if (isolated || typeof window === "undefined") {
+    if (isolated || status !== "authenticated" || !session?.user?.id) {
+      isInitialLoadRef.current = false;
       return;
     }
 
-    applyAccessibilitySettings({
-      contrast: settings.contrast,
-      spacing: settings.spacing,
-      fontSize: settings.fontSize,
-      animations: settings.animations,
-      focusMode: settings.focusMode,
-      textDetail: settings.textDetail,
-    });
-  }, [settings, isolated]);
-
-  // Watch for external changes to DOM attributes (for sync with other sources)
-  // Skip if isolated mode
-  useEffect(() => {
-    if (isolated || typeof window === "undefined") {
-      return;
-    }
-
-    const updateFromDOM = () => {
-      const domSettings = readAccessibilitySettingsFromDOM();
-      setSettings((prev) => {
-        // Only update if something actually changed
-        const hasChanges = Object.keys(domSettings).some(
-          (key) => prev[key as keyof UserPreferences] !== domSettings[key as keyof UserPreferences]
-        );
-
-        return hasChanges ? domSettings : prev;
-      });
+    const loadPreferences = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const userPrefs = await userPreferencesService.getUserPreferences(session.user.id);
+        setSettings(userPrefs);
+      } catch (err) {
+        console.error("Error loading user preferences:", err);
+        setError(err instanceof Error ? err : new Error("Failed to load preferences"));
+        // Keep using default settings on error
+      } finally {
+        setIsLoading(false);
+        isInitialLoadRef.current = false;
+      }
     };
 
-    // Initial read (in case DOM was modified before this component mounted)
-    updateFromDOM();
+    loadPreferences();
+  }, [session?.user?.id, status, isolated]);
 
-    // Watch for changes
-    const observer = new MutationObserver(() => {
-      updateFromDOM();
-    });
+  // Debounced save to Firestore whenever settings change
+  useEffect(() => {
+    // Skip save on initial load or in isolated mode
+    if (isInitialLoadRef.current || isolated || status !== "authenticated" || !session?.user?.id) {
+      return;
+    }
 
-    const { rootAttributes, bodyAttributes } = getAccessibilityObserverConfig();
+    // Clear existing timer
+    if (saveTimerRef.current) {
+      clearTimeout(saveTimerRef.current);
+    }
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: [...rootAttributes],
-    });
-
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: [...bodyAttributes],
-    });
+    // Set new debounced save
+    saveTimerRef.current = setTimeout(async () => {
+      try {
+        setError(null);
+        await userPreferencesService.updateUserPreferences(session.user.id, settings);
+      } catch (err) {
+        console.error("Error saving user preferences:", err);
+        setError(err instanceof Error ? err : new Error("Failed to save preferences"));
+      }
+    }, 500); // 500ms debounce
 
     return () => {
-      observer.disconnect();
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+      }
     };
-  }, [isolated]);
+  }, [settings, session?.user?.id, status, isolated]);
 
   const updateSetting = useCallback(
     <K extends keyof UserPreferences>(
@@ -144,9 +128,19 @@ export function CognitiveSettingsProvider({
     setSettings((prev) => ({ ...prev, ...newSettings }));
   }, []);
 
-  const resetSettings = useCallback(() => {
+  const resetSettings = useCallback(async () => {
     setSettings(DEFAULT_ACCESSIBILITY_SETTINGS);
-  }, []);
+    
+    // Also reset in Firestore if authenticated and not isolated
+    if (!isolated && status === "authenticated" && session?.user?.id) {
+      try {
+        await userPreferencesService.resetUserPreferences(session.user.id);
+      } catch (err) {
+        console.error("Error resetting user preferences:", err);
+        setError(err instanceof Error ? err : new Error("Failed to reset preferences"));
+      }
+    }
+  }, [session?.user?.id, status, isolated]);
 
   return (
     <CognitiveSettingsContext.Provider
@@ -155,6 +149,8 @@ export function CognitiveSettingsProvider({
         updateSetting,
         updateSettings,
         resetSettings,
+        isLoading,
+        error,
       }}
     >
       {children}

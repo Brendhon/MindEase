@@ -30,7 +30,7 @@ export function ToastDismiss({
   className,
   "data-testid": testId,
 }: ToastDismissProps) {
-  const { settings } = useCognitiveSettings();
+  const { animationClasses } = useCognitiveSettings();
 
   return (
     <button
@@ -38,7 +38,7 @@ export function ToastDismiss({
       onClick={onDismiss}
       className={cn(
         styles.dismissButton,
-        !settings.animations && "transition-none",
+        animationClasses,
         className
       )}
       aria-label={ariaLabel}

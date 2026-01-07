@@ -3,6 +3,8 @@
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { PROTECTED_ROUTES } from "@/utils/routes";
 import { cn } from "@/utils/ui/ui";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { getAccessibilityText } from "@/utils/accessibility/content";
 import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
 import { useMemo } from "react";
 import { SidebarIcon } from "./sidebar-icon";
@@ -32,7 +34,7 @@ import { getSpacingClasses, styles } from "./sidebar-styles";
  * <Sidebar>
  *   <Sidebar.Item href="/dashboard">
  *     <Sidebar.Icon icon={LayoutDashboard} />
- *     <Sidebar.Label label={{ detailed: "Dashboard Overview", summary: "Dashboard" }} />
+ *     <Sidebar.Label labelKey="sidebar_dashboard" />
  *   </Sidebar.Item>
  * </Sidebar>
  * ```
@@ -41,7 +43,7 @@ import { getSpacingClasses, styles } from "./sidebar-styles";
  */
 export interface SidebarItemData {
   href: string;
-  label: { detailed: string; summary: string };
+  labelKey: AccessibilityTextKey;
   icon?: LucideIcon;
 }
 
@@ -52,40 +54,40 @@ export interface SidebarProps {
 const defaultItems: SidebarItemData[] = [
   { 
     href: PROTECTED_ROUTES.DASHBOARD, 
-    label: { detailed: "Dashboard Overview", summary: "Dashboard" }, 
+    labelKey: "sidebar_dashboard", 
     icon: LayoutDashboard 
   },
   { 
     href: PROTECTED_ROUTES.TASKS, 
-    label: { detailed: "Task Management", summary: "Tasks" }, 
+    labelKey: "sidebar_tasks", 
     icon: CheckSquare 
   },
   { 
     href: PROTECTED_ROUTES.PROFILE, 
-    label: { detailed: "User Profile Settings", summary: "Profile" }, 
+    labelKey: "sidebar_profile", 
     icon: User 
   },
 ];
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
   // Read cognitive accessibility settings
-  const { settings } = useCognitiveSettings();
-
-  // Memoize computed classes to avoid recalculation on every render
-  const spacingClasses = useMemo(
-    () => getSpacingClasses(settings.spacing),
-    [settings.spacing]
-  );
+  const { settings, spacingClasses: spacing } = useCognitiveSettings();
 
   // Extract gap class from spacing for nav element
   const navGapClass = useMemo(
-    () => spacingClasses.split(" ")[0],
-    [spacingClasses]
+    () => `gap-${spacing.gap.split('-')[1]}`,
+    [spacing.gap]
+  );
+
+  // Generate spacing classes for the aside (padding and gap)
+  const asideClasses = useMemo(
+    () => `${spacing.padding} ${spacing.gap}`,
+    [spacing.padding, spacing.gap]
   );
 
   return (
     <aside
-      className={cn(styles.aside, spacingClasses)}
+      className={cn(styles.aside, asideClasses)}
       data-testid="sidebar-container"
       role="complementary"
       aria-label="Navigation sidebar"
@@ -96,8 +98,8 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
         data-testid="sidebar-nav"
       >
         {items.map((item) => {
-          // Use detailed label for aria-label and testid
-          const labelString = item.label.detailed;
+          // Use detailed label for aria-label and testid (always use detailed mode for accessibility)
+          const labelString = getAccessibilityText(item.labelKey, "detailed");
           
           return (
             <SidebarItem
@@ -110,7 +112,7 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
               data-testid={`sidebar-link-${labelString.toLowerCase().replace(/\s+/g, '-')}`}
             >
               {item.icon && <SidebarIcon icon={item.icon} />}
-              <SidebarLabel label={item.label} />
+              <SidebarLabel labelKey={item.labelKey} />
             </SidebarItem>
           );
         })}
