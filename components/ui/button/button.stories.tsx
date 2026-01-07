@@ -6,7 +6,7 @@ import { Button } from './index';
 import { LogIn, Save, Trash2, Download, Upload, Settings } from 'lucide-react';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Components/UI/Button',
   component: Button,
   parameters: {
     layout: 'centered',

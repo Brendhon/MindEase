@@ -41,7 +41,7 @@ import { FormInput } from "./form-input";
  * ```
  */
 const meta = {
-  title: "Components/FormInput",
+  title: "Components/Form/FormInput",
   component: FormInput,
   parameters: {
     layout: "centered",

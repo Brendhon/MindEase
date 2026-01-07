@@ -8,7 +8,7 @@ import { Button } from '../button';
 import { AlertCircle, Info, CheckCircle2, XCircle } from 'lucide-react';
 
 const meta = {
-  title: 'Components/Dialog',
+  title: 'Components/UI/Dialog',
   component: Dialog,
   parameters: {
     layout: 'centered',

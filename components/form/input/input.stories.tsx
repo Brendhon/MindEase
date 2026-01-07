@@ -5,7 +5,7 @@ import { Input } from './index';
 import { useState } from 'react';
 
 const meta = {
-  title: 'Components/Input',
+  title: 'Components/Form/Input',
   component: Input,
   parameters: {
     layout: 'centered',
