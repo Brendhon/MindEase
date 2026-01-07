@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { SessionProvider } from 'next-auth/react';
 import { Input } from './index';
 import { useState } from 'react';
 
@@ -8,7 +10,15 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <Story />
+        </CognitiveSettingsProvider>
+      </SessionProvider>
+    ),
+  ],
   argTypes: {
     className: {
       control: 'text',
@@ -306,5 +316,185 @@ export const AllTypes: Story = {
       </Input>
     </div>
   ),
+};
+
+// Showcase different accessibility settings
+export const AccessibilityShowcase: Story = {
+  args: {
+    children: null,
+  },
+  render: () => (
+    <div className="flex gap-6 flex-col p-6 w-full max-w-2xl">
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="normal-input">Normal Input</Input.Label>
+            <Input.Field id="normal-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="high-contrast-input">High Contrast Input</Input.Label>
+            <Input.Field id="high-contrast-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'compact',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="compact-input">Compact Spacing</Input.Label>
+            <Input.Field id="compact-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'relaxed',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="relaxed-input">Relaxed Spacing</Input.Label>
+            <Input.Field id="relaxed-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'small',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="small-font-input">Small Font Input</Input.Label>
+            <Input.Field id="small-font-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'large',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="large-font-input">Large Font Input</Input.Label>
+            <Input.Field id="large-font-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: false,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="no-animations-input">No Animations</Input.Label>
+            <Input.Field id="no-animations-input" type="text" placeholder="Enter text" />
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <Input>
+            <Input.Label htmlFor="error-input">Email</Input.Label>
+            <Input.Field
+              id="error-input"
+              type="email"
+              placeholder="Enter email"
+              aria-invalid="true"
+              aria-describedby="error-input-error"
+            />
+            <Input.Error id="error-input-error">Please enter a valid email address</Input.Error>
+          </Input>
+        </CognitiveSettingsProvider>
+      </div>
+    </div>
+  ),
+  parameters: {
+    layout: 'padded',
+  },
 };
 

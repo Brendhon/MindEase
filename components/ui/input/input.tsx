@@ -1,11 +1,13 @@
 "use client";
 
-import { ReactNode, useId } from "react";
+import { ReactNode, useId, useMemo } from "react";
 import { Field as HeadlessField } from "@headlessui/react";
 import { cn } from "@/utils/ui";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { InputLabel } from "./input-label";
 import { InputField } from "./input-field";
 import { InputError } from "./input-error";
+import { styles } from "./input-styles";
 
 /**
  * Input Component - MindEase
@@ -44,8 +46,18 @@ export interface InputProps {
 }
 
 export function Input({ children, className }: InputProps) {
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Gap automatically updates when user preferences change
+  const { spacingClasses } = useCognitiveSettings();
+
+  // Generate container classes with spacing preference
+  const containerClasses = useMemo(
+    () => cn(styles.container, spacingClasses.gap), // Dynamically updates based on settings.spacing
+    [spacingClasses.gap]
+  );
+
   return (
-    <HeadlessField className={cn(styles.container, className)}>
+    <HeadlessField className={cn(containerClasses, className)}>
       {children}
     </HeadlessField>
   );
@@ -57,7 +69,3 @@ export const InputRoot = Object.assign(Input, {
   Field: InputField,
   Error: InputError,
 });
-
-const styles = {
-  container: "flex flex-col gap-2",
-} as const;

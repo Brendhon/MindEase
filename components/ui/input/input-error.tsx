@@ -1,7 +1,9 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { styles } from "./input-styles";
 
 /**
  * Input.Error - Error message subcomponent
@@ -23,10 +25,20 @@ export interface InputErrorProps {
 }
 
 export function InputError({ children, id, className }: InputErrorProps) {
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Font size automatically updates when user preferences change
+  const { fontSizeClasses } = useCognitiveSettings();
+
+  // Get fontSize class (use sm for error messages)
+  const fontSizeClass = useMemo(
+    () => fontSizeClasses.sm,
+    [fontSizeClasses.sm]
+  );
+
   return (
     <p
       id={id}
-      className={cn(styles.error, className)}
+      className={cn(styles.error, fontSizeClass, className)} // Dynamically updates based on settings.fontSize
       role="alert"
     >
       {children}
@@ -35,8 +47,4 @@ export function InputError({ children, id, className }: InputErrorProps) {
 }
 
 InputError.displayName = "Input.Error";
-
-const styles = {
-  error: "text-sm text-feedback-error",
-} as const;
 

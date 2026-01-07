@@ -1,7 +1,9 @@
 "use client";
 
-import { ReactNode, LabelHTMLAttributes } from "react";
+import { ReactNode, LabelHTMLAttributes, useMemo } from "react";
 import { cn } from "@/utils/ui";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { styles } from "./input-styles";
 
 /**
  * Input.Label - Label subcomponent
@@ -20,9 +22,19 @@ export interface InputLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
 }
 
 export function InputLabel({ children, className, ...props }: InputLabelProps) {
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Font size automatically updates when user preferences change
+  const { fontSizeClasses } = useCognitiveSettings();
+
+  // Get fontSize class (use sm for labels)
+  const fontSizeClass = useMemo(
+    () => fontSizeClasses.sm,
+    [fontSizeClasses.sm]
+  );
+
   return (
     <label
-      className={cn(styles.label, className)}
+      className={cn(styles.label, fontSizeClass, className)} // Dynamically updates based on settings.fontSize
       {...props}
     >
       {children}
@@ -31,8 +43,4 @@ export function InputLabel({ children, className, ...props }: InputLabelProps) {
 }
 
 InputLabel.displayName = "Input.Label";
-
-const styles = {
-  label: "text-sm font-medium text-text-primary",
-} as const;
 

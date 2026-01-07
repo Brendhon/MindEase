@@ -1,7 +1,9 @@
 "use client";
 
-import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef } from "react";
+import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useMemo } from "react";
 import { cn } from "@/utils/ui";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { styles, getContrastClasses } from "./input-styles";
 
 /**
  * Input.Field - Input field subcomponent
@@ -27,14 +29,43 @@ const InputFieldRoot = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputF
     const inputType = isTextarea ? undefined : type;
     const isDisabled = props.disabled;
 
+    // Use cognitive settings hook for automatic accessibility class generation
+    // These classes automatically update when user preferences change
+    const { 
+      settings, 
+      fontSizeClasses, // Recalculates when settings.fontSize changes
+      spacingClasses, // Recalculates when settings.spacing changes
+      animationClasses, // Recalculates when settings.animations changes
+    } = useCognitiveSettings();
+
+    // Generate contrast classes with input-specific logic
+    const contrastClasses = useMemo(
+      () => getContrastClasses(settings.contrast),
+      [settings.contrast]
+    );
+
+    // Get fontSize class (use base for inputs)
+    const fontSizeClass = fontSizeClasses.base;
+
+    // Get horizontal padding from spacing preference (convert p-X to px-X)
+    const paddingClass = useMemo(() => {
+      const paddingValue = spacingClasses.padding.replace('p-', '');
+      return `px-${paddingValue}`;
+    }, [spacingClasses.padding]);
+
     return (
       <Component
         ref={ref as any}
         type={inputType}
         className={cn(
-          styles.base,
-          isTextarea ? styles.textarea : styles.input,
-          isDisabled && styles.disabled,
+          styles.field.base,
+          isTextarea ? styles.field.textarea : styles.field.input,
+          fontSizeClass, // Dynamically updates based on settings.fontSize
+          paddingClass, // Dynamically updates based on settings.spacing (horizontal padding)
+          animationClasses, // Dynamically updates based on settings.animations
+          contrastClasses.base, // Contrast border
+          contrastClasses.focus, // High contrast focus styles
+          isDisabled && styles.field.disabled,
           className
         )}
         {...(props as InputHTMLAttributes<HTMLInputElement> & TextareaHTMLAttributes<HTMLTextAreaElement>)}
@@ -46,11 +77,4 @@ const InputFieldRoot = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputF
 InputFieldRoot.displayName = "Input.Field";
 
 export const InputField = InputFieldRoot;
-
-const styles = {
-  base: "px-4 rounded-md border border-border-subtle bg-surface-primary text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-2 focus:ring-action-primary focus:border-transparent transition-colors duration-150",
-  input: "h-10",
-  textarea: "min-h-24 py-2 resize-y",
-  disabled: "opacity-50 cursor-not-allowed pointer-events-none",
-} as const;
 
