@@ -3,7 +3,12 @@
 import { useState, useCallback, useEffect } from "react";
 import { CognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
 import { UserPreferences } from "@/models/UserPreferences";
-import { applyAccessibilitySettings } from "@/utils/accessibility/accessibility";
+import {
+  applyAccessibilitySettings,
+  readAccessibilitySettingsFromDOM,
+  getAccessibilityObserverConfig,
+  DEFAULT_ACCESSIBILITY_SETTINGS,
+} from "@/utils/accessibility/accessibility";
 
 interface CognitiveSettingsProviderProps {
   children: React.ReactNode;
@@ -15,33 +20,6 @@ interface CognitiveSettingsProviderProps {
    * @default false
    */
   isolated?: boolean;
-}
-
-const defaultSettings: UserPreferences = {
-  contrast: "normal",
-  spacing: "normal",
-  fontSize: "normal",
-  animations: true,
-  focusMode: false,
-};
-
-/**
- * Read current accessibility settings from DOM
- */
-function readSettingsFromDOM(): UserPreferences {
-  if (typeof window === "undefined") {
-    return defaultSettings;
-  }
-
-  const root = document.documentElement;
-
-  return {
-    contrast: (root.getAttribute("data-contrast") as UserPreferences["contrast"]) || "normal",
-    spacing: (root.getAttribute("data-spacing") as UserPreferences["spacing"]) || "normal",
-    fontSize: (root.getAttribute("data-font-size") as UserPreferences["fontSize"]) || "normal",
-    animations: !root.hasAttribute("data-reduce-motion"),
-    focusMode: document.body.hasAttribute("data-focus-mode"),
-  };
 }
 
 /**
@@ -81,15 +59,15 @@ export function CognitiveSettingsProvider({
 
     // In isolated mode, don't read from DOM
     if (isolated) {
-      return defaultSettings;
+      return DEFAULT_ACCESSIBILITY_SETTINGS;
     }
 
     // In client-side, try to read from DOM
     if (typeof window !== "undefined") {
-      return readSettingsFromDOM();
+      return readAccessibilitySettingsFromDOM();
     }
 
-    return defaultSettings;
+    return DEFAULT_ACCESSIBILITY_SETTINGS;
   });
 
   // Apply settings to DOM whenever they change (skip if isolated)
@@ -103,14 +81,8 @@ export function CognitiveSettingsProvider({
       spacing: settings.spacing,
       fontSize: settings.fontSize,
       animations: settings.animations,
+      focusMode: settings.focusMode,
     });
-
-    // Handle focus mode separately (applies to body, not root)
-    if (settings.focusMode) {
-      document.body.setAttribute("data-focus-mode", "true");
-    } else {
-      document.body.removeAttribute("data-focus-mode");
-    }
   }, [settings, isolated]);
 
   // Watch for external changes to DOM attributes (for sync with other sources)
@@ -121,7 +93,7 @@ export function CognitiveSettingsProvider({
     }
 
     const updateFromDOM = () => {
-      const domSettings = readSettingsFromDOM();
+      const domSettings = readAccessibilitySettingsFromDOM();
       setSettings((prev) => {
         // Only update if something actually changed
         const hasChanges = Object.keys(domSettings).some(
@@ -140,14 +112,16 @@ export function CognitiveSettingsProvider({
       updateFromDOM();
     });
 
+    const { rootAttributes, bodyAttributes } = getAccessibilityObserverConfig();
+
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-contrast", "data-spacing", "data-font-size", "data-reduce-motion"],
+      attributeFilter: [...rootAttributes],
     });
 
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ["data-focus-mode"],
+      attributeFilter: [...bodyAttributes],
     });
 
     return () => {
@@ -170,7 +144,7 @@ export function CognitiveSettingsProvider({
   }, []);
 
   const resetSettings = useCallback(() => {
-    setSettings(defaultSettings);
+    setSettings(DEFAULT_ACCESSIBILITY_SETTINGS);
   }, []);
 
   return (
