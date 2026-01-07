@@ -8,6 +8,13 @@ import { applyAccessibilitySettings } from "@/utils/accessibility/accessibility"
 interface CognitiveSettingsProviderProps {
   children: React.ReactNode;
   initialSettings?: UserPreferences;
+  /**
+   * When true, this provider will not apply settings to the global DOM.
+   * Useful for isolated scenarios like Storybook stories where multiple
+   * providers need to coexist without interfering with each other.
+   * @default false
+   */
+  isolated?: boolean;
 }
 
 const defaultSettings: UserPreferences = {
@@ -44,25 +51,37 @@ function readSettingsFromDOM(): UserPreferences {
  * 
  * Features:
  * - Manages user preferences state globally
- * - Automatically applies settings to DOM when changed
- * - Reads initial settings from DOM on mount
- * - Watches for external DOM changes (for sync)
+ * - Automatically applies settings to DOM when changed (unless isolated)
+ * - Reads initial settings from DOM on mount (unless isolated)
+ * - Watches for external DOM changes (for sync, unless isolated)
  * 
  * @example
  * ```tsx
+ * // Normal usage - applies to global DOM
  * <CognitiveSettingsProvider>
  *   <App />
+ * </CognitiveSettingsProvider>
+ * 
+ * // Isolated usage - for stories/tests with multiple providers
+ * <CognitiveSettingsProvider isolated={true} initialSettings={{ contrast: 'high' }}>
+ *   <Component />
  * </CognitiveSettingsProvider>
  * ```
  */
 export function CognitiveSettingsProvider({
   children,
   initialSettings,
+  isolated = false,
 }: CognitiveSettingsProviderProps) {
   // Initialize state: use initialSettings if provided, otherwise read from DOM
   const [settings, setSettings] = useState<UserPreferences>(() => {
     if (initialSettings) {
       return initialSettings;
+    }
+
+    // In isolated mode, don't read from DOM
+    if (isolated) {
+      return defaultSettings;
     }
 
     // In client-side, try to read from DOM
@@ -73,9 +92,9 @@ export function CognitiveSettingsProvider({
     return defaultSettings;
   });
 
-  // Apply settings to DOM whenever they change
+  // Apply settings to DOM whenever they change (skip if isolated)
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (isolated || typeof window === "undefined") {
       return;
     }
 
@@ -92,11 +111,12 @@ export function CognitiveSettingsProvider({
     } else {
       document.body.removeAttribute("data-focus-mode");
     }
-  }, [settings]);
+  }, [settings, isolated]);
 
   // Watch for external changes to DOM attributes (for sync with other sources)
+  // Skip if isolated mode
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (isolated || typeof window === "undefined") {
       return;
     }
 
@@ -133,7 +153,7 @@ export function CognitiveSettingsProvider({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [isolated]);
 
   const updateSetting = useCallback(
     <K extends keyof UserPreferences>(
