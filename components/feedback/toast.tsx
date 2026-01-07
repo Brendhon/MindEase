@@ -6,8 +6,10 @@ import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { UserPreferences } from "@/models/UserPreferences";
 import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from "lucide-react";
 import { Fragment, useEffect, useMemo } from "react";
+import { ToastIcon } from "./toast-icon";
+import { ToastMessage } from "./toast-message";
+import { ToastDismiss } from "./toast-dismiss";
 
 interface ToastProps {
   id: string;
@@ -30,19 +32,6 @@ function getToastSpacingClasses(spacing: UserPreferences["spacing"]): string {
   }
 }
 
-/**
- * Get font size classes based on user preference
- */
-function getToastFontSizeClasses(fontSize: UserPreferences["fontSize"]): string {
-  switch (fontSize) {
-    case "small":
-      return "text-xs";
-    case "large":
-      return "text-base";
-    default:
-      return "text-sm";
-  }
-}
 
 /**
  * Get transition classes based on animation preference
@@ -63,173 +52,67 @@ function getToastContrastClasses(
   const baseClasses = "shadow-medium";
   
   if (contrast === "high") {
-    // High contrast: add border for better visibility
-    return `${baseClasses} border-2 ${
+    // High contrast: thicker border, outline, and stronger shadow for better visibility
+    const borderColorClass =
       type === "error"
         ? "border-feedback-error"
         : type === "warning"
         ? "border-feedback-warning"
         : type === "success"
         ? "border-feedback-success"
-        : "border-feedback-info"
-    }`;
+        : "border-feedback-info";
+    
+    return `${baseClasses} border-4 ${borderColorClass} outline outline-2 outline-offset-2 outline-black/20 shadow-lg`;
   }
 
   return baseClasses;
 }
 
 /**
- * Accessible toast notification component
- *
- * Features:
- * - ARIA live regions for screen readers
- * - Keyboard navigation (ESC to dismiss)
- * - Respects cognitive accessibility settings (contrast, spacing, fontSize, animations)
- * - Semantic icons and colors
- * - Auto-dismiss with configurable duration
- * - Manual dismiss button
+ * Get background and text color classes based on toast type and contrast
  */
-function Toast({ id, type, message, duration }: ToastProps) {
-  const { removeFeedback } = useFeedbackContext();
-  const { settings } = useCognitiveSettings();
-
-  // Memoize computed classes based on accessibility settings
-  const spacingClasses = useMemo(
-    () => getToastSpacingClasses(settings.spacing),
-    [settings.spacing]
-  );
-
-  const fontSizeClasses = useMemo(
-    () => getToastFontSizeClasses(settings.fontSize),
-    [settings.fontSize]
-  );
-
-  const transitionClasses = useMemo(
-    () => getToastTransitionClasses(settings.animations),
-    [settings.animations]
-  );
-
-  const contrastClasses = useMemo(
-    () => getToastContrastClasses(settings.contrast, type),
-    [settings.contrast, type]
-  );
-
-  useEffect(() => {
-    if (duration > 0) {
-      const timer = setTimeout(() => removeFeedback(id), duration);
-      return () => clearTimeout(timer);
-    }
-  }, [id, duration]);
-
-  const handleDismiss = () => removeFeedback(id);
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") handleDismiss();
-  };
-
-  const iconConfig = {
+function getToastTypeClasses(
+  type: FeedbackType,
+  contrast: UserPreferences["contrast"]
+): { bgColor: string; textColor: string } {
+  // In high contrast mode, use more saturated colors (defined in globals.css)
+  // The colors are automatically applied via CSS variables
+  const typeConfig = {
     success: {
-      icon: CheckCircle2,
-      ariaLabel: "Success",
       bgColor: "bg-feedback-success",
       textColor: "text-white",
-      iconColor: "text-white",
     },
     error: {
-      icon: AlertCircle,
-      ariaLabel: "Error",
       bgColor: "bg-feedback-error",
       textColor: "text-white",
-      iconColor: "text-white",
     },
     warning: {
-      icon: AlertTriangle,
-      ariaLabel: "Warning",
       bgColor: "bg-feedback-warning",
       textColor: "text-white",
-      iconColor: "text-white",
     },
     info: {
-      icon: Info,
-      ariaLabel: "Information",
       bgColor: "bg-feedback-info",
       textColor: "text-white",
-      iconColor: "text-white",
     },
   };
 
-  const config = iconConfig[type];
-  const Icon = config.icon;
-
-  // Determine transition behavior based on animations setting
-  const shouldReduceMotion = !settings.animations;
-
-  return (
-    <Transition
-      appear
-      show
-      as={Fragment}
-      enter={
-        shouldReduceMotion
-          ? "transition-opacity duration-fast"
-          : transitionClasses
-      }
-      enterFrom="opacity-0"
-      enterTo="opacity-100"
-      leave={
-        shouldReduceMotion
-          ? "transition-opacity duration-fast"
-          : transitionClasses
-      }
-      leaveFrom="opacity-100"
-      leaveTo="opacity-0"
-    >
-      <div
-        role="alert"
-        aria-live={type === "error" ? "assertive" : "polite"}
-        aria-atomic="true"
-        className={cn(
-          toastStyles.toastCard,
-          spacingClasses,
-          contrastClasses,
-          config.bgColor,
-          config.textColor
-        )}
-        onKeyDown={handleKeyDown}
-        tabIndex={-1}
-        data-testid={`toast-${type}-${id}`}
-      >
-        <div className={toastStyles.toastIconWrapper}>
-          <Icon
-            className={cn(toastStyles.toastTypeIcon, config.iconColor)}
-            aria-hidden="true"
-            data-testid={`toast-icon-${type}`}
-          />
-        </div>
-        <div className={toastStyles.toastContent}>
-          <p
-            className={cn(toastStyles.toastMessage, fontSizeClasses)}
-            data-testid={`toast-message-${id}`}
-          >
-            {message}
-          </p>
-        </div>
-        <button
-          type="button"
-          onClick={handleDismiss}
-          className={cn(
-            toastStyles.toastDismissButton,
-            !settings.animations && "transition-none"
-          )}
-          aria-label={`Dismiss ${config.ariaLabel} message`}
-          data-testid={`toast-button-dismiss-${id}`}
-        >
-          <X className={toastStyles.toastDismissIcon} aria-hidden="true" />
-        </button>
-      </div>
-    </Transition>
-  );
+  return typeConfig[type];
 }
+
+/**
+ * Get aria label for dismiss button based on toast type
+ */
+function getDismissAriaLabel(type: FeedbackType): string {
+  const labels = {
+    success: "Dismiss Success message",
+    error: "Dismiss Error message",
+    warning: "Dismiss Warning message",
+    info: "Dismiss Information message",
+  };
+
+  return labels[type];
+}
+
 
 /**
  * Get container gap classes based on spacing preference
@@ -275,7 +158,7 @@ export function ToastContainer() {
     >
       {feedbacks.map((feedback) => (
         <div key={feedback.id} className={toastStyles.toastItem}>
-          <Toast
+          <ToastRoot
             id={feedback.id}
             type={feedback.type}
             message={feedback.message}
@@ -287,18 +170,110 @@ export function ToastContainer() {
   );
 }
 
+// Internal Toast component (used by ToastContainer)
+function ToastRoot({ id, type, message, duration }: ToastProps) {
+  const { removeFeedback } = useFeedbackContext();
+  const { settings } = useCognitiveSettings();
+
+  // Memoize computed classes based on accessibility settings
+  const spacingClasses = useMemo(
+    () => getToastSpacingClasses(settings.spacing),
+    [settings.spacing]
+  );
+
+  const transitionClasses = useMemo(
+    () => getToastTransitionClasses(settings.animations),
+    [settings.animations]
+  );
+
+  const contrastClasses = useMemo(
+    () => getToastContrastClasses(settings.contrast, type),
+    [settings.contrast, type]
+  );
+
+  const typeClasses = useMemo(
+    () => getToastTypeClasses(type, settings.contrast),
+    [type, settings.contrast]
+  );
+
+  useEffect(() => {
+    if (duration > 0) {
+      const timer = setTimeout(() => removeFeedback(id), duration);
+      return () => clearTimeout(timer);
+    }
+  }, [id, duration, removeFeedback]);
+
+  const handleDismiss = () => removeFeedback(id);
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") handleDismiss();
+  };
+
+  // Determine transition behavior based on animations setting
+  const shouldReduceMotion = !settings.animations;
+
+  return (
+    <Transition
+      appear
+      show
+      as={Fragment}
+      enter={
+        shouldReduceMotion
+          ? "transition-opacity duration-fast"
+          : transitionClasses
+      }
+      enterFrom="opacity-0"
+      enterTo="opacity-100"
+      leave={
+        shouldReduceMotion
+          ? "transition-opacity duration-fast"
+          : transitionClasses
+      }
+      leaveFrom="opacity-100"
+      leaveTo="opacity-0"
+    >
+      <div
+        role="alert"
+        aria-live={type === "error" ? "assertive" : "polite"}
+        aria-atomic="true"
+        className={cn(
+          toastStyles.toastCard,
+          spacingClasses,
+          contrastClasses,
+          typeClasses.bgColor,
+          typeClasses.textColor
+        )}
+        onKeyDown={handleKeyDown}
+        tabIndex={-1}
+        data-testid={`toast-${type}-${id}`}
+      >
+        <ToastIcon type={type} data-testid={`toast-icon-${type}`} />
+        <ToastMessage data-testid={`toast-message-${id}`}>
+          {message}
+        </ToastMessage>
+        <ToastDismiss
+          onDismiss={handleDismiss}
+          ariaLabel={getDismissAriaLabel(type)}
+          data-testid={`toast-button-dismiss-${id}`}
+        />
+      </div>
+    </Transition>
+  );
+}
+
+ToastRoot.displayName = "Toast";
+
+// Compose Toast with subcomponents (for testing and composition)
+export const Toast = Object.assign(ToastRoot, {
+  Icon: ToastIcon,
+  Message: ToastMessage,
+  Dismiss: ToastDismiss,
+});
+
 // Styles defined as constants (following project guidelines)
 const toastStyles = {
   toastContainer: "fixed top-4 right-4 z-50 flex flex-col pointer-events-none",
   toastItem: "pointer-events-auto",
-  toastCard:
-    "relative flex items-start w-full max-w-md rounded-lg",
-  toastIconWrapper: "flex-shrink-0",
-  toastTypeIcon: "w-5 h-5",
-  toastContent: "flex-1 min-w-0",
-  toastMessage: "font-medium leading-normal",
-  toastDismissButton:
-    "flex-shrink-0 p-1 rounded-md hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
-  toastDismissIcon: "w-4 h-4",
+  toastCard: "relative flex items-start w-full max-w-md rounded-lg",
 };
 
