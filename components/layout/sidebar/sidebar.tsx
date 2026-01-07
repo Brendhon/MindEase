@@ -10,7 +10,7 @@ import { useMemo } from "react";
 import { SidebarIcon } from "./sidebar-icon";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarLabel } from "./sidebar-label";
-import { getSpacingClasses, styles } from "./sidebar-styles";
+import { styles } from "./sidebar-styles";
 
 /**
  * Sidebar Component - MindEase
@@ -70,19 +70,13 @@ const defaultItems: SidebarItemData[] = [
 ];
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
-  // Read cognitive accessibility settings
-  const { settings, spacingClasses: spacing } = useCognitiveSettings();
+  // Read cognitive accessibility settings - classes are automatically computed
+  const { spacingClasses } = useCognitiveSettings();
 
-  // Extract gap class from spacing for nav element
-  const navGapClass = useMemo(
-    () => `gap-${spacing.gap.split('-')[1]}`,
-    [spacing.gap]
-  );
-
-  // Generate spacing classes for the aside (padding and gap)
+  // Generate spacing classes for the aside (padding and gap) - uses hook's pre-computed classes
   const asideClasses = useMemo(
-    () => `${spacing.padding} ${spacing.gap}`,
-    [spacing.padding, spacing.gap]
+    () => cn(spacingClasses.padding, spacingClasses.gap),
+    [spacingClasses.padding, spacingClasses.gap]
   );
 
   return (
@@ -93,7 +87,7 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
       aria-label="Navigation sidebar"
     >
       <nav
-        className={cn(styles.nav, navGapClass)}
+        className={cn(styles.nav, spacingClasses.gap)}
         aria-label="Main navigation"
         data-testid="sidebar-nav"
       >
@@ -106,9 +100,6 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
               key={item.href}
               href={item.href}
               label={labelString}
-              contrast={settings.contrast}
-              fontSize={settings.fontSize}
-              animations={settings.animations}
               data-testid={`sidebar-link-${labelString.toLowerCase().replace(/\s+/g, '-')}`}
             >
               {item.icon && <SidebarIcon icon={item.icon} />}

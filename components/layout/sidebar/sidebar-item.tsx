@@ -2,32 +2,29 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui/ui";
-import { styles, getContrastClasses, getFontSizeClasses, getTransitionClasses } from "./sidebar-styles";
-import { UserPreferences } from "@/models/UserPreferences";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { styles, getContrastClasses } from "./sidebar-styles";
 
 /**
  * Sidebar.Item - Navigation item subcomponent
  * Renders a single navigation link in the sidebar
  * 
  * Automatically handles active state based on current pathname
- * Applies accessibility settings (contrast, font size, transitions)
+ * Applies accessibility settings (contrast, font size, transitions) from useCognitiveSettings hook
  * 
  * @example
  * ```tsx
  * <Sidebar.Item href="/dashboard">
  *   <Sidebar.Icon icon={LayoutDashboard} />
- *   <Sidebar.Label label={{ detailed: "Dashboard Overview", summary: "Dashboard" }} />
+ *   <Sidebar.Label labelKey="sidebar_dashboard" />
  * </Sidebar.Item>
  * ```
  */
 export interface SidebarItemProps {
   href: string;
   label: string;
-  contrast?: UserPreferences["contrast"];
-  fontSize?: UserPreferences["fontSize"];
-  animations?: boolean;
   children?: ReactNode;
   "data-testid"?: string;
 }
@@ -35,18 +32,25 @@ export interface SidebarItemProps {
 export function SidebarItem({
   href,
   label,
-  contrast = "normal",
-  fontSize = "normal",
-  animations = true,
   children,
   "data-testid": dataTestId,
 }: SidebarItemProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
+  
+  // Use cognitive settings hook for automatic accessibility class generation
+  // These classes automatically update when user preferences change
+  const { 
+    settings, 
+    fontSizeClasses, // Recalculates when settings.fontSize changes
+    animationClasses // Recalculates when settings.animations changes
+  } = useCognitiveSettings();
 
-  const fontSizeClasses = getFontSizeClasses(fontSize);
-  const transitionClasses = getTransitionClasses(animations);
-  const contrastClasses = getContrastClasses(contrast, isActive);
+  // Generate contrast classes with active state (sidebar-specific logic)
+  const contrastClasses = useMemo(
+    () => getContrastClasses(settings.contrast, isActive),
+    [settings.contrast, isActive]
+  );
 
   return (
     <Link
@@ -54,8 +58,8 @@ export function SidebarItem({
       prefetch={true}
       className={cn(
         styles.link,
-        fontSizeClasses,
-        transitionClasses,
+        fontSizeClasses.base, // Dynamically updates: "text-sm" | "text-base" | "text-lg" based on settings.fontSize
+        animationClasses, // Dynamically updates based on settings.animations
         contrastClasses
       )}
       aria-current={isActive ? "page" : undefined}
