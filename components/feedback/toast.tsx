@@ -1,95 +1,22 @@
 "use client";
 
 import { useFeedbackContext } from "@/contexts/feedback-context";
-import type { FeedbackType } from "@/hooks/useFeedback";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { UserPreferences } from "@/models/UserPreferences";
+import type { FeedbackType } from "@/hooks/useFeedback";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
 import { Fragment, useEffect, useMemo } from "react";
+import { ToastDismiss } from "./toast-dismiss";
 import { ToastIcon } from "./toast-icon";
 import { ToastMessage } from "./toast-message";
-import { ToastDismiss } from "./toast-dismiss";
+import { getContrastClasses, getTransitionClasses, getTypeClasses, styles } from "./toast-styles";
 
 interface ToastProps {
   id: string;
   type: FeedbackType;
   messageKey: AccessibilityTextKey;
   duration: number;
-}
-
-/**
- * Get spacing classes for toast (padding + gap)
- */
-function getToastSpacingClasses(spacingValue: number): string {
-  return `gap-${spacingValue} p-${spacingValue}`;
-}
-
-/**
- * Get transition classes based on animation preference
- */
-function getToastTransitionClasses(animations: boolean): string {
-  return animations
-    ? "transition-all duration-normal ease-base"
-    : "transition-opacity duration-fast";
-}
-
-/**
- * Get contrast-aware classes for toast
- */
-function getToastContrastClasses(
-  contrast: UserPreferences["contrast"],
-  type: FeedbackType
-): string {
-  const baseClasses = "shadow-medium";
-  
-  if (contrast === "high") {
-    // High contrast: thicker border, outline, and stronger shadow for better visibility
-    const borderColorClass =
-      type === "error"
-        ? "border-feedback-error"
-        : type === "warning"
-        ? "border-feedback-warning"
-        : type === "success"
-        ? "border-feedback-success"
-        : "border-feedback-info";
-    
-    return `${baseClasses} border-4 ${borderColorClass} outline outline-2 outline-offset-2 outline-black/20 shadow-lg`;
-  }
-
-  return baseClasses;
-}
-
-/**
- * Get background and text color classes based on toast type and contrast
- */
-function getToastTypeClasses(
-  type: FeedbackType,
-  contrast: UserPreferences["contrast"]
-): { bgColor: string; textColor: string } {
-  // In high contrast mode, use more saturated colors (defined in globals.css)
-  // The colors are automatically applied via CSS variables
-  const typeConfig = {
-    success: {
-      bgColor: "bg-feedback-success",
-      textColor: "text-white",
-    },
-    error: {
-      bgColor: "bg-feedback-error",
-      textColor: "text-white",
-    },
-    warning: {
-      bgColor: "bg-feedback-warning",
-      textColor: "text-white",
-    },
-    info: {
-      bgColor: "bg-feedback-info",
-      textColor: "text-white",
-    },
-  };
-
-  return typeConfig[type];
 }
 
 /**
@@ -125,7 +52,7 @@ export function ToastContainer() {
 
   return (
     <div
-      className={cn(toastStyles.toastContainer, containerGapClasses)}
+      className={cn(styles.toastContainer, containerGapClasses)}
       aria-live="polite"
       aria-atomic="false"
       role="region"
@@ -133,7 +60,7 @@ export function ToastContainer() {
       data-testid="toast-container"
     >
       {feedbacks.map((feedback) => (
-        <div key={feedback.id} className={toastStyles.toastItem}>
+        <div key={feedback.id} className={styles.toastItem}>
           <ToastRoot
             id={feedback.id}
             type={feedback.type}
@@ -149,27 +76,37 @@ export function ToastContainer() {
 // Internal Toast component (used by ToastContainer)
 function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
   const { removeFeedback } = useFeedbackContext();
-  const { settings, spacingValue } = useCognitiveSettings();
 
-  // Memoize computed classes based on accessibility settings
-  const spacingClasses = useMemo(
-    () => getToastSpacingClasses(spacingValue),
-    [spacingValue]
+  // Use cognitive settings hook for automatic accessibility class generation
+  // These classes automatically update when user preferences change
+  const {
+    settings,
+    spacingClasses, // Recalculates when settings.spacing changes
+    animationClasses // Recalculates when settings.animations changes
+  } = useCognitiveSettings();
+
+  // Generate spacing classes for toast (padding + gap) - uses hook's pre-computed classes
+  const toastSpacingClasses = useMemo(
+    () => cn(spacingClasses.padding, spacingClasses.gap),
+    [spacingClasses.padding, spacingClasses.gap]
   );
 
-  const transitionClasses = useMemo(
-    () => getToastTransitionClasses(settings.animations),
-    [settings.animations]
-  );
-
+  // Generate contrast classes with toast-specific logic (type-based borders)
   const contrastClasses = useMemo(
-    () => getToastContrastClasses(settings.contrast, type),
+    () => getContrastClasses(settings.contrast, type),
     [settings.contrast, type]
   );
 
+  // Get type-specific colors (background and text)
   const typeClasses = useMemo(
-    () => getToastTypeClasses(type, settings.contrast),
-    [type, settings.contrast]
+    () => getTypeClasses(type),
+    [type]
+  );
+
+  // Generate transition classes with toast-specific logic
+  const transitionClass = useMemo(
+    () => getTransitionClasses(settings.animations),
+    [settings.animations]
   );
 
   useEffect(() => {
@@ -185,26 +122,15 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
     if (e.key === "Escape") handleDismiss();
   };
 
-  // Determine transition behavior based on animations setting
-  const shouldReduceMotion = !settings.animations;
-
   return (
     <Transition
       appear
       show
       as={Fragment}
-      enter={
-        shouldReduceMotion
-          ? "transition-opacity duration-fast"
-          : transitionClasses
-      }
+      enter={transitionClass}
       enterFrom="opacity-0"
       enterTo="opacity-100"
-      leave={
-        shouldReduceMotion
-          ? "transition-opacity duration-fast"
-          : transitionClasses
-      }
+      leave={transitionClass}
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
@@ -213,8 +139,9 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
         aria-live={type === "error" ? "assertive" : "polite"}
         aria-atomic="true"
         className={cn(
-          toastStyles.toastCard,
-          spacingClasses,
+          styles.toastCard,
+          toastSpacingClasses, // Dynamically updates based on settings.spacing
+          animationClasses, // Dynamically updates based on settings.animations
           contrastClasses,
           typeClasses.bgColor,
           typeClasses.textColor
@@ -224,7 +151,7 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
         data-testid={`toast-${type}-${id}`}
       >
         <ToastIcon type={type} data-testid={`toast-icon-${type}`} />
-        <ToastMessage 
+        <ToastMessage
           messageKey={messageKey}
           data-testid={`toast-message-${id}`}
         />
@@ -246,11 +173,4 @@ export const Toast = Object.assign(ToastRoot, {
   Message: ToastMessage,
   Dismiss: ToastDismiss,
 });
-
-// Styles defined as constants (following project guidelines)
-const toastStyles = {
-  toastContainer: "fixed top-4 right-4 z-50 flex flex-col pointer-events-none",
-  toastItem: "pointer-events-auto",
-  toastCard: "relative flex items-start w-full max-w-md rounded-lg",
-};
 
