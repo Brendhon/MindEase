@@ -1,9 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { PageContainer } from "@/components/layout/page-container";
+import { Button } from "@/components/ui/button";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { PAGE_ROUTES } from "@/utils/routes";
+import { cn } from "@/utils/ui";
+import Link from "next/link";
+import { useMemo } from "react";
 
 /**
  * 404 Page - MindEase
@@ -13,30 +16,75 @@ import { PAGE_ROUTES } from "@/utils/routes";
  * It provides clear navigation options and follows cognitive accessibility principles.
  */
 export default function NotFound404Page() {
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Uses default settings when user is not authenticated
+  const {
+    spacingClasses, // Recalculates when settings.spacing changes
+    fontSizeClasses, // Recalculates when settings.fontSize changes
+    animationClasses, // Recalculates when settings.animations changes
+    textDetail, // Text detail helper for summary/detailed modes
+  } = useCognitiveSettings();
+
+  // Generate content classes with spacing preference
+  const contentClasses = useMemo(
+    () => cn(styles.content, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
+
+  // Generate header classes with spacing preference
+  const headerClasses = useMemo(
+    () => cn(styles.header, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
+
+  // Generate title classes with fontSize preference
+  const titleClasses = useMemo(
+    () => cn(styles.title, fontSizeClasses["3xl"]),
+    [fontSizeClasses["3xl"]]
+  );
+
+  // Generate subtitle classes with fontSize preference
+  const subtitleClasses = useMemo(
+    () => cn(styles.subtitle, fontSizeClasses.xl),
+    [fontSizeClasses.xl]
+  );
+
+  // Generate description classes with fontSize preference
+  const descriptionClasses = useMemo(
+    () => cn(styles.description, fontSizeClasses.base),
+    [fontSizeClasses.base]
+  );
+
+  // Generate actions classes with spacing preference
+  const actionsClasses = useMemo(
+    () => cn(styles.actions, spacingClasses.gap, "mt-4"),
+    [spacingClasses.gap]
+  );
+
   return (
     <div className={styles.container}>
-      <main className={styles.main} role="main">
+      <main className={cn(styles.main, animationClasses)} role="main">
         <PageContainer>
-          <div className={styles.content}>
-            <div className={styles.header}>
-              <h1 className={styles.title}>404</h1>
-              <h2 className={styles.subtitle}>
-                Página não encontrada
+          <div className={contentClasses}>
+            <div className={headerClasses}>
+              <h1 className={titleClasses}>404</h1>
+              <h2 className={subtitleClasses}>
+                {textDetail.getText("404_subtitle")}
               </h2>
-              <p className={styles.description}>
-                A página que você está procurando não existe ou foi movida.
+              <p className={descriptionClasses}>
+                {textDetail.getText("404_description")}
               </p>
             </div>
 
-            <div className={styles.actions}>
+            <div className={actionsClasses}>
               <Link href={PAGE_ROUTES.HOME}>
                 <Button variant="primary" size="lg" className={styles.primaryButton}>
-                  <Button.Text>Voltar para a página inicial</Button.Text>
+                  <Button.Text>{textDetail.getText("404_button_home")}</Button.Text>
                 </Button>
               </Link>
               <Link href={PAGE_ROUTES.LOGIN}>
                 <Button variant="ghost" size="md" className={styles.secondaryButton}>
-                  <Button.Text>Ir para o login</Button.Text>
+                  <Button.Text>{textDetail.getText("404_button_login")}</Button.Text>
                 </Button>
               </Link>
             </div>
@@ -47,16 +95,20 @@ export default function NotFound404Page() {
   );
 }
 
-const styles = {
+/**
+ * 404 Page Styles - MindEase
+ * Centralized styles for 404 error page
+ */
+
+export const styles = {
   container: "flex min-h-screen items-center justify-center bg-bg-secondary font-sans",
   main: "flex flex-col items-center justify-center w-full",
-  content: "flex flex-col items-center justify-center gap-6 text-center",
-  header: "flex flex-col gap-4",
-  title: "text-6xl font-bold text-text-primary",
-  subtitle: "text-2xl font-semibold text-text-primary",
-  description: "max-w-md text-lg leading-relaxed text-text-secondary",
-  actions: "flex flex-col gap-3 mt-4",
+  content: "flex flex-col items-center justify-center text-center",
+  header: "flex flex-col",
+  title: "font-bold text-text-primary",
+  subtitle: "font-semibold text-text-primary",
+  description: "max-w-md leading-relaxed text-text-secondary",
+  actions: "flex flex-col mt-4",
   primaryButton: "w-full",
   secondaryButton: "w-full",
 } as const;
-

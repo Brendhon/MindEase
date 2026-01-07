@@ -42,7 +42,11 @@
     "login_description": "Plataforma de acessibilidade cognitiva para reduzir a carga mental e melhorar seu foco.",
     "login_button": "Entrar com Google",
     "login_button_aria": "Entrar com sua conta do Google",
-    "login_disclaimer": "Ao entrar, você concorda com nossos termos de uso e política de privacidade."
+    "login_disclaimer": "Ao entrar, você concorda com nossos termos de uso e política de privacidade.",
+    "404_subtitle": "Página não encontrada",
+    "404_description": "A página que você está procurando não existe ou foi movida.",
+    "404_button_home": "Voltar para a página inicial",
+    "404_button_login": "Ir para o login"
   },
   "summary": {
     "welcome": "Bem-vindo",
@@ -87,7 +91,11 @@
     "login_description": "Plataforma de acessibilidade cognitiva.",
     "login_button": "Entrar",
     "login_button_aria": "Entrar com Google",
-    "login_disclaimer": "Ao entrar, você concorda com nossos termos."
+    "login_disclaimer": "Ao entrar, você concorda com nossos termos.",
+    "404_subtitle": "Não encontrada",
+    "404_description": "Página não existe ou foi movida.",
+    "404_button_home": "Voltar",
+    "404_button_login": "Login"
   }
 }
 
