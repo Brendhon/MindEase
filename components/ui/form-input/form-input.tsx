@@ -1,9 +1,11 @@
 "use client";
 
 import { cn } from "@/utils/ui";
-import { useId } from "react";
+import { useId, useMemo } from "react";
 import { Controller, ControllerProps, FieldPath, FieldValues, useFormContext } from "react-hook-form";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { InputRoot } from "../input/input";
+import { styles } from "./form-input-styles";
 
 /**
  * FormInput - Integrated Input with react-hook-form and zod
@@ -106,6 +108,16 @@ export function FormInput<
   const fieldError = errors[name];
   const errorMessage = fieldError?.message as string | undefined;
   
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Font size automatically updates when user preferences change
+  const { fontSizeClasses } = useCognitiveSettings();
+
+  // Get fontSize class for helper text (use sm)
+  const helperTextFontSize = useMemo(
+    () => fontSizeClasses.sm,
+    [fontSizeClasses.sm]
+  );
+  
   // Build aria-describedby
   const ariaDescribedBy = [
     errorMessage ? errorId : null,
@@ -121,7 +133,7 @@ export function FormInput<
         <InputRoot className={className} data-testid={`form-input-${name}`}>
           <InputRoot.Label htmlFor={inputId}>
             {label}
-            {required && <span className="text-feedback-error ml-1" aria-label="required">*</span>}
+            {required && <span className={styles.requiredIndicator} aria-label="required">*</span>}
           </InputRoot.Label>
           
           <InputRoot.Field
@@ -134,7 +146,7 @@ export function FormInput<
             aria-invalid={!!errorMessage}
             aria-describedby={ariaDescribedBy}
             className={cn(
-              errorMessage && "border-feedback-error focus:ring-feedback-error",
+              errorMessage && styles.fieldError,
               inputClassName
             )}
             data-testid={`form-input-field-${name}`}
@@ -143,7 +155,7 @@ export function FormInput<
           {helperText && !errorMessage && (
             <p
               id={helperId}
-              className="text-sm text-text-muted"
+              className={cn(styles.helperText, helperTextFontSize)} // Dynamically updates based on settings.fontSize
               data-testid={`form-input-helper-${name}`}
             >
               {helperText}

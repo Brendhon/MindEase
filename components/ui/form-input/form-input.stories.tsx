@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { CognitiveSettingsProvider } from "@/providers/cognitive-settings-provider";
+import { SessionProvider } from "next-auth/react";
 import { FormInput } from "./form-input";
 
 /**
@@ -49,7 +51,15 @@ const meta = {
       },
     },
   },
-  tags: ["autodocs"],
+  decorators: [
+    (Story) => (
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <Story />
+        </CognitiveSettingsProvider>
+      </SessionProvider>
+    ),
+  ],
 } satisfies Meta;
 
 export default meta;
@@ -299,6 +309,7 @@ export const AccessibilityDemo: Story = {
             <li>✅ aria-describedby linking to error/helper text</li>
             <li>✅ role="alert" on error messages</li>
             <li>✅ Proper focus management</li>
+            <li>✅ Adapts to user accessibility preferences (font size, spacing, contrast, animations)</li>
           </ul>
         </div>
         <FormWrapper schema={schema}>
@@ -313,6 +324,193 @@ export const AccessibilityDemo: Story = {
         </FormWrapper>
       </div>
     );
+  },
+};
+
+// Showcase different accessibility settings
+export const AccessibilityShowcase: Story = {
+  render: () => (
+    <div className="flex gap-6 flex-col p-6 w-full max-w-2xl">
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              email: z.string().email("Please enter a valid email address"),
+            })}
+          >
+            <FormInput
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="your@email.com"
+              required
+              helperText="We'll never share your email"
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              email: z.string().email("Please enter a valid email address"),
+            })}
+          >
+            <FormInput
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="your@email.com"
+              required
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'compact',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              username: z.string().min(3, "Username must be at least 3 characters"),
+            })}
+          >
+            <FormInput
+              name="username"
+              label="Username"
+              type="text"
+              placeholder="johndoe"
+              required
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'relaxed',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              description: z.string().min(10, "Description must be at least 10 characters"),
+            })}
+          >
+            <FormInput
+              name="description"
+              label="Description"
+              as="textarea"
+              placeholder="Tell us about yourself..."
+              required
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'normal',
+            spacing: 'normal',
+            fontSize: 'large',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              email: z.string().email("Please enter a valid email address"),
+            })}
+          >
+            <FormInput
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="your@email.com"
+              required
+              helperText="Large font for better readability"
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+
+      <div>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
+        <CognitiveSettingsProvider
+          isolated={true}
+          initialSettings={{
+            contrast: 'high',
+            spacing: 'normal',
+            fontSize: 'normal',
+            animations: true,
+            focusMode: false,
+            textDetail: 'detailed',
+          }}
+        >
+          <FormWrapper
+            schema={z.object({
+              email: z.string().email("Please enter a valid email address"),
+            })}
+            defaultValues={{ email: "invalid-email" }}
+          >
+            <FormInput
+              name="email"
+              label="Email"
+              type="email"
+              placeholder="your@email.com"
+              required
+            />
+          </FormWrapper>
+        </CognitiveSettingsProvider>
+      </div>
+    </div>
+  ),
+  parameters: {
+    layout: 'padded',
   },
 };
 
