@@ -12,14 +12,25 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { cn } from "@/utils/ui";
 import { LogIn } from "lucide-react";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useMemo } from "react";
 
 export default function LoginPage() {
   const { signIn, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
+
+  // Use cognitive settings hook for automatic accessibility class generation
+  // Uses default settings when user is not authenticated
+  const { 
+    spacingClasses, // Recalculates when settings.spacing changes
+    fontSizeClasses, // Recalculates when settings.fontSize changes
+    animationClasses, // Recalculates when settings.animations changes
+    textDetail, // Text detail helper for summary/detailed modes
+  } = useCognitiveSettings();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -38,27 +49,58 @@ export default function LoginPage() {
     }
   };
 
+  // Generate main classes with spacing preference
+  const mainClasses = useMemo(
+    () => cn(styles.main, spacingClasses.padding, spacingClasses.gap),
+    [spacingClasses.padding, spacingClasses.gap]
+  );
+
+  // Generate card classes with spacing preference
+  const cardClasses = useMemo(
+    () => cn(styles.card, spacingClasses.padding),
+    [spacingClasses.padding]
+  );
+
+  // Generate title classes with fontSize preference
+  const titleClasses = useMemo(
+    () => cn(styles.title, fontSizeClasses["3xl"], "mb-4"),
+    [fontSizeClasses["3xl"]]
+  );
+
+  // Generate description classes with fontSize preference
+  const descriptionClasses = useMemo(
+    () => cn(styles.description, fontSizeClasses.base, "mb-8"),
+    [fontSizeClasses.base]
+  );
+
+  // Generate button container classes with spacing preference
+  const buttonContainerClasses = useMemo(
+    () => cn(styles.buttonContainer, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
+
+  // Generate disclaimer classes with fontSize preference
+  const disclaimerClasses = useMemo(
+    () => cn(styles.disclaimer, fontSizeClasses.sm, "mt-6"),
+    [fontSizeClasses.sm]
+  );
+
   return (
     <div className={styles.container} data-testid="login-page-container">
-      <Image 
-        className={styles.logo} 
-        src="/logo.png" 
-        alt="MindEase Logo" 
-        width={80} 
-        height={80}
-        priority
-        data-testid="login-page-logo"
-      />
-      <main className={styles.main} role="main">
-        <section className={styles.card} aria-labelledby="login-title" data-testid="login-card">
-          <h1 id="login-title" className={styles.title} data-testid="login-title">
-            Bem-vindo ao MindEase
+      <main className={mainClasses} role="main">
+        <section 
+          className={cn(cardClasses, animationClasses)} // Dynamically updates based on settings.animations
+          aria-labelledby="login-title" 
+          data-testid="login-card"
+        >
+          <h1 id="login-title" className={titleClasses} data-testid="login-title">
+            {textDetail.getText("login_title")}
           </h1>
-          <p className={styles.description} data-testid="login-description">
-            Plataforma de acessibilidade cognitiva para reduzir a carga mental e melhorar seu foco.
+          <p className={descriptionClasses} data-testid="login-description">
+            {textDetail.getText("login_description")}
           </p>
 
-          <div className={styles.buttonContainer}>
+          <div className={buttonContainerClasses}>
             <Button
               variant="primary"
               size="lg"
@@ -66,16 +108,16 @@ export default function LoginPage() {
               disabled={isLoading}
               isLoading={isLoading}
               className={styles.button}
-              aria-label="Entrar com sua conta do Google"
+              aria-label={textDetail.getText("login_button_aria")}
               data-testid="login-button-signin"
             >
               <Button.Icon icon={LogIn} position="left" size="lg" />
-              <Button.Text>Entrar com Google</Button.Text>
+              <Button.Text>{textDetail.getText("login_button")}</Button.Text>
             </Button>
           </div>
 
-          <p className={styles.disclaimer} data-testid="login-disclaimer">
-            Ao entrar, você concorda com nossos termos de uso e política de privacidade.
+          <p className={disclaimerClasses} data-testid="login-disclaimer">
+            {textDetail.getText("login_disclaimer")}
           </p>
         </section>
       </main>
@@ -83,14 +125,20 @@ export default function LoginPage() {
   );
 }
 
-const styles = {
-  container: `flex min-h-screen items-center justify-center bg-bg-secondary font-sans`,
-  logo: `absolute top-8 left-8`,
-  main: `flex flex-col items-center justify-center gap-8 p-8 max-w-md w-full`,
-  card: `w-full bg-surface-primary border border-border-subtle rounded-lg shadow-soft p-8`,
-  title: `text-3xl font-semibold text-text-primary leading-tight text-center mb-4`,
-  description: `text-md text-text-secondary leading-relaxed text-center mb-8`,
-  buttonContainer: `w-full flex flex-col gap-4`,
-  button: `w-full`,
-  disclaimer: `text-sm text-text-muted text-center mt-6`,
+/**
+ * Login Page Styles - MindEase
+ * Centralized styles for login page
+ */
+
+export const styles = {
+  container: "flex min-h-screen items-center justify-center bg-bg-secondary font-sans",
+  logo: "absolute top-8 left-8",
+  main: "flex flex-col items-center justify-center max-w-md w-full",
+  card: "w-full bg-surface-primary border border-border-subtle rounded-lg shadow-soft",
+  title: "font-semibold text-text-primary leading-tight text-center",
+  description: "text-text-secondary leading-relaxed text-center",
+  buttonContainer: "w-full flex flex-col",
+  button: "w-full",
+  disclaimer: "text-text-muted text-center",
 } as const;
+

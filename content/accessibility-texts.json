@@ -37,7 +37,12 @@
     "button_success": "Sucesso",
     "button_error": "Erro",
     "button_warning": "Aviso",
-    "button_info": "Informação"
+    "button_info": "Informação",
+    "login_title": "Bem-vindo ao MindEase",
+    "login_description": "Plataforma de acessibilidade cognitiva para reduzir a carga mental e melhorar seu foco.",
+    "login_button": "Entrar com Google",
+    "login_button_aria": "Entrar com sua conta do Google",
+    "login_disclaimer": "Ao entrar, você concorda com nossos termos de uso e política de privacidade."
   },
   "summary": {
     "welcome": "Bem-vindo",
@@ -77,7 +82,12 @@
     "button_success": "OK",
     "button_error": "Erro",
     "button_warning": "Aviso",
-    "button_info": "Info"
+    "button_info": "Info",
+    "login_title": "Bem-vindo",
+    "login_description": "Plataforma de acessibilidade cognitiva.",
+    "login_button": "Entrar",
+    "login_button_aria": "Entrar com Google",
+    "login_disclaimer": "Ao entrar, você concorda com nossos termos."
   }
 }
 
