@@ -8,9 +8,11 @@
  * - Visual settings (font size, contrast, spacing, animations)
  * - Automatic persistence to Firestore
  * - Cognitive alerts configuration
+ * - Task statistics overview
  */
 "use client";
 
+import { useEffect, useMemo } from "react";
 import { ContentSettings } from "@/components/profile/content-settings";
 import { InteractionSettings } from "@/components/profile/interaction-settings";
 import { ProfileResetButton } from "@/components/profile/profile-reset-button";
@@ -18,24 +20,62 @@ import { VisualSettings } from "@/components/profile/visual-settings";
 import { DashboardError } from "@/components/dashboard/dashboard-error";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardLoading } from "@/components/dashboard/dashboard-loading";
+import { DashboardStatsCards } from "@/components/dashboard/dashboard-stats-cards";
+import { DashboardCognitiveAlerts } from "@/components/dashboard/dashboard-cognitive-alerts";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAuth } from "@/hooks/useAuth";
+import { useTasks } from "@/hooks/useTasks";
+import { tasksService } from "@/services/tasks";
 import { cn } from "@/utils/ui";
-import { useMemo } from "react";
 
 export default function DashboardPage() {
+  const { user } = useAuth();
   const {
-    isLoading,
-    error,
+    isLoading: settingsLoading,
+    error: settingsError,
     spacingClasses,
     animationClasses,
     textDetail,
   } = useCognitiveSettings();
+
+  const {
+    tasks,
+    loading: tasksLoading,
+    error: tasksError,
+    setTasks,
+    setLoading,
+    setError,
+  } = useTasks();
+
+  // Load tasks from Firestore on mount
+  useEffect(() => {
+    if (!user?.uid) return;
+
+    const loadTasks = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const userTasks = await tasksService.getTasks(user.uid);
+        setTasks(userTasks);
+      } catch (err) {
+        console.error("Error loading tasks:", err);
+        setError(err instanceof Error ? err.message : "Failed to load tasks");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadTasks();
+  }, [user?.uid, setTasks, setLoading, setError]);
 
   // Generate main container classes with spacing preference
   const mainClasses = useMemo(
     () => cn(styles.main, spacingClasses.padding, spacingClasses.gap),
     [spacingClasses.padding, spacingClasses.gap]
   );
+
+  const isLoading = settingsLoading || tasksLoading;
+  const error = settingsError || tasksError;
 
   if (isLoading) {
     return <DashboardLoading data-testid="dashboard-page-loading" />;
@@ -53,6 +93,19 @@ export default function DashboardPage() {
           />
         )}
 
+        {/* Cognitive Alerts */}
+        <DashboardCognitiveAlerts
+          tasks={tasks}
+          data-testid="dashboard-page-cognitive-alerts"
+        />
+
+        {/* Task Statistics Cards */}
+        <DashboardStatsCards
+          tasks={tasks}
+          data-testid="dashboard-page-stats-cards"
+        />
+
+        {/* Cognitive Settings */}
         <div className={cn(styles.content, spacingClasses.gap)}>
           <VisualSettings data-testid="dashboard-page-visual-settings" />
           <InteractionSettings data-testid="dashboard-page-interaction-settings" />
