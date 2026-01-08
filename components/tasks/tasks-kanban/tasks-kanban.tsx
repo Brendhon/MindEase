@@ -9,6 +9,7 @@ import { cn } from "@/utils/ui";
 /**
  * TasksKanban Component - MindEase
  * Simplified kanban board with columns (To Do, In Progress, Done)
+ * Tasks are organized by status: 0 = To Do, 1 = In Progress, 2 = Done
  */
 export interface TasksKanbanProps {
   /** All tasks */
@@ -38,12 +39,17 @@ export function TasksKanban({
 
   // Separate tasks by status
   const todoTasks = useMemo(
-    () => tasks.filter((task) => !task.completed),
+    () => tasks.filter((task) => task.status === 0),
+    [tasks]
+  );
+
+  const inProgressTasks = useMemo(
+    () => tasks.filter((task) => task.status === 1),
     [tasks]
   );
 
   const doneTasks = useMemo(
-    () => tasks.filter((task) => task.completed),
+    () => tasks.filter((task) => task.status === 2),
     [tasks]
   );
 
@@ -61,6 +67,14 @@ export function TasksKanban({
         onEdit={onEdit}
         onDelete={onDelete}
         data-testid="tasks-column-todo"
+      />
+      <TasksColumn
+        title={textDetail.getText("tasks_column_in_progress")}
+        tasks={inProgressTasks}
+        onToggle={onToggle}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        data-testid="tasks-column-in-progress"
       />
       <TasksColumn
         title={textDetail.getText("tasks_column_done")}
@@ -82,6 +96,6 @@ TasksKanban.displayName = "TasksKanban";
  */
 
 export const styles = {
-  container: "grid grid-cols-1 md:grid-cols-2 gap-4",
+  container: "grid grid-cols-1 md:grid-cols-3 gap-4",
 } as const;
 

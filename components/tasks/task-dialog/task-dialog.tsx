@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/form/input";
+import { RadioGroup } from "@/components/ui/radio-group";
 import { Task } from "@/models/Task";
 
 /**
@@ -20,16 +21,27 @@ export interface TaskDialogProps {
 export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialogProps) {
   const [title, setTitle] = useState(initialTask?.title || "");
   const [description, setDescription] = useState(initialTask?.description || "");
+  const [status, setStatus] = useState<number>(initialTask?.status ?? 0);
+
+  // Reset form when dialog opens/closes or initialTask changes
+  useEffect(() => {
+    if (isOpen) {
+      setTitle(initialTask?.title || "");
+      setDescription(initialTask?.description || "");
+      setStatus(initialTask?.status ?? 0);
+    }
+  }, [isOpen, initialTask]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit({
       title,
       description: description || undefined,
-      completed: initialTask?.completed || false,
+      status,
     });
     setTitle("");
     setDescription("");
+    setStatus(0);
     onClose();
   };
 
@@ -59,6 +71,15 @@ export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialo
             onChange={(e) => setDescription(e.target.value)}
           />
         </Input>
+        <RadioGroup
+          value={status.toString()}
+          onChange={(value) => setStatus(Number(value))}
+          label="Status"
+        >
+          <RadioGroup.Option value="0" label="To Do" />
+          <RadioGroup.Option value="1" label="In Progress" />
+          <RadioGroup.Option value="2" label="Done" />
+        </RadioGroup>
         <div className="flex gap-3 justify-end">
           <Button type="button" variant="ghost" onClick={onClose}>
             <Button.Text>Cancel</Button.Text>

@@ -30,6 +30,7 @@ export const tasksService: TasksService = {
   ): Promise<Task> => {
     const taskData: Omit<Task, "id"> = {
       ...task,
+      status: task.status ?? 0, // Default to 0 (To Do) if not provided
       userId,
       createdAt: new Date(),
       updatedAt: new Date(),

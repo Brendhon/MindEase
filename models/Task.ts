@@ -7,7 +7,7 @@ export interface Task {
   userId: string;
   title: string;
   description?: string;
-  completed: boolean;
+  status: number; // 0 = To Do, 1 = In Progress, 2 = Done
   createdAt: Date;
   updatedAt: Date;
 }

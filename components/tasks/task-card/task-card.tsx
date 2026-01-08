@@ -1,5 +1,4 @@
 import { Task } from "@/models/Task";
-import { useCallback } from "storybook/internal/preview-api";
 
 /**
  * Task Card Component - MindEase
@@ -17,19 +16,22 @@ export function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardProps) {
     console.log("Task toggled:", task);
     onToggle?.(task.id);
   };
+  
+  const isCompleted = task.status === 2;
+  
   return (
     <div className="p-4 rounded-md border border-border-subtle bg-surface-primary" data-testid={`task-card-${task.id}`}>
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
-          checked={task.completed}
+          checked={isCompleted}
           onChange={handleToggle}
           className="mt-1 h-4 w-4 rounded border-border-subtle text-action-primary focus:ring-2 focus:ring-action-primary"
-          aria-label={`Mark task "${task.title}" as ${task.completed ? "incomplete" : "complete"}`}
+          aria-label={`Mark task "${task.title}" as ${isCompleted ? "incomplete" : "complete"}`}
           data-testid={`task-card-checkbox-${task.id}`}
         />
         <div className="flex-1">
-          <h3 className={`font-medium text-text-primary ${task.completed ? "line-through text-text-tertiary" : ""}`} data-testid={`task-card-title-${task.id}`}>
+          <h3 className={`font-medium text-text-primary ${isCompleted ? "line-through text-text-tertiary" : ""}`} data-testid={`task-card-title-${task.id}`}>
             {task.title}
           </h3>
           {task.description && (

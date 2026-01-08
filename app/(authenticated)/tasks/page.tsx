@@ -129,9 +129,10 @@ export default function TasksPage() {
     if (!task) return;
 
     try {
-      const updatedTask = { ...task, completed: !task.completed };
+      // Cycle through status: 0 -> 1 -> 2 -> 0
+      const newStatus = task.status === 2 ? 0 : task.status + 1;
       await tasksService.updateTask(user.uid, taskId, {
-        completed: updatedTask.completed,
+        status: newStatus,
       });
       toggleTask(taskId);
     } catch (err) {

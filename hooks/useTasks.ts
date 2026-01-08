@@ -13,6 +13,7 @@ export function useTasks(initialTasks: Task[] = []) {
   const addTask = useCallback((task: Omit<Task, "createdAt" | "updatedAt">) => {
     const newTask: Task = {
       ...task,
+      status: task.status ?? 0, // Default to 0 (To Do) if not provided
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -40,11 +41,18 @@ export function useTasks(initialTasks: Task[] = []) {
 
   const toggleTask = useCallback((id: string) => {
     setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? { ...task, completed: !task.completed, updatedAt: new Date() }
-          : task
-      )
+      prev.map((task) => {
+        if (task.id === id) {
+          // Cycle through status: 0 -> 1 -> 2 -> 0
+          const newStatus = task.status === 2 ? 0 : task.status + 1;
+          return {
+            ...task,
+            status: newStatus,
+            updatedAt: new Date(),
+          };
+        }
+        return task;
+      })
     );
   }, []);
 

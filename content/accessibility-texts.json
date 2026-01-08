@@ -92,6 +92,7 @@
     "profile_error": "Erro ao carregar configurações",
     "tasks_description": "Organize suas tarefas de forma simples e acessível",
     "tasks_column_todo": "A Fazer",
+    "tasks_column_in_progress": "Em Progresso",
     "tasks_column_done": "Concluídas",
     "tasks_error": "Erro ao carregar tarefas",
     "tasks_loading": "Carregando tarefas..."
@@ -189,6 +190,7 @@
     "profile_error": "Erro",
     "tasks_description": "Organize suas tarefas",
     "tasks_column_todo": "A Fazer",
+    "tasks_column_in_progress": "Em Progresso",
     "tasks_column_done": "Concluídas",
     "tasks_error": "Erro",
     "tasks_loading": "Carregando..."
