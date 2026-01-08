@@ -10,10 +10,9 @@ export function useTasks(initialTasks: Task[] = []) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const addTask = useCallback((task: Omit<Task, "userId" | "createdAt" | "updatedAt">) => {
+  const addTask = useCallback((task: Omit<Task, "createdAt" | "updatedAt">) => {
     const newTask: Task = {
       ...task,
-      userId: "", // This should be set by the caller or service
       createdAt: new Date(),
       updatedAt: new Date(),
     };
