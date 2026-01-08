@@ -26,6 +26,12 @@ export interface TasksColumnProps {
   /** Handler for deleting task */
   onDelete?: (id: string) => void;
   
+  /** Handler for toggling subtask completion */
+  onToggleSubtask?: (taskId: string, subtaskId: string) => void;
+  
+  /** Handler for starting focus timer */
+  onStartFocus?: (taskId: string) => void;
+  
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -36,6 +42,8 @@ export function TasksColumn({
   onToggle,
   onEdit,
   onDelete,
+  onToggleSubtask,
+  onStartFocus,
   "data-testid": testId,
 }: TasksColumnProps) {
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
@@ -80,6 +88,8 @@ export function TasksColumn({
                 onToggle={onToggle}
                 onEdit={onEdit}
                 onDelete={onDelete}
+                onToggleSubtask={onToggleSubtask}
+                onStartFocus={onStartFocus}
               />
             </div>
           ))

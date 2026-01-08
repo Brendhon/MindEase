@@ -33,5 +33,8 @@ export type { TaskDialogProps } from "./task-dialog";
 export { TaskTimer } from "./task-timer";
 export type { TaskTimerProps } from "./task-timer";
 
+export { TaskChecklist } from "./task-checklist";
+export type { TaskChecklistProps } from "./task-checklist";
+
 
 

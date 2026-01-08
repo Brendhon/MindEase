@@ -24,6 +24,12 @@ export interface TasksKanbanProps {
   /** Handler for deleting task */
   onDelete?: (id: string) => void;
   
+  /** Handler for toggling subtask completion */
+  onToggleSubtask?: (taskId: string, subtaskId: string) => void;
+  
+  /** Handler for starting focus timer */
+  onStartFocus?: (taskId: string) => void;
+  
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -33,6 +39,8 @@ export function TasksKanban({
   onToggle,
   onEdit,
   onDelete,
+  onToggleSubtask,
+  onStartFocus,
   "data-testid": testId,
 }: TasksKanbanProps) {
   const { spacingClasses, textDetail } = useCognitiveSettings();
@@ -66,6 +74,8 @@ export function TasksKanban({
         onToggle={onToggle}
         onEdit={onEdit}
         onDelete={onDelete}
+        onToggleSubtask={onToggleSubtask}
+        onStartFocus={onStartFocus}
         data-testid="tasks-column-todo"
       />
       <TasksColumn
@@ -74,6 +84,8 @@ export function TasksKanban({
         onToggle={onToggle}
         onEdit={onEdit}
         onDelete={onDelete}
+        onToggleSubtask={onToggleSubtask}
+        onStartFocus={onStartFocus}
         data-testid="tasks-column-in-progress"
       />
       <TasksColumn
@@ -82,6 +94,8 @@ export function TasksKanban({
         onToggle={onToggle}
         onEdit={onEdit}
         onDelete={onDelete}
+        onToggleSubtask={onToggleSubtask}
+        onStartFocus={onStartFocus}
         data-testid="tasks-column-done"
       />
     </div>

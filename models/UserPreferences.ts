@@ -9,6 +9,10 @@ export interface UserPreferences {
   animations: boolean;
   focusMode: boolean;
   textDetail: "detailed" | "summary";
+  // Timer settings (Pomodoro adapted)
+  focusDuration: number; // Focus time in minutes (default: 25)
+  shortBreakDuration: number; // Short break in minutes (default: 5)
+  longBreakDuration?: number; // Long break in minutes (optional, default: 15)
 }
 
 /**
@@ -30,5 +34,9 @@ export const DEFAULT_ACCESSIBILITY_SETTINGS: UserPreferences = {
   animations: true,
   focusMode: false,
   textDetail: "detailed",
+  // Timer defaults
+  focusDuration: 25, // 25 minutes
+  shortBreakDuration: 5, // 5 minutes
+  longBreakDuration: 15, // 15 minutes (optional)
 };
 

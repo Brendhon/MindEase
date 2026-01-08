@@ -16,6 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useTasks } from "@/hooks/useTasks";
 import { useFeedback } from "@/hooks/useFeedback";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { tasksService } from "@/services/tasks/tasks";
 import { TasksHeader } from "@/components/tasks/tasks-header";
 import { TasksToolbar } from "@/components/tasks/tasks-toolbar";
@@ -43,6 +44,7 @@ export default function TasksPage() {
     setLoading,
     setError,
   } = useTasks();
+  const { timerState, startTimer, switchTask } = useFocusTimer();
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
@@ -141,6 +143,43 @@ export default function TasksPage() {
     }
   };
 
+  const handleToggleSubtask = async (taskId: string, subtaskId: string) => {
+    if (!user?.uid) return;
+
+    const task = getTask(taskId);
+    if (!task || !task.subtasks) return;
+
+    try {
+      const updatedSubtasks = task.subtasks.map((st) =>
+        st.id === subtaskId ? { ...st, completed: !st.completed } : st
+      );
+
+      await tasksService.updateTask(user.uid, taskId, {
+        subtasks: updatedSubtasks,
+      });
+
+      updateTask(taskId, { subtasks: updatedSubtasks });
+    } catch (err) {
+      console.error("Error toggling subtask:", err);
+      showError("toast_error_processing");
+    }
+  };
+
+  const handleTaskStatusChange = async (taskId: string) => {
+    if (!user?.uid) return;
+
+    const task = getTask(taskId);
+    if (!task || task.status === 1) return; // Already in progress
+
+    try {
+      await tasksService.updateTask(user.uid, taskId, { status: 1 }); // 1 = In Progress
+      updateTask(taskId, { status: 1 });
+    } catch (err) {
+      console.error("Error updating task status:", err);
+      showError("toast_error_processing");
+    }
+  };
+
   if (loading) {
     return <TasksLoading data-testid="tasks-page-loading" />;
   }
@@ -167,6 +206,8 @@ export default function TasksPage() {
           onToggle={handleToggleTask}
           onEdit={handleEditTask}
           onDelete={handleDeleteTask}
+          onToggleSubtask={handleToggleSubtask}
+          onStartFocus={handleTaskStatusChange}
           data-testid="tasks-page-kanban"
         />
       </main>
