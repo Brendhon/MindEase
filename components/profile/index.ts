@@ -27,3 +27,6 @@ export type { ProfileResetButtonProps } from "./profile-reset-button";
 export { SettingsSection } from "./settings-section";
 export type { SettingsSectionProps } from "./settings-section";
 
+export { ProfileInfo } from "./profile-info";
+export type { ProfileInfoProps } from "./profile-info";
+
