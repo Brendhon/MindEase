@@ -15,7 +15,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
 import { LogIn } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
 

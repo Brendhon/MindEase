@@ -35,15 +35,6 @@ export interface PageContentProps {
   "data-testid"?: string;
 }
 
-/**
- * PageContent Styles - MindEase
- * Centralized styles for page content component
- */
-export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full max-w-4xl mx-auto",
-} as const;
-
 export function PageContent({
   children,
   containerClassName,
@@ -82,3 +73,12 @@ export function PageContent({
 }
 
 PageContent.displayName = "PageContent";
+
+/**
+ * PageContent Styles - MindEase
+ * Centralized styles for page content component
+ */
+export const styles = {
+  container: "flex min-h-full w-full bg-bg-secondary",
+  main: "flex flex-col w-full max-w-4xl mx-auto",
+} as const;
