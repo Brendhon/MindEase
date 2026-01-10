@@ -3,6 +3,7 @@
 import { ReactNode, useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
+import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { CardHeader } from "./card-header";
 import { CardTitle } from "./card-title";
 import { CardDescription } from "./card-description";
@@ -58,7 +59,12 @@ const CardRoot = function Card({
   as: Component = "div",
   "data-testid": testId,
 }: CardProps) {
-  const { spacingClasses, contrastClasses, animationClasses, focusModeClasses } = useCognitiveSettings();
+  const { spacingClasses, contrastClasses, animationClasses, focusModeClasses, settings } = useCognitiveSettings();
+
+  const borderClasses = useMemo(
+    () => getBorderContrastClasses(settings.contrast, "subtle"),
+    [settings.contrast]
+  );
 
   const cardClasses = useMemo(
     () => cn(
@@ -66,11 +72,12 @@ const CardRoot = function Card({
       spacingClasses.padding,
       spacingClasses.gap,
       contrastClasses,
+      borderClasses,
       animationClasses,
       focusModeClasses,
       className
     ),
-    [spacingClasses.padding, spacingClasses.gap, contrastClasses, animationClasses, focusModeClasses, className]
+    [spacingClasses.padding, spacingClasses.gap, contrastClasses, borderClasses, animationClasses, focusModeClasses, className]
   );
 
   return (

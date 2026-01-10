@@ -3,6 +3,7 @@
 import { ReactNode, useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
+import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { styles } from "./card-styles";
 
 /**
@@ -25,11 +26,16 @@ export interface CardHeaderProps {
 }
 
 export function CardHeader({ children, className, "data-testid": testId }: CardHeaderProps) {
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses, settings } = useCognitiveSettings();
+  
+  const borderClasses = useMemo(
+    () => getBorderContrastClasses(settings.contrast, "subtle"),
+    [settings.contrast]
+  );
   
   const headerClasses = useMemo(
-    () => cn(styles.header, spacingClasses.gap, className),
-    [spacingClasses.gap, className]
+    () => cn(styles.header, spacingClasses.gap, borderClasses, className),
+    [spacingClasses.gap, borderClasses, className]
   );
 
   return (

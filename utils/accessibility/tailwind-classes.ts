@@ -13,7 +13,7 @@ import { UserPreferences } from "@/models/UserPreferences";
  * @example
  * ```tsx
  * const classes = getContrastClasses("high");
- * // Returns: "contrast-more text-gray-900 border-gray-900"
+ * // Returns: "transition-colors duration-200 contrast-more"
  * ```
  */
 export function getContrastClasses(contrast: UserPreferences["contrast"]): string {
@@ -21,12 +21,105 @@ export function getContrastClasses(contrast: UserPreferences["contrast"]): strin
   
   switch (contrast) {
     case "high":
-      return `${baseClasses} contrast-more text-gray-900 dark:text-gray-50`;
+      return `${baseClasses} contrast-more`;
     case "low":
-      return `${baseClasses} contrast-less text-gray-600 dark:text-gray-400`;
+      return `${baseClasses} contrast-less`;
     case "normal":
     default:
       return baseClasses;
+  }
+}
+
+/**
+ * Get Tailwind classes for text contrast based on contrast mode
+ * Ensures WCAG 2.1 compliance: minimum 4.5:1 for normal text, 3:1 for large text
+ * 
+ * @param contrast - Contrast mode (normal, high, low)
+ * @param variant - Text variant (primary, secondary, muted)
+ * @returns Tailwind classes string for text color
+ * 
+ * @example
+ * ```tsx
+ * const classes = getTextContrastClasses("high", "primary");
+ * // Returns: "text-text-primary"
+ * ```
+ */
+export function getTextContrastClasses(
+  contrast: UserPreferences["contrast"],
+  variant: "primary" | "secondary" | "muted" = "primary"
+): string {
+  switch (contrast) {
+    case "high":
+      // High contrast: ensure maximum readability
+      switch (variant) {
+        case "primary":
+          return "text-text-primary";
+        case "secondary":
+          // Secondary text with high contrast should be closer to primary
+          return "text-text-primary";
+        case "muted":
+          // Muted text with high contrast should be at least secondary level
+          return "text-text-secondary";
+        default:
+          return "text-text-primary";
+      }
+    case "low":
+      // Low contrast: softer colors for reduced stimulation
+      switch (variant) {
+        case "primary":
+          return "text-text-secondary";
+        case "secondary":
+          return "text-text-muted";
+        case "muted":
+          return "text-text-muted opacity-75";
+        default:
+          return "text-text-secondary";
+      }
+    case "normal":
+    default:
+      // Normal contrast: standard design tokens
+      switch (variant) {
+        case "primary":
+          return "text-text-primary";
+        case "secondary":
+          return "text-text-secondary";
+        case "muted":
+          return "text-text-muted";
+        default:
+          return "text-text-primary";
+      }
+  }
+}
+
+/**
+ * Get Tailwind classes for border contrast based on contrast mode
+ * Ensures borders are visible and meet WCAG 2.1 non-text contrast requirements (3:1)
+ * 
+ * @param contrast - Contrast mode (normal, high, low)
+ * @param variant - Border variant (subtle, strong)
+ * @returns Tailwind classes string for border color
+ * 
+ * @example
+ * ```tsx
+ * const classes = getBorderContrastClasses("high", "subtle");
+ * // Returns: "border-border-strong"
+ * ```
+ */
+export function getBorderContrastClasses(
+  contrast: UserPreferences["contrast"],
+  variant: "subtle" | "strong" = "subtle"
+): string {
+  switch (contrast) {
+    case "high":
+      // High contrast: use stronger borders for better visibility
+      return "border-border-strong";
+    case "low":
+      // Low contrast: use subtle borders for reduced visual noise
+      return "border-border-subtle opacity-60";
+    case "normal":
+    default:
+      // Normal contrast: use appropriate variant
+      return variant === "strong" ? "border-border-strong" : "border-border-subtle";
   }
 }
 

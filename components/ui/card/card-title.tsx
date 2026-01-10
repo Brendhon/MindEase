@@ -3,6 +3,7 @@
 import { ReactNode, useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
+import { getTextContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { styles } from "./card-styles";
 
 /**
@@ -26,11 +27,16 @@ export interface CardTitleProps {
 }
 
 export function CardTitle({ children, as: Component = "h2", className, "data-testid": testId }: CardTitleProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses, settings } = useCognitiveSettings();
+
+  const textContrastClasses = useMemo(
+    () => getTextContrastClasses(settings.contrast, "primary"),
+    [settings.contrast]
+  );
 
   const titleClasses = useMemo(
-    () => cn(styles.title, fontSizeClasses.lg, className),
-    [fontSizeClasses.lg, className]
+    () => cn(styles.title, fontSizeClasses.lg, textContrastClasses, className),
+    [fontSizeClasses.lg, textContrastClasses, className]
   );
 
   return (
