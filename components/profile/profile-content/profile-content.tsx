@@ -1,8 +1,7 @@
 "use client";
 
+import { PageContent } from "@/components/layout/page-content";
 import { ProfileInfo } from "@/components/profile/profile-info";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
 import { User } from "next-auth";
 
 /**
@@ -25,28 +24,16 @@ export function ProfileContent({
   user,
   "data-testid": testId 
 }: ProfileContentProps) {
-  const { animationClasses } = useCognitiveSettings();
-
   return (
-    <div className={cn(styles.container, animationClasses)} data-testid={testId || "profile-page-container"}>
-      <main className={styles.main} role="main">
-        <ProfileInfo 
-          user={user}
-          data-testid="profile-page-info" 
-        />
-      </main>
-    </div>
+    <PageContent 
+      data-testid={testId || "profile-page-container"}
+    >
+      <ProfileInfo 
+        user={user}
+        data-testid="profile-page-info" 
+      />
+    </PageContent>
   );
 }
 
 ProfileContent.displayName = "ProfileContent";
-
-/**
- * ProfileContent Styles - MindEase
- * Centralized styles for profile content component
- */
-
-export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full",
-} as const;

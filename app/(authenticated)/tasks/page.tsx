@@ -11,13 +11,14 @@
  */
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useTasks } from "@/hooks/useTasks";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { tasksService } from "@/services/tasks/tasks";
+import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { TasksToolbar } from "@/components/tasks/tasks-toolbar";
 import { TasksKanban } from "@/components/tasks/tasks-kanban";
@@ -25,11 +26,10 @@ import { TasksLoading } from "@/components/tasks/tasks-loading";
 import { TasksError } from "@/components/tasks/tasks-error";
 import { TaskDialog } from "@/components/tasks/task-dialog";
 import { Task } from "@/models/Task";
-import { cn } from "@/utils/ui";
 
 export default function TasksPage() {
   const { user } = useAuth();
-  const { spacingClasses, animationClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
   const { success, error: showError } = useFeedback();
   const {
     tasks,
@@ -69,12 +69,6 @@ export default function TasksPage() {
 
     loadTasks();
   }, [user?.uid, setTasks, setLoading, setError]);
-
-  // Generate main container classes with spacing preference
-  const mainClasses = useMemo(
-    () => cn(styles.main, spacingClasses.padding, spacingClasses.gap),
-    [spacingClasses.padding, spacingClasses.gap]
-  );
 
   const handleAddTask = () => {
     setEditingTask(undefined);
@@ -185,8 +179,11 @@ export default function TasksPage() {
   }
 
   return (
-    <div className={cn(styles.container, animationClasses)} data-testid="tasks-page-container">
-      <main className={mainClasses} role="main">
+    <>
+      <PageContent 
+        mainClassName="max-w-full"
+        data-testid="tasks-page-container"
+      >
         <PageHeader
           titleKey="tasks"
           descriptionKey="tasks_description"
@@ -214,7 +211,7 @@ export default function TasksPage() {
           onStartFocus={handleTaskStatusChange}
           data-testid="tasks-page-kanban"
         />
-      </main>
+      </PageContent>
 
       <TaskDialog
         isOpen={isDialogOpen}
@@ -225,16 +222,7 @@ export default function TasksPage() {
         onSubmit={handleSubmitTask}
         initialTask={editingTask}
       />
-    </div>
+    </>
   );
 }
 
-/**
- * Tasks Page Styles - MindEase
- * Centralized styles for tasks page
- */
-
-export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full max-w-7xl mx-auto",
-} as const;
