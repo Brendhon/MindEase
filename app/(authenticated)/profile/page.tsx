@@ -25,17 +25,9 @@ export default async function ProfilePage() {
     redirect("/login");
   }
 
-  // Prepare user data from session
-  const user = {
-    id: session.user.id,
-    email: session.user.email || "",
-    name: session.user.name || null,
-    image: session.user.image || null,
-  };
-
   return (
     <ProfileContent 
-      user={user}
+      user={session.user}
       data-testid="profile-page-container"
     />
   );
