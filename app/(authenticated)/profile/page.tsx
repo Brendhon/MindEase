@@ -14,7 +14,7 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/next-auth";
-import { ProfileContent } from "@/components/profile/profile-content";
+import { ProfileContent } from "@/components/profile";
 
 export default async function ProfilePage() {
   // Get session on server side

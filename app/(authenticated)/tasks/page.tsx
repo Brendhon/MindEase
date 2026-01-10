@@ -11,21 +11,16 @@
  */
 "use client";
 
-import { useState, useEffect } from "react";
+import { PageContent, PageHeader } from "@/components/layout";
+import { TaskDialog, TasksError, TasksKanban, TasksLoading, TasksToolbar } from "@/components/tasks";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useTasks } from "@/hooks/useTasks";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { tasksService } from "@/services/tasks/tasks";
-import { PageContent } from "@/components/layout/page-content";
-import { PageHeader } from "@/components/layout/page-header";
-import { TasksToolbar } from "@/components/tasks/tasks-toolbar";
-import { TasksKanban } from "@/components/tasks/tasks-kanban";
-import { TasksLoading } from "@/components/tasks/tasks-loading";
-import { TasksError } from "@/components/tasks/tasks-error";
-import { TaskDialog } from "@/components/tasks/task-dialog";
+import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
+import { tasksService } from "@/services/tasks/tasks";
+import { useEffect, useState } from "react";
 
 export default function TasksPage() {
   const { user } = useAuth();

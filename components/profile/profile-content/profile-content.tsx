@@ -1,7 +1,7 @@
 "use client";
 
-import { PageContent } from "@/components/layout/page-content";
-import { ProfileInfo } from "@/components/profile/profile-info";
+import { PageContent } from "@/components/layout";
+import { ProfileInfo } from "@/components/profile";
 import { User } from "next-auth";
 
 /**

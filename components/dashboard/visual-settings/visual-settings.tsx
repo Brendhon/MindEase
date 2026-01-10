@@ -1,8 +1,8 @@
 "use client";
 
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { SettingsSection } from "@/components/dashboard/settings-section";
-import { RadioGroup } from "@/components/ui/radio-group";
+import { SettingsSection } from "@/components/dashboard";
+import { RadioGroup } from "@/components/ui";
 
 /**
  * VisualSettings Component - MindEase

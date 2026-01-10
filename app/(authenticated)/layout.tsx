@@ -1,7 +1,6 @@
 "use client";
 
-import { Sidebar } from "@/components/layout/sidebar";
-import { Header } from "@/components/layout/header";
+import { Sidebar, Header } from "@/components/layout";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 

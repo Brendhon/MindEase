@@ -1,16 +1,15 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { PageHeader } from "@/components/layout";
+import { Button, Card } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFeedback } from "@/hooks/useFeedback";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { PageHeader } from "@/components/layout/page-header";
-import { DeleteAccountDialog } from "../delete-account-dialog";
-import { LogOut, Trash2 } from "lucide-react";
 import { cn } from "@/utils/ui";
+import { LogOut, Trash2 } from "lucide-react";
 import { User } from "next-auth";
+import { useMemo, useState } from "react";
+import { DeleteAccountDialog } from "../delete-account-dialog";
 
 /**
  * ProfileInfo Component - MindEase

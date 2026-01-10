@@ -1,7 +1,7 @@
 "use client";
 
-import { PageContainer } from "@/components/layout/page-container";
-import { Button } from "@/components/ui/button";
+import { PageContainer } from "@/components/layout";
+import { Button } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { PAGE_ROUTES } from "@/utils/routes";
 import { cn } from "@/utils/ui";
