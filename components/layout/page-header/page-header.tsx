@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 
 /**
  * PageHeader Component - MindEase
@@ -37,20 +37,14 @@ import type { AccessibilityTextKey } from "@/utils/accessibility/content";
  */
 export interface PageHeaderProps {
   /** Title text key for accessibility text system (preferred) */
-  titleKey?: AccessibilityTextKey;
-  
+  titleKey: AccessibilityTextKey;
+
   /** Description text key for accessibility text system (preferred) */
-  descriptionKey?: AccessibilityTextKey;
-  
-  /** Direct title text (alternative to titleKey) */
-  title?: string;
-  
-  /** Direct description text (alternative to descriptionKey) */
-  description?: string;
-  
+  descriptionKey: AccessibilityTextKey;
+
   /** Custom className */
   className?: string;
-  
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -58,28 +52,10 @@ export interface PageHeaderProps {
 export function PageHeader({
   titleKey,
   descriptionKey,
-  title,
-  description,
   className,
   "data-testid": testId,
 }: PageHeaderProps) {
   const { fontSizeClasses, textDetail } = useCognitiveSettings();
-
-  // Get title text - prefer textKey over direct text
-  const titleText = useMemo(() => {
-    if (titleKey) {
-      return textDetail.getText(titleKey);
-    }
-    return title || "";
-  }, [titleKey, title, textDetail]);
-
-  // Get description text - prefer textKey over direct text
-  const descriptionText = useMemo(() => {
-    if (descriptionKey) {
-      return textDetail.getText(descriptionKey);
-    }
-    return description || "";
-  }, [descriptionKey, description, textDetail]);
 
   // Generate title classes with standardized 2xl size
   const titleClasses = useMemo(
@@ -99,26 +75,18 @@ export function PageHeader({
     [className]
   );
 
-  if (!titleText) {
-    return null;
-  }
+  // Generate test IDs
+  const h1TestId = useMemo(() => testId ? `${testId}-title` : "page-header-title", [testId]);
+  const pTestId = useMemo(() => testId ? `${testId}-description` : "page-header-description", [testId]);
 
   return (
     <header className={headerClasses} data-testid={testId || "page-header"}>
-      <h1 
-        className={titleClasses} 
-        data-testid={testId ? `${testId}-title` : "page-header-title"}
-      >
-        {titleText}
+      <h1 className={titleClasses} data-testid={h1TestId}>
+        {textDetail.getText(titleKey)}
       </h1>
-      {descriptionText && (
-        <p 
-          className={descriptionClasses} 
-          data-testid={testId ? `${testId}-description` : "page-header-description"}
-        >
-          {descriptionText}
-        </p>
-      )}
+      <p className={descriptionClasses} data-testid={pTestId}>
+        {textDetail.getText(descriptionKey)}
+      </p>
     </header>
   );
 }
