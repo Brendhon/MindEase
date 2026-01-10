@@ -3,9 +3,6 @@
  * Centralized exports for dashboard-related components
  */
 
-export { DashboardHeader } from "./dashboard-header";
-export type { DashboardHeaderProps } from "./dashboard-header";
-
 export { DashboardLoading } from "./dashboard-loading";
 export type { DashboardLoadingProps } from "./dashboard-loading";
 

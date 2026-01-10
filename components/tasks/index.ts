@@ -3,9 +3,6 @@
  * Centralized exports for tasks-related components
  */
 
-export { TasksHeader } from "./tasks-header";
-export type { TasksHeaderProps } from "./tasks-header";
-
 export { TasksToolbar } from "./tasks-toolbar";
 export type { TasksToolbarProps } from "./tasks-toolbar";
 

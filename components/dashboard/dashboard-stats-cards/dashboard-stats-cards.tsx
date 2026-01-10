@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Task } from "@/models/Task";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/utils/ui";
 import { CheckCircle2, Clock, ListTodo, BarChart3 } from "lucide-react";
 
@@ -36,11 +37,6 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
     [spacingClasses.gap]
   );
 
-  const cardClasses = useMemo(
-    () => cn(styles.card, spacingClasses.padding),
-    [spacingClasses.padding]
-  );
-
   const titleClasses = useMemo(
     () => cn(styles.title, fontSizeClasses.sm),
     [fontSizeClasses.sm]
@@ -57,7 +53,6 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
         icon={BarChart3}
         title={textDetail.getText("dashboard_stats_total")}
         value={stats.total}
-        className={cardClasses}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
         data-testid="dashboard-stat-total"
@@ -66,7 +61,6 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
         icon={ListTodo}
         title={textDetail.getText("dashboard_stats_pending")}
         value={stats.pending}
-        className={cardClasses}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
         data-testid="dashboard-stat-pending"
@@ -75,7 +69,6 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
         icon={Clock}
         title={textDetail.getText("dashboard_stats_in_progress")}
         value={stats.inProgress}
-        className={cardClasses}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
         data-testid="dashboard-stat-in-progress"
@@ -84,7 +77,6 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
         icon={CheckCircle2}
         title={textDetail.getText("dashboard_stats_completed")}
         value={stats.completed}
-        className={cardClasses}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
         data-testid="dashboard-stat-completed"
@@ -102,7 +94,6 @@ interface StatCardProps {
   icon: React.ComponentType<{ className?: string; size?: number }>;
   title: string;
   value: number;
-  className: string;
   titleClasses: string;
   valueClasses: string;
   "data-testid"?: string;
@@ -112,13 +103,12 @@ function StatCard({
   icon: Icon,
   title,
   value,
-  className,
   titleClasses,
   valueClasses,
   "data-testid": testId,
 }: StatCardProps) {
   return (
-    <div className={className} data-testid={testId}>
+    <Card className={styles.card} data-testid={testId}>
       <div className={styles.cardHeader}>
         <Icon className={styles.icon} size={20} />
         <span className={titleClasses}>{title}</span>
@@ -126,7 +116,7 @@ function StatCard({
       <div className={styles.cardValue}>
         <span className={valueClasses}>{value}</span>
       </div>
-    </div>
+    </Card>
   );
 }
 
@@ -137,7 +127,7 @@ function StatCard({
 
 export const styles = {
   container: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
-  card: "flex flex-col bg-surface-primary border border-border-subtle rounded-lg gap-2",
+  card: "gap-2",
   cardHeader: "flex items-center gap-2",
   icon: "text-text-secondary",
   title: "text-text-secondary font-medium",

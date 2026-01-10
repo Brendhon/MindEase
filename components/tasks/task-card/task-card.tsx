@@ -1,8 +1,10 @@
 "use client";
 
+import { useMemo } from "react";
 import { Task } from "@/models/Task";
 import { TaskChecklist } from "@/components/tasks/task-checklist";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
@@ -72,8 +74,13 @@ export function TaskCard({ task, onToggle, onEdit, onDelete, onToggleSubtask, on
     }
   };
 
+  const cardClasses = useMemo(
+    () => isTimerActive ? "ring-2 ring-action-primary/20" : "",
+    [isTimerActive]
+  );
+
   return (
-    <div className={cn("p-4 rounded-md border border-border-subtle bg-surface-primary", isTimerActive && "ring-2 ring-action-primary/20")} data-testid={`task-card-${task.id}`}>
+    <Card className={cardClasses} data-testid={`task-card-${task.id}`}>
       <div className="flex items-start gap-3">
         <input
           type="checkbox"
@@ -165,11 +172,15 @@ export function TaskCard({ task, onToggle, onEdit, onDelete, onToggleSubtask, on
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-col gap-2 flex-shrink-0">
+        <div className={cn("flex flex-col gap-2 shrink-0", spacingClasses.gap)}>
           {onEdit && (
             <button
               onClick={() => onEdit(task)}
-              className={cn("text-action-primary hover:text-action-primary-hover", fontSizeClasses.sm)}
+              className={cn(
+                "text-action-primary hover:text-action-primary-hover rounded-md px-2 py-1",
+                "focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2",
+                fontSizeClasses.sm
+              )}
               aria-label={`Edit task "${task.title}"`}
               data-testid={`task-card-button-edit-${task.id}`}
             >
@@ -179,7 +190,11 @@ export function TaskCard({ task, onToggle, onEdit, onDelete, onToggleSubtask, on
           {onDelete && (
             <button
               onClick={() => onDelete(task.id)}
-              className={cn("text-feedback-error hover:text-feedback-error/80", fontSizeClasses.sm)}
+              className={cn(
+                "text-feedback-error hover:text-feedback-error/80 rounded-md px-2 py-1",
+                "focus:outline-none focus:ring-2 focus:ring-feedback-error focus:ring-offset-2",
+                fontSizeClasses.sm
+              )}
               aria-label={`Delete task "${task.title}"`}
               data-testid={`task-card-button-delete-${task.id}`}
             >
@@ -188,7 +203,7 @@ export function TaskCard({ task, onToggle, onEdit, onDelete, onToggleSubtask, on
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

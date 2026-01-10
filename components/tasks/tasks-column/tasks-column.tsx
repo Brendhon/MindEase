@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { Task } from "@/models/Task";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { TaskCard } from "@/components/tasks/task-card";
+import { Card } from "@/components/ui/card";
 import { cn } from "@/utils/ui";
 
 /**
@@ -48,32 +49,29 @@ export function TasksColumn({
 }: TasksColumnProps) {
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
 
-  const titleClasses = useMemo(
-    () => cn(styles.title, fontSizeClasses.lg),
-    [fontSizeClasses.lg]
-  );
-
-  const containerClasses = useMemo(
-    () => cn(styles.container, spacingClasses.padding, spacingClasses.gap),
-    [spacingClasses.padding, spacingClasses.gap]
-  );
-
   const countClasses = useMemo(
     () => cn(styles.count, fontSizeClasses.sm),
     [fontSizeClasses.sm]
   );
 
   return (
-    <div className={containerClasses} data-testid={testId || `tasks-column-${title.toLowerCase().replace(/\s+/g, "-")}`}>
-      <div className={styles.header}>
-        <h2 className={titleClasses} data-testid={testId ? `${testId}-title` : `tasks-column-title-${title}`}>
+    <Card 
+      className={styles.container}
+      data-testid={testId || `tasks-column-${title.toLowerCase().replace(/\s+/g, "-")}`}
+    >
+      <Card.Header className={styles.header}>
+        <Card.Title data-testid={testId ? `${testId}-title` : `tasks-column-title-${title}`}>
           {title}
-        </h2>
+        </Card.Title>
         <span className={countClasses} data-testid={testId ? `${testId}-count` : `tasks-column-count-${title}`}>
           {tasks.length}
         </span>
-      </div>
-      <div className={cn(styles.content, spacingClasses.gap)} role="list" data-testid={testId ? `${testId}-content` : `tasks-column-content-${title}`}>
+      </Card.Header>
+      <Card.Content 
+        className={styles.content}
+        role="list" 
+        data-testid={testId ? `${testId}-content` : `tasks-column-content-${title}`}
+      >
         {tasks.length === 0 ? (
           <div className={styles.empty} data-testid={testId ? `${testId}-empty` : `tasks-column-empty-${title}`}>
             <p className={cn(styles.emptyText, fontSizeClasses.sm)}>
@@ -94,8 +92,8 @@ export function TasksColumn({
             </div>
           ))
         )}
-      </div>
-    </div>
+      </Card.Content>
+    </Card>
   );
 }
 
@@ -107,11 +105,10 @@ TasksColumn.displayName = "TasksColumn";
  */
 
 export const styles = {
-  container: "flex flex-col bg-surface-primary border border-border-subtle rounded-lg min-h-[400px]",
-  header: "flex items-center justify-between border-b border-border-subtle pb-3",
-  title: "font-semibold text-text-primary",
+  container: "min-h-[400px]",
+  header: "flex items-center justify-between pb-3",
   count: "text-text-secondary bg-surface-secondary px-2 py-1 rounded-full",
-  content: "flex flex-col flex-1",
+  content: "flex-1",
   empty: "flex items-center justify-center flex-1 py-8",
   emptyText: "text-text-secondary text-center",
 } as const;

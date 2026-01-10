@@ -2,9 +2,9 @@
 
 import { DashboardCognitiveAlerts } from "@/components/dashboard/dashboard-cognitive-alerts";
 import { DashboardError } from "@/components/dashboard/dashboard-error";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { DashboardLoading } from "@/components/dashboard/dashboard-loading";
 import { DashboardStatsCards } from "@/components/dashboard/dashboard-stats-cards";
+import { PageHeader } from "@/components/layout/page-header";
 import { ContentSettings } from "@/components/profile/content-settings";
 import { InteractionSettings } from "@/components/profile/interaction-settings";
 import { ProfileResetButton } from "@/components/profile/profile-reset-button";
@@ -62,7 +62,11 @@ export function DashboardContent({
   return (
     <div className={cn(styles.container, animationClasses)} data-testid={testId || "dashboard-page-container"}>
       <main className={mainClasses} role="main">
-        <DashboardHeader data-testid="dashboard-page-header" />
+        <PageHeader
+          titleKey="dashboard_title"
+          descriptionKey="dashboard_description"
+          data-testid="dashboard-page-header"
+        />
 
         {hasError && (
           <DashboardError

@@ -18,7 +18,7 @@ import { useTasks } from "@/hooks/useTasks";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { tasksService } from "@/services/tasks/tasks";
-import { TasksHeader } from "@/components/tasks/tasks-header";
+import { PageHeader } from "@/components/layout/page-header";
 import { TasksToolbar } from "@/components/tasks/tasks-toolbar";
 import { TasksKanban } from "@/components/tasks/tasks-kanban";
 import { TasksLoading } from "@/components/tasks/tasks-loading";
@@ -187,7 +187,11 @@ export default function TasksPage() {
   return (
     <div className={cn(styles.container, animationClasses)} data-testid="tasks-page-container">
       <main className={mainClasses} role="main">
-        <TasksHeader data-testid="tasks-page-header" />
+        <PageHeader
+          titleKey="tasks"
+          descriptionKey="tasks_description"
+          data-testid="tasks-page-header"
+        />
 
         {error && (
           <TasksError

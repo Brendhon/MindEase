@@ -5,6 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFeedback } from "@/hooks/useFeedback";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PageHeader } from "@/components/layout/page-header";
 import { DeleteAccountDialog } from "../delete-account-dialog";
 import { LogOut, Trash2 } from "lucide-react";
 import { cn } from "@/utils/ui";
@@ -32,15 +34,6 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   const { error: showError } = useFeedback();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const containerClasses = useMemo(
-    () => cn(styles.container, spacingClasses.padding, spacingClasses.gap),
-    [spacingClasses.padding, spacingClasses.gap]
-  );
-
-  const titleClasses = useMemo(
-    () => cn(styles.title, fontSizeClasses.lg),
-    [fontSizeClasses.lg]
-  );
 
   const labelClasses = useMemo(
     () => cn(styles.label, fontSizeClasses.sm),
@@ -54,7 +47,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
 
   if (!user) {
     return (
-      <div className={containerClasses} data-testid={testId || "profile-info-container"}>
+      <div className={styles.container} data-testid={testId || "profile-info-container"}>
         <p className={cn(styles.error, fontSizeClasses.base)}>
           {textDetail.getText("error")}
         </p>
@@ -63,17 +56,14 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   }
 
   return (
-    <div className={containerClasses} data-testid={testId || "profile-info-container"}>
-      <div className={styles.section}>
-        <h2 className={titleClasses} data-testid={testId ? `${testId}-title` : "profile-info-title"}>
-          {textDetail.getText("profile_title")}
-        </h2>
-        <p className={cn(styles.description, fontSizeClasses.sm)}>
-          {textDetail.getText("profile_description")}
-        </p>
-      </div>
+    <div className={styles.container} data-testid={testId || "profile-info-container"}>
+      <PageHeader
+        titleKey="profile_title"
+        descriptionKey="profile_description"
+        data-testid={testId ? `${testId}-header` : "profile-info-header"}
+      />
 
-      <div className={cn(styles.infoCard, spacingClasses.padding)}>
+      <Card className={styles.infoCard}>
         {user.image && (
           <div className={styles.avatarContainer}>
             <img
@@ -95,9 +85,9 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
           <span className={labelClasses}>E-mail:</span>
           <span className={valueClasses}>{user.email}</span>
         </div>
-      </div>
+      </Card>
 
-      <div className={styles.actions}>
+      <div className={cn(styles.actions, spacingClasses.gap)}>
         <Button
           variant="secondary"
           size="md"
@@ -146,17 +136,14 @@ ProfileInfo.displayName = "ProfileInfo";
  */
 
 export const styles = {
-  container: "flex flex-col w-full max-w-4xl mx-auto",
-  section: "flex flex-col",
-  title: "font-semibold text-text-primary",
-  description: "text-text-secondary mt-1",
-  infoCard: "flex flex-col bg-surface-primary border border-border-subtle rounded-lg gap-4",
+  container: "flex flex-col w-full max-w-4xl mx-auto gap-6",
+  infoCard: "gap-4",
   avatarContainer: "flex justify-center",
   infoRow: "flex flex-col gap-1",
   label: "text-text-secondary font-medium",
   value: "text-text-primary",
   avatar: "w-24 h-24 rounded-full",
-  actions: "flex justify-end gap-3 mt-6",
+  actions: "flex justify-end gap-3",
   loading: "text-text-secondary text-center",
   error: "text-action-danger text-center",
 } as const;

@@ -3,9 +3,6 @@
  * Centralized exports for profile-related components
  */
 
-export { ProfileHeader } from "./profile-header";
-export type { ProfileHeaderProps } from "./profile-header";
-
 export { ProfileError } from "./profile-error";
 export type { ProfileErrorProps } from "./profile-error";
 

@@ -10,8 +10,8 @@ export interface UserPreferences {
   focusMode: boolean;
   textDetail: "detailed" | "summary";
   // Timer settings (Pomodoro adapted)
-  focusDuration: number; // Focus time in minutes (default: 25)
-  shortBreakDuration: number; // Short break in minutes (default: 5)
+  focusDuration?: number; // Focus time in minutes (default: 25)
+  shortBreakDuration?: number; // Short break in minutes (default: 5)
   longBreakDuration?: number; // Long break in minutes (optional, default: 15)
 }
 
