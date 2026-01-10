@@ -17,3 +17,6 @@ export type { DashboardStatsCardsProps } from "./dashboard-stats-cards";
 
 export { DashboardCognitiveAlerts } from "./dashboard-cognitive-alerts";
 export type { DashboardCognitiveAlertsProps } from "./dashboard-cognitive-alerts";
+
+export { DashboardContent } from "./dashboard-content";
+export type { DashboardContentProps } from "./dashboard-content";
