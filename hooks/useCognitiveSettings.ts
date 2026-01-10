@@ -1,16 +1,15 @@
-import { useMemo } from "react";
 import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
+import { getAccessibilityText, type AccessibilityTextKey } from "@/utils/accessibility/content";
 import {
+  getAnimationClasses,
+  getCombinedAccessibilityClasses,
   getContrastClasses,
+  getFocusModeClasses,
+  getFontSizeClasses,
   getSpacingClasses,
   getSpacingValue,
-  getFontSizeClasses,
-  getAnimationClasses,
-  getFocusModeClasses,
-  getCombinedAccessibilityClasses,
 } from "@/utils/accessibility/tailwind-classes";
-import { getAccessibilityText, createTextGetter } from "@/utils/accessibility/content";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { useMemo } from "react";
 
 /**
  * useCognitiveSettings Hook - MindEase

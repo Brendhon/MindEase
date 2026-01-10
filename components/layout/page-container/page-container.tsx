@@ -1,3 +1,4 @@
+import { cn } from "@/utils/ui";
 import { ReactNode } from "react";
 
 /**
@@ -12,9 +13,12 @@ export interface PageContainerProps {
 
 export function PageContainer({ children, className = "", "data-testid": dataTestId = "page-container" }: PageContainerProps) {
   return (
-    <div className={`max-w-4xl mx-auto p-8 ${className}`} data-testid={dataTestId}>
+    <div className={cn(styles.container, className)} data-testid={dataTestId}>
       {children}
     </div>
   );
 }
 
+const styles = {
+  container: "max-w-4xl mx-auto p-8",
+} as const;

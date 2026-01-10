@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@/components/form/input";
+import { Input } from "@/components/form";
 import { Button, Dialog, RadioGroup } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFeedback } from "@/hooks/useFeedback";

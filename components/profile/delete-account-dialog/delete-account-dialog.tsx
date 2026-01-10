@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Button, Dialog } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFeedback } from "@/hooks/useFeedback";
 import { authService } from "@/services/auth";
-import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-import { Trash2 } from "lucide-react";
 import { cn } from "@/utils/ui";
+import { Trash2 } from "lucide-react";
+import { useState } from "react";
 
 /**
  * DeleteAccountDialog Component - MindEase

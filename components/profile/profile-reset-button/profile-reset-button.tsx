@@ -1,7 +1,7 @@
 "use client";
 
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { RotateCcw } from "lucide-react";
 
 /**

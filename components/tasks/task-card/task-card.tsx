@@ -1,15 +1,14 @@
 "use client";
 
-import { useMemo } from "react";
-import { Task } from "@/models/Task";
 import { TaskChecklist } from "@/components/tasks/task-checklist";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useFeedback } from "@/hooks/useFeedback";
+import { Button, Card } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { Play, Pause, Square, CheckCircle2 } from "lucide-react";
+import { useFeedback } from "@/hooks/useFeedback";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
+import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
+import { Pause, Play, Square } from "lucide-react";
+import { useMemo } from "react";
 
 /**
  * Task Card Component - MindEase
