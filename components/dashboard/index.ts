@@ -17,3 +17,12 @@ export type { DashboardCognitiveAlertsProps } from "./dashboard-cognitive-alerts
 
 export { DashboardContent } from "./dashboard-content";
 export type { DashboardContentProps } from "./dashboard-content";
+
+export { InteractionSettings } from "./interaction-settings";
+export type { InteractionSettingsProps } from "./interaction-settings";
+
+export { VisualSettings } from "./visual-settings";
+export type { VisualSettingsProps } from "./visual-settings";
+
+export { SettingsSection } from "./settings-section";
+export type { SettingsSectionProps } from "./settings-section";

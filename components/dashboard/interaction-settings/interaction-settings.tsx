@@ -1,7 +1,7 @@
 "use client";
 
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { SettingsSection } from "@/components/profile/settings-section";
+import { SettingsSection } from "@/components/dashboard/settings-section";
 import { Switch } from "@/components/ui/switch";
 
 /**
@@ -23,15 +23,9 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
     >
       {/* Animations Setting */}
       <Switch
-        checked={settings.animations}
-        onChange={(checked) => updateSetting("animations", checked)}
         data-testid="profile-animations"
       >
-        <Switch.Toggle
-          checked={settings.animations}
-          onChange={(checked) => updateSetting("animations", checked)}
-          data-testid="profile-animations-switch"
-        />
+        <Switch.Toggle checked={settings.animations} onChange={(checked) => updateSetting("animations", checked)} />
         <div className="flex flex-col">
           <Switch.Label
             onClick={() => updateSetting("animations", !settings.animations)}
@@ -47,15 +41,9 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
 
       {/* Focus Mode Setting */}
       <Switch
-        checked={settings.focusMode}
-        onChange={(checked) => updateSetting("focusMode", checked)}
         data-testid="profile-focusmode"
       >
-        <Switch.Toggle
-          checked={settings.focusMode}
-          onChange={(checked) => updateSetting("focusMode", checked)}
-          data-testid="profile-focusmode-switch"
-        />
+        <Switch.Toggle checked={settings.focusMode} onChange={(checked) => updateSetting("focusMode", checked)} />
         <div className="flex flex-col">
           <Switch.Label
             onClick={() => updateSetting("focusMode", !settings.focusMode)}

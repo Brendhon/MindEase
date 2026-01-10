@@ -160,6 +160,7 @@ export const ComplexContent: Story = {
 
 // Multiple cards showcase
 export const MultipleCards: Story = {
+  args: {} as any,
   render: () => (
     <div className="flex flex-col gap-4 max-w-2xl">
       <Card>
@@ -198,6 +199,7 @@ export const MultipleCards: Story = {
 
 // Showcase different accessibility settings
 export const AccessibilityShowcase: Story = {
+  args: {} as any,
   render: () => (
     <div className="flex gap-6 flex-col p-6">
       <div>

@@ -1,15 +1,10 @@
 "use client";
 
-import { DashboardCognitiveAlerts } from "@/components/dashboard/dashboard-cognitive-alerts";
-import { DashboardError } from "@/components/dashboard/dashboard-error";
-import { DashboardLoading } from "@/components/dashboard/dashboard-loading";
-import { DashboardStatsCards } from "@/components/dashboard/dashboard-stats-cards";
+import { DashboardCognitiveAlerts, DashboardError, DashboardLoading, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { ContentSettings } from "@/components/profile/content-settings";
-import { InteractionSettings } from "@/components/profile/interaction-settings";
 import { ProfileResetButton } from "@/components/profile/profile-reset-button";
-import { VisualSettings } from "@/components/profile/visual-settings";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
