@@ -7,32 +7,36 @@
  * - Logout functionality
  * - Simple, focused interface
  * - Accessible design (WCAG compliant)
+ * 
+ * This is a Server Component that fetches user data on the server side
+ * following Next.js best practices.
  */
-"use client";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/config/next-auth";
+import { ProfileContent } from "@/components/profile/profile-content";
 
-import { ProfileInfo } from "@/components/profile/profile-info";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
+export default async function ProfilePage() {
+  // Get session on server side
+  const session = await getServerSession(authOptions);
 
-export default function ProfilePage() {
-  const { animationClasses } = useCognitiveSettings();
+  // Redirect if not authenticated
+  if (!session?.user?.id) {
+    redirect("/login");
+  }
+
+  // Prepare user data from session
+  const user = {
+    id: session.user.id,
+    email: session.user.email || "",
+    name: session.user.name || null,
+    image: session.user.image || null,
+  };
 
   return (
-    <div className={cn(styles.container, animationClasses)} data-testid="profile-page-container">
-      <main className={styles.main} role="main">
-        <ProfileInfo data-testid="profile-page-info" />
-      </main>
-    </div>
+    <ProfileContent 
+      user={user}
+      data-testid="profile-page-container"
+    />
   );
 }
-
-/**
- * Profile Page Styles - MindEase
- * Centralized styles for profile page
- */
-
-export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full",
-} as const;

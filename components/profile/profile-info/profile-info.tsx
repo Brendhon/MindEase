@@ -6,18 +6,26 @@ import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Button } from "@/components/ui/button";
 import { LogOut, Trash2 } from "lucide-react";
 import { cn } from "@/utils/ui";
+import { User } from "next-auth";
 
 /**
  * ProfileInfo Component - MindEase
  * Display user information, logout and delete account buttons
  */
 export interface ProfileInfoProps {
+  /** User data from server (optional, falls back to useAuth if not provided) */
+  user: User;
+  
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
-export function ProfileInfo({ "data-testid": testId }: ProfileInfoProps) {
-  const { user, isLoading: authLoading, signOut } = useAuth();
+export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileInfoProps) {
+  // Use provided user prop or fall back to useAuth for backward compatibility
+  const auth = useAuth();
+  const user = userProp || auth.user
+  
+  const { signOut } = auth;
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
 
   const containerClasses = useMemo(
@@ -39,16 +47,6 @@ export function ProfileInfo({ "data-testid": testId }: ProfileInfoProps) {
     () => cn(styles.value, fontSizeClasses.base),
     [fontSizeClasses.base]
   );
-
-  if (authLoading) {
-    return (
-      <div className={containerClasses} data-testid={testId || "profile-info-container"}>
-        <p className={cn(styles.loading, fontSizeClasses.base)}>
-          {textDetail.getText("loading")}
-        </p>
-      </div>
-    );
-  }
 
   if (!user) {
     return (
@@ -89,12 +87,10 @@ export function ProfileInfo({ "data-testid": testId }: ProfileInfoProps) {
           </div>
         )}
         
-        {user.email && (
-          <div className={styles.infoRow}>
-            <span className={labelClasses}>E-mail:</span>
-            <span className={valueClasses}>{user.email}</span>
-          </div>
-        )}
+        <div className={styles.infoRow}>
+          <span className={labelClasses}>E-mail:</span>
+          <span className={valueClasses}>{user.email}</span>
+        </div>
       </div>
 
       <div className={styles.actions}>

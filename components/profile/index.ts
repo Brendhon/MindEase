@@ -30,3 +30,6 @@ export type { SettingsSectionProps } from "./settings-section";
 export { ProfileInfo } from "./profile-info";
 export type { ProfileInfoProps } from "./profile-info";
 
+export { ProfileContent } from "./profile-content";
+export type { ProfileContentProps } from "./profile-content";
+
