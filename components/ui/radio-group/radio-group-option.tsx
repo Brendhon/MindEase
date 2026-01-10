@@ -11,7 +11,10 @@ import { styles } from "./radio-group-styles";
  * 
  * @example
  * ```tsx
- * <RadioGroup value={selected} onChange={setSelected} label="Choose option">
+ * <RadioGroup value={selected} onChange={setSelected}>
+ *   <RadioGroup.Header>
+ *     <RadioGroup.Label>Choose option</RadioGroup.Label>
+ *   </RadioGroup.Header>
  *   <RadioGroup.Option value="option1" label="Option 1" />
  *   <RadioGroup.Option value="option2" label="Option 2" description="Description" />
  * </RadioGroup>

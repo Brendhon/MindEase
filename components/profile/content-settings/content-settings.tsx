@@ -25,10 +25,16 @@ export function ContentSettings({ "data-testid": testId }: ContentSettingsProps)
       <RadioGroup
         value={settings.textDetail}
         onChange={(value) => updateSetting("textDetail", value)}
-        label={textDetail.getText("profile_textdetail_label")}
-        description={textDetail.getText("profile_textdetail_description")}
         data-testid="profile-textdetail"
       >
+        <RadioGroup.Header>
+          <RadioGroup.Label data-testid="profile-textdetail-label">
+            {textDetail.getText("profile_textdetail_label")}
+          </RadioGroup.Label>
+          <RadioGroup.Description data-testid="profile-textdetail-description">
+            {textDetail.getText("profile_textdetail_description")}
+          </RadioGroup.Description>
+        </RadioGroup.Header>
         <RadioGroup.Option
           value="detailed"
           label={textDetail.getText("profile_textdetail_detailed")}

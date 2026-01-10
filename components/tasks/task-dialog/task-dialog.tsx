@@ -242,8 +242,10 @@ export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialo
         <RadioGroup
           value={status.toString()}
           onChange={(value) => setStatus(Number(value))}
-          label="Status"
         >
+          <RadioGroup.Header>
+            <RadioGroup.Label>Status</RadioGroup.Label>
+          </RadioGroup.Header>
           <RadioGroup.Option value="0" label="A Fazer" />
           <RadioGroup.Option value="1" label="Em Progresso" />
           <RadioGroup.Option value="2" label="Concluída" />

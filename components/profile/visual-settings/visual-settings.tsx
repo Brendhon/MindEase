@@ -25,10 +25,16 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       <RadioGroup
         value={settings.contrast}
         onChange={(value) => updateSetting("contrast", value)}
-        label={textDetail.getText("profile_contrast_label")}
-        description={textDetail.getText("profile_contrast_description")}
         data-testid="profile-contrast"
       >
+        <RadioGroup.Header>
+          <RadioGroup.Label data-testid="profile-contrast-label">
+            {textDetail.getText("profile_contrast_label")}
+          </RadioGroup.Label>
+          <RadioGroup.Description data-testid="profile-contrast-description">
+            {textDetail.getText("profile_contrast_description")}
+          </RadioGroup.Description>
+        </RadioGroup.Header>
         <RadioGroup.Option
           value="normal"
           label={textDetail.getText("profile_contrast_normal")}
@@ -53,10 +59,16 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       <RadioGroup
         value={settings.spacing}
         onChange={(value) => updateSetting("spacing", value)}
-        label={textDetail.getText("profile_spacing_label")}
-        description={textDetail.getText("profile_spacing_description")}
         data-testid="profile-spacing"
       >
+        <RadioGroup.Header>
+          <RadioGroup.Label data-testid="profile-spacing-label">
+            {textDetail.getText("profile_spacing_label")}
+          </RadioGroup.Label>
+          <RadioGroup.Description data-testid="profile-spacing-description">
+            {textDetail.getText("profile_spacing_description")}
+          </RadioGroup.Description>
+        </RadioGroup.Header>
         <RadioGroup.Option
           value="compact"
           label={textDetail.getText("profile_spacing_compact")}
@@ -81,10 +93,16 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       <RadioGroup
         value={settings.fontSize}
         onChange={(value) => updateSetting("fontSize", value)}
-        label={textDetail.getText("profile_fontsize_label")}
-        description={textDetail.getText("profile_fontsize_description")}
         data-testid="profile-fontsize"
       >
+        <RadioGroup.Header>
+          <RadioGroup.Label data-testid="profile-fontsize-label">
+            {textDetail.getText("profile_fontsize_label")}
+          </RadioGroup.Label>
+          <RadioGroup.Description data-testid="profile-fontsize-description">
+            {textDetail.getText("profile_fontsize_description")}
+          </RadioGroup.Description>
+        </RadioGroup.Header>
         <RadioGroup.Option
           value="small"
           label={textDetail.getText("profile_fontsize_small")}
