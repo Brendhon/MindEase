@@ -21,22 +21,6 @@ const meta = {
     ),
   ],
   argTypes: {
-    checked: {
-      control: 'boolean',
-      description: 'Current checked state',
-    },
-    disabled: {
-      control: 'boolean',
-      description: 'Disable the switch',
-    },
-    label: {
-      control: 'text',
-      description: 'Label text (prop-based API)',
-    },
-    description: {
-      control: 'text',
-      description: 'Description text (prop-based API)',
-    },
     className: {
       control: 'text',
       description: 'Custom className for container',
@@ -58,11 +42,10 @@ export const Basic: Story = {
   render: () => {
     const [checked, setChecked] = useState(false);
     return (
-      <Switch
-        checked={checked}
-        onChange={setChecked}
-        label="Enable notifications"
-      />
+      <Switch>
+        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Label>Enable notifications</Switch.Label>
+      </Switch>
     );
   },
 };
@@ -73,12 +56,11 @@ export const WithDescription: Story = {
   render: () => {
     const [checked, setChecked] = useState(false);
     return (
-      <Switch
-        checked={checked}
-        onChange={setChecked}
-        label="Enable notifications"
-        description="Receive email notifications about important updates"
-      />
+      <Switch>
+        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Label>Enable notifications</Switch.Label>
+        <Switch.Description>Receive email notifications about important updates</Switch.Description>
+      </Switch>
     );
   },
 };
@@ -89,12 +71,11 @@ export const Checked: Story = {
   render: () => {
     const [checked, setChecked] = useState(true);
     return (
-      <Switch
-        checked={checked}
-        onChange={setChecked}
-        label="Notifications enabled"
-        description="You will receive notifications"
-      />
+      <Switch  >
+        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Label>Notifications enabled</Switch.Label>
+        <Switch.Description>You will receive notifications</Switch.Description>
+      </Switch>
     );
   },
 };
@@ -105,13 +86,11 @@ export const Disabled: Story = {
   render: () => {
     const [checked, setChecked] = useState(false);
     return (
-      <Switch
-        checked={checked}
-        onChange={setChecked}
-        label="Disabled switch"
-        description="This switch is disabled and cannot be toggled"
-        disabled
-      />
+      <Switch>
+        <Switch.Toggle checked={checked} onChange={setChecked} disabled />
+        <Switch.Label>Disabled switch</Switch.Label>
+        <Switch.Description>This switch is disabled and cannot be toggled</Switch.Description>
+      </Switch>
     );
   },
 };
@@ -122,27 +101,10 @@ export const DisabledChecked: Story = {
   render: () => {
     const [checked, setChecked] = useState(true);
     return (
-      <Switch
-        checked={checked}
-        onChange={setChecked}
-        label="Disabled and checked"
-        description="This switch is disabled and checked"
-        disabled
-      />
-    );
-  },
-};
-
-// Switch with composition API
-export const CompositionAPI: Story = {
-  args: {} as any,
-  render: () => {
-    const [checked, setChecked] = useState(false);
-    return (
-      <Switch checked={checked} onChange={setChecked}>
-        <Switch.Toggle checked={checked} onChange={setChecked} />
-        <Switch.Label onClick={() => setChecked(!checked)}>Enable dark mode</Switch.Label>
-        <Switch.Description>Switch to dark theme for better viewing in low light</Switch.Description>
+      <Switch>
+        <Switch.Toggle checked={checked} onChange={setChecked} disabled />
+        <Switch.Label>Disabled and checked</Switch.Label>
+        <Switch.Description>This switch is disabled and checked</Switch.Description>
       </Switch>
     );
   },
@@ -153,36 +115,20 @@ export const MultipleSwitches: Story = {
   args: {} as any,
   render: () => {
     const [notifications, setNotifications] = useState(true);
-    const [email, setEmail] = useState(false);
-    const [sms, setSms] = useState(true);
     const [push, setPush] = useState(false);
-    
+
     return (
       <div className="flex flex-col gap-4 max-w-md">
-        <Switch
-          checked={notifications}
-          onChange={setNotifications}
-          label="Enable notifications"
-          description="Receive all types of notifications"
-        />
-        <Switch
-          checked={email}
-          onChange={setEmail}
-          label="Email notifications"
-          description="Receive notifications via email"
-        />
-        <Switch
-          checked={sms}
-          onChange={setSms}
-          label="SMS notifications"
-          description="Receive notifications via text message"
-        />
-        <Switch
-          checked={push}
-          onChange={setPush}
-          label="Push notifications"
-          description="Receive push notifications on your device"
-        />
+        <Switch>
+          <Switch.Toggle checked={notifications} onChange={setNotifications} />
+          <Switch.Label>Email notifications</Switch.Label>
+          <Switch.Description>Receive notifications via email</Switch.Description>
+        </Switch>
+        <Switch>
+          <Switch.Toggle checked={push} onChange={setPush} />
+          <Switch.Label>Push notifications</Switch.Label>
+          <Switch.Description>Receive push notifications on your device</Switch.Description>
+        </Switch>
       </div>
     );
   },
