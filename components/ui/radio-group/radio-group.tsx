@@ -5,6 +5,7 @@ import { useId, useMemo, ReactNode } from "react";
 import { cn } from "@/utils/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { styles } from "./radio-group-styles";
+import { RadioOption } from "./radio-group-option";
 
 /**
  * RadioGroup Component - MindEase
@@ -13,8 +14,8 @@ import { styles } from "./radio-group-styles";
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected} label="Choose option">
- *   <RadioGroup.Option value="option1">Option 1</RadioGroup.Option>
- *   <RadioGroup.Option value="option2">Option 2</RadioGroup.Option>
+ *   <RadioGroup.Option value="option1" label="Option 1" />
+ *   <RadioGroup.Option value="option2" label="Option 2" />
  * </RadioGroup>
  * ```
  */
@@ -55,7 +56,6 @@ function RadioGroupRoot<T extends string>({
   "data-testid": testId,
 }: RadioGroupProps<T>) {
   const id = useId();
-  const groupId = `radio-group-${id}`;
   const labelId = `radio-group-label-${id}`;
   const descriptionId = description ? `radio-group-description-${id}` : undefined;
 
@@ -98,13 +98,13 @@ function RadioGroupRoot<T extends string>({
         data-testid={testId ? `${testId}-group` : "radio-group"}
       >
         <div className={styles.header}>
-          <HeadlessRadioGroup.Label
+          <Label
             id={labelId}
             className={labelClasses}
             data-testid={testId ? `${testId}-label` : "radio-group-label"}
           >
             {label}
-          </HeadlessRadioGroup.Label>
+          </Label>
           {description && (
             <p
               id={descriptionId}
@@ -121,80 +121,10 @@ function RadioGroupRoot<T extends string>({
   );
 }
 
-/**
- * RadioGroup.Option - Individual radio option
- */
-export interface RadioOptionProps {
-  /** Option value */
-  value: string;
-  
-  /** Option label */
-  label: string;
-  
-  /** Optional description */
-  description?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
-
-function RadioOption({ value, label, description, "data-testid": testId }: RadioOptionProps) {
-  const { fontSizeClasses, spacingClasses } = useCognitiveSettings();
-
-  const labelClasses = useMemo(
-    () => cn(styles.optionLabel, fontSizeClasses.base),
-    [fontSizeClasses.base]
-  );
-
-  const descriptionClasses = useMemo(
-    () => cn(styles.optionDescription, fontSizeClasses.sm),
-    [fontSizeClasses.sm]
-  );
-
-  const optionClasses = useMemo(
-    () => cn(styles.option, spacingClasses.padding),
-    [spacingClasses.padding]
-  );
-
-  return (
-    <HeadlessRadioGroup.Option
-      value={value}
-      className={({ checked, disabled }) =>
-        cn(
-          optionClasses,
-          checked ? styles.optionChecked : styles.optionUnchecked,
-          disabled && styles.optionDisabled,
-          "focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2"
-        )
-      }
-      data-testid={testId || `radio-option-${value}`}
-    >
-      {({ checked }) => (
-        <>
-          <div className={styles.optionContent}>
-            <div className={cn(styles.radio, checked && styles.radioChecked)}>
-              {checked && <div className={styles.radioDot} />}
-            </div>
-            <div className={styles.optionText}>
-              <Label className={labelClasses}>
-                {label}
-              </Label>
-              {description && (
-                <p className={descriptionClasses}>{description}</p>
-              )}
-            </div>
-          </div>
-        </>
-      )}
-    </HeadlessRadioGroup.Option>
-  );
-}
-
-RadioGroupRoot.Option = RadioOption;
 RadioGroupRoot.displayName = "RadioGroup";
-RadioOption.displayName = "RadioGroup.Option";
 
-export const RadioGroup = RadioGroupRoot as typeof RadioGroupRoot & {
-  Option: typeof RadioOption;
-};
+// Compose RadioGroup with subcomponents
+export const RadioGroup = Object.assign(RadioGroupRoot, {
+  Option: RadioOption,
+});
 

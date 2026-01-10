@@ -25,19 +25,49 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
       <Switch
         checked={settings.animations}
         onChange={(checked) => updateSetting("animations", checked)}
-        label={textDetail.getText("profile_animations_label")}
-        description={textDetail.getText("profile_animations_description")}
         data-testid="profile-animations"
-      />
+      >
+        <Switch.Toggle
+          checked={settings.animations}
+          onChange={(checked) => updateSetting("animations", checked)}
+          data-testid="profile-animations-switch"
+        />
+        <div className="flex flex-col">
+          <Switch.Label
+            onClick={() => updateSetting("animations", !settings.animations)}
+            data-testid="profile-animations-label"
+          >
+            {textDetail.getText("profile_animations_label")}
+          </Switch.Label>
+          <Switch.Description data-testid="profile-animations-description">
+            {textDetail.getText("profile_animations_description")}
+          </Switch.Description>
+        </div>
+      </Switch>
 
       {/* Focus Mode Setting */}
       <Switch
         checked={settings.focusMode}
         onChange={(checked) => updateSetting("focusMode", checked)}
-        label={textDetail.getText("profile_focusmode_label")}
-        description={textDetail.getText("profile_focusmode_description")}
         data-testid="profile-focusmode"
-      />
+      >
+        <Switch.Toggle
+          checked={settings.focusMode}
+          onChange={(checked) => updateSetting("focusMode", checked)}
+          data-testid="profile-focusmode-switch"
+        />
+        <div className="flex flex-col">
+          <Switch.Label
+            onClick={() => updateSetting("focusMode", !settings.focusMode)}
+            data-testid="profile-focusmode-label"
+          >
+            {textDetail.getText("profile_focusmode_label")}
+          </Switch.Label>
+          <Switch.Description data-testid="profile-focusmode-description">
+            {textDetail.getText("profile_focusmode_description")}
+          </Switch.Description>
+        </div>
+      </Switch>
     </SettingsSection>
   );
 }
