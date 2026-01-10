@@ -11,6 +11,7 @@ export interface TasksService {
   createTask: (userId: string, task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">) => Promise<Task>;
   updateTask: (userId: string, taskId: string, updates: Partial<Omit<Task, "id" | "userId">>) => Promise<Task>;
   deleteTask: (userId: string, taskId: string) => Promise<void>;
+  deleteAllTasks: (userId: string) => Promise<void>;
 }
 
 export const tasksService: TasksService = {
@@ -60,5 +61,13 @@ export const tasksService: TasksService = {
   deleteTask: async (userId: string, taskId: string): Promise<void> => {
     const collectionPath = getTasksCollectionPath(userId);
     return firestoreService.deleteDocument(collectionPath, taskId);
+  },
+
+  /**
+   * Delete all tasks for a user
+   */
+  deleteAllTasks: async (userId: string): Promise<void> => {
+    const collectionPath = getTasksCollectionPath(userId);
+    return firestoreService.deleteCollection(collectionPath);
   },
 };

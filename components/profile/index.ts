@@ -33,3 +33,6 @@ export type { ProfileInfoProps } from "./profile-info";
 export { ProfileContent } from "./profile-content";
 export type { ProfileContentProps } from "./profile-content";
 
+export { DeleteAccountDialog } from "./delete-account-dialog";
+export type { DeleteAccountDialogProps } from "./delete-account-dialog";
+

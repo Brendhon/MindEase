@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useFeedback } from "@/hooks/useFeedback";
 import { Button } from "@/components/ui/button";
+import { DeleteAccountDialog } from "../delete-account-dialog";
 import { LogOut, Trash2 } from "lucide-react";
 import { cn } from "@/utils/ui";
 import { User } from "next-auth";
@@ -27,6 +29,8 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   
   const { signOut } = auth;
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { error: showError } = useFeedback();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const containerClasses = useMemo(
     () => cn(styles.container, spacingClasses.padding, spacingClasses.gap),
@@ -108,8 +112,11 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
           variant="danger"
           size="md"
           onClick={() => {
-            // TODO: Implement account deletion logic
-            console.log("Delete account - to be implemented");
+            if (!user.id) {
+              showError("toast_error_account_deletion_failed");
+              return;
+            }
+            setIsDeleteDialogOpen(true);
           }}
           aria-label={textDetail.getText("profile_delete_account_aria")}
           data-testid={testId ? `${testId}-delete-account-button` : "profile-delete-account-button"}
@@ -118,6 +125,15 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
           <Button.Text>{textDetail.getText("profile_delete_account")}</Button.Text>
         </Button>
       </div>
+
+      {user.id && (
+        <DeleteAccountDialog
+          isOpen={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+          userId={user.id}
+          data-testid={testId ? `${testId}-delete-dialog` : "profile-delete-dialog"}
+        />
+      )}
     </div>
   );
 }
@@ -139,7 +155,7 @@ export const styles = {
   infoRow: "flex flex-col gap-1",
   label: "text-text-secondary font-medium",
   value: "text-text-primary",
-  avatar: "w-20 h-20 rounded-full",
+  avatar: "w-24 h-24 rounded-full",
   actions: "flex justify-end gap-3 mt-6",
   loading: "text-text-secondary text-center",
   error: "text-action-danger text-center",

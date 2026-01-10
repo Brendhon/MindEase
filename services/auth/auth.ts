@@ -4,6 +4,8 @@
  */
 import { signIn, signOut, getSession } from "next-auth/react";
 import { Session } from "next-auth";
+import { tasksService } from "../tasks";
+import { userPreferencesService } from "../user-preferences";
 
 /**
  * Auth Service interface
@@ -13,6 +15,7 @@ export interface AuthService {
   signOut: () => Promise<void>;
   getCurrentUser: () => Promise<{ uid: string; email: string | null } | null>;
   getSession: () => Promise<Session | null>;
+  deleteAccount: (userId: string) => Promise<void>;
 }
 
 /**
@@ -82,6 +85,28 @@ export const authService: AuthService = {
     } catch (error) {
       console.error("Error getting session:", error);
       return null;
+    }
+  },
+
+  /**
+   * Delete user account and all associated data
+   * 1. Delete all user tasks
+   * 2. Delete user preferences
+   * 3. Sign out the user
+   */
+  deleteAccount: async (userId: string): Promise<void> => {
+    try {
+      // Delete all tasks
+      await tasksService.deleteAllTasks(userId);
+      
+      // Delete user preferences
+      await userPreferencesService.deleteUserPreferences(userId);
+      
+      // Sign out the user
+      await authService.signOut();
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      throw error;
     }
   },
 };

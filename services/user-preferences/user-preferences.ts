@@ -2,10 +2,8 @@
  * User Preferences Service - MindEase
  * User cognitive accessibility preferences management service
  */
-import { db } from "@/config/firebase";
 import { DEFAULT_ACCESSIBILITY_SETTINGS, UserPreferences, UserPreferencesDocument } from "@/models/UserPreferences";
-import { getUserPreferencesDocumentPath } from "@/utils/firestore/paths";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { firestoreService } from "../firestore/firestore";
 
 /**
  * User Preferences Service interface
@@ -14,6 +12,7 @@ export interface UserPreferencesService {
   getUserPreferences: (userId: string) => Promise<UserPreferences>;
   updateUserPreferences: (userId: string, preferences: Partial<UserPreferences>) => Promise<UserPreferences>;
   resetUserPreferences: (userId: string) => Promise<UserPreferences>;
+  deleteUserPreferences: (userId: string) => Promise<void>;
 }
 
 /**
@@ -26,23 +25,19 @@ export const userPreferencesService: UserPreferencesService = {
    */
   getUserPreferences: async (userId: string): Promise<UserPreferences> => {
     try {
-      const docPath = getUserPreferencesDocumentPath(userId);
-      const [collectionPath, docId] = docPath.split("/");
-      
-      // Try to get existing preferences
-      const docRef = doc(db, collectionPath, docId);
-      const docSnap = await getDoc(docRef);
+      const document = await firestoreService.getDocument<UserPreferencesDocument>("users", userId);
 
-      if (docSnap.exists()) {
-        const data = docSnap.data() as UserPreferencesDocument;
+      if (document) {
         // Return only the preferences, not metadata
         return {
-          contrast: data.contrast,
-          spacing: data.spacing,
-          fontSize: data.fontSize,
-          animations: data.animations,
-          focusMode: data.focusMode,
-          textDetail: data.textDetail,
+          contrast: document.contrast,
+          spacing: document.spacing,
+          fontSize: document.fontSize,
+          animations: document.animations,
+          focusMode: document.focusMode,
+          textDetail: document.textDetail,
+          focusDuration: document.focusDuration,
+          shortBreakDuration: document.shortBreakDuration,
         };
       }
 
@@ -64,9 +59,6 @@ export const userPreferencesService: UserPreferencesService = {
     preferences: Partial<UserPreferences>
   ): Promise<UserPreferences> => {
     try {
-      const docPath = getUserPreferencesDocumentPath(userId);
-      const [collectionPath, docId] = docPath.split("/");
-      
       // Get current preferences or defaults
       const current = await userPreferencesService.getUserPreferences(userId);
       
@@ -83,9 +75,8 @@ export const userPreferencesService: UserPreferencesService = {
         updatedAt: new Date(),
       };
 
-      // Use setDoc with merge to create or update
-      const docRef = doc(db, collectionPath, docId);
-      await setDoc(docRef, docData, { merge: true });
+      // Use setDocument with merge to create or update
+      await firestoreService.setDocument<UserPreferencesDocument>("users", userId, docData);
 
       return updated;
     } catch (error) {
@@ -105,6 +96,18 @@ export const userPreferencesService: UserPreferencesService = {
       );
     } catch (error) {
       console.error(`Error resetting user preferences for user ${userId}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete user preferences document
+   */
+  deleteUserPreferences: async (userId: string): Promise<void> => {
+    try {
+      await firestoreService.deleteDocument("users", userId);
+    } catch (error) {
+      console.error(`Error deleting user preferences for user ${userId}:`, error);
       throw error;
     }
   },

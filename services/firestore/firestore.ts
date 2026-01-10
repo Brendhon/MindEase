@@ -8,6 +8,7 @@ import {
   getDoc,
   getDocs,
   addDoc,
+  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -15,6 +16,7 @@ import {
   QueryDocumentSnapshot,
   DocumentData,
   Timestamp,
+  writeBatch,
 } from "firebase/firestore";
 import { db } from "@/config/firebase";
 
@@ -35,7 +37,7 @@ const convertTimestamps = <T>(data: DocumentData): T => {
  * Remove undefined fields from an object
  * Firestore does not accept undefined values
  */
-const removeUndefinedFields = <T extends Record<string, any>>(data: T): Partial<T> => {
+export const removeUndefinedFields = <T extends Record<string, any>>(data: T): Partial<T> => {
   const cleaned: Partial<T> = {};
   Object.keys(data).forEach((key) => {
     if (data[key] !== undefined) {
@@ -53,8 +55,10 @@ export interface FirestoreService {
   getCollectionByQuery: <T>(collectionPath: string, queryConstraints: QueryConstraint[]) => Promise<T[]>;
   getDocument: <T>(collectionPath: string, id: string) => Promise<T | null>;
   createDocument: <T extends { id: string }>(collectionPath: string, data: Omit<T, "id">) => Promise<T>;
+  setDocument: <T extends { id: string }>(collectionPath: string, id: string, data: Omit<T, "id">) => Promise<T>;
   updateDocument: <T>(collectionPath: string, id: string, data: Partial<T>) => Promise<T>;
   deleteDocument: (collectionPath: string, id: string) => Promise<void>;
+  deleteCollection: (collectionPath: string) => Promise<void>;
 }
 
 /**
@@ -160,6 +164,37 @@ export const firestoreService: FirestoreService = {
   },
 
   /**
+   * Set a document (create or update with merge)
+   * Uses setDoc with merge: true to create if doesn't exist or update if exists
+   */
+  setDocument: async <T extends { id: string }>(
+    collectionPath: string,
+    id: string,
+    data: Omit<T, "id">
+  ): Promise<T> => {
+    try {
+      const docRef = doc(db, collectionPath, id);
+      // Remove undefined fields before sending to Firestore
+      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      await setDoc(docRef, cleanedData, { merge: true });
+      
+      const docSnap = await getDoc(docRef);
+      if (!docSnap.exists()) {
+        throw new Error("Failed to set document");
+      }
+      
+      const docData = docSnap.data();
+      return convertTimestamps<T>({
+        id: docSnap.id,
+        ...docData,
+      } as T);
+    } catch (error) {
+      console.error(`Error setting document ${collectionPath}/${id}:`, error);
+      throw error;
+    }
+  },
+
+  /**
    * Update an existing document
    */
   updateDocument: async <T>(
@@ -198,6 +233,35 @@ export const firestoreService: FirestoreService = {
       await deleteDoc(docRef);
     } catch (error) {
       console.error(`Error deleting document ${collectionPath}/${id}:`, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Delete all documents from a collection using batched writes.
+   * Note: Firestore doesn't support deleting collections directly,
+   * so we delete all documents in batches for efficiency.
+   */
+  deleteCollection: async (collectionPath: string): Promise<void> => {
+    try {
+      const collectionRef = collection(db, collectionPath);
+      const querySnapshot = await getDocs(collectionRef);
+
+      const BATCH_SIZE = 500; // Firestore limit
+      let docs = querySnapshot.docs;
+
+      for (let i = 0; i < docs.length; i += BATCH_SIZE) {
+        const batch = writeBatch(db);
+        const batchDocs = docs.slice(i, i + BATCH_SIZE);
+
+        batchDocs.forEach((docSnapshot) => {
+          batch.delete(docSnapshot.ref);
+        });
+
+        await batch.commit();
+      }
+    } catch (error) {
+      console.error(`Error deleting collection ${collectionPath}:`, error);
       throw error;
     }
   },
