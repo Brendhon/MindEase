@@ -7,7 +7,8 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { LogOut } from "lucide-react";
+import { LogOut, Menu } from "lucide-react";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export interface HeaderProps {
   title?: string;
@@ -15,6 +16,7 @@ export interface HeaderProps {
 
 export function Header({ title = "MindEase" }: HeaderProps) {
   const { signOut, isLoading } = useAuth();
+  const { toggle } = useSidebar();
 
   const handleLogout = async () => {
     try {
@@ -27,6 +29,18 @@ export function Header({ title = "MindEase" }: HeaderProps) {
   return (
     <header className="h-16 bg-surface-primary border-b border-border-subtle flex items-center justify-between px-6" data-testid="header-container">
       <div className="flex items-center gap-3" data-testid="header-branding">
+        {/* Mobile menu button - only visible on mobile */}
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={toggle}
+          className="md:hidden"
+          aria-label="Abrir menu de navegação"
+          data-testid="header-button-menu"
+        >
+          <Button.Icon icon={Menu} size="sm" />
+        </Button>
+        
         <Image
           src="/logo.png"
           alt="MindEase Logo"

@@ -6,11 +6,12 @@ import { cn } from "@/utils/ui/ui";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { getAccessibilityText } from "@/utils/accessibility/content";
 import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { SidebarIcon } from "./sidebar-icon";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarLabel } from "./sidebar-label";
 import { styles } from "./sidebar-styles";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 /**
  * Sidebar Component - MindEase
@@ -72,6 +73,7 @@ const defaultItems: SidebarItemData[] = [
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
   // Read cognitive accessibility settings - classes are automatically computed
   const { spacingClasses } = useCognitiveSettings();
+  const { isOpen, close } = useSidebar();
 
   // Generate spacing classes for the aside (padding and gap) - uses hook's pre-computed classes
   const asideClasses = useMemo(
@@ -79,36 +81,78 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
     [spacingClasses.padding, spacingClasses.gap]
   );
 
+  // Close sidebar when clicking outside (on mobile)
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        close();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      // Prevent body scroll when sidebar is open on mobile
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, close]);
+
   return (
-    <aside
-      className={cn(styles.aside, asideClasses)}
-      data-testid="sidebar-container"
-      role="complementary"
-      aria-label="Navigation sidebar"
-    >
-      <nav
-        className={cn(styles.nav, spacingClasses.gap)}
-        aria-label="Main navigation"
-        data-testid="sidebar-nav"
+    <>
+      {/* Overlay for mobile - only visible when sidebar is open */}
+      {isOpen && (
+        <div
+          className={styles.overlay}
+          onClick={close}
+          aria-hidden="true"
+          data-testid="sidebar-overlay"
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={cn(
+          styles.aside,
+          asideClasses,
+          styles.container,
+          // Mobile: slide in/out from left
+          isOpen ? styles.containerOpen : styles.containerClosed
+        )}
+        data-testid="sidebar-container"
+        role="complementary"
+        aria-label="Navigation sidebar"
+        aria-hidden={!isOpen ? "true" : undefined}
       >
-        {items.map((item) => {
-          // Use detailed label for aria-label and testid (always use detailed mode for accessibility)
-          const labelString = getAccessibilityText(item.labelKey, "detailed");
-          
-          return (
-            <SidebarItem
-              key={item.href}
-              href={item.href}
-              label={labelString}
-              data-testid={`sidebar-link-${labelString.toLowerCase().replace(/\s+/g, '-')}`}
-            >
-              {item.icon && <SidebarIcon icon={item.icon} />}
-              <SidebarLabel labelKey={item.labelKey} />
-            </SidebarItem>
-          );
-        })}
-      </nav>
-    </aside>
+        <nav
+          className={cn(styles.nav, spacingClasses.gap)}
+          aria-label="Main navigation"
+          data-testid="sidebar-nav"
+        >
+          {items.map((item) => {
+            // Use detailed label for aria-label and testid (always use detailed mode for accessibility)
+            const labelString = getAccessibilityText(item.labelKey, "detailed");
+            
+            return (
+              <SidebarItem
+                key={item.href}
+                href={item.href}
+                label={labelString}
+                data-testid={`sidebar-link-${labelString.toLowerCase().replace(/\s+/g, '-')}`}
+              >
+                {item.icon && <SidebarIcon icon={item.icon} />}
+                <SidebarLabel labelKey={item.labelKey} />
+              </SidebarItem>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
 

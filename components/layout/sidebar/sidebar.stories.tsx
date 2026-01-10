@@ -1,8 +1,10 @@
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { SidebarProvider, useSidebar } from '@/contexts/sidebar-context';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { Calendar, CheckSquare, Home, LayoutDashboard, Settings, User } from 'lucide-react';
+import { Calendar, CheckSquare, Home, LayoutDashboard, Menu, Settings, User } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
 import { Sidebar } from './index';
+import { Button } from '@/components/ui/button';
 
 const meta = {
   title: 'Components/Layout/Sidebar',
@@ -14,17 +16,19 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-      <CognitiveSettingsProvider>
-        <div className="flex min-h-screen">
-          <Story />
-          <main className="flex-1 p-8">
-            <h1 className="text-2xl font-semibold">Main Content</h1>
-            <p className="mt-4 text-text-secondary">
-              This is the main content area. The sidebar is on the left.
-            </p>
-          </main>
-        </div>
-      </CognitiveSettingsProvider>
+        <CognitiveSettingsProvider>
+          <SidebarProvider>
+            <div className="flex min-h-screen">
+              <Story />
+              <main className="flex-1 p-8">
+                <h1 className="text-2xl font-semibold">Main Content</h1>
+                <p className="mt-4 text-text-secondary">
+                  This is the main content area. The sidebar is on the left.
+                </p>
+              </main>
+            </div>
+          </SidebarProvider>
+        </CognitiveSettingsProvider>
       </SessionProvider>
     ),
   ],
@@ -128,12 +132,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'detailed',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
       <div>
@@ -149,12 +155,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'detailed',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
       <div>
@@ -170,12 +178,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'detailed',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
       <div>
@@ -191,12 +201,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'detailed',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
       <div>
@@ -212,12 +224,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'detailed',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
 
@@ -235,12 +249,14 @@ export const AccessibilityShowcase: Story = {
             textDetail: 'summary',
           }}
         >
-          <Sidebar
-            items={[
-              { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
-              { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
-            ]}
-          />
+          <SidebarProvider>
+            <Sidebar
+              items={[
+                { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+              ]}
+            />
+          </SidebarProvider>
         </CognitiveSettingsProvider>
       </div>
     </div>
@@ -249,3 +265,77 @@ export const AccessibilityShowcase: Story = {
     layout: 'fullscreen',
   },
 };
+
+// Mobile behavior showcase - demonstrates drawer functionality
+export const MobileDrawer: Story = {
+  render: () => {
+    // This story needs to be wrapped in providers
+    return (
+      <SessionProvider>
+        <CognitiveSettingsProvider>
+          <SidebarProvider>
+            <div className="flex min-h-screen bg-bg-secondary">
+              <Sidebar
+                items={[
+                  { href: '/dashboard', labelKey: 'sidebar_dashboard', icon: LayoutDashboard },
+                  { href: '/tasks', labelKey: 'sidebar_tasks', icon: CheckSquare },
+                  { href: '/profile', labelKey: 'sidebar_profile', icon: User },
+                ]}
+              />
+              <main className="flex-1 flex flex-col">
+                <header className="h-16 bg-surface-primary border-b border-border-subtle flex items-center justify-between px-6">
+                  <div className="flex items-center gap-3">
+                    <MobileMenuButton />
+                    <h1 className="text-lg font-semibold text-text-primary">MindEase</h1>
+                  </div>
+                </header>
+                <div className="flex-1 p-8">
+                  <h1 className="text-2xl font-semibold mb-4">Mobile Drawer Demo</h1>
+                  <p className="text-text-secondary mb-4">
+                    This story demonstrates the mobile drawer behavior. On mobile screens (below md breakpoint),
+                    the sidebar is hidden by default and can be toggled with the menu button.
+                  </p>
+                  <p className="text-text-secondary mb-4">
+                    On desktop (md and above), the sidebar is always visible.
+                  </p>
+                  <div className="mt-6 p-4 bg-surface-primary border border-border-subtle rounded-md">
+                    <h2 className="text-lg font-semibold mb-2">Try it:</h2>
+                    <ul className="list-disc list-inside text-text-secondary space-y-2">
+                      <li>Resize your browser to mobile width (&lt; 768px)</li>
+                      <li>Click the menu button to open the sidebar</li>
+                      <li>Click outside or press Escape to close</li>
+                      <li>Click a navigation item to navigate and auto-close</li>
+                    </ul>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </SidebarProvider>
+        </CognitiveSettingsProvider>
+      </SessionProvider>
+    );
+  },
+  parameters: {
+    layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'mobile1',
+    },
+  },
+};
+
+// Helper component for mobile menu button in story
+function MobileMenuButton() {
+  const { toggle } = useSidebar();
+  
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      onClick={toggle}
+      className="md:hidden"
+      aria-label="Abrir menu de navegação"
+    >
+      <Button.Icon icon={Menu} size="sm" />
+    </Button>
+  );
+}

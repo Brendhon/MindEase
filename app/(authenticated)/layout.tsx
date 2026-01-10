@@ -3,6 +3,7 @@
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
+import { SidebarProvider } from "@/contexts/sidebar-context";
 
 /**
  * Authenticated Layout - MindEase
@@ -21,13 +22,15 @@ export default function AuthenticatedLayout({
 }) {
   return (
     <FocusTimerProvider>
-      <div className="flex min-h-screen bg-bg-secondary font-sans">
-        <Sidebar />
-        <main className="flex-1 flex flex-col">
-          <Header />
-          <div className="flex-1">{children}</div>
-        </main>
-      </div>
+      <SidebarProvider>
+        <div className="flex min-h-screen bg-bg-secondary font-sans">
+          <Sidebar />
+          <main className="flex-1 flex flex-col">
+            <Header />
+            <div className="flex-1">{children}</div>
+          </main>
+        </div>
+      </SidebarProvider>
     </FocusTimerProvider>
   );
 }

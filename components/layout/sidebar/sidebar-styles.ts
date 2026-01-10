@@ -10,6 +10,11 @@ export const styles = {
   nav: "flex flex-col",
   link: "flex items-center px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-action-primary/50 focus:ring-offset-2 focus:ring-offset-surface-primary",
   icon: "mr-3 shrink-0",
+  // Mobile drawer styles
+  overlay: "fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300",
+  container: "fixed md:static inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out",
+  containerOpen: "translate-x-0",
+  containerClosed: "-translate-x-full md:translate-x-0",
   contrast: {
     // Normal contrast: subtle, low stimulation
     normalActive: "bg-action-primary/10 text-action-primary font-medium",

@@ -6,6 +6,7 @@ import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { styles, getContrastClasses } from "./sidebar-styles";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 /**
  * Sidebar.Item - Navigation item subcomponent
@@ -37,6 +38,7 @@ export function SidebarItem({
 }: SidebarItemProps) {
   const pathname = usePathname();
   const isActive = pathname === href;
+  const { close } = useSidebar();
   
   // Use cognitive settings hook for automatic accessibility class generation
   // These classes automatically update when user preferences change
@@ -52,10 +54,16 @@ export function SidebarItem({
     [settings.contrast, isActive]
   );
 
+  // Close sidebar on navigation (mobile behavior)
+  const handleClick = () => {
+    close();
+  };
+
   return (
     <Link
       href={href}
       prefetch={true}
+      onClick={handleClick}
       className={cn(
         styles.link,
         fontSizeClasses.base, // Dynamically updates: "text-sm" | "text-base" | "text-lg" based on settings.fontSize
