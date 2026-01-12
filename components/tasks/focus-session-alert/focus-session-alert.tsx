@@ -77,7 +77,7 @@ export function FocusSessionAlert({
         </h3>
         {taskName && (
           <p className={messageClasses}>
-            {textDetail.getText("tasks_focus_active" as AccessibilityTextKey)}: {taskName}
+            {textDetail.getText("tasks_focus_active" as AccessibilityTextKey)}: <strong>{taskName}</strong>
           </p>
         )}
       </div>

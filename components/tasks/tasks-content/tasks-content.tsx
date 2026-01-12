@@ -4,8 +4,9 @@ import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { useAuth } from "@/hooks/useAuth";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFeedback } from "@/hooks/useFeedback";
-import type { Subtask, Task } from "@/models/Task";
+import { Subtask, Task } from "@/models/Task";
 import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FocusSessionAlert } from "../focus-session-alert";
@@ -37,8 +38,9 @@ export function TasksContent({
   "data-testid": testId,
 }: TasksContentProps) {
   const { user } = useAuth();
-  const { timerState, stopTimer, resumeTimer } = useFocusTimer();
-  const { success, error: showError } = useFeedback();
+  const { timerState, stopTimer, resumeTimer, startTimer } = useFocusTimer();
+  const { settings } = useCognitiveSettings();
+  const { success, error: showError, info } = useFeedback();
 
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [loading, setLoading] = useState(false);
@@ -54,7 +56,7 @@ export function TasksContent({
     setTasks(initialTasks);
   }, [initialTasks]);
 
-  // Monitor timer completion - use a ref to track previous state
+  // Monitor timer completion and pause - use a ref to track previous state
   const prevTimerStateRef = useRef(timerState);
   
   useEffect(() => {
@@ -72,13 +74,24 @@ export function TasksContent({
       setShowSessionAlert(true);
     }
     
+    // Detect when user pauses - suggest break (subtle, non-intrusive)
+    if (
+      prev.timerState === "running" &&
+      current.timerState === "paused" &&
+      current.activeTaskId !== null
+    ) {
+      // Don't show toast immediately to avoid cognitive overload
+      // The pause itself is enough feedback
+      // User can see the pause state in the UI
+    }
+    
     // Hide alert when timer is fully stopped (no activeTaskId)
     if (current.timerState === "idle" && current.activeTaskId === null) {
       setShowSessionAlert(false);
     }
 
     prevTimerStateRef.current = current;
-  }, [timerState]);
+  }, [timerState, settings.shortBreakDuration, info]);
 
   // Get active task name
   const activeTaskName = useMemo(() => {
@@ -86,25 +99,6 @@ export function TasksContent({
     const task = tasks.find((t) => t.id === timerState.activeTaskId);
     return task?.title;
   }, [timerState.activeTaskId, tasks]);
-
-  // Load tasks from Firestore
-  const loadTasks = useCallback(async () => {
-    if (!user?.uid) return;
-
-    setLoading(true);
-    setError(null);
-
-    try {
-      const loadedTasks = await tasksService.getTasks(user.uid);
-      setTasks(loadedTasks);
-    } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : "Failed to load tasks";
-      setError(errorMessage);
-      showError("tasks_error");
-    } finally {
-      setLoading(false);
-    }
-  }, [user?.uid, showError]);
 
   // Create task
   const handleCreateTask = useCallback(async (taskData: {
@@ -242,9 +236,20 @@ export function TasksContent({
 
   // Focus session alert handlers
   const handleContinueFocus = useCallback(() => {
-    resumeTimer();
-    setShowSessionAlert(false);
-  }, [resumeTimer]);
+    // Start a new focus session (new Pomodoro)
+    if (timerState.activeTaskId) {
+      const task = tasks.find((t) => t.id === timerState.activeTaskId);
+      if (task) {
+        // Find focused subtask if any
+        const focusedSubtask = task.subtasks?.find((st) => st.id === timerState.focusedSubtaskId);
+        const subtaskId = focusedSubtask?.id || timerState.focusedSubtaskId || undefined;
+        
+        // Start new timer (new Pomodoro)
+        startTimer(timerState.activeTaskId, subtaskId);
+        setShowSessionAlert(false);
+      }
+    }
+  }, [timerState.activeTaskId, timerState.focusedSubtaskId, tasks, startTimer]);
 
   const handlePauseFocus = useCallback(() => {
     stopTimer();

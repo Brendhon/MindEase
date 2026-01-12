@@ -16,7 +16,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/next-auth";
 import { tasksService } from "@/services/tasks";
 import { Task } from "@/models/Task";
-import { TasksContent } from "@/components/tasks/tasks-content";
+import { TasksContent } from "@/components/tasks";
 
 export default async function TasksPage() {
   // Get session on server side

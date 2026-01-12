@@ -46,7 +46,7 @@ export function TaskCard({
   "data-testid": testId,
 }: TaskCardProps) {
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
-  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer } = useFocusTimer();
+  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer, formatTime } = useFocusTimer();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
@@ -139,6 +139,23 @@ export function TaskCard({
       </CardHeader>
 
       <CardContent>
+        {/* Timer indicator when focus is active */}
+        {isActive && (isRunning || isPaused) && (
+          <div className={styles.timerIndicator} data-testid={`task-card-timer-${task.id}`}>
+            <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
+              {textDetail.getText("tasks_focus_time_remaining")}:
+            </p>
+            <p className={cn(styles.timerValue, fontSizeClasses.base)}>
+              {formatTime(timerState.remainingTime)}
+            </p>
+            {isRunning && (
+              <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
+                {textDetail.getText("tasks_focus_session_active")}
+              </p>
+            )}
+          </div>
+        )}
+
         {/* Checklist */}
         {task.subtasks && task.subtasks.length > 0 && (
           <TaskChecklist
@@ -276,5 +293,9 @@ const styles = {
   statusInProgress: "bg-action-primary/10 text-action-primary",
   statusDone: "bg-action-success/10 text-action-success",
   description: "text-text-secondary mt-2",
+  timerIndicator: "flex flex-col gap-1 mb-4 p-3 bg-action-primary/5 rounded-lg border border-action-primary/20",
+  timerLabel: "text-text-secondary",
+  timerValue: "font-semibold text-action-primary",
+  timerStatus: "text-text-secondary italic",
   actions: "flex flex-wrap items-center gap-2 mt-4",
 } as const;
