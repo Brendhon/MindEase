@@ -2,16 +2,14 @@
 
 import { useMemo } from "react";
 import { Card } from "@/components/ui/card";
-import { CardHeader } from "@/components/ui/card/card-header";
-import { CardTitle } from "@/components/ui/card/card-title";
 import { CardContent } from "@/components/ui/card/card-content";
-import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { cn } from "@/utils/ui";
-import { Play, Pause, Check, Edit, Trash2, Square } from "lucide-react";
 import type { Task } from "@/models/Task";
 import { TaskChecklist } from "../task-checklist";
+import { TaskCardHeader } from "./task-card-header";
+import { TaskCardTimer } from "./task-card-timer";
+import { TaskCardActions } from "./task-card-actions";
 
 /**
  * TaskCard Component - MindEase
@@ -45,19 +43,11 @@ export function TaskCard({
   onToggleSubtask,
   "data-testid": testId,
 }: TaskCardProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
-  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer, formatTime } = useFocusTimer();
+  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer } = useFocusTimer();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
   const isPaused = isActive && timerState.timerState === "paused";
-
-  // Get status label
-  const statusLabel = useMemo(() => {
-    if (task.status === 0) return textDetail.getText("tasks_status_todo");
-    if (task.status === 1) return textDetail.getText("tasks_status_in_progress");
-    return textDetail.getText("tasks_status_done");
-  }, [task.status, textDetail]);
 
   // Handle focus actions
   const handleStartFocus = () => {
@@ -103,9 +93,14 @@ export function TaskCard({
 
   // Card classes based on status and focus state
   const cardClasses = useMemo(() => {
-    if (task.status === 2) return styles.cardDone;
-    if (isActive) return styles.cardActive;
-    return styles.cardDefault;
+    switch (true) {
+      case task.status === 2:
+        return styles.cardDone;
+      case isActive:
+        return styles.cardActive;
+      default:
+        return styles.cardDefault;
+    }
   }, [task.status, isActive]);
 
   // Determine which actions to show
@@ -113,56 +108,16 @@ export function TaskCard({
 
   return (
     <Card className={cardClasses} focused={isActive} data-testid={testId || `task-card-${task.id}`}>
-      <CardHeader>
-        <div className={styles.headerRow}>
-          <CardTitle className={cn(fontSizeClasses.base, styles.title)}>
-            {task.title}
-          </CardTitle>
-          <span
-            className={cn(
-              styles.status,
-              fontSizeClasses.sm,
-              task.status === 0 && styles.statusTodo,
-              task.status === 1 && styles.statusInProgress,
-              task.status === 2 && styles.statusDone
-            )}
-            data-testid={`task-card-status-${task.id}`}
-          >
-            {statusLabel}
-          </span>
-        </div>
-        {task.description && (
-          <p className={cn(styles.description, fontSizeClasses.sm)}>
-            {task.description}
-          </p>
-        )}
-      </CardHeader>
+      <TaskCardHeader task={task} data-testid={testId} />
 
       <CardContent>
-        {/* Timer indicator when focus is active */}
-        {isActive && (isRunning || isPaused) && (
-          <div className={cn(
-            styles.timerIndicator,
-            isPaused && styles.timerIndicatorPaused
-          )} data-testid={`task-card-timer-${task.id}`}>
-            <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
-              {textDetail.getText("tasks_focus_time_remaining")}:
-            </p>
-            <p className={cn(styles.timerValue, fontSizeClasses.base)}>
-              {formatTime(timerState.remainingTime)}
-            </p>
-            {isRunning && (
-              <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
-                {textDetail.getText("tasks_focus_session_active")}
-              </p>
-            )}
-            {isPaused && (
-              <p className={cn(styles.timerStatus, styles.timerStatusPaused, fontSizeClasses.sm)}>
-                {textDetail.getText("tasks_action_paused")}
-              </p>
-            )}
-          </div>
-        )}
+        <TaskCardTimer
+          task={task}
+          isActive={isActive}
+          isRunning={isRunning}
+          isPaused={isPaused}
+          data-testid={testId}
+        />
 
         {/* Checklist */}
         {task.subtasks && task.subtasks.length > 0 && (
@@ -175,114 +130,20 @@ export function TaskCard({
           />
         )}
 
-        {/* Actions */}
-        {showActions && (
-          <div className={cn(styles.actions, spacingClasses.gap)}>
-            {/* Focus controls */}
-            {!isActive && (
-              <Button
-                variant="primary"
-                size="sm"
-                onClick={handleStartFocus}
-                aria-label={textDetail.getText("tasks_action_start_focus_aria")}
-                data-testid={`task-card-start-focus-${task.id}`}
-              >
-                <Button.Icon icon={Play} position="left" />
-                <Button.Text>
-                  {textDetail.getText("tasks_action_start_focus")}
-                </Button.Text>
-              </Button>
-            )}
-
-            {isActive && isRunning && (
-              <>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handlePause}
-                  aria-label={textDetail.getText("tasks_action_pause_aria")}
-                  data-testid={`task-card-pause-${task.id}`}
-                >
-                  <Button.Icon icon={Pause} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_pause")}
-                  </Button.Text>
-                </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleComplete}
-                  aria-label={textDetail.getText("tasks_action_finish_aria")}
-                  data-testid={`task-card-complete-${task.id}`}
-                >
-                  <Button.Icon icon={Check} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_finish")}
-                  </Button.Text>
-                </Button>
-              </>
-            )}
-
-            {isActive && isPaused && (
-              <>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleResume}
-                  aria-label={textDetail.getText("tasks_action_resume_aria")}
-                  data-testid={`task-card-resume-${task.id}`}
-                >
-                  <Button.Icon icon={Play} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_resume")}
-                  </Button.Text>
-                </Button>
-                <Button
-                  variant="secondary"
-                  size="sm"
-                  onClick={handleStop}
-                  aria-label={textDetail.getText("tasks_action_stop_aria")}
-                  data-testid={`task-card-stop-${task.id}`}
-                >
-                  <Button.Icon icon={Square} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_stop")}
-                  </Button.Text>
-                </Button>
-              </>
-            )}
-
-            {/* Edit and Delete */}
-            {!isActive && (
-              <>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleEdit}
-                  aria-label={textDetail.getText("tasks_action_edit_aria")}
-                  data-testid={`task-card-edit-${task.id}`}
-                >
-                  <Button.Icon icon={Edit} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_edit")}
-                  </Button.Text>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleDelete}
-                  aria-label={textDetail.getText("tasks_action_delete_aria")}
-                  data-testid={`task-card-delete-${task.id}`}
-                >
-                  <Button.Icon icon={Trash2} position="left" />
-                  <Button.Text>
-                    {textDetail.getText("tasks_action_delete")}
-                  </Button.Text>
-                </Button>
-              </>
-            )}
-          </div>
-        )}
+        <TaskCardActions
+          task={task}
+          isActive={isActive}
+          isRunning={isRunning}
+          isPaused={isPaused}
+          onStartFocus={handleStartFocus}
+          onPause={handlePause}
+          onResume={handleResume}
+          onStop={handleStop}
+          onComplete={handleComplete}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          data-testid={testId}
+        />
       </CardContent>
     </Card>
   );
@@ -294,18 +155,4 @@ const styles = {
   cardDefault: "m-1",
   cardActive: "m-1 ring-2 ring-action-primary",
   cardDone: "m-1 opacity-60",
-  headerRow: "flex items-center justify-between gap-4",
-  title: "font-semibold text-text-primary flex-1",
-  status: "px-2 py-1 rounded text-xs font-medium whitespace-nowrap",
-  statusTodo: "bg-action-info/10 text-action-info",
-  statusInProgress: "bg-action-primary/10 text-action-primary",
-  statusDone: "bg-action-success/10 text-action-success",
-  description: "text-text-secondary mt-2",
-  timerIndicator: "flex flex-col gap-1 mb-4 p-3 bg-action-primary/5 rounded-lg border border-action-primary/20",
-  timerIndicatorPaused: "bg-action-info/5 border-action-info/20",
-  timerLabel: "text-text-secondary",
-  timerValue: "font-semibold text-action-primary",
-  timerStatus: "text-text-secondary italic",
-  timerStatusPaused: "text-action-info",
-  actions: "flex flex-wrap items-center gap-2 mt-4",
 } as const;
