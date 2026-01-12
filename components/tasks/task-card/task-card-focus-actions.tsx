@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { Play, Pause, Check, Square } from "lucide-react";
+import { Play, Square, Check } from "lucide-react";
 import type { Task } from "@/models/Task";
 
 export interface TaskCardFocusActionsProps {
@@ -15,22 +15,16 @@ export interface TaskCardFocusActionsProps {
   /** Whether the timer is running */
   isRunning: boolean;
   
-  /** Whether the timer is paused */
-  isPaused: boolean;
+  /** Whether there is already an active task (to disable start button) */
+  hasActiveTask: boolean;
   
   /** Callback to start focus session */
   onStartFocus: () => void;
   
-  /** Callback to pause timer */
-  onPause: () => void;
-  
-  /** Callback to resume timer */
-  onResume: () => void;
-  
-  /** Callback to stop timer */
+  /** Callback to stop timer (ends focus and returns task to To Do) */
   onStop: () => void;
   
-  /** Callback to complete task */
+  /** Callback to complete task (marks as done and stops timer) */
   onComplete: () => void;
   
   /** Test ID prefix for testing */
@@ -39,16 +33,22 @@ export interface TaskCardFocusActionsProps {
 
 /**
  * TaskCardFocusActions Component - MindEase
- * Displays focus-related action buttons (start, pause, resume, stop, complete)
+ * Displays focus-related action buttons (start, stop, complete)
+ * 
+ * Note: Pause/resume actions are not available during focus sessions
+ * to maintain cognitive accessibility and prevent micro-interruptions.
+ * The focus session must complete before offering a break.
+ * 
+ * During focus, only essential actions are available:
+ * - Stop focus (returns task to To Do)
+ * - Complete task (marks as done)
  */
 export function TaskCardFocusActions({
   task,
   isActive,
   isRunning,
-  isPaused,
+  hasActiveTask,
   onStartFocus,
-  onPause,
-  onResume,
   onStop,
   onComplete,
   "data-testid": testId,
@@ -57,12 +57,17 @@ export function TaskCardFocusActions({
 
   // Show start button when not active
   if (!isActive) {
+    // Disable start button if there's already an active task
+    const isDisabled = hasActiveTask;
+    
     return (
       <Button
         variant="primary"
         size="sm"
         onClick={onStartFocus}
+        disabled={isDisabled}
         aria-label={textDetail.getText("tasks_action_start_focus_aria")}
+        aria-disabled={isDisabled}
         data-testid={testId || `task-card-start-focus-${task.id}`}
       >
         <Button.Icon icon={Play} position="left" />
@@ -73,20 +78,20 @@ export function TaskCardFocusActions({
     );
   }
 
-  // Show pause and complete buttons when running
+  // Show stop and complete buttons when running (no pause allowed during focus)
   if (isRunning) {
     return (
       <>
         <Button
           variant="secondary"
           size="sm"
-          onClick={onPause}
-          aria-label={textDetail.getText("tasks_action_pause_aria")}
-          data-testid={testId || `task-card-pause-${task.id}`}
+          onClick={onStop}
+          aria-label={textDetail.getText("tasks_action_stop_aria")}
+          data-testid={testId || `task-card-stop-${task.id}`}
         >
-          <Button.Icon icon={Pause} position="left" />
+          <Button.Icon icon={Square} position="left" />
           <Button.Text>
-            {textDetail.getText("tasks_action_pause")}
+            {textDetail.getText("tasks_action_stop")}
           </Button.Text>
         </Button>
         <Button
@@ -99,38 +104,6 @@ export function TaskCardFocusActions({
           <Button.Icon icon={Check} position="left" />
           <Button.Text>
             {textDetail.getText("tasks_action_finish")}
-          </Button.Text>
-        </Button>
-      </>
-    );
-  }
-
-  // Show resume and stop buttons when paused
-  if (isPaused) {
-    return (
-      <>
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={onResume}
-          aria-label={textDetail.getText("tasks_action_resume_aria")}
-          data-testid={testId || `task-card-resume-${task.id}`}
-        >
-          <Button.Icon icon={Play} position="left" />
-          <Button.Text>
-            {textDetail.getText("tasks_action_resume")}
-          </Button.Text>
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onStop}
-          aria-label={textDetail.getText("tasks_action_stop_aria")}
-          data-testid={testId || `task-card-stop-${task.id}`}
-        >
-          <Button.Icon icon={Square} position="left" />
-          <Button.Text>
-            {textDetail.getText("tasks_action_stop")}
           </Button.Text>
         </Button>
       </>

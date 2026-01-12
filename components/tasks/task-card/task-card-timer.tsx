@@ -16,9 +16,6 @@ export interface TaskCardTimerProps {
   /** Whether the timer is running */
   isRunning: boolean;
   
-  /** Whether the timer is paused */
-  isPaused: boolean;
-  
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -31,22 +28,19 @@ export function TaskCardTimer({
   task,
   isActive,
   isRunning,
-  isPaused,
   "data-testid": testId,
 }: TaskCardTimerProps) {
   const { fontSizeClasses, textDetail } = useCognitiveSettings();
   const { timerState, formatTime } = useFocusTimer();
 
-  if (!isActive || (!isRunning && !isPaused)) {
+  // Only show timer when active and running (no pause during focus)
+  if (!isActive || !isRunning) {
     return null;
   }
 
   return (
     <div
-      className={cn(
-        styles.timerIndicator,
-        isPaused && styles.timerIndicatorPaused
-      )}
+      className={cn(styles.timerIndicator)}
       data-testid={testId || `task-card-timer-${task.id}`}
     >
       <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
@@ -55,16 +49,9 @@ export function TaskCardTimer({
       <p className={cn(styles.timerValue, fontSizeClasses.base)}>
         {formatTime(timerState.remainingTime)}
       </p>
-      {isRunning && (
-        <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_focus_session_active")}
-        </p>
-      )}
-      {isPaused && (
-        <p className={cn(styles.timerStatus, styles.timerStatusPaused, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_action_paused")}
-        </p>
-      )}
+      <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
+        {textDetail.getText("tasks_focus_session_active")}
+      </p>
     </div>
   );
 }
@@ -73,9 +60,7 @@ TaskCardTimer.displayName = "TaskCardTimer";
 
 const styles = {
   timerIndicator: "flex flex-col gap-1 mb-4 p-3 bg-action-primary/5 rounded-lg border border-action-primary/20",
-  timerIndicatorPaused: "bg-action-info/5 border-action-info/20",
   timerLabel: "text-text-secondary",
   timerValue: "font-semibold text-action-primary",
   timerStatus: "text-text-secondary italic",
-  timerStatusPaused: "text-action-info",
 } as const;

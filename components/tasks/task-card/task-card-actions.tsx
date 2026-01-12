@@ -16,22 +16,16 @@ export interface TaskCardActionsProps {
   /** Whether the timer is running */
   isRunning: boolean;
   
-  /** Whether the timer is paused */
-  isPaused: boolean;
+  /** Whether there is already an active task (to disable start button) */
+  hasActiveTask: boolean;
   
   /** Callback to start focus session */
   onStartFocus: () => void;
   
-  /** Callback to pause timer */
-  onPause: () => void;
-  
-  /** Callback to resume timer */
-  onResume: () => void;
-  
-  /** Callback to stop timer */
+  /** Callback to stop timer (ends focus and returns task to To Do) */
   onStop: () => void;
   
-  /** Callback to complete task */
+  /** Callback to complete task (marks as done and stops timer) */
   onComplete: () => void;
   
   /** Callback when task is edited */
@@ -52,10 +46,8 @@ export function TaskCardActions({
   task,
   isActive,
   isRunning,
-  isPaused,
+  hasActiveTask,
   onStartFocus,
-  onPause,
-  onResume,
   onStop,
   onComplete,
   onEdit,
@@ -75,10 +67,8 @@ export function TaskCardActions({
         task={task}
         isActive={isActive}
         isRunning={isRunning}
-        isPaused={isPaused}
+        hasActiveTask={hasActiveTask}
         onStartFocus={onStartFocus}
-        onPause={onPause}
-        onResume={onResume}
         onStop={onStop}
         onComplete={onComplete}
         data-testid={testId}

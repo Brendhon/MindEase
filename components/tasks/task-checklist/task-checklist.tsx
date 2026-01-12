@@ -87,5 +87,5 @@ TaskChecklist.displayName = "TaskChecklist";
 
 const styles = {
   container: "flex flex-col",
-  list: "flex flex-col list-none p-0 m-0",
+  list: "flex flex-col list-none p-0 m-0 gap-2",
 } as const;

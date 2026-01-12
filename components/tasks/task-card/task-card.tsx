@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
@@ -10,6 +10,7 @@ import { TaskChecklist } from "../task-checklist";
 import { TaskCardHeader } from "./task-card-header";
 import { TaskCardTimer } from "./task-card-timer";
 import { TaskCardActions } from "./task-card-actions";
+import { TaskPendingSubtasksDialog } from "../task-pending-subtasks-dialog";
 
 /**
  * TaskCard Component - MindEase
@@ -43,11 +44,26 @@ export function TaskCard({
   onToggleSubtask,
   "data-testid": testId,
 }: TaskCardProps) {
-  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer } = useFocusTimer();
+  const { timerState, startTimer, stopTimer } = useFocusTimer();
+  const [showPendingDialog, setShowPendingDialog] = useState(false);
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
-  const isPaused = isActive && timerState.timerState === "paused";
+  const hasActiveTask = timerState.activeTaskId !== null;
+
+  // Check if task has pending subtasks
+  const hasPendingSubtasks = useMemo(() => {
+    if (!task.subtasks || task.subtasks.length === 0) {
+      return false;
+    }
+    return task.subtasks.some((subtask) => !subtask.completed);
+  }, [task.subtasks]);
+
+  // Get pending subtasks
+  const pendingSubtasks = useMemo(() => {
+    if (!task.subtasks) return [];
+    return task.subtasks.filter((subtask) => !subtask.completed);
+  }, [task.subtasks]);
 
   // Handle focus actions
   const handleStartFocus = () => {
@@ -62,21 +78,20 @@ export function TaskCard({
     onStatusChange?.(task.id, 1); // Set to In Progress
   };
 
-  const handlePause = () => {
-    pauseTimer();
-  };
-
-  const handleResume = () => {
-    resumeTimer();
-  };
-
   const handleStop = () => {
     stopTimer();
+    // Return task to To Do when focus is stopped
+    onStatusChange?.(task.id, 0);
   };
 
   const handleComplete = () => {
-    stopTimer();
-    onStatusChange?.(task.id, 2); // Set to Done
+    // Check if task has pending subtasks
+    if (hasPendingSubtasks) {
+      setShowPendingDialog(true);
+    } else {
+      stopTimer();
+      onStatusChange?.(task.id, 2);
+    }
   };
 
   const handleEdit = () => {
@@ -115,7 +130,6 @@ export function TaskCard({
           task={task}
           isActive={isActive}
           isRunning={isRunning}
-          isPaused={isPaused}
           data-testid={testId}
         />
 
@@ -134,10 +148,8 @@ export function TaskCard({
           task={task}
           isActive={isActive}
           isRunning={isRunning}
-          isPaused={isPaused}
+          hasActiveTask={hasActiveTask}
           onStartFocus={handleStartFocus}
-          onPause={handlePause}
-          onResume={handleResume}
           onStop={handleStop}
           onComplete={handleComplete}
           onEdit={handleEdit}
@@ -145,6 +157,14 @@ export function TaskCard({
           data-testid={testId}
         />
       </CardContent>
+
+      {/* Dialog for pending subtasks */}
+      <TaskPendingSubtasksDialog
+        isOpen={showPendingDialog}
+        onClose={() => setShowPendingDialog(false)}
+        pendingSubtasks={pendingSubtasks}
+        data-testid={testId}
+      />
     </Card>
   );
 }
