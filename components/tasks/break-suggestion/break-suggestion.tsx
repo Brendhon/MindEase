@@ -3,7 +3,6 @@
 import { Card } from "@/components/ui";
 import { Button } from "@/components/ui/button";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { Play } from "lucide-react";
 import { useMemo } from "react";
@@ -75,12 +74,12 @@ export function BreakSuggestion({
             variant="primary"
             size="sm"
             onClick={onResume}
-            aria-label={textDetail.getText("tasks_action_resume_aria" as AccessibilityTextKey)}
+            aria-label={textDetail.getText("tasks_action_resume_aria")}
             data-testid="break-suggestion-resume"
           >
             <Button.Icon icon={Play} position="left" />
             <Button.Text>
-              {textDetail.getText("tasks_action_resume" as AccessibilityTextKey)}
+              {textDetail.getText("tasks_action_resume")}
             </Button.Text>
           </Button>
         )}
