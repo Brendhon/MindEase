@@ -48,9 +48,9 @@ export function TaskChecklistItem({
   }, [isFocused, isCompleted, interactive]);
 
   const handleToggle = () => {
-    if (interactive) {
-      onToggle?.(subtask.id);
-    }
+    // Always call onToggle - the parent component will handle the logic
+    // (show dialog if not in focus, or toggle if in focus)
+    onToggle?.(subtask.id);
   };
 
   return (
@@ -61,10 +61,10 @@ export function TaskChecklistItem({
       <Checkbox
         checked={isCompleted}
         onChange={handleToggle}
-        disabled={!interactive}
-        aria-label={`${subtask.title} - ${isCompleted ? "Concluída" : "Pendente"}`}
+        disabled={false}
+        aria-label={`${subtask.title} - ${isCompleted ? "Concluída" : "Pendente"}${!interactive ? " - Entre em foco para marcar" : ""}`}
         data-testid={`task-checklist-checkbox-${subtask.id}`}
-        className={styles.checkboxWrapper}
+        className={cn(styles.checkboxWrapper, !interactive && styles.checkboxDisabled)}
       >
         <Checkbox.Label
           checked={isCompleted}
@@ -84,7 +84,8 @@ const styles = {
   item: "flex items-start",
   itemFocused: "opacity-100",
   itemCompleted: "opacity-60",
-  itemNonInteractive: "pointer-events-none",
+  itemNonInteractive: "opacity-70",
   checkboxWrapper: "w-full",
+  checkboxDisabled: "cursor-pointer",
   label: "text-text-primary",
 } as const;

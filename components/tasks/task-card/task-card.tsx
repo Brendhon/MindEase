@@ -11,6 +11,7 @@ import { TaskCardHeader } from "./task-card-header";
 import { TaskCardTimer } from "./task-card-timer";
 import { TaskCardActions } from "./task-card-actions";
 import { TaskPendingSubtasksDialog } from "../task-pending-subtasks-dialog";
+import { TaskFocusRequiredDialog } from "../task-focus-required-dialog";
 
 /**
  * TaskCard Component - MindEase
@@ -46,6 +47,7 @@ export function TaskCard({
 }: TaskCardProps) {
   const { timerState, startTimer, stopTimer } = useFocusTimer();
   const [showPendingDialog, setShowPendingDialog] = useState(false);
+  const [showFocusRequiredDialog, setShowFocusRequiredDialog] = useState(false);
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
@@ -103,6 +105,11 @@ export function TaskCard({
   };
 
   const handleToggleSubtask = (subtaskId: string) => {
+    // Only allow toggling subtasks when task is in focus
+    if (!isActive || !isRunning) {
+      setShowFocusRequiredDialog(true);
+      return;
+    }
     onToggleSubtask?.(task.id, subtaskId);
   };
 
@@ -139,7 +146,8 @@ export function TaskCard({
             subtasks={task.subtasks}
             focusedSubtaskId={isActive ? timerState.focusedSubtaskId : null}
             onToggleSubtask={showActions ? handleToggleSubtask : undefined}
-            interactive={showActions}
+            interactive={isActive && isRunning}
+            isInFocus={isActive && isRunning}
             data-testid={`task-card-checklist-${task.id}`}
           />
         )}
@@ -163,6 +171,14 @@ export function TaskCard({
         isOpen={showPendingDialog}
         onClose={() => setShowPendingDialog(false)}
         pendingSubtasks={pendingSubtasks}
+        data-testid={testId}
+      />
+
+      {/* Dialog for focus required */}
+      <TaskFocusRequiredDialog
+        isOpen={showFocusRequiredDialog}
+        onClose={() => setShowFocusRequiredDialog(false)}
+        onStartFocus={handleStartFocus}
         data-testid={testId}
       />
     </Card>

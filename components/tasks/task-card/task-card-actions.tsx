@@ -88,5 +88,5 @@ export function TaskCardActions({
 TaskCardActions.displayName = "TaskCardActions";
 
 const styles = {
-  actions: "flex flex-wrap items-center gap-2 mt-4",
+  actions: "flex flex-wrap items-center gap-2 mt-3",
 } as const;

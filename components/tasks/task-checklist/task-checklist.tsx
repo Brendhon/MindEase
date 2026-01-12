@@ -24,6 +24,9 @@ export interface TaskChecklistProps {
   /** Whether checklist is interactive */
   interactive?: boolean;
 
+  /** Whether task is in focus (to show hint text) */
+  isInFocus?: boolean;
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -33,9 +36,10 @@ export function TaskChecklist({
   focusedSubtaskId,
   onToggleSubtask,
   interactive = false,
+  isInFocus = false,
   "data-testid": testId,
 }: TaskChecklistProps) {
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses, textDetail } = useCognitiveSettings();
 
   // Sort subtasks by order
   const sortedSubtasks = useMemo(() => {
@@ -79,6 +83,11 @@ export function TaskChecklist({
           );
         })}
       </ul>
+      {!isInFocus && (
+        <p className={cn(styles.hint, fontSizeClasses.sm)} data-testid={`${testId || "task-checklist"}-hint`}>
+          {textDetail.getText("tasks_subtask_focus_required_hint_text")}
+        </p>
+      )}
     </div>
   );
 }
@@ -88,4 +97,5 @@ TaskChecklist.displayName = "TaskChecklist";
 const styles = {
   container: "flex flex-col",
   list: "flex flex-col list-none p-0 m-0 gap-2",
+  hint: "text-text-secondary italic mt-2",
 } as const;
