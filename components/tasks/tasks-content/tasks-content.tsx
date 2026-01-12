@@ -145,7 +145,8 @@ export function TasksContent({
     try {
       const updatedTask = await tasksService.updateTask(user.uid, taskId, updates);
       setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
-      success("toast_success_task_updated");
+      const messageKey = updatedTask.status === 2 ? "toast_success_task_completed" : "toast_success_task_updated";
+      success(messageKey);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Failed to update task";
       setError(errorMessage);

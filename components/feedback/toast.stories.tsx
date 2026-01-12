@@ -60,7 +60,7 @@ function ToastTriggerButtons() {
 
   return (
     <div className="flex gap-2 flex-wrap">
-      <Button variant="primary" size="sm" onClick={() => success('toast_success_operation_completed', 0)}>
+      <Button variant="primary" size="sm" onClick={() => success('toast_success_task_completed', 0)}>
         <Button.Text>{textDetail.getText('button_success')}</Button.Text>
       </Button>
       <Button variant="danger" size="sm" onClick={() => error('toast_error_processing', 0)}>
@@ -181,7 +181,7 @@ export const AllTypes: Story = {
         {
           id: '1',
           type: 'success',
-          messageKey: 'toast_success_operation_completed',
+          messageKey: 'toast_success_task_completed',
           duration: 0,
         },
         {
