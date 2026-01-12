@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { Card } from "@/components/ui";
 import { Button } from "@/components/ui/button";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { Play } from "lucide-react";
+import { useMemo } from "react";
 
 /**
  * BreakSuggestion Component - MindEase
@@ -15,13 +16,13 @@ import { Play } from "lucide-react";
 export interface BreakSuggestionProps {
   /** Whether suggestion is visible */
   isVisible: boolean;
-  
+
   /** Suggested break duration in minutes */
   breakDuration: number;
-  
+
   /** Callback to resume focus session */
   onResume?: () => void;
-  
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -54,42 +55,44 @@ export function BreakSuggestion({
   }
 
   return (
-    <div
+    <Card
       className={suggestionClasses}
-      role="region"
-      aria-label="Sugestão de pausa"
       data-testid={testId || "break-suggestion"}
     >
-      <div className={styles.content}>
-        <p className={messageClasses}>
-          {textDetail.getText("tasks_focus_suggest_break" as AccessibilityTextKey)}
-        </p>
-        <p className={durationClasses}>
-          {textDetail.getText("tasks_focus_suggest_break_duration" as AccessibilityTextKey)} {breakDuration} {textDetail.getText("tasks_focus_suggest_break_minutes" as AccessibilityTextKey)}
-        </p>
-      </div>
-      {onResume && (
-        <Button
-          variant="primary"
-          size="sm"
-          onClick={onResume}
-          aria-label={textDetail.getText("tasks_action_resume_aria" as AccessibilityTextKey)}
-          data-testid="break-suggestion-resume"
-        >
-          <Button.Icon icon={Play} position="left" />
-          <Button.Text>
-            {textDetail.getText("tasks_action_resume" as AccessibilityTextKey)}
-          </Button.Text>
-        </Button>
-      )}
-    </div>
+      <Card.Header>
+        <Card.Title className={messageClasses}>
+          {textDetail.getText("tasks_focus_suggest_break")}
+        </Card.Title>
+
+        <Card.Description className={durationClasses}>
+          {textDetail.getText("tasks_focus_suggest_break_duration")} {breakDuration} {textDetail.getText("tasks_focus_suggest_break_minutes")}
+        </Card.Description>
+      </Card.Header>
+
+      <Card.Content className={styles.content}>
+        {onResume && (
+          <Button
+            variant="primary"
+            size="sm"
+            onClick={onResume}
+            aria-label={textDetail.getText("tasks_action_resume_aria" as AccessibilityTextKey)}
+            data-testid="break-suggestion-resume"
+          >
+            <Button.Icon icon={Play} position="left" />
+            <Button.Text>
+              {textDetail.getText("tasks_action_resume" as AccessibilityTextKey)}
+            </Button.Text>
+          </Button>
+        )}
+      </Card.Content>
+    </Card>
   );
 }
 
 BreakSuggestion.displayName = "BreakSuggestion";
 
 const styles = {
-  suggestion: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-action-info/5 border border-action-info/20 rounded-lg",
+  suggestion: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3",
   content: "flex flex-col",
   message: "text-text-secondary",
   duration: "text-action-info font-medium mt-1",

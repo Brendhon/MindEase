@@ -5,11 +5,11 @@ import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import type { Task } from "@/models/Task";
-import { TaskCard } from "../task-card";
+import { TaskColumn } from "../task-column";
 
 /**
  * TaskList Component - MindEase
- * List of task cards
+ * Kanban board with columns for tasks
  */
 export interface TaskListProps {
   /** Array of tasks to display */
@@ -41,28 +41,15 @@ export function TaskList({
 }: TaskListProps) {
   const { spacingClasses, textDetail } = useCognitiveSettings();
 
-  // Sort tasks: In Progress first, then To Do, then Done
-  const sortedTasks = useMemo(() => {
-    return [...tasks].sort((a, b) => {
-      // In Progress (status 1) first
-      if (a.status === 1 && b.status !== 1) return -1;
-      if (b.status === 1 && a.status !== 1) return 1;
-      
-      // Then To Do (status 0)
-      if (a.status === 0 && b.status === 2) return -1;
-      if (b.status === 0 && a.status === 2) return 1;
-      
-      // Then by updated date (most recent first)
-      return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
-    });
-  }, [tasks]);
-
   const containerClasses = useMemo(
     () => cn(styles.container, spacingClasses.gap),
     [spacingClasses.gap]
   );
 
-  if (tasks.length === 0) {
+  // Check if all columns are empty
+  const hasTasks = tasks.length > 0;
+
+  if (!hasTasks) {
     return (
       <div className={styles.empty} data-testid={`${testId || "task-list"}-empty`}>
         <p className={styles.emptyText}>
@@ -77,17 +64,41 @@ export function TaskList({
 
   return (
     <div className={containerClasses} data-testid={testId || "task-list"}>
-      {sortedTasks.map((task) => (
-        <TaskCard
-          key={task.id}
-          task={task}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          onStatusChange={onStatusChange}
-          onToggleSubtask={onToggleSubtask}
-          data-testid={`task-list-item-${task.id}`}
-        />
-      ))}
+      {/* To Do Column */}
+      <TaskColumn
+        titleKey="tasks_column_todo"
+        tasks={tasks}
+        status={0}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+        onToggleSubtask={onToggleSubtask}
+        data-testid="task-column-todo"
+      />
+
+      {/* In Progress Column */}
+      <TaskColumn
+        titleKey="tasks_column_in_progress"
+        tasks={tasks}
+        status={1}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+        onToggleSubtask={onToggleSubtask}
+        data-testid="task-column-in-progress"
+      />
+
+      {/* Done Column */}
+      <TaskColumn
+        titleKey="tasks_column_done"
+        tasks={tasks}
+        status={2}
+        onEdit={onEdit}
+        onDelete={onDelete}
+        onStatusChange={onStatusChange}
+        onToggleSubtask={onToggleSubtask}
+        data-testid="task-column-done"
+      />
     </div>
   );
 }
@@ -95,8 +106,8 @@ export function TaskList({
 TaskList.displayName = "TaskList";
 
 const styles = {
-  container: "flex flex-col",
-  empty: "flex flex-col items-center justify-center py-12 text-center",
+  container: "grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 w-full auto-rows-min overflow-x-auto lg:overflow-x-visible",
+  empty: "flex flex-col items-center justify-center py-12 text-center col-span-full",
   emptyText: "text-text-primary text-lg font-semibold mb-2",
   emptyDescription: "text-text-secondary",
 } as const;

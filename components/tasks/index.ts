@@ -1,4 +1,5 @@
 export * from "./task-card";
+export * from "./task-column";
 export * from "./task-list";
 export * from "./task-dialog";
 export * from "./task-checklist";

@@ -287,7 +287,10 @@ export function TasksContent({
   }
 
   return (
-    <PageContent data-testid={testId || "tasks-page"}>
+    <PageContent 
+      data-testid={testId || "tasks-page"}
+      mainClassName={styles.tasksMain}
+    >
       <PageHeader
         titleKey="tasks_title"
         descriptionKey="tasks_description"
@@ -345,3 +348,7 @@ export function TasksContent({
 }
 
 TasksContent.displayName = "TasksContent";
+
+const styles = {
+  tasksMain: "max-w-7xl",
+} as const;
