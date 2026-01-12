@@ -9,7 +9,7 @@ import type { FeedbackType } from "@/hooks/useFeedback";
 export const styles = {
   toastContainer: "fixed top-4 right-4 z-50 flex flex-col pointer-events-none",
   toastItem: "pointer-events-auto",
-  toastCard: "relative flex items-start w-full max-w-md rounded-lg",
+  toastCard: "relative flex items-center w-full max-w-md rounded-lg",
   contrast: {
     // Normal contrast: subtle shadow
     normal: "shadow-medium",
