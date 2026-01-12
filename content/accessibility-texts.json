@@ -188,7 +188,22 @@
     "toast_error_task_delete_failed": "Falha ao excluir tarefa. Por favor, tente novamente.",
     "toast_info_focus_started": "Sessão de foco iniciada",
     "toast_info_focus_paused": "Sessão de foco pausada",
-    "toast_info_focus_resumed": "Sessão de foco retomada"
+    "toast_info_focus_resumed": "Sessão de foco retomada",
+    "header_menu_open": "Abrir menu de navegação",
+    "header_logout_aria": "Sair da conta",
+    "header_logout_loading": "Saindo...",
+    "sidebar_navigation_aria": "Barra lateral de navegação",
+    "sidebar_main_navigation_aria": "Navegação principal",
+    "toast_dismiss_aria": "Fechar mensagem",
+    "toast_icon_success_aria": "Sucesso",
+    "toast_icon_error_aria": "Erro",
+    "toast_icon_warning_aria": "Aviso",
+    "toast_icon_info_aria": "Informação",
+    "button_loading_aria": "Carregando",
+    "form_required_aria": "Campo obrigatório",
+    "tasks_count_aria": "tarefas",
+    "tasks_checklist_item_completed": "Concluída",
+    "tasks_checklist_item_pending": "Pendente"
   },
   "summary": {
     "welcome": "Bem-vindo",
@@ -358,6 +373,10 @@
     "tasks_checklist_step_completed": "Etapa concluída.",
     "tasks_focus_session_active": "Foco em andamento",
     "tasks_focus_session_complete": "Sessão finalizada. Continuar ou pausar?",
+    "tasks_focus_time_remaining": "Tempo restante",
+    "tasks_focus_suggest_break": "Que tal uma pausa?",
+    "tasks_focus_suggest_break_duration": "Pausa de",
+    "tasks_focus_suggest_break_minutes": "min",
     "tasks_focus_session_continue": "Continuar",
     "tasks_focus_session_continue_aria": "Continuar foco",
     "tasks_focus_session_pause": "Pausar",
@@ -375,7 +394,22 @@
     "toast_error_task_delete_failed": "Erro ao excluir",
     "toast_info_focus_started": "Foco iniciado",
     "toast_info_focus_paused": "Foco pausado",
-    "toast_info_focus_resumed": "Foco retomado"
+    "toast_info_focus_resumed": "Foco retomado",
+    "header_menu_open": "Abrir menu",
+    "header_logout_aria": "Sair",
+    "header_logout_loading": "Saindo...",
+    "sidebar_navigation_aria": "Navegação",
+    "sidebar_main_navigation_aria": "Menu principal",
+    "toast_dismiss_aria": "Fechar",
+    "toast_icon_success_aria": "Sucesso",
+    "toast_icon_error_aria": "Erro",
+    "toast_icon_warning_aria": "Aviso",
+    "toast_icon_info_aria": "Info",
+    "button_loading_aria": "Carregando",
+    "form_required_aria": "Obrigatório",
+    "tasks_count_aria": "tarefas",
+    "tasks_checklist_item_completed": "Concluída",
+    "tasks_checklist_item_pending": "Pendente"
   }
 }
 
