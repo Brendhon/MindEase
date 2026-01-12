@@ -72,8 +72,13 @@ const defaultItems: SidebarItemData[] = [
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
   // Read cognitive accessibility settings - classes are automatically computed
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses, settings } = useCognitiveSettings();
   const { isOpen, close } = useSidebar();
+
+  // Hide sidebar when focus mode is enabled (unless it's explicitly opened)
+  // In focus mode, sidebar is treated as a distraction and should be hidden by default
+  const isFocusModeActive = settings.focusMode;
+  const shouldHideSidebar = isFocusModeActive && !isOpen;
 
   // Generate spacing classes for the aside (padding and gap) - uses hook's pre-computed classes
   const asideClasses = useMemo(
@@ -122,12 +127,15 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
           asideClasses,
           styles.container,
           // Mobile: slide in/out from left
-          isOpen ? styles.containerOpen : styles.containerClosed
+          // Desktop: hide when focus mode is active (unless explicitly opened)
+          isOpen ? styles.containerOpen : styles.containerClosed,
+          // Hide sidebar on desktop when focus mode is active
+          shouldHideSidebar && "md:hidden"
         )}
         data-testid="sidebar-container"
         role="complementary"
         aria-label="Navigation sidebar"
-        aria-hidden={!isOpen ? "true" : undefined}
+        aria-hidden={shouldHideSidebar || !isOpen ? "true" : undefined}
       >
         <nav
           className={cn(styles.nav, spacingClasses.gap)}

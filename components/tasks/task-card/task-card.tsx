@@ -291,9 +291,9 @@ export function TaskCard({
 TaskCard.displayName = "TaskCard";
 
 const styles = {
-  cardDefault: "",
-  cardActive: "ring-2 ring-action-primary",
-  cardDone: "opacity-60",
+  cardDefault: "m-1",
+  cardActive: "m-1 ring-2 ring-action-primary",
+  cardDone: "m-1 opacity-60",
   headerRow: "flex items-center justify-between gap-4",
   title: "font-semibold text-text-primary flex-1",
   status: "px-2 py-1 rounded text-xs font-medium whitespace-nowrap",
