@@ -158,7 +158,7 @@ export function TaskCard({
             )}
             {isPaused && (
               <p className={cn(styles.timerStatus, styles.timerStatusPaused, fontSizeClasses.sm)}>
-                {textDetail.getText("tasks_action_pause")}
+                {textDetail.getText("tasks_action_paused")}
               </p>
             )}
           </div>
@@ -241,12 +241,12 @@ export function TaskCard({
                   variant="secondary"
                   size="sm"
                   onClick={handleStop}
-                  aria-label={textDetail.getText("tasks_action_pause_aria")}
+                  aria-label={textDetail.getText("tasks_action_stop_aria")}
                   data-testid={`task-card-stop-${task.id}`}
                 >
                   <Button.Icon icon={Square} position="left" />
                   <Button.Text>
-                    {textDetail.getText("tasks_action_pause")}
+                    {textDetail.getText("tasks_action_stop")}
                   </Button.Text>
                 </Button>
               </>
