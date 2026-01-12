@@ -9,6 +9,7 @@ import { useFeedback } from "@/hooks/useFeedback";
 import { Subtask, Task } from "@/models/Task";
 import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { BreakSuggestion } from "../break-suggestion";
 import { FocusSessionAlert } from "../focus-session-alert";
 import { TaskDeleteDialog } from "../task-delete-dialog";
 import { TaskDialog } from "../task-dialog";
@@ -48,6 +49,7 @@ export function TasksContent({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [showSessionAlert, setShowSessionAlert] = useState(false);
+  const [showBreakSuggestion, setShowBreakSuggestion] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
@@ -74,15 +76,18 @@ export function TasksContent({
       setShowSessionAlert(true);
     }
     
-    // Detect when user pauses - suggest break (subtle, non-intrusive)
+    // Detect when user pauses - show break suggestion
     if (
       prev.timerState === "running" &&
       current.timerState === "paused" &&
       current.activeTaskId !== null
     ) {
-      // Don't show toast immediately to avoid cognitive overload
-      // The pause itself is enough feedback
-      // User can see the pause state in the UI
+      setShowBreakSuggestion(true);
+    }
+    
+    // Hide break suggestion when timer resumes or stops
+    if (current.timerState === "running" || (current.timerState === "idle" && current.activeTaskId === null)) {
+      setShowBreakSuggestion(false);
     }
     
     // Hide alert when timer is fully stopped (no activeTaskId)
@@ -256,6 +261,11 @@ export function TasksContent({
     setShowSessionAlert(false);
   }, [stopTimer]);
 
+  const handleResumeFromBreak = useCallback(() => {
+    resumeTimer();
+    setShowBreakSuggestion(false);
+  }, [resumeTimer]);
+
   const handleFinishTask = useCallback(async () => {
     if (timerState.activeTaskId) {
       await handleStatusChange(timerState.activeTaskId, 2);
@@ -292,6 +302,13 @@ export function TasksContent({
         onContinue={handleContinueFocus}
         onPause={handlePauseFocus}
         onFinish={handleFinishTask}
+      />
+
+      {/* Break suggestion (when paused) */}
+      <BreakSuggestion
+        isVisible={showBreakSuggestion && timerState.timerState === "paused"}
+        breakDuration={settings.shortBreakDuration || 5}
+        onResume={handleResumeFromBreak}
       />
 
       {/* Toolbar */}

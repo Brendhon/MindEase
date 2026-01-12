@@ -141,7 +141,10 @@ export function TaskCard({
       <CardContent>
         {/* Timer indicator when focus is active */}
         {isActive && (isRunning || isPaused) && (
-          <div className={styles.timerIndicator} data-testid={`task-card-timer-${task.id}`}>
+          <div className={cn(
+            styles.timerIndicator,
+            isPaused && styles.timerIndicatorPaused
+          )} data-testid={`task-card-timer-${task.id}`}>
             <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
               {textDetail.getText("tasks_focus_time_remaining")}:
             </p>
@@ -151,6 +154,11 @@ export function TaskCard({
             {isRunning && (
               <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
                 {textDetail.getText("tasks_focus_session_active")}
+              </p>
+            )}
+            {isPaused && (
+              <p className={cn(styles.timerStatus, styles.timerStatusPaused, fontSizeClasses.sm)}>
+                {textDetail.getText("tasks_action_pause")}
               </p>
             )}
           </div>
@@ -294,8 +302,10 @@ const styles = {
   statusDone: "bg-action-success/10 text-action-success",
   description: "text-text-secondary mt-2",
   timerIndicator: "flex flex-col gap-1 mb-4 p-3 bg-action-primary/5 rounded-lg border border-action-primary/20",
+  timerIndicatorPaused: "bg-action-info/5 border-action-info/20",
   timerLabel: "text-text-secondary",
   timerValue: "font-semibold text-action-primary",
   timerStatus: "text-text-secondary italic",
+  timerStatusPaused: "text-action-info",
   actions: "flex flex-wrap items-center gap-2 mt-4",
 } as const;
