@@ -3,7 +3,7 @@
 import { ReactNode, useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
-import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
+import { getBorderContrastClasses, getFocusModeClasses } from "@/utils/accessibility/tailwind-classes";
 import { CardHeader } from "./card-header";
 import { CardTitle } from "./card-title";
 import { CardDescription } from "./card-description";
@@ -24,7 +24,7 @@ import { styles } from "./card-styles";
  * - Spacing preferences (padding, gap)
  * - Contrast settings
  * - Animation preferences
- * - Focus mode styles
+ * - Focus mode styles (only when focused prop is true)
  * 
  * @example
  * ```tsx
@@ -38,6 +38,13 @@ import { styles } from "./card-styles";
  *   </Card.Content>
  * </Card>
  * ```
+ * 
+ * @example
+ * ```tsx
+ * <Card focused={isActive}>
+ *   <Card.Content>Focused card content</Card.Content>
+ * </Card>
+ * ```
  */
 export interface CardProps {
   /** Card content */
@@ -49,6 +56,9 @@ export interface CardProps {
   /** HTML element to render (default: div) */
   as?: "div" | "section" | "article";
   
+  /** Whether this card is currently focused (applies focus mode styles) */
+  focused?: boolean;
+  
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -57,13 +67,20 @@ const CardRoot = function Card({
   children,
   className,
   as: Component = "div",
+  focused = false,
   "data-testid": testId,
 }: CardProps) {
-  const { spacingClasses, contrastClasses, animationClasses, focusModeClasses, settings } = useCognitiveSettings();
+  const { spacingClasses, contrastClasses, animationClasses, settings } = useCognitiveSettings();
 
   const borderClasses = useMemo(
     () => getBorderContrastClasses(settings.contrast, "subtle"),
     [settings.contrast]
+  );
+
+  // Only apply focus mode classes when this specific card is focused
+  const focusModeClasses = useMemo(
+    () => getFocusModeClasses(focused),
+    [focused]
   );
 
   const cardClasses = useMemo(

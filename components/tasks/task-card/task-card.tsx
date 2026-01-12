@@ -112,7 +112,7 @@ export function TaskCard({
   const showActions = task.status !== 2; // Don't show actions for completed tasks
 
   return (
-    <Card className={cardClasses} data-testid={testId || `task-card-${task.id}`}>
+    <Card className={cardClasses} focused={isActive} data-testid={testId || `task-card-${task.id}`}>
       <CardHeader>
         <div className={styles.headerRow}>
           <CardTitle className={cn(fontSizeClasses.base, styles.title)}>
