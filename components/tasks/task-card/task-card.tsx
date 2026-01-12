@@ -1,208 +1,280 @@
 "use client";
 
-import { TaskChecklist } from "@/components/tasks/task-checklist";
-import { Button, Card } from "@/components/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useFeedback } from "@/hooks/useFeedback";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { Task } from "@/models/Task";
-import { cn } from "@/utils/ui";
-import { Pause, Play, Square } from "lucide-react";
 import { useMemo } from "react";
+import { Card } from "@/components/ui/card";
+import { CardHeader } from "@/components/ui/card/card-header";
+import { CardTitle } from "@/components/ui/card/card-title";
+import { CardContent } from "@/components/ui/card/card-content";
+import { Button } from "@/components/ui/button";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { cn } from "@/utils/ui";
+import { Play, Pause, Check, Edit, Trash2, Square } from "lucide-react";
+import type { Task } from "@/models/Task";
+import { TaskChecklist } from "../task-checklist";
 
 /**
- * Task Card Component - MindEase
- * Accessible task card with intelligent checklist and focus timer
+ * TaskCard Component - MindEase
+ * Individual task card with actions and status
  */
 export interface TaskCardProps {
+  /** Task data */
   task: Task;
-  onToggle?: (id: string) => void;
+  
+  /** Callback when task is edited */
   onEdit?: (task: Task) => void;
-  onDelete?: (id: string) => void;
+  
+  /** Callback when task is deleted */
+  onDelete?: (taskId: string) => void;
+  
+  /** Callback when task status changes */
+  onStatusChange?: (taskId: string, status: number) => void;
+  
+  /** Callback when subtask is toggled */
   onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-  onStartFocus?: (taskId: string) => void;
+  
+  /** Test ID for testing */
+  "data-testid"?: string;
 }
 
-export function TaskCard({ task, onToggle, onEdit, onDelete, onToggleSubtask, onStartFocus }: TaskCardProps) {
-  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer, formatTime } = useFocusTimer();
-  const { success } = useFeedback();
-  const { fontSizeClasses, spacingClasses } = useCognitiveSettings();
+export function TaskCard({
+  task,
+  onEdit,
+  onDelete,
+  onStatusChange,
+  onToggleSubtask,
+  "data-testid": testId,
+}: TaskCardProps) {
+  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { timerState, startTimer, pauseTimer, resumeTimer, stopTimer } = useFocusTimer();
 
-  const isCompleted = task.status === 2;
-  const isTimerActive = timerState.activeTaskId === task.id;
-  const isTimerRunning = isTimerActive && timerState.timerState === "running";
-  const isTimerPaused = isTimerActive && timerState.timerState === "paused";
+  const isActive = timerState.activeTaskId === task.id;
+  const isRunning = isActive && timerState.timerState === "running";
+  const isPaused = isActive && timerState.timerState === "paused";
 
-  const handleToggle = () => {
-    console.log("Task toggled:", task);
-    onToggle?.(task.id);
-  };
+  // Get status label
+  const statusLabel = useMemo(() => {
+    if (task.status === 0) return textDetail.getText("tasks_status_todo");
+    if (task.status === 1) return textDetail.getText("tasks_status_in_progress");
+    return textDetail.getText("tasks_status_done");
+  }, [task.status, textDetail]);
 
+  // Handle focus actions
   const handleStartFocus = () => {
-    startTimer(task.id, undefined);
-    onStartFocus?.(task.id);
+    if (task.subtasks && task.subtasks.length > 0) {
+      // If task has subtasks, start with first incomplete one or first one
+      const firstIncomplete = task.subtasks.find((st) => !st.completed);
+      const subtaskId = firstIncomplete?.id || task.subtasks[0]?.id;
+      startTimer(task.id, subtaskId);
+    } else {
+      startTimer(task.id);
+    }
+    onStatusChange?.(task.id, 1); // Set to In Progress
   };
 
-  const handlePauseFocus = () => {
+  const handlePause = () => {
     pauseTimer();
   };
 
-  const handleResumeFocus = () => {
+  const handleResume = () => {
     resumeTimer();
   };
 
-  const handleStopFocus = () => {
+  const handleStop = () => {
     stopTimer();
   };
 
-  const handleToggleSubtaskLocal = (subtaskId: string) => {
-    onToggleSubtask?.(task.id, subtaskId);
-    
-    // Cognitive feedback on completion
-    const subtask = task.subtasks?.find((st) => st.id === subtaskId);
-    if (subtask && !subtask.completed) {
-      const completedCount = (task.subtasks?.filter((st) => st.completed).length || 0) + 1;
-      const totalCount = task.subtasks?.length || 0;
-      
-      if (completedCount === totalCount) {
-        success("toast_success_done");
-      } else {
-        // Light feedback for partial completion
-        console.log(`Boa! Um passo concluído. (${completedCount}/${totalCount})`);
-      }
-    }
+  const handleComplete = () => {
+    stopTimer();
+    onStatusChange?.(task.id, 2); // Set to Done
   };
 
-  const cardClasses = useMemo(
-    () => isTimerActive ? "ring-2 ring-action-primary/20" : "",
-    [isTimerActive]
-  );
+  const handleEdit = () => {
+    onEdit?.(task);
+  };
+
+  const handleDelete = () => {
+    onDelete?.(task.id);
+  };
+
+  const handleToggleSubtask = (subtaskId: string) => {
+    onToggleSubtask?.(task.id, subtaskId);
+  };
+
+  // Card classes based on status and focus state
+  const cardClasses = useMemo(() => {
+    if (task.status === 2) return styles.cardDone;
+    if (isActive) return styles.cardActive;
+    return styles.cardDefault;
+  }, [task.status, isActive]);
+
+  // Determine which actions to show
+  const showActions = task.status !== 2; // Don't show actions for completed tasks
 
   return (
-    <Card className={cardClasses} data-testid={`task-card-${task.id}`}>
-      <div className="flex items-start gap-3">
-        <input
-          type="checkbox"
-          checked={isCompleted}
-          onChange={handleToggle}
-          className="mt-1 h-4 w-4 rounded border-border-subtle text-action-primary focus:ring-2 focus:ring-action-primary"
-          aria-label={`Mark task "${task.title}" as ${isCompleted ? "incomplete" : "complete"}`}
-          data-testid={`task-card-checkbox-${task.id}`}
-        />
-        <div className="flex-1 min-w-0">
-          <h3 className={cn("font-medium text-text-primary", fontSizeClasses.base, isCompleted && "line-through text-text-tertiary")} data-testid={`task-card-title-${task.id}`}>
+    <Card className={cardClasses} data-testid={testId || `task-card-${task.id}`}>
+      <CardHeader>
+        <div className={styles.headerRow}>
+          <CardTitle className={cn(fontSizeClasses.base, styles.title)}>
             {task.title}
-          </h3>
-          {task.description && (
-            <p className={cn("mt-1 text-text-secondary", fontSizeClasses.sm)} data-testid={`task-card-description-${task.id}`}>
-              {task.description}
-            </p>
-          )}
+          </CardTitle>
+          <span
+            className={cn(
+              styles.status,
+              fontSizeClasses.sm,
+              task.status === 0 && styles.statusTodo,
+              task.status === 1 && styles.statusInProgress,
+              task.status === 2 && styles.statusDone
+            )}
+            data-testid={`task-card-status-${task.id}`}
+          >
+            {statusLabel}
+          </span>
+        </div>
+        {task.description && (
+          <p className={cn(styles.description, fontSizeClasses.sm)}>
+            {task.description}
+          </p>
+        )}
+      </CardHeader>
 
-          {/* Checklist */}
-          {task.subtasks && task.subtasks.length > 0 && (
-            <div className="mt-3">
-              <TaskChecklist
-                subtasks={task.subtasks}
-                onToggleSubtask={handleToggleSubtaskLocal}
-                focusedSubtaskId={isTimerActive ? timerState.focusedSubtaskId : null}
-              />
-            </div>
-          )}
+      <CardContent>
+        {/* Checklist */}
+        {task.subtasks && task.subtasks.length > 0 && (
+          <TaskChecklist
+            subtasks={task.subtasks}
+            focusedSubtaskId={isActive ? timerState.focusedSubtaskId : null}
+            onToggleSubtask={showActions ? handleToggleSubtask : undefined}
+            interactive={showActions}
+            data-testid={`task-card-checklist-${task.id}`}
+          />
+        )}
 
-          {/* Timer Controls */}
-          <div className={cn("mt-3 flex items-center gap-2", spacingClasses.gap)}>
-            {!isTimerActive ? (
+        {/* Actions */}
+        {showActions && (
+          <div className={cn(styles.actions, spacingClasses.gap)}>
+            {/* Focus controls */}
+            {!isActive && (
               <Button
                 variant="primary"
                 size="sm"
                 onClick={handleStartFocus}
-                disabled={isCompleted}
-                data-testid={`task-card-button-start-focus-${task.id}`}
+                aria-label={textDetail.getText("tasks_action_start_focus_aria")}
+                data-testid={`task-card-start-focus-${task.id}`}
               >
-                <Button.Icon icon={Play} position="left" size="sm" />
-                <Button.Text>Iniciar foco</Button.Text>
+                <Button.Icon icon={Play} position="left" />
+                <Button.Text>
+                  {textDetail.getText("tasks_action_start_focus")}
+                </Button.Text>
               </Button>
-            ) : (
+            )}
+
+            {isActive && isRunning && (
               <>
-                {/* Timer display */}
-                <div className={cn("flex items-center gap-2 px-3 py-1.5 rounded bg-surface-secondary", fontSizeClasses.sm)}>
-                  <span className="text-text-secondary">Sessão de foco:</span>
-                  <span className="font-mono font-semibold text-text-primary" data-testid={`task-card-timer-${task.id}`}>
-                    {formatTime(timerState.remainingTime)}
-                  </span>
-                </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handlePause}
+                  aria-label={textDetail.getText("tasks_action_pause_aria")}
+                  data-testid={`task-card-pause-${task.id}`}
+                >
+                  <Button.Icon icon={Pause} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_pause")}
+                  </Button.Text>
+                </Button>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleComplete}
+                  aria-label={textDetail.getText("tasks_action_finish_aria")}
+                  data-testid={`task-card-complete-${task.id}`}
+                >
+                  <Button.Icon icon={Check} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_finish")}
+                  </Button.Text>
+                </Button>
+              </>
+            )}
 
-                {/* Control buttons */}
-                {isTimerRunning ? (
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={handlePauseFocus}
-                    data-testid={`task-card-button-pause-${task.id}`}
-                  >
-                    <Button.Icon icon={Pause} position="left" size="sm" />
-                    <Button.Text>Pausar</Button.Text>
-                  </Button>
-                ) : (
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    onClick={handleResumeFocus}
-                    data-testid={`task-card-button-resume-${task.id}`}
-                  >
-                    <Button.Icon icon={Play} position="left" size="sm" />
-                    <Button.Text>Continuar</Button.Text>
-                  </Button>
-                )}
+            {isActive && isPaused && (
+              <>
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleResume}
+                  aria-label={textDetail.getText("tasks_action_resume_aria")}
+                  data-testid={`task-card-resume-${task.id}`}
+                >
+                  <Button.Icon icon={Play} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_resume")}
+                  </Button.Text>
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={handleStop}
+                  aria-label={textDetail.getText("tasks_action_pause_aria")}
+                  data-testid={`task-card-stop-${task.id}`}
+                >
+                  <Button.Icon icon={Square} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_pause")}
+                  </Button.Text>
+                </Button>
+              </>
+            )}
 
+            {/* Edit and Delete */}
+            {!isActive && (
+              <>
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={handleStopFocus}
-                  data-testid={`task-card-button-stop-${task.id}`}
+                  onClick={handleEdit}
+                  aria-label={textDetail.getText("tasks_action_edit_aria")}
+                  data-testid={`task-card-edit-${task.id}`}
                 >
-                  <Button.Icon icon={Square} position="left" size="sm" />
-                  <Button.Text>Finalizar</Button.Text>
+                  <Button.Icon icon={Edit} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_edit")}
+                  </Button.Text>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleDelete}
+                  aria-label={textDetail.getText("tasks_action_delete_aria")}
+                  data-testid={`task-card-delete-${task.id}`}
+                >
+                  <Button.Icon icon={Trash2} position="left" />
+                  <Button.Text>
+                    {textDetail.getText("tasks_action_delete")}
+                  </Button.Text>
                 </Button>
               </>
             )}
           </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className={cn("flex flex-col gap-2 shrink-0", spacingClasses.gap)}>
-          {onEdit && (
-            <button
-              onClick={() => onEdit(task)}
-              className={cn(
-                "text-action-primary hover:text-action-primary-hover rounded-md px-2 py-1",
-                "focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2",
-                fontSizeClasses.sm
-              )}
-              aria-label={`Edit task "${task.title}"`}
-              data-testid={`task-card-button-edit-${task.id}`}
-            >
-              Editar
-            </button>
-          )}
-          {onDelete && (
-            <button
-              onClick={() => onDelete(task.id)}
-              className={cn(
-                "text-feedback-error hover:text-feedback-error/80 rounded-md px-2 py-1",
-                "focus:outline-none focus:ring-2 focus:ring-feedback-error focus:ring-offset-2",
-                fontSizeClasses.sm
-              )}
-              aria-label={`Delete task "${task.title}"`}
-              data-testid={`task-card-button-delete-${task.id}`}
-            >
-              Excluir
-            </button>
-          )}
-        </div>
-      </div>
+        )}
+      </CardContent>
     </Card>
   );
 }
 
+TaskCard.displayName = "TaskCard";
+
+const styles = {
+  cardDefault: "",
+  cardActive: "ring-2 ring-action-primary",
+  cardDone: "opacity-60",
+  headerRow: "flex items-center justify-between gap-4",
+  title: "font-semibold text-text-primary flex-1",
+  status: "px-2 py-1 rounded text-xs font-medium whitespace-nowrap",
+  statusTodo: "bg-action-info/10 text-action-info",
+  statusInProgress: "bg-action-primary/10 text-action-primary",
+  statusDone: "bg-action-success/10 text-action-success",
+  description: "text-text-secondary mt-2",
+  actions: "flex flex-wrap items-center gap-2 mt-4",
+} as const;

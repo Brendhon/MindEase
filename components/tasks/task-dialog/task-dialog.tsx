@@ -1,260 +1,264 @@
 "use client";
 
-import { Input } from "@/components/form";
-import { Button, Dialog, RadioGroup } from "@/components/ui";
+import { Input } from "@/components/form/input";
+import { InputError } from "@/components/form/input/input-error";
+import { InputField } from "@/components/form/input/input-field";
+import { InputLabel } from "@/components/form/input/input-label";
+import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useFeedback } from "@/hooks/useFeedback";
-import { Subtask, Task } from "@/models/Task";
+import type { Subtask, Task } from "@/models/Task";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { generateRandomUUID } from "@/utils/uuid";
 import { Plus, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 /**
- * Task Dialog Component - MindEase
- * Create/Edit task modal dialog with intelligent checklist support
+ * TaskDialog Component - MindEase
+ * Dialog for creating or editing tasks
  */
 export interface TaskDialogProps {
+  /** Whether dialog is open */
   isOpen: boolean;
+  
+  /** Callback when dialog is closed */
   onClose: () => void;
-  onSubmit: (task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">) => void;
-  initialTask?: Task;
+  
+  /** Task to edit (undefined for new task) */
+  task?: Task;
+  
+  /** Callback when task is saved */
+  onSave: (taskData: {
+    title: string;
+    description?: string;
+    subtasks?: Subtask[];
+  }) => void;
+  
+  /** Test ID for testing */
+  "data-testid"?: string;
 }
 
-export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialogProps) {
-  const { fontSizeClasses, spacingClasses } = useCognitiveSettings();
-  const { info } = useFeedback();
+export function TaskDialog({
+  isOpen,
+  onClose,
+  task,
+  onSave,
+  "data-testid": testId,
+}: TaskDialogProps) {
+  const { spacingClasses, textDetail } = useCognitiveSettings();
   
-  const [title, setTitle] = useState(initialTask?.title || "");
-  const [description, setDescription] = useState(initialTask?.description || "");
-  const [status, setStatus] = useState<number>(initialTask?.status ?? 0);
-  const [subtasks, setSubtasks] = useState<Subtask[]>(initialTask?.subtasks || []);
-  const [newSubtaskTitle, setNewSubtaskTitle] = useState("");
-  const [showSubtaskSuggestion, setShowSubtaskSuggestion] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [subtasks, setSubtasks] = useState<Subtask[]>([]);
+  const [titleError, setTitleError] = useState("");
 
-  // Reset form when dialog opens/closes or initialTask changes
+  const isEditing = !!task;
+
+  // Initialize form when task changes
   useEffect(() => {
     if (isOpen) {
-      setTitle(initialTask?.title || "");
-      setDescription(initialTask?.description || "");
-      setStatus(initialTask?.status ?? 0);
-      setSubtasks(initialTask?.subtasks || []);
-      setNewSubtaskTitle("");
-      setShowSubtaskSuggestion(false);
+      if (task) {
+        setTitle(task.title || "");
+        setDescription(task.description || "");
+        setSubtasks(task.subtasks || []);
+      } else {
+        setTitle("");
+        setDescription("");
+        setSubtasks([]);
+      }
+      setTitleError("");
     }
-  }, [isOpen, initialTask]);
+  }, [isOpen, task]);
 
-  // Show suggestion to divide task when creating new task without subtasks
-  useEffect(() => {
-    if (isOpen && !initialTask && title && subtasks.length === 0 && !showSubtaskSuggestion) {
-      // Small delay to avoid being too aggressive
-      const timer = setTimeout(() => {
-        setShowSubtaskSuggestion(true);
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen, initialTask, title, subtasks.length, showSubtaskSuggestion]);
-
-  const handleAddSubtask = () => {
-    if (!newSubtaskTitle.trim()) return;
-
+  const handleAddSubtask = useCallback(() => {
     const newSubtask: Subtask = {
       id: generateRandomUUID(),
-      title: newSubtaskTitle.trim(),
+      title: "",
       completed: false,
       order: subtasks.length,
     };
-
     setSubtasks([...subtasks, newSubtask]);
-    setNewSubtaskTitle("");
-    setShowSubtaskSuggestion(false);
-  };
+  }, [subtasks]);
 
-  const handleRemoveSubtask = (subtaskId: string) => {
-    setSubtasks(subtasks.filter((st) => st.id !== subtaskId).map((st, index) => ({ ...st, order: index })));
-  };
+  const handleRemoveSubtask = useCallback((id: string) => {
+    setSubtasks(subtasks.filter((st) => st.id !== id).map((st, index) => ({ ...st, order: index })));
+  }, [subtasks]);
 
-  const handleToggleSubtask = (subtaskId: string) => {
-    setSubtasks(
-      subtasks.map((st) =>
-        st.id === subtaskId ? { ...st, completed: !st.completed } : st
-      )
-    );
-  };
+  const handleSubtaskChange = useCallback((id: string, title: string) => {
+    setSubtasks(subtasks.map((st) => (st.id === id ? { ...st, title } : st)));
+  }, [subtasks]);
 
-  const handleDismissSuggestion = () => {
-    setShowSubtaskSuggestion(false);
-  };
+  const handleSave = useCallback(() => {
+    // Validate
+    if (!title.trim()) {
+      setTitleError(textDetail.getText("tasks_dialog_field_title" as AccessibilityTextKey) + " é obrigatório");
+      return;
+    }
 
-  const handleAcceptSuggestion = () => {
-    setShowSubtaskSuggestion(false);
-    // Focus on subtask input
-    document.getElementById("subtask-input")?.focus();
-  };
+    // Filter out empty subtasks
+    const validSubtasks = subtasks.filter((st) => st.title.trim()).map((st, index) => ({
+      ...st,
+      order: index,
+    }));
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({
-      title,
-      description: description || undefined,
-      status,
-      subtasks: subtasks.length > 0 ? subtasks : undefined,
+    onSave({
+      title: title.trim(),
+      description: description.trim() || undefined,
+      subtasks: validSubtasks.length > 0 ? validSubtasks : undefined,
     });
+
+    // Reset form
     setTitle("");
     setDescription("");
-    setStatus(0);
     setSubtasks([]);
-    setNewSubtaskTitle("");
-    setShowSubtaskSuggestion(false);
+    setTitleError("");
     onClose();
-  };
+  }, [title, description, subtasks, onSave, onClose, textDetail]);
 
-  const sortedSubtasks = useMemo(() => {
-    return [...subtasks].sort((a, b) => a.order - b.order);
-  }, [subtasks]);
+  const handleCancel = useCallback(() => {
+    setTitle("");
+    setDescription("");
+    setSubtasks([]);
+    setTitleError("");
+    onClose();
+  }, [onClose]);
+
+  const dialogTitle = useMemo(() => {
+    return isEditing
+      ? textDetail.getText("tasks_dialog_edit_title" as AccessibilityTextKey)
+      : textDetail.getText("tasks_dialog_create_title" as AccessibilityTextKey);
+  }, [isEditing, textDetail]);
+
+  const formClasses = useMemo(
+    () => cn(styles.form, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
+
+  const checklistClasses = useMemo(
+    () => cn(styles.checklist, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
 
   return (
     <Dialog
       isOpen={isOpen}
-      onClose={onClose}
-      title={initialTask ? "Editar Tarefa" : "Criar Tarefa"}
+      onClose={handleCancel}
+      title={dialogTitle}
+      data-testid={testId || "task-dialog"}
     >
-      <form onSubmit={handleSubmit} className={cn("flex flex-col", spacingClasses.gap)}>
+      <form
+        className={formClasses}
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+      >
+        {/* Title */}
         <Input>
-          <Input.Label htmlFor="task-title">Título</Input.Label>
-          <Input.Field
+          <InputLabel htmlFor="task-title">
+            {textDetail.getText("tasks_dialog_field_title" as AccessibilityTextKey)}
+          </InputLabel>
+          <InputField
             id="task-title"
+            type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              setTitleError("");
+            }}
+            placeholder={textDetail.getText("tasks_dialog_field_title_placeholder" as AccessibilityTextKey)}
             required
-            autoFocus
+            data-testid="task-dialog-title-input"
           />
+          {titleError && <InputError>{titleError}</InputError>}
         </Input>
 
+        {/* Description */}
         <Input>
-          <Input.Label htmlFor="task-description">Descrição</Input.Label>
-          <Input.Field
+          <InputLabel htmlFor="task-description">
+            {textDetail.getText("tasks_dialog_field_description" as AccessibilityTextKey)}
+          </InputLabel>
+          <InputField
             id="task-description"
             as="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder={textDetail.getText("tasks_dialog_field_description_placeholder" as AccessibilityTextKey)}
+            rows={3}
+            data-testid="task-dialog-description-input"
           />
         </Input>
 
-        {/* Subtask suggestion */}
-        {showSubtaskSuggestion && (
-          <div className={cn("p-3 rounded-md bg-surface-secondary border border-border-subtle", spacingClasses.gap)}>
-            <p className={cn("text-text-secondary", fontSizeClasses.sm)}>
-              Deseja dividir essa tarefa em etapas menores?
-            </p>
-            <div className="flex gap-2">
-              <Button type="button" variant="primary" size="sm" onClick={handleAcceptSuggestion}>
-                <Button.Text>Sim</Button.Text>
-              </Button>
-              <Button type="button" variant="ghost" size="sm" onClick={handleDismissSuggestion}>
-                <Button.Text>Não</Button.Text>
-              </Button>
-            </div>
-          </div>
-        )}
-
-        {/* Subtasks section */}
-        <div className={cn("flex flex-col", spacingClasses.gap)}>
-          <div className="flex items-center justify-between">
-            <label className={cn("font-medium text-text-primary", fontSizeClasses.sm)}>
-              Etapas (opcional)
-            </label>
-            {subtasks.length > 0 && (
-              <span className={cn("text-text-secondary", fontSizeClasses.xs)}>
-                {subtasks.filter((st) => st.completed).length} de {subtasks.length} concluídas
-              </span>
-            )}
+        {/* Checklist */}
+        <div className={styles.checklistSection}>
+          <div className={styles.checklistHeader}>
+            <InputLabel>
+              {textDetail.getText("tasks_dialog_field_checklist" as AccessibilityTextKey)}
+            </InputLabel>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleAddSubtask}
+              data-testid="task-dialog-add-subtask"
+            >
+              <Button.Icon icon={Plus} position="left" />
+              <Button.Text>
+                {textDetail.getText("tasks_checklist_add" as AccessibilityTextKey)}
+              </Button.Text>
+            </Button>
           </div>
 
-          {/* Existing subtasks */}
-          {sortedSubtasks.length > 0 && (
-            <div className={cn("flex flex-col", spacingClasses.gap)}>
-              {sortedSubtasks.map((subtask) => (
-                <div
-                  key={subtask.id}
-                  className={cn("flex items-center gap-2 p-2 rounded border border-border-subtle bg-surface-secondary", spacingClasses.gap)}
-                >
-                  <input
-                    type="checkbox"
-                    checked={subtask.completed}
-                    onChange={() => handleToggleSubtask(subtask.id)}
-                    className="h-4 w-4 rounded border-border-subtle text-action-primary focus:ring-2 focus:ring-action-primary"
-                    aria-label={`Marcar etapa "${subtask.title}" como ${subtask.completed ? "não concluída" : "concluída"}`}
+          {subtasks.length > 0 && (
+            <div className={checklistClasses}>
+              {subtasks.map((subtask, index) => (
+                <div key={subtask.id} className={styles.checklistItem}>
+                  <InputField
+                    type="text"
+                    value={subtask.title}
+                    onChange={(e) => handleSubtaskChange(subtask.id, e.target.value)}
+                    placeholder={`${textDetail.getText("tasks_checklist_placeholder" as AccessibilityTextKey)} ${index + 1}`}
+                    data-testid={`task-dialog-subtask-${subtask.id}`}
                   />
-                  <span
-                    className={cn(
-                      "flex-1 text-text-secondary",
-                      fontSizeClasses.sm,
-                      subtask.completed && "line-through text-text-tertiary"
-                    )}
-                  >
-                    {subtask.title}
-                  </span>
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => handleRemoveSubtask(subtask.id)}
-                    className="text-feedback-error hover:text-feedback-error/80"
-                    aria-label={`Remover etapa "${subtask.title}"`}
+                    aria-label={textDetail.getText("tasks_checklist_remove" as AccessibilityTextKey)}
+                    data-testid={`task-dialog-remove-subtask-${subtask.id}`}
                   >
-                    <X className="w-4 h-4" />
-                  </button>
+                    <Button.Icon icon={X} />
+                  </Button>
                 </div>
               ))}
             </div>
           )}
-
-          {/* Add new subtask */}
-          <div className="flex gap-2">
-            <Input className="flex-1">
-              <Input.Field
-                id="subtask-input"
-                placeholder="Adicionar etapa..."
-                value={newSubtaskTitle}
-                onChange={(e) => setNewSubtaskTitle(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    handleAddSubtask();
-                  }
-                }}
-              />
-            </Input>
-            <Button
-              type="button"
-              variant="secondary"
-              size="sm"
-              onClick={handleAddSubtask}
-              disabled={!newSubtaskTitle.trim()}
-            >
-              <Button.Icon icon={Plus} position="left" size="sm" />
-              <Button.Text>Adicionar</Button.Text>
-            </Button>
-          </div>
         </div>
 
-        <RadioGroup
-          value={status.toString()}
-          onChange={(value) => setStatus(Number(value))}
-        >
-          <RadioGroup.Header>
-            <RadioGroup.Label>Status</RadioGroup.Label>
-          </RadioGroup.Header>
-          <RadioGroup.Option value="0" label="A Fazer" />
-          <RadioGroup.Option value="1" label="Em Progresso" />
-          <RadioGroup.Option value="2" label="Concluída" />
-        </RadioGroup>
-
-        <div className={cn("flex gap-3 justify-end", spacingClasses.gap)}>
-          <Button type="button" variant="ghost" onClick={onClose}>
-            <Button.Text>Cancelar</Button.Text>
+        {/* Actions */}
+        <div className={styles.actions}>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={handleCancel}
+            data-testid="task-dialog-cancel"
+          >
+            <Button.Text>
+              {textDetail.getText("tasks_dialog_button_cancel" as AccessibilityTextKey)}
+            </Button.Text>
           </Button>
-          <Button type="submit" variant="primary">
-            <Button.Text>{initialTask ? "Salvar" : "Criar"}</Button.Text>
+          <Button
+            type="submit"
+            variant="primary"
+            data-testid="task-dialog-save"
+          >
+            <Button.Text>
+              {isEditing
+                ? textDetail.getText("tasks_dialog_button_save" as AccessibilityTextKey)
+                : textDetail.getText("tasks_dialog_button_create" as AccessibilityTextKey)}
+            </Button.Text>
           </Button>
         </div>
       </form>
@@ -262,3 +266,13 @@ export function TaskDialog({ isOpen, onClose, onSubmit, initialTask }: TaskDialo
   );
 }
 
+TaskDialog.displayName = "TaskDialog";
+
+const styles = {
+  form: "flex flex-col",
+  checklistSection: "flex flex-col",
+  checklistHeader: "flex items-center justify-between mb-2",
+  checklist: "flex flex-col",
+  checklistItem: "flex items-center gap-2",
+  actions: "flex justify-end gap-2 mt-4",
+} as const;

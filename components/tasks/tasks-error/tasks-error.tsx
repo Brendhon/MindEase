@@ -1,51 +1,39 @@
 "use client";
 
-import { useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
 
 /**
  * TasksError Component - MindEase
- * Error message display for tasks page
+ * Error state for tasks page
  */
 export interface TasksErrorProps {
   /** Error message to display */
-  message: string;
+  message?: string;
   
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
 export function TasksError({ message, "data-testid": testId }: TasksErrorProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses, textDetail } = useCognitiveSettings();
 
-  // Generate error classes with fontSize preference
-  const errorClasses = useMemo(
-    () => cn(styles.error, fontSizeClasses.sm),
-    [fontSizeClasses.sm]
-  );
+  const errorMessage = message || textDetail.getText("tasks_error");
 
   return (
     <div
-      className={errorClasses}
-      role="alert"
+      className={cn(styles.container, fontSizeClasses.base)}
       data-testid={testId || "tasks-error"}
+      role="alert"
     >
-      {message}
+      <p className={styles.text}>{errorMessage}</p>
     </div>
   );
 }
 
 TasksError.displayName = "TasksError";
 
-/**
- * TasksError Styles - MindEase
- * Centralized styles for tasks error component
- */
-
-export const styles = {
-  error: "bg-action-danger/10 text-action-danger border border-action-danger rounded-lg p-4",
+const styles = {
+  container: "flex items-center justify-center py-12",
+  text: "text-action-error",
 } as const;
-
-
-

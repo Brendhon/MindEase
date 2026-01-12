@@ -1,86 +1,43 @@
 "use client";
 
-import { useState } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Button } from "@/components/ui/button";
-import { TaskTimer } from "@/components/tasks/task-timer";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Plus } from "lucide-react";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
 
 /**
  * TasksToolbar Component - MindEase
- * Toolbar with add button and focus timer
+ * Toolbar with "New Task" button
  */
 export interface TasksToolbarProps {
-  /** Handler for add task button */
-  onAddTask: () => void;
+  /** Callback when "New Task" button is clicked */
+  onNewTask: () => void;
   
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
-export function TasksToolbar({ onAddTask, "data-testid": testId }: TasksToolbarProps) {
-  const [showTimer, setShowTimer] = useState(false);
-  const { spacingClasses, textDetail } = useCognitiveSettings();
-
-  const containerClasses = useMemo(
-    () => cn(styles.container, spacingClasses.gap),
-    [spacingClasses.gap]
-  );
+export function TasksToolbar({ onNewTask, "data-testid": testId }: TasksToolbarProps) {
+  const { textDetail } = useCognitiveSettings();
 
   return (
-    <div className={containerClasses} data-testid={testId || "tasks-toolbar"}>
-      <div className={styles.actions}>
-        <Button
-          variant="primary"
-          size="md"
-          onClick={onAddTask}
-          aria-label={textDetail.getText("button_add")}
-          data-testid={testId ? `${testId}-add-button` : "tasks-toolbar-add-button"}
-        >
-          <Button.Icon icon={Plus} position="left" size="md" />
-          <Button.Text>{textDetail.getText("button_add")}</Button.Text>
-        </Button>
-        
-        <Button
-          variant="secondary"
-          size="md"
-          onClick={() => setShowTimer(!showTimer)}
-          aria-label={showTimer ? "Hide timer" : "Show timer"}
-          data-testid={testId ? `${testId}-timer-toggle` : "tasks-toolbar-timer-toggle"}
-        >
-          <Button.Text>{showTimer ? "Hide Timer" : "Show Timer"}</Button.Text>
-        </Button>
-      </div>
-
-      {showTimer && (
-        <div className={styles.timer} data-testid={testId ? `${testId}-timer` : "tasks-toolbar-timer"}>
-          <TaskTimer
-            initialMinutes={25}
-            onComplete={() => {
-              // Could show a notification or feedback here
-              console.log("Timer completed");
-            }}
-          />
-        </div>
-      )}
+    <div className={styles.container} data-testid={testId || "tasks-toolbar"}>
+      <Button
+        variant="primary"
+        onClick={onNewTask}
+        aria-label={textDetail.getText("tasks_new_task_aria")}
+        data-testid="tasks-toolbar-new-button"
+      >
+        <Button.Icon icon={Plus} position="left" />
+        <Button.Text>
+          {textDetail.getText("tasks_new_task")}
+        </Button.Text>
+      </Button>
     </div>
   );
 }
 
 TasksToolbar.displayName = "TasksToolbar";
 
-/**
- * TasksToolbar Styles - MindEase
- * Centralized styles for tasks toolbar component
- */
-
-export const styles = {
-  container: "flex flex-col",
-  actions: "flex gap-3",
-  timer: "mt-4",
+const styles = {
+  container: "flex justify-end",
 } as const;
-
-
-

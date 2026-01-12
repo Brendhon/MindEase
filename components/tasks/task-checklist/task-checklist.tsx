@@ -1,143 +1,129 @@
 "use client";
 
 import { useMemo } from "react";
-import { Subtask } from "@/models/Task";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
+import { Check } from "lucide-react";
+import type { Subtask } from "@/models/Task";
 
 /**
- * Task Checklist Component - MindEase
- * Intelligent checklist with visual progress indicator
- * 
- * Features:
- * - Visual progress bar
- * - Subtask completion tracking
- * - Cognitive feedback on completion
+ * TaskChecklist Component - MindEase
+ * Displays checklist of subtasks with completion status
  */
 export interface TaskChecklistProps {
+  /** Array of subtasks */
   subtasks: Subtask[];
-  onToggleSubtask?: (subtaskId: string) => void;
+  
+  /** ID of focused subtask (if any) */
   focusedSubtaskId?: string | null;
-  className?: string;
+  
+  /** Callback when subtask is toggled */
+  onToggleSubtask?: (subtaskId: string) => void;
+  
+  /** Whether checklist is interactive */
+  interactive?: boolean;
+  
+  /** Test ID for testing */
   "data-testid"?: string;
 }
 
 export function TaskChecklist({
   subtasks,
-  onToggleSubtask,
   focusedSubtaskId,
-  className,
+  onToggleSubtask,
+  interactive = false,
   "data-testid": testId,
 }: TaskChecklistProps) {
-  const { fontSizeClasses, spacingClasses } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
 
-  const progress = useMemo(() => {
-    if (subtasks.length === 0) return 0;
-    const completed = subtasks.filter((st) => st.completed).length;
-    return Math.round((completed / subtasks.length) * 100);
+  // Sort subtasks by order
+  const sortedSubtasks = useMemo(() => {
+    return [...subtasks].sort((a, b) => a.order - b.order);
   }, [subtasks]);
 
-  const completedCount = useMemo(
-    () => subtasks.filter((st) => st.completed).length,
-    [subtasks]
+  // Calculate progress
+  const completedCount = useMemo(() => {
+    return subtasks.filter((st) => st.completed).length;
+  }, [subtasks]);
+
+  const totalCount = subtasks.length;
+
+  const containerClasses = useMemo(
+    () => cn(styles.container, spacingClasses.gap),
+    [spacingClasses.gap]
   );
+
+  const progressText = useMemo(() => {
+    return `${completedCount} ${textDetail.getText("tasks_progress")} ${totalCount} ${textDetail.getText("tasks_progress_steps")}`;
+  }, [completedCount, totalCount, textDetail]);
 
   if (subtasks.length === 0) {
     return null;
   }
 
-  const sortedSubtasks = [...subtasks].sort((a, b) => a.order - b.order);
-
   return (
-    <div className={cn(styles.container, spacingClasses.padding, className)} data-testid={testId}>
-      {/* Progress indicator */}
-      <div className={cn(styles.progressContainer, spacingClasses.gap)}>
-        <div className={styles.progressInfo}>
-          <span className={cn(styles.progressText, fontSizeClasses.sm)}>
-            {completedCount} de {subtasks.length} etapas concluídas
-          </span>
-        </div>
-        <div className={styles.progressBarContainer}>
-          <div
-            className={styles.progressBar}
-            style={{ width: `${progress}%` }}
-            role="progressbar"
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label={`${progress}% concluído`}
-          />
-        </div>
-      </div>
-
-      {/* Subtasks list */}
-      <div className={cn(styles.subtasksList, spacingClasses.gap)} role="list">
+    <div className={containerClasses} data-testid={testId || "task-checklist"}>
+      <p className={cn(styles.progress, fontSizeClasses.sm)}>
+        {progressText}
+      </p>
+      <ul className={styles.list} role="list">
         {sortedSubtasks.map((subtask) => {
           const isFocused = focusedSubtaskId === subtask.id;
           const isCompleted = subtask.completed;
 
           return (
-            <div
+            <li
               key={subtask.id}
               className={cn(
-                styles.subtaskItem,
-                isFocused && styles.subtaskItemFocused,
-                isCompleted && styles.subtaskItemCompleted
+                styles.item,
+                isFocused && styles.itemFocused,
+                isCompleted && styles.itemCompleted,
+                !interactive && styles.itemNonInteractive
               )}
-              role="listitem"
-              data-testid={`subtask-${subtask.id}`}
+              data-testid={`task-checklist-item-${subtask.id}`}
             >
-              <label className={styles.subtaskLabel}>
-                <input
-                  type="checkbox"
-                  checked={isCompleted}
-                  onChange={() => onToggleSubtask?.(subtask.id)}
-                  className={styles.subtaskCheckbox}
-                  aria-label={`Marcar subtarefa "${subtask.title}" como ${isCompleted ? "não concluída" : "concluída"}`}
-                  data-testid={`subtask-checkbox-${subtask.id}`}
-                />
-                <span
+              <button
+                type="button"
+                onClick={() => interactive && onToggleSubtask?.(subtask.id)}
+                disabled={!interactive}
+                className={styles.button}
+                aria-checked={isCompleted}
+                role="checkbox"
+                aria-label={`${subtask.title} - ${isCompleted ? "Concluída" : "Pendente"}`}
+              >
+                <div
                   className={cn(
-                    styles.subtaskTitle,
-                    fontSizeClasses.sm,
-                    isCompleted && styles.subtaskTitleCompleted
+                    styles.checkbox,
+                    isCompleted && styles.checkboxCompleted
                   )}
                 >
+                  {isCompleted && <Check className={styles.checkIcon} size={14} />}
+                </div>
+                <span className={cn(styles.label, fontSizeClasses.sm)}>
                   {subtask.title}
                 </span>
-                {isFocused && (
-                  <span className={cn(styles.focusIndicator, fontSizeClasses.xs)}>
-                    Focando
-                  </span>
-                )}
-              </label>
-            </div>
+              </button>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }
 
 TaskChecklist.displayName = "TaskChecklist";
 
-/**
- * Task Checklist Styles - MindEase
- */
-export const styles = {
+const styles = {
   container: "flex flex-col",
-  progressContainer: "flex flex-col",
-  progressInfo: "flex items-center justify-between",
-  progressText: "text-text-secondary",
-  progressBarContainer: "h-2 bg-surface-secondary rounded-full overflow-hidden",
-  progressBar: "h-full bg-action-primary transition-all duration-300 ease-out",
-  subtasksList: "flex flex-col",
-  subtaskItem: "flex items-start",
-  subtaskItemFocused: "bg-surface-secondary/50 rounded px-2 py-1",
-  subtaskItemCompleted: "opacity-75",
-  subtaskLabel: "flex items-start gap-2 cursor-pointer flex-1",
-  subtaskCheckbox: "mt-0.5 h-4 w-4 rounded border-border-subtle text-action-primary focus:ring-2 focus:ring-action-primary",
-  subtaskTitle: "text-text-secondary flex-1",
-  subtaskTitleCompleted: "line-through text-text-tertiary",
-  focusIndicator: "text-action-primary font-medium",
+  progress: "text-text-secondary mb-2",
+  list: "flex flex-col list-none p-0 m-0",
+  item: "flex items-start",
+  itemFocused: "opacity-100",
+  itemCompleted: "opacity-60",
+  itemNonInteractive: "pointer-events-none",
+  button: "flex items-center gap-2 w-full text-left bg-transparent border-none p-0 cursor-pointer disabled:cursor-default",
+  checkbox: "flex items-center justify-center w-5 h-5 border-2 border-text-secondary rounded flex-shrink-0 transition-colors",
+  checkboxCompleted: "bg-action-success border-action-success",
+  checkIcon: "text-white",
+  label: "text-text-primary",
 } as const;
