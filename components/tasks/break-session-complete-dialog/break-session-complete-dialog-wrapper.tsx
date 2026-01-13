@@ -2,9 +2,12 @@
 
 import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { useTasksContext } from "@/contexts/tasks-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
+import { tasksService } from "@/services/tasks";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * BreakSessionCompleteDialogWrapper Component - MindEase
@@ -12,9 +15,11 @@ import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
  * Monitors break timer state and shows dialog when break timer completes
  */
 export function BreakSessionCompleteDialogWrapper() {
+  const { user } = useAuth();
   const { breakTimerState, stopBreak } = useBreakTimer();
-  const { timerState, startTimer, stopTimer } = useFocusTimer();
+  const { startTimer, stopTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
+  const { refreshTask } = useTasksContext();
 
   const [showBreakCompleteDialog, setShowBreakCompleteDialog] = useState(false);
 
@@ -53,11 +58,22 @@ export function BreakSessionCompleteDialogWrapper() {
     }
   }, [stopBreak, breakTimerState.activeTaskId, startTimer]);
 
-  const handleEndFocus = useCallback(() => {
+  const handleEndFocus = useCallback(async () => {
+    console.log("handleEndFocus", breakTimerState.activeTaskId, user?.uid);
+    // Return task to To Do when focus is stopped
+    if (breakTimerState.activeTaskId && user?.uid) {
+      try {
+        await tasksService.updateTask(user.uid, breakTimerState.activeTaskId, { status: 0 });
+        // Refresh task in global state to update UI
+        await refreshTask(breakTimerState.activeTaskId);
+      } catch (error) {
+        console.error("Error updating task status:", error);
+      }
+    }
     // Stop break timer and focus timer
     stopBreak();
     stopTimer();
-  }, [stopBreak, stopTimer]);
+  }, [stopBreak, stopTimer, user?.uid, breakTimerState.activeTaskId, refreshTask]);
 
   const handleCloseBreakDialog = useCallback(() => {
     setShowBreakCompleteDialog(false);

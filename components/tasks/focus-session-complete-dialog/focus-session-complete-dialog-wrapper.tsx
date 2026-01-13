@@ -2,6 +2,7 @@
 
 import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { useTasksContext } from "@/contexts/tasks-context";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Task } from "@/models/Task";
@@ -19,6 +20,7 @@ export function FocusSessionCompleteDialogWrapper() {
   const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
+  const { refreshTask } = useTasksContext();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -95,14 +97,16 @@ export function FocusSessionCompleteDialogWrapper() {
     if (!user?.uid || !timerState.activeTaskId) return;
 
     try {
-      // Update task status to completed (2)
+      // Update task status to completed (2) - context will update UI automatically
       await tasksService.updateTask(user.uid, timerState.activeTaskId, { status: 2 });
+      // Refresh task in global state to update UI
+      await refreshTask(timerState.activeTaskId);
       stopTimer(); // This clears activeTaskId and resets to idle
     } catch (error) {
       console.error("Error finishing task:", error);
     }
     // Dialog will close itself via onClose callback
-  }, [user?.uid, timerState.activeTaskId, stopTimer]);
+  }, [user?.uid, timerState.activeTaskId, stopTimer, refreshTask]);
 
   const handleCloseSessionDialog = useCallback(() => {
     // Dialog should not close without action (preventClose={true})

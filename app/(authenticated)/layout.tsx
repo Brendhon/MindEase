@@ -1,11 +1,12 @@
 "use client";
 
-import { Sidebar, Header } from "@/components/layout";
+import { Header, Sidebar } from "@/components/layout";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { BreakTimerProvider } from "@/contexts/break-timer-context";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
 import { SidebarProvider } from "@/contexts/sidebar-context";
+import { TasksProvider } from "@/contexts/tasks-context";
 
 /**
  * Authenticated Layout - MindEase
@@ -26,21 +27,23 @@ export default function AuthenticatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <FocusTimerProvider>
-      <BreakTimerProvider>
-        <SidebarProvider>
-          <div className="flex min-h-screen bg-bg-secondary font-sans">
-            <Sidebar />
-            <main className="flex-1 flex flex-col">
-              <Header />
-              <div className="flex-1">{children}</div>
-            </main>
-          </div>
-          <FocusSessionCompleteDialogWrapper />
-          <BreakSessionCompleteDialogWrapper />
-        </SidebarProvider>
-      </BreakTimerProvider>
-    </FocusTimerProvider>
+    <TasksProvider>
+      <FocusTimerProvider>
+        <BreakTimerProvider>
+          <SidebarProvider>
+            <div className="flex min-h-screen bg-bg-secondary font-sans">
+              <Sidebar />
+              <main className="flex-1 flex flex-col">
+                <Header />
+                <div className="flex-1">{children}</div>
+              </main>
+            </div>
+            <FocusSessionCompleteDialogWrapper />
+            <BreakSessionCompleteDialogWrapper />
+          </SidebarProvider>
+        </BreakTimerProvider>
+      </FocusTimerProvider>
+    </TasksProvider>
   );
 }
 
