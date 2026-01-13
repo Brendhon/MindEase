@@ -15,10 +15,19 @@ export interface DialogProps {
   onClose: () => void;
   title: string;
   children: ReactNode;
+  /** Prevent closing by clicking outside or pressing ESC */
+  preventClose?: boolean;
   "data-testid"?: string;
 }
 
-export function Dialog({ isOpen, onClose, title, children, "data-testid": dataTestId = "dialog" }: DialogProps) {
+export function Dialog({ 
+  isOpen, 
+  onClose, 
+  title, 
+  children, 
+  preventClose = false,
+  "data-testid": dataTestId = "dialog" 
+}: DialogProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // These classes automatically update when user preferences change
   const { 
@@ -66,9 +75,12 @@ export function Dialog({ isOpen, onClose, title, children, "data-testid": dataTe
     [fontSizeClasses.lg, contrastClasses.title]
   );
 
+  // Handle close - prevent if preventClose is true
+  const handleClose = preventClose ? () => {} : onClose;
+
   return (
     <Transition show={isOpen} as={Fragment}>
-      <HeadlessDialog onClose={onClose} className={styles.dialog} data-testid={dataTestId}>
+      <HeadlessDialog onClose={handleClose} className={styles.dialog} data-testid={dataTestId}>
         <TransitionChild
           as={Fragment}
           enter={transitionClasses.backdrop.enter}

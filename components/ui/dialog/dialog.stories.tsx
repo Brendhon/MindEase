@@ -72,6 +72,16 @@ export const Basic: Story = {
   },
 };
 
+// Dialog with prevent close
+export const PreventClose: Story = {
+  args: {
+    isOpen: true,
+    title: 'Prevent Close Dialog',
+    children: <div>This dialog cannot be closed by clicking outside or pressing ESC.</div>,
+    preventClose: true,
+  },
+};
+
 // Dialog with form
 export const WithForm: Story = {
   args: {

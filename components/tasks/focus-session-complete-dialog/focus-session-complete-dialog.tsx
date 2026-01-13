@@ -112,6 +112,7 @@ export function FocusSessionCompleteDialog({
       isOpen={isOpen}
       onClose={onClose}
       title={titleText}
+      preventClose={true}
       data-testid={testId || "focus-session-complete-dialog"}
     >
       <div className={contentClasses}>
