@@ -98,6 +98,32 @@ function createIdleState(defaultDuration: number): FocusTimerState {
 }
 
 /**
+ * Create paused timer state (idle but preserving activeTaskId)
+ * Pure function - easily testable
+ */
+function createPausedState(activeTaskId: string, defaultDuration: number): FocusTimerState {
+  return {
+    activeTaskId,
+    timerState: "idle",
+    remainingTime: defaultDuration,
+    startTime: null,
+  };
+}
+
+/**
+ * Create completed timer state (idle but preserving activeTaskId for dialog detection)
+ * Pure function - easily testable
+ */
+function createCompletedState(activeTaskId: string, defaultDuration: number): FocusTimerState {
+  return {
+    activeTaskId,
+    timerState: "idle",
+    remainingTime: defaultDuration,
+    startTime: null,
+  };
+}
+
+/**
  * Storage abstraction for testability
  * Allows mocking localStorage in tests
  */
@@ -203,8 +229,9 @@ export function useFocusTimer(
   }, [defaultDuration]);
 
   // Persist: Save timer state to localStorage when it changes
+  // Save if running OR if paused (idle but has activeTaskId)
   useEffect(() => {
-    if (timerState.timerState !== "idle") {
+    if (timerState.timerState !== "idle" || timerState.activeTaskId !== null) {
       timerStorage.set(timerState);
     } else {
       timerStorage.remove();
@@ -227,10 +254,14 @@ export function useFocusTimer(
       setTimerState((prev) => {
         // Check if timer should complete
         if (isTimerCompleted(prev.remainingTime)) {
-          // Timer completed - clear interval and reset to idle
+          // Timer completed - clear interval and preserve activeTaskId for dialog detection
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
+          }
+          // Preserve activeTaskId so dialog can detect completion
+          if (prev.activeTaskId) {
+            return createCompletedState(prev.activeTaskId, defaultDuration);
           }
           return createIdleState(defaultDuration);
         }
@@ -264,10 +295,20 @@ export function useFocusTimer(
     setTimerState(createIdleState(defaultDuration));
   }, [defaultDuration]);
 
+  const pauseTimer = useCallback(() => {
+    // Pause timer but preserve activeTaskId for break session
+    if (timerState.activeTaskId) {
+      setTimerState(createPausedState(timerState.activeTaskId, defaultDuration));
+    } else {
+      setTimerState(createIdleState(defaultDuration));
+    }
+  }, [timerState.activeTaskId, defaultDuration]);
+
   return {
     timerState,
     startTimer,
     stopTimer,
+    pauseTimer,
     formatTime,
   };
 }

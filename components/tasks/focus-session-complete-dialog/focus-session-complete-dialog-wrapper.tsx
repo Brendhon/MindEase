@@ -1,5 +1,6 @@
 "use client";
 
+import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
@@ -15,7 +16,8 @@ import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
  */
 export function FocusSessionCompleteDialogWrapper() {
   const { user } = useAuth();
-  const { timerState, stopTimer, startTimer } = useFocusTimer();
+  const { timerState, stopTimer, startTimer, pauseTimer } = useFocusTimer();
+  const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
@@ -72,16 +74,19 @@ export function FocusSessionCompleteDialogWrapper() {
 
   // Focus session complete dialog handlers
   const handleStartBreak = useCallback(() => {
-    // Stop timer to start break (guided decision - no manual pause)
-    stopTimer();
-  }, [stopTimer]);
+    // Pause focus timer (preserves activeTaskId) and start break timer
+    pauseTimer();
+    startBreak();
+    // Dialog will close itself via onClose callback
+  }, [pauseTimer, startBreak]);
 
   const handleContinueFocus = useCallback(() => {
     // Start a new focus session (new Pomodoro)
     if (timerState.activeTaskId) {
-      // Start new timer (new Pomodoro)
+      // Start new timer (new Pomodoro) - this changes state to "running"
       startTimer(timerState.activeTaskId);
     }
+    // Dialog will close itself via onClose callback
   }, [timerState.activeTaskId, startTimer]);
 
   const handleFinishTask = useCallback(async () => {
@@ -90,13 +95,16 @@ export function FocusSessionCompleteDialogWrapper() {
     try {
       // Update task status to completed (2)
       await tasksService.updateTask(user.uid, timerState.activeTaskId, { status: 2 });
-      stopTimer();
+      stopTimer(); // This clears activeTaskId and resets to idle
     } catch (error) {
       console.error("Error finishing task:", error);
     }
+    // Dialog will close itself via onClose callback
   }, [user?.uid, timerState.activeTaskId, stopTimer]);
 
   const handleCloseSessionDialog = useCallback(() => {
+    // Dialog should not close without action (preventClose={true})
+    // But if it does, ensure state is cleaned up
     setShowSessionCompleteDialog(false);
   }, []);
 
