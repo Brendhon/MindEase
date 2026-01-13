@@ -1,10 +1,9 @@
 "use client";
 
-import { DialogContext } from "@/contexts/dialog-context";
-import { DialogConfig } from "@/contexts/dialog-context";
+import { DialogManager } from "@/components/feedback";
+import { DialogConfig, DialogContext } from "@/contexts/dialog-context";
 import { generateRandomUUID } from "@/utils/uuid";
 import { useCallback, useState } from "react";
-import { DialogManager } from "@/components/dialog/dialog-manager";
 
 interface DialogProviderProps {
   children: React.ReactNode;
