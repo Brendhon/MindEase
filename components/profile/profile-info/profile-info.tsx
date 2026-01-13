@@ -4,12 +4,13 @@ import { PageHeader } from "@/components/layout";
 import { Button, Card } from "@/components/ui";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
+import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
 import { User } from "next-auth";
-import { useMemo, useState } from "react";
-import { DeleteAccountDialog } from "../delete-account-dialog";
+import { useCallback, useMemo } from "react";
 
 /**
  * ProfileInfo Component - MindEase
@@ -30,8 +31,8 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   
   const { signOut } = auth;
   const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
-  const { error: showError } = useFeedback();
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { error: showError, success } = useFeedback();
+  const { openDialog } = useDialog();
 
 
   const labelClasses = useMemo(
@@ -43,6 +44,37 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
     () => cn(styles.value, fontSizeClasses.base),
     [fontSizeClasses.base]
   );
+
+  // Delete account dialog
+  const deleteAccountDialog = useCallback(() => {
+    openDialog({
+      titleKey: "profile_delete_account_dialog_title",
+      descriptionKey: "profile_delete_account_dialog_message",
+      cancelLabelKey: "profile_delete_account_dialog_cancel",
+      confirmLabelKey: "profile_delete_account_dialog_confirm",
+      confirmVariant: "danger",
+      onCancel: () => {},
+      onConfirm: async () => {
+        try {
+          await authService.deleteAccount(user.id!);
+          success("toast_success_account_deleted");
+        } catch (err) {
+          console.error("Error deleting account:", err);
+          showError("toast_error_account_deletion_failed");
+          throw err;
+        }
+      },
+      "data-testid": testId ? `${testId}-delete-dialog` : "delete-account-dialog",
+    });
+  }, [openDialog]);
+
+  const handleDeleteAccount = useCallback(() => {
+    if (!user.id) {
+      showError("toast_error_account_deletion_failed");
+      return;
+    }
+    deleteAccountDialog();
+  }, [user.id, deleteAccountDialog]);
 
   if (!user) {
     return (
@@ -100,13 +132,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
         <Button
           variant="danger"
           size="md"
-          onClick={() => {
-            if (!user.id) {
-              showError("toast_error_account_deletion_failed");
-              return;
-            }
-            setIsDeleteDialogOpen(true);
-          }}
+          onClick={handleDeleteAccount}
           aria-label={textDetail.getText("profile_delete_account_aria")}
           data-testid={testId ? `${testId}-delete-account-button` : "profile-delete-account-button"}
         >
@@ -114,15 +140,6 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
           <Button.Text>{textDetail.getText("profile_delete_account")}</Button.Text>
         </Button>
       </div>
-
-      {user.id && (
-        <DeleteAccountDialog
-          isOpen={isDeleteDialogOpen}
-          onClose={() => setIsDeleteDialogOpen(false)}
-          userId={user.id}
-          data-testid={testId ? `${testId}-delete-dialog` : "profile-delete-dialog"}
-        />
-      )}
     </div>
   );
 }

@@ -1,18 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
-import { cn } from "@/utils/ui";
-import type { Task } from "@/models/Task";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useDialog } from "@/hooks/useDialog";
+import type { Subtask, Task } from "@/models/Task";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
+import { useCallback, useMemo } from "react";
 import { TaskChecklist } from "../task-checklist";
+import { TaskCardActions } from "./task-card-actions";
 import { TaskCardHeader } from "./task-card-header";
 import { TaskCardTimer } from "./task-card-timer";
-import { TaskCardActions } from "./task-card-actions";
-import { TaskPendingSubtasksDialog } from "../task-pending-subtasks-dialog";
-import { TaskFocusRequiredDialog } from "../task-focus-required-dialog";
 
 /**
  * TaskCard Component - MindEase
@@ -47,8 +46,8 @@ export function TaskCard({
   "data-testid": testId,
 }: TaskCardProps) {
   const { timerState, startTimer, stopTimer } = useFocusTimer();
-  const [showPendingDialog, setShowPendingDialog] = useState(false);
-  const [showFocusRequiredDialog, setShowFocusRequiredDialog] = useState(false);
+  const { openDialog } = useDialog();
+  const { textDetail } = useCognitiveSettings();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
@@ -83,10 +82,43 @@ export function TaskCard({
     onStatusChange?.(task.id, 0);
   };
 
+  // Dialog for complete pending subtasks
+  const completePendingSubtasksDialog = useCallback((pendingList: React.ReactNode) => {
+    openDialog({
+      titleKey: "tasks_complete_pending_title",
+      descriptionKey: "tasks_complete_pending_message",
+      info: (
+        <>
+          {pendingList}
+          <p className={styles.completePendingSubtasksDialogHint}>
+            {textDetail.getText("tasks_complete_pending_hint")}
+          </p>
+        </>
+      ),
+      confirmLabelKey: "tasks_complete_pending_button",
+      "data-testid": testId ? `${testId}-pending-dialog` : "task-pending-subtasks-dialog",
+    });
+  }, [openDialog]);
+
   const handleComplete = () => {
     // Check if task has pending subtasks
     if (hasPendingSubtasks) {
-      setShowPendingDialog(true);
+      const pendingList = (
+        <div className="flex flex-col gap-2">
+          <p className="font-medium text-text-primary text-sm">
+            {textDetail.getText("tasks_complete_pending_list_label")}
+          </p>
+          <ul className="flex flex-col gap-1 pl-4">
+            {pendingSubtasks.map((subtask) => (
+              <li key={subtask.id} className="text-text-secondary text-sm">
+                • {subtask.title}
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+
+      completePendingSubtasksDialog(pendingList);
     } else {
       stopTimer();
       onStatusChange?.(task.id, 2);
@@ -101,10 +133,30 @@ export function TaskCard({
     onDelete?.(task.id);
   };
 
+  // Dialog for subtask focus required
+  const subtaskFocusRequiredDialog = useCallback(() => {
+    openDialog({
+      titleKey: "tasks_subtask_focus_required_title",
+      descriptionKey: "tasks_subtask_focus_required_message",
+      info: (
+        <p className={styles.subtaskFocusRequiredDialog}>
+          {textDetail.getText("tasks_subtask_focus_required_hint")}
+        </p>
+      ),
+      cancelLabelKey: "tasks_subtask_focus_required_cancel",
+      confirmLabelKey: "tasks_subtask_focus_required_button",
+      onCancel: () => {},
+      onConfirm: () => {
+        handleStartFocus();
+      },
+      "data-testid": testId ? `${testId}-focus-required-dialog` : "task-focus-required-dialog",
+    });
+  }, [openDialog]);
+
   const handleToggleSubtask = (subtaskId: string) => {
     // Only allow toggling subtasks when task is in focus
     if (!isActive || !isRunning) {
-      setShowFocusRequiredDialog(true);
+      subtaskFocusRequiredDialog();
       return;
     }
     onToggleSubtask?.(task.id, subtaskId);
@@ -162,22 +214,6 @@ export function TaskCard({
           data-testid={testId}
         />
       </CardContent>
-
-      {/* Dialog for pending subtasks */}
-      <TaskPendingSubtasksDialog
-        isOpen={showPendingDialog}
-        onClose={() => setShowPendingDialog(false)}
-        pendingSubtasks={pendingSubtasks}
-        data-testid={testId}
-      />
-
-      {/* Dialog for focus required */}
-      <TaskFocusRequiredDialog
-        isOpen={showFocusRequiredDialog}
-        onClose={() => setShowFocusRequiredDialog(false)}
-        onStartFocus={handleStartFocus}
-        data-testid={testId}
-      />
     </Card>
   );
 }
@@ -188,4 +224,6 @@ const styles = {
   cardDefault: "m-1",
   cardActive: "m-1 ring-2 ring-action-primary",
   cardDone: "m-1 opacity-60",
+  subtaskFocusRequiredDialog: "text-text-secondary italic text-sm",
+  completePendingSubtasksDialogHint: "text-text-secondary italic text-sm mt-2",
 } as const;

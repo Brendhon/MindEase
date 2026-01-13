@@ -5,12 +5,12 @@ import { PageHeader } from "@/components/layout/page-header";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { Subtask, Task } from "@/models/Task";
 import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSuggestion } from "../break-suggestion";
-import { TaskDeleteDialog } from "../task-delete-dialog";
 import { TaskDialog } from "../task-dialog";
 import { TaskList } from "../task-list";
 import { TasksError } from "../tasks-error";
@@ -41,6 +41,7 @@ export function TasksContent({
   const { timerState, stopTimer, resumeTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
   const { success, error: showError, info } = useFeedback();
+  const { openDialog } = useDialog();
 
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [loading, setLoading] = useState(false);
@@ -48,7 +49,6 @@ export function TasksContent({
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [showBreakSuggestion, setShowBreakSuggestion] = useState(false);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   // Sync tasks when initialTasks change
@@ -138,12 +138,6 @@ export function TasksContent({
     }
   }, [user?.uid, success, showError]);
 
-  // Request delete (show confirmation)
-  const handleRequestDelete = useCallback((taskId: string) => {
-    setTaskToDelete(taskId);
-    setIsDeleteDialogOpen(true);
-  }, []);
-
   // Delete task (after confirmation)
   const handleDeleteTask = useCallback(async () => {
     if (!user?.uid || !taskToDelete) return;
@@ -167,10 +161,28 @@ export function TasksContent({
       showError("toast_error_task_delete_failed");
     } finally {
       setLoading(false);
-      setIsDeleteDialogOpen(false);
       setTaskToDelete(null);
     }
   }, [user?.uid, taskToDelete, timerState.activeTaskId, stopTimer, success, showError]);
+
+  // Request delete (show confirmation)
+  const handleRequestDelete = useCallback((taskId: string) => {
+    setTaskToDelete(taskId);
+    openDialog({
+      titleKey: "tasks_delete_confirm_title",
+      descriptionKey: "tasks_delete_confirm_message",
+      cancelLabelKey: "tasks_delete_confirm_cancel",
+      confirmLabelKey: "tasks_delete_confirm_button",
+      confirmVariant: "danger",
+      onCancel: () => {
+        setTaskToDelete(null);
+      },
+      onConfirm: async () => {
+        await handleDeleteTask();
+      },
+      "data-testid": "task-delete-dialog",
+    });
+  }, [openDialog, handleDeleteTask]);
 
   // Edit task
   const handleEdit = useCallback((task: Task) => {
@@ -276,16 +288,6 @@ export function TasksContent({
         onClose={handleDialogClose}
         task={editingTask}
         onSave={handleSaveTask}
-      />
-
-      {/* Delete confirmation dialog */}
-      <TaskDeleteDialog
-        isOpen={isDeleteDialogOpen}
-        onClose={() => {
-          setIsDeleteDialogOpen(false);
-          setTaskToDelete(null);
-        }}
-        onConfirm={handleDeleteTask}
       />
     </PageContent>
   );
