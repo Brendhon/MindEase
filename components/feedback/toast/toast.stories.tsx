@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { ToastContainer } from './toast';
+import { ToastContainer } from '.';
 import { FeedbackProvider } from '@/providers/feedback-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
 import { useFeedbackContext } from '@/contexts/feedback-context';
