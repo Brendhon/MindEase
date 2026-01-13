@@ -27,7 +27,6 @@ export interface FocusTimerContextValue {
   timerState: FocusTimerState;
   startTimer: (taskId: string) => void;
   stopTimer: () => void;
-  pauseTimer: () => void;
   formatTime: (seconds: number) => string;
 }
 

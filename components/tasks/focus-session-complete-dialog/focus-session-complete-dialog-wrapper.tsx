@@ -16,7 +16,7 @@ import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
  */
 export function FocusSessionCompleteDialogWrapper() {
   const { user } = useAuth();
-  const { timerState, stopTimer, startTimer, pauseTimer } = useFocusTimer();
+  const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
 
@@ -74,11 +74,13 @@ export function FocusSessionCompleteDialogWrapper() {
 
   // Focus session complete dialog handlers
   const handleStartBreak = useCallback(() => {
-    // Pause focus timer (preserves activeTaskId) and start break timer
-    pauseTimer();
-    startBreak();
+    // Stop focus timer and start break timer with activeTaskId
+    if (timerState.activeTaskId) {
+      stopTimer();
+      startBreak(timerState.activeTaskId);
+    }
     // Dialog will close itself via onClose callback
-  }, [pauseTimer, startBreak]);
+  }, [timerState.activeTaskId, stopTimer, startBreak]);
 
   const handleContinueFocus = useCallback(() => {
     // Start a new focus session (new Pomodoro)

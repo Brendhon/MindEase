@@ -2,6 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
+import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useDialog } from "@/hooks/useDialog";
@@ -46,12 +47,15 @@ export function TaskCard({
   "data-testid": testId,
 }: TaskCardProps) {
   const { timerState, startTimer, stopTimer } = useFocusTimer();
+  const { breakTimerState } = useBreakTimer();
   const { openDialog } = useDialog();
   const { textDetail } = useCognitiveSettings();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
   const hasActiveTask = timerState.activeTaskId !== null;
+  const isBreakActive = breakTimerState.activeTaskId === task.id;
+  const isBreakRunning = breakTimerState.breakTimerState === "running";
 
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
@@ -177,8 +181,9 @@ export function TaskCard({
       <CardContent>
         <TaskCardTimer
           task={task}
-          isActive={isActive}
+          isActive={isActive || isBreakActive}
           isRunning={isRunning}
+          isBreakRunning={isBreakRunning}
           data-testid={testId}
         />
 

@@ -47,11 +47,11 @@ export function BreakSessionCompleteDialogWrapper() {
     // Stop break timer
     stopBreak();
     
-    // Start new focus session if there's an active task
-    if (timerState.activeTaskId) {
-      startTimer(timerState.activeTaskId);
+    // Start new focus session if there's an active task in break timer
+    if (breakTimerState.activeTaskId) {
+      startTimer(breakTimerState.activeTaskId);
     }
-  }, [stopBreak, timerState.activeTaskId, startTimer]);
+  }, [stopBreak, breakTimerState.activeTaskId, startTimer]);
 
   const handleEndFocus = useCallback(() => {
     // Stop break timer and focus timer

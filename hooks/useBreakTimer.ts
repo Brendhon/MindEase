@@ -32,6 +32,7 @@ export type BreakTimerStateType = "idle" | "running" | "breakEnded";
  * Break Timer State
  */
 export interface BreakTimerState {
+  activeTaskId: string | null;
   breakTimerState: BreakTimerStateType;
   remainingTime: number; // in seconds
   startTime: Date | null;
@@ -42,7 +43,7 @@ export interface BreakTimerState {
  */
 export interface BreakTimerContextValue {
   breakTimerState: BreakTimerState;
-  startBreak: () => void;
+  startBreak: (taskId?: string) => void;
   stopBreak: () => void;
   formatTime: (seconds: number) => string;
 }
@@ -87,6 +88,7 @@ function isTimerCompleted(remainingTime: number): boolean {
  */
 function createInitialState(defaultDuration: number): BreakTimerState {
   return {
+    activeTaskId: null,
     breakTimerState: "idle",
     remainingTime: defaultDuration,
     startTime: null,
@@ -97,8 +99,9 @@ function createInitialState(defaultDuration: number): BreakTimerState {
  * Create running break timer state
  * Pure function - easily testable
  */
-function createRunningState(duration: number): BreakTimerState {
+function createRunningState(duration: number, taskId?: string): BreakTimerState {
   return {
+    activeTaskId: taskId || null,
     breakTimerState: "running",
     remainingTime: duration,
     startTime: new Date(),
@@ -109,8 +112,9 @@ function createRunningState(duration: number): BreakTimerState {
  * Create break ended state (when break completes, waits for user decision)
  * Pure function - easily testable
  */
-function createBreakEndedState(defaultDuration: number): BreakTimerState {
+function createBreakEndedState(defaultDuration: number, taskId?: string | null): BreakTimerState {
   return {
+    activeTaskId: taskId || null,
     breakTimerState: "breakEnded",
     remainingTime: 0,
     startTime: null,
@@ -123,6 +127,7 @@ function createBreakEndedState(defaultDuration: number): BreakTimerState {
  */
 function createIdleState(defaultDuration: number): BreakTimerState {
   return {
+    activeTaskId: null,
     breakTimerState: "idle",
     remainingTime: defaultDuration,
     startTime: null,
@@ -177,9 +182,9 @@ function restoreBreakTimerState(
       currentTime
     );
 
-    // If timer completed while away, return to breakEnded state
+    // If timer completed while away, return to breakEnded state (preserve activeTaskId)
     if (isTimerCompleted(remaining)) {
-      return createBreakEndedState(defaultDuration);
+      return createBreakEndedState(defaultDuration, saved.activeTaskId);
     }
 
     // Otherwise, restore with recalculated time
@@ -227,8 +232,9 @@ export function useBreakTimer(): BreakTimerContextValue {
   }, [defaultDuration]);
 
   // Persist: Save break timer state to localStorage when it changes
+  // Save if running OR if breakEnded OR if idle but has activeTaskId
   useEffect(() => {
-    if (breakTimerState.breakTimerState !== "idle") {
+    if (breakTimerState.breakTimerState !== "idle" || breakTimerState.activeTaskId !== null) {
       breakTimerStorage.set(breakTimerState);
     } else {
       breakTimerStorage.remove();
@@ -251,12 +257,12 @@ export function useBreakTimer(): BreakTimerContextValue {
       setBreakTimerState((prev: BreakTimerState) => {
         // Check if timer should complete
         if (isTimerCompleted(prev.remainingTime)) {
-          // Break timer completed - clear interval and set to breakEnded
+          // Break timer completed - clear interval and set to breakEnded (preserve activeTaskId)
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
             intervalRef.current = null;
           }
-          return createBreakEndedState(defaultDuration);
+          return createBreakEndedState(defaultDuration, prev.activeTaskId);
         }
 
         // Decrement remaining time
@@ -276,9 +282,9 @@ export function useBreakTimer(): BreakTimerContextValue {
     };
   }, [breakTimerState.breakTimerState, defaultDuration]);
 
-  const startBreak = useCallback(() => {
+  const startBreak = useCallback((taskId?: string) => {
     const breakDuration = (settings.shortBreakDuration || 5) * 60;
-    setBreakTimerState(createRunningState(breakDuration));
+    setBreakTimerState(createRunningState(breakDuration, taskId));
   }, [settings.shortBreakDuration]);
 
   const stopBreak = useCallback(() => {
