@@ -18,6 +18,9 @@ export interface TaskCardFocusActionsProps {
   /** Whether there is already an active task (to disable start button) */
   hasActiveTask: boolean;
   
+  /** Whether the break timer is running for this task */
+  isBreakRunning?: boolean;
+  
   /** Callback to start focus session */
   onStartFocus: () => void;
   
@@ -48,12 +51,31 @@ export function TaskCardFocusActions({
   isActive,
   isRunning,
   hasActiveTask,
+  isBreakRunning = false,
   onStartFocus,
   onStop,
   onComplete,
   "data-testid": testId,
 }: TaskCardFocusActionsProps) {
   const { textDetail } = useCognitiveSettings();
+
+  // During break, show only stop button (end focus)
+  if (isBreakRunning) {
+    return (
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={onStop}
+        aria-label={textDetail.getText("tasks_action_stop_aria")}
+        data-testid={testId || `task-card-stop-break-${task.id}`}
+      >
+        <Button.Icon icon={Square} position="left" />
+        <Button.Text>
+          {textDetail.getText("tasks_action_stop")}
+        </Button.Text>
+      </Button>
+    );
+  }
 
   // Show start button when not active
   if (!isActive) {

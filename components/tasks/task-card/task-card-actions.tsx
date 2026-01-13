@@ -19,6 +19,9 @@ export interface TaskCardActionsProps {
   /** Whether there is already an active task (to disable start button) */
   hasActiveTask: boolean;
   
+  /** Whether the break timer is running for this task */
+  isBreakRunning?: boolean;
+  
   /** Callback to start focus session */
   onStartFocus: () => void;
   
@@ -47,6 +50,7 @@ export function TaskCardActions({
   isActive,
   isRunning,
   hasActiveTask,
+  isBreakRunning = false,
   onStartFocus,
   onStop,
   onComplete,
@@ -68,12 +72,14 @@ export function TaskCardActions({
         isActive={isActive}
         isRunning={isRunning}
         hasActiveTask={hasActiveTask}
+        isBreakRunning={isBreakRunning}
         onStartFocus={onStartFocus}
         onStop={onStop}
         onComplete={onComplete}
         data-testid={testId}
       />
-      {!isActive && (
+      {/* Don't show edit actions during break */}
+      {!isActive && !isBreakRunning && (
         <TaskCardEditActions
           task={task}
           onEdit={onEdit}

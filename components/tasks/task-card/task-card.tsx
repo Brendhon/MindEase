@@ -47,16 +47,16 @@ export function TaskCard({
   "data-testid": testId,
 }: TaskCardProps) {
   const { timerState, startTimer, stopTimer } = useFocusTimer();
-  const { breakTimerState } = useBreakTimer();
+  const { breakTimerState, stopBreak } = useBreakTimer();
   const { openDialog } = useDialog();
   const { textDetail } = useCognitiveSettings();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
-  const hasActiveTask = timerState.activeTaskId !== null;
   const isBreakActive = breakTimerState.activeTaskId === task.id;
-  const isBreakRunning = breakTimerState.breakTimerState === "running";
-
+  const isBreakRunning = isBreakActive && breakTimerState.breakTimerState === "running";
+  const hasActiveTask = !!timerState.activeTaskId || !!breakTimerState.activeTaskId;
+  
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
     return !canCompleteTask(task);
@@ -74,6 +74,10 @@ export function TaskCard({
   };
 
   const handleStop = () => {
+    // Stop both focus timer and break timer if break is active
+    if (isBreakActive && isBreakRunning) {
+      stopBreak();
+    }
     stopTimer();
     // Return task to To Do when focus is stopped
     onStatusChange?.(task.id, 0);
@@ -150,12 +154,27 @@ export function TaskCard({
     });
   }, [openDialog]);
 
+  const subtaskBreakRequiredDialog = useCallback(() => {
+    openDialog({
+      titleKey: "tasks_subtask_break_required_title",
+      descriptionKey: "tasks_subtask_break_required_message",
+      cancelLabelKey: "tasks_subtask_break_required_cancel",
+      onCancel: () => {},
+    });
+  }, [openDialog]);
+
   const handleToggleSubtask = (subtaskId: string) => {
+    if (isBreakActive && isBreakRunning) {
+      subtaskBreakRequiredDialog();
+      return;
+    }
+    
     // Only allow toggling subtasks when task is in focus
     if (!isActive || !isRunning) {
       subtaskFocusRequiredDialog();
       return;
     }
+
     onToggleSubtask?.(task.id, subtaskId);
   };
 
@@ -203,6 +222,7 @@ export function TaskCard({
           isActive={isActive}
           isRunning={isRunning}
           hasActiveTask={hasActiveTask}
+          isBreakRunning={isBreakActive && isBreakRunning}
           onStartFocus={handleStartFocus}
           onStop={handleStop}
           onComplete={handleComplete}
