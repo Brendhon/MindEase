@@ -21,14 +21,14 @@ export interface InteractionSettingsProps {
 export function InteractionSettings({ "data-testid": testId }: InteractionSettingsProps) {
   const { settings, updateSetting, textDetail, spacingClasses } = useCognitiveSettings();
 
-  const handleFocusDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFocusDurationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0 && value <= 120) {
       updateSetting("focusDuration", value);
     }
   };
 
-  const handleBreakDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBreakDurationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const value = parseInt(e.target.value, 10);
     if (!isNaN(value) && value > 0 && value <= 60) {
       updateSetting("shortBreakDuration", value);

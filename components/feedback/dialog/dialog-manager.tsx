@@ -19,6 +19,13 @@ function DialogManagerRoot() {
   const { dialog, closeDialog, updateDialog } = useDialogContext();
   const { spacingClasses, textDetail } = useCognitiveSettings();
 
+  // Generate content classes with spacing preference
+  // Must be called before any early returns to maintain Hook order
+  const contentClasses = useMemo(
+    () => cn(styles.content, spacingClasses.gap),
+    [spacingClasses.gap]
+  );
+
   if (!dialog) {
     return null;
   }
@@ -50,12 +57,6 @@ function DialogManagerRoot() {
       closeDialog();
     }
   };
-
-  // Generate content classes with spacing preference
-  const contentClasses = useMemo(
-    () => cn(styles.content, spacingClasses.gap),
-    [spacingClasses.gap]
-  );
 
   const dialogTestId = dialog["data-testid"] || "dialog-manager";
 
