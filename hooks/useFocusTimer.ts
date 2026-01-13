@@ -1,19 +1,20 @@
 /**
  * useFocusTimer Hook - MindEase
- * Main hook for focus timer management
+ * Simplified focus timer management
  * 
  * Features:
  * - Single active timer per session (one task at a time)
  * - Timer state persistence across page navigation
- * - Automatic task status updates (todo -> in_progress)
- * - Subtask focus tracking (optional)
+ * - Simple state: idle or running (no pause)
+ * - Task association only (no subtask tracking)
+ * - Integrated countdown and persistence logic
  */
 
-import { useState, useCallback, useMemo, useRef } from "react";
+import type { FocusTimerContextValue, FocusTimerState } from "@/contexts/focus-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useTimerPersistence } from "@/hooks/useTimerPersistence";
-import { useTimerCountdown } from "@/hooks/useTimerCountdown";
-import type { TimerState, FocusTimerState, FocusTimerContextValue } from "@/contexts/focus-timer-context";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+
+const STORAGE_KEY = "mindEase_focusTimer";
 
 /**
  * Format time in seconds to MM:SS string
@@ -41,104 +42,130 @@ export function useFocusTimer(
     activeTaskId: null,
     timerState: "idle",
     remainingTime: defaultDuration,
-    focusedSubtaskId: null,
     startTime: null,
   });
 
-  // Handle timer persistence
-  useTimerPersistence(timerState, setTimerState, defaultDuration);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isInitialMount = useRef(true);
+
+  // Load saved timer state from localStorage on mount
+  useEffect(() => {
+    if (!isInitialMount.current) return;
+    isInitialMount.current = false;
+
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed: FocusTimerState = JSON.parse(saved);
+        // Restore timer state if it was running
+        if (parsed.timerState === "running" && parsed.startTime) {
+          const startTime = new Date(parsed.startTime);
+          const elapsed = Math.floor((Date.now() - startTime.getTime()) / 1000);
+          const remaining = Math.max(0, parsed.remainingTime - elapsed);
+          
+          if (remaining > 0) {
+            setTimerState({
+              ...parsed,
+              remainingTime: remaining,
+              startTime,
+            });
+          } else {
+            // Timer completed while away
+            setTimerState({
+              activeTaskId: null,
+              timerState: "idle",
+              remainingTime: defaultDuration,
+              startTime: null,
+            });
+            localStorage.removeItem(STORAGE_KEY);
+          }
+        } else {
+          setTimerState(parsed);
+        }
+      } catch (err) {
+        console.error("Error loading timer state:", err);
+      }
+    }
+  }, [defaultDuration]);
+
+  // Save timer state to localStorage
+  useEffect(() => {
+    if (timerState.timerState !== "idle") {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(timerState));
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, [timerState]);
 
   // Handle timer countdown
-  const handleTimerComplete = useCallback(() => {
-    // Timer completed callback
-    setTimerState((prev) => {
-      if (prev.activeTaskId && onTaskStatusChangeRef.current) {
-        // Don't auto-change status, let user decide
+  useEffect(() => {
+    if (timerState.timerState !== "running") {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
-      return prev;
-    });
-  }, []);
+      return;
+    }
 
-  useTimerCountdown(timerState, setTimerState, defaultDuration, handleTimerComplete);
+    intervalRef.current = setInterval(() => {
+      setTimerState((prev) => {
+        if (prev.remainingTime <= 1) {
+          // Timer completed
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+          }
+
+          return {
+            ...prev,
+            timerState: "idle",
+            remainingTime: defaultDuration,
+            startTime: null,
+          };
+        }
+
+        return {
+          ...prev,
+          remainingTime: prev.remainingTime - 1,
+        };
+      });
+    }, 1000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [timerState.timerState, defaultDuration]);
 
   const startTimer = useCallback(
-    (taskId: string, subtaskId?: string) => {
+    (taskId: string) => {
       const focusDuration = (settings.focusDuration || 25) * 60;
 
       setTimerState({
         activeTaskId: taskId,
         timerState: "running",
         remainingTime: focusDuration,
-        focusedSubtaskId: subtaskId || null,
         startTime: new Date(),
       });
     },
     [settings.focusDuration]
   );
 
-  const pauseTimer = useCallback(() => {
-    setTimerState((prev) => ({
-      ...prev,
-      timerState: "paused",
-    }));
-  }, []);
-
-  const resumeTimer = useCallback(() => {
-    setTimerState((prev) => ({
-      ...prev,
-      timerState: "running",
-      startTime: new Date(),
-    }));
-  }, []);
-
   const stopTimer = useCallback(() => {
     setTimerState({
       activeTaskId: null,
       timerState: "idle",
       remainingTime: defaultDuration,
-      focusedSubtaskId: null,
       startTime: null,
     });
   }, [defaultDuration]);
 
-  const switchTask = useCallback(
-    (taskId: string, subtaskId?: string) => {
-      // Pause current timer if running, then start new timer
-      setTimerState((prev) => {
-        const focusDuration = (settings.focusDuration || 25) * 60;
-        
-        // If there's an active timer running, pause it first
-        if (prev.activeTaskId && prev.timerState === "running") {
-          // Start new timer for new task
-          return {
-            activeTaskId: taskId,
-            timerState: "running",
-            remainingTime: focusDuration,
-            focusedSubtaskId: subtaskId || null,
-            startTime: new Date(),
-          };
-        }
-
-        // Start new timer for new task
-        return {
-          activeTaskId: taskId,
-          timerState: "running",
-          remainingTime: focusDuration,
-          focusedSubtaskId: subtaskId || null,
-          startTime: new Date(),
-        };
-      });
-    },
-    [settings.focusDuration]
-  );
-
   return {
     timerState,
     startTimer,
-    pauseTimer,
-    resumeTimer,
     stopTimer,
-    switchTask,
     formatTime,
   };
 }

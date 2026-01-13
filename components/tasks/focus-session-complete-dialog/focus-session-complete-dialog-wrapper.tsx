@@ -15,7 +15,7 @@ import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
  */
 export function FocusSessionCompleteDialogWrapper() {
   const { user } = useAuth();
-  const { timerState, stopTimer, resumeTimer, startTimer } = useFocusTimer();
+  const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
@@ -46,7 +46,7 @@ export function FocusSessionCompleteDialogWrapper() {
     const current = timerState;
 
     // Detect when timer completes: was running, now idle, but still has activeTaskId
-    // This happens when useTimerCountdown resets the state but before activeTaskId is cleared
+    // This happens when the timer countdown completes and resets the state but before activeTaskId is cleared
     // We detect the transition from "running" to "idle" while activeTaskId is still present
     if (
       prev.timerState === "running" &&
@@ -79,11 +79,10 @@ export function FocusSessionCompleteDialogWrapper() {
   const handleContinueFocus = useCallback(() => {
     // Start a new focus session (new Pomodoro)
     if (timerState.activeTaskId) {
-      const subtaskId = timerState.focusedSubtaskId || undefined;
       // Start new timer (new Pomodoro)
-      startTimer(timerState.activeTaskId, subtaskId);
+      startTimer(timerState.activeTaskId);
     }
-  }, [timerState.activeTaskId, timerState.focusedSubtaskId, startTimer]);
+  }, [timerState.activeTaskId, startTimer]);
 
   const handleFinishTask = useCallback(async () => {
     if (!user?.uid || !timerState.activeTaskId) return;

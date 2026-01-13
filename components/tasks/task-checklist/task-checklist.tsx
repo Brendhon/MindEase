@@ -15,9 +15,6 @@ export interface TaskChecklistProps {
   /** Array of subtasks */
   subtasks: Subtask[];
 
-  /** ID of focused subtask (if any) */
-  focusedSubtaskId?: string | null;
-
   /** Callback when subtask is toggled */
   onToggleSubtask?: (subtaskId: string) => void;
 
@@ -33,7 +30,6 @@ export interface TaskChecklistProps {
 
 export function TaskChecklist({
   subtasks,
-  focusedSubtaskId,
   onToggleSubtask,
   interactive = false,
   isInFocus = false,
@@ -75,7 +71,6 @@ export function TaskChecklist({
             <TaskChecklistItem
               key={subtask.id}
               subtask={subtask}
-              isFocused={focusedSubtaskId === subtask.id}
               interactive={interactive}
               onToggle={onToggleSubtask}
               data-testid={`${testId || "task-checklist"}-item-${subtask.id}`}

@@ -14,9 +14,6 @@ export interface TaskChecklistItemProps {
   /** Subtask data */
   subtask: Subtask;
 
-  /** Whether this item is focused */
-  isFocused?: boolean;
-
   /** Whether checklist is interactive */
   interactive?: boolean;
 
@@ -29,7 +26,6 @@ export interface TaskChecklistItemProps {
 
 export function TaskChecklistItem({
   subtask,
-  isFocused = false,
   interactive = false,
   onToggle,
   "data-testid": testId,
@@ -41,11 +37,10 @@ export function TaskChecklistItem({
   const itemClasses = useMemo(() => {
     return cn(
       styles.item,
-      isFocused && styles.itemFocused,
       isCompleted && styles.itemCompleted,
       !interactive && styles.itemNonInteractive
     );
-  }, [isFocused, isCompleted, interactive]);
+  }, [isCompleted, interactive]);
 
   const handleToggle = () => {
     // Always call onToggle - the parent component will handle the logic
@@ -82,7 +77,6 @@ TaskChecklistItem.displayName = "TaskChecklistItem";
 
 const styles = {
   item: "flex items-start",
-  itemFocused: "opacity-100",
   itemCompleted: "opacity-60",
   itemNonInteractive: "opacity-70",
   checkboxWrapper: "w-full",

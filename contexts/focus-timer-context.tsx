@@ -10,27 +10,23 @@ import { useFocusTimer as useFocusTimerHook } from "@/hooks/useFocusTimer";
  * Features:
  * - Single active timer per session (one task at a time)
  * - Timer state persistence across page navigation
- * - Automatic task status updates (todo -> in_progress)
- * - Subtask focus tracking (optional)
+ * - Simple state: idle or running (no pause)
+ * - Task association only (no subtask tracking)
  */
 
-export type TimerState = "idle" | "running" | "paused";
+export type TimerState = "idle" | "running";
 
 export interface FocusTimerState {
   activeTaskId: string | null;
   timerState: TimerState;
   remainingTime: number; // in seconds
-  focusedSubtaskId: string | null;
   startTime: Date | null;
 }
 
 export interface FocusTimerContextValue {
   timerState: FocusTimerState;
-  startTimer: (taskId: string, subtaskId?: string) => void;
-  pauseTimer: () => void;
-  resumeTimer: () => void;
+  startTimer: (taskId: string) => void;
   stopTimer: () => void;
-  switchTask: (taskId: string, subtaskId?: string) => void;
   formatTime: (seconds: number) => string;
 }
 

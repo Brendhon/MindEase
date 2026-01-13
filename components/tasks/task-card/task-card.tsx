@@ -65,14 +65,7 @@ export function TaskCard({
 
   // Handle focus actions
   const handleStartFocus = () => {
-    if (task.subtasks && task.subtasks.length > 0) {
-      // If task has subtasks, start with first incomplete one or first one
-      const firstIncomplete = task.subtasks.find((st) => !st.completed);
-      const subtaskId = firstIncomplete?.id || task.subtasks[0]?.id;
-      startTimer(task.id, subtaskId);
-    } else {
-      startTimer(task.id);
-    }
+    startTimer(task.id);
     onStatusChange?.(task.id, 1); // Set to In Progress
   };
 
@@ -193,7 +186,6 @@ export function TaskCard({
         {task.subtasks && task.subtasks.length > 0 && (
           <TaskChecklist
             subtasks={task.subtasks}
-            focusedSubtaskId={isActive ? timerState.focusedSubtaskId : null}
             onToggleSubtask={showActions ? handleToggleSubtask : undefined}
             interactive={isActive && isRunning}
             isInFocus={isActive && isRunning}

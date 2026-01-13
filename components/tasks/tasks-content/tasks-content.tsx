@@ -10,7 +10,6 @@ import { useFeedback } from "@/hooks/useFeedback";
 import { Subtask, Task } from "@/models/Task";
 import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { BreakSuggestion } from "../break-suggestion";
 import { TaskDialog } from "../task-dialog";
 import { TaskList } from "../task-list";
 import { TasksError } from "../tasks-error";
@@ -38,7 +37,7 @@ export function TasksContent({
   "data-testid": testId,
 }: TasksContentProps) {
   const { user } = useAuth();
-  const { timerState, stopTimer, resumeTimer } = useFocusTimer();
+  const { timerState, stopTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
   const { success, error: showError, info } = useFeedback();
   const { openDialog } = useDialog();
@@ -48,37 +47,12 @@ export function TasksContent({
   const [error, setError] = useState<string | null>(initialError || null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
-  const [showBreakSuggestion, setShowBreakSuggestion] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   // Sync tasks when initialTasks change
   useEffect(() => {
     setTasks(initialTasks);
   }, [initialTasks]);
-
-  // Monitor timer pause - use a ref to track previous state
-  const prevTimerStateRef = useRef(timerState);
-  
-  useEffect(() => {
-    const prev = prevTimerStateRef.current;
-    const current = timerState;
-    
-    // Detect when user pauses - show break suggestion
-    if (
-      prev.timerState === "running" &&
-      current.timerState === "paused" &&
-      current.activeTaskId !== null
-    ) {
-      setShowBreakSuggestion(true);
-    }
-    
-    // Hide break suggestion when timer resumes or stops
-    if (current.timerState === "running" || (current.timerState === "idle" && current.activeTaskId === null)) {
-      setShowBreakSuggestion(false);
-    }
-
-    prevTimerStateRef.current = current;
-  }, [timerState, settings.shortBreakDuration, info]);
 
   // Get active task name
   const activeTaskName = useMemo(() => {
@@ -234,10 +208,7 @@ export function TasksContent({
     setEditingTask(undefined);
   }, []);
 
-  const handleResumeFromBreak = useCallback(() => {
-    resumeTimer();
-    setShowBreakSuggestion(false);
-  }, [resumeTimer]);
+  // Removed handleResumeFromBreak - no pause functionality
 
   if (loading && tasks.length === 0) {
     return (
@@ -263,12 +234,7 @@ export function TasksContent({
 
       {error && <TasksError message={error} />}
 
-      {/* Break suggestion (when paused) */}
-      <BreakSuggestion
-        isVisible={showBreakSuggestion && timerState.timerState === "paused"}
-        breakDuration={settings.shortBreakDuration || 5}
-        onResume={handleResumeFromBreak}
-      />
+      {/* Break suggestion removed - no pause functionality */}
 
       {/* Toolbar */}
       <TasksToolbar onNewTask={handleNewTask} />
