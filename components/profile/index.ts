@@ -9,4 +9,3 @@ export * from "./content-settings";
 export * from "./profile-reset-button";
 export * from "./profile-info";
 export * from "./profile-content";
-export * from "./delete-account-dialog";
