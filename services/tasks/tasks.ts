@@ -1,6 +1,6 @@
 import { Task } from "@/models/Task";
 import { firestoreService } from "../firestore";
-import { getTasksCollectionPath } from "@/utils/firestore/paths";
+import { getTasksCollectionPath, getTaskDocumentPath } from "@/utils/firestore/paths";
 
 /**
  * Tasks Service - MindEase
@@ -8,6 +8,7 @@ import { getTasksCollectionPath } from "@/utils/firestore/paths";
  */
 export interface TasksService {
   getTasks: (userId: string) => Promise<Task[]>;
+  getTask: (userId: string, taskId: string) => Promise<Task | null>;
   createTask: (userId: string, task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">) => Promise<Task>;
   updateTask: (userId: string, taskId: string, updates: Partial<Omit<Task, "id" | "userId">>) => Promise<Task>;
   deleteTask: (userId: string, taskId: string) => Promise<void>;
@@ -20,6 +21,14 @@ export const tasksService: TasksService = {
    */
   getTasks: async (userId: string): Promise<Task[]> => {
     return firestoreService.getCollection<Task>(getTasksCollectionPath(userId));
+  },
+
+  /**
+   * Get a specific task by ID
+   */
+  getTask: async (userId: string, taskId: string): Promise<Task | null> => {
+    const collectionPath = getTasksCollectionPath(userId);
+    return firestoreService.getDocument<Task>(collectionPath, taskId);
   },
 
   /**

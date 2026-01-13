@@ -1,6 +1,7 @@
 "use client";
 
 import { Sidebar, Header } from "@/components/layout";
+import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 
@@ -11,6 +12,7 @@ import { SidebarProvider } from "@/contexts/sidebar-context";
  * 
  * Provides:
  * - FocusTimerProvider: Global timer management for task-focused sessions
+ * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
  * 
  * Note: Session verification is handled by middleware (proxy.ts)
  */
@@ -29,6 +31,7 @@ export default function AuthenticatedLayout({
             <div className="flex-1">{children}</div>
           </main>
         </div>
+        <FocusSessionCompleteDialogWrapper />
       </SidebarProvider>
     </FocusTimerProvider>
   );

@@ -10,7 +10,6 @@ import { Subtask, Task } from "@/models/Task";
 import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSuggestion } from "../break-suggestion";
-import { FocusSessionAlert } from "../focus-session-alert";
 import { TaskDeleteDialog } from "../task-delete-dialog";
 import { TaskDialog } from "../task-dialog";
 import { TaskList } from "../task-list";
@@ -39,7 +38,7 @@ export function TasksContent({
   "data-testid": testId,
 }: TasksContentProps) {
   const { user } = useAuth();
-  const { timerState, stopTimer, resumeTimer, startTimer } = useFocusTimer();
+  const { timerState, stopTimer, resumeTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
   const { success, error: showError, info } = useFeedback();
 
@@ -48,7 +47,6 @@ export function TasksContent({
   const [error, setError] = useState<string | null>(initialError || null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
-  const [showSessionAlert, setShowSessionAlert] = useState(false);
   const [showBreakSuggestion, setShowBreakSuggestion] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
@@ -58,23 +56,12 @@ export function TasksContent({
     setTasks(initialTasks);
   }, [initialTasks]);
 
-  // Monitor timer completion and pause - use a ref to track previous state
+  // Monitor timer pause - use a ref to track previous state
   const prevTimerStateRef = useRef(timerState);
   
   useEffect(() => {
     const prev = prevTimerStateRef.current;
     const current = timerState;
-
-    // Detect when timer completes: was running, now idle, but still has activeTaskId
-    // This happens when useTimerCountdown resets the state but before activeTaskId is cleared
-    if (
-      prev.timerState === "running" &&
-      current.timerState === "idle" &&
-      current.activeTaskId !== null &&
-      current.remainingTime <= 0
-    ) {
-      setShowSessionAlert(true);
-    }
     
     // Detect when user pauses - show break suggestion
     if (
@@ -88,11 +75,6 @@ export function TasksContent({
     // Hide break suggestion when timer resumes or stops
     if (current.timerState === "running" || (current.timerState === "idle" && current.activeTaskId === null)) {
       setShowBreakSuggestion(false);
-    }
-    
-    // Hide alert when timer is fully stopped (no activeTaskId)
-    if (current.timerState === "idle" && current.activeTaskId === null) {
-      setShowSessionAlert(false);
     }
 
     prevTimerStateRef.current = current;
@@ -240,40 +222,10 @@ export function TasksContent({
     setEditingTask(undefined);
   }, []);
 
-  // Focus session alert handlers
-  const handleContinueFocus = useCallback(() => {
-    // Start a new focus session (new Pomodoro)
-    if (timerState.activeTaskId) {
-      const task = tasks.find((t) => t.id === timerState.activeTaskId);
-      if (task) {
-        // Find focused subtask if any
-        const focusedSubtask = task.subtasks?.find((st) => st.id === timerState.focusedSubtaskId);
-        const subtaskId = focusedSubtask?.id || timerState.focusedSubtaskId || undefined;
-        
-        // Start new timer (new Pomodoro)
-        startTimer(timerState.activeTaskId, subtaskId);
-        setShowSessionAlert(false);
-      }
-    }
-  }, [timerState.activeTaskId, timerState.focusedSubtaskId, tasks, startTimer]);
-
-  const handlePauseFocus = useCallback(() => {
-    stopTimer();
-    setShowSessionAlert(false);
-  }, [stopTimer]);
-
   const handleResumeFromBreak = useCallback(() => {
     resumeTimer();
     setShowBreakSuggestion(false);
   }, [resumeTimer]);
-
-  const handleFinishTask = useCallback(async () => {
-    if (timerState.activeTaskId) {
-      await handleStatusChange(timerState.activeTaskId, 2);
-      stopTimer();
-    }
-    setShowSessionAlert(false);
-  }, [timerState.activeTaskId, handleStatusChange, stopTimer]);
 
   if (loading && tasks.length === 0) {
     return (
@@ -298,15 +250,6 @@ export function TasksContent({
       />
 
       {error && <TasksError message={error} />}
-
-      {/* Focus session alert */}
-      <FocusSessionAlert
-        isVisible={showSessionAlert}
-        taskName={activeTaskName}
-        onContinue={handleContinueFocus}
-        onPause={handlePauseFocus}
-        onFinish={handleFinishTask}
-      />
 
       {/* Break suggestion (when paused) */}
       <BreakSuggestion

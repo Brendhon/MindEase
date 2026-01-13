@@ -6,6 +6,7 @@ import { CardContent } from "@/components/ui/card/card-content";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
 import { cn } from "@/utils/ui";
 import type { Task } from "@/models/Task";
+import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { TaskChecklist } from "../task-checklist";
 import { TaskCardHeader } from "./task-card-header";
 import { TaskCardTimer } from "./task-card-timer";
@@ -53,19 +54,15 @@ export function TaskCard({
   const isRunning = isActive && timerState.timerState === "running";
   const hasActiveTask = timerState.activeTaskId !== null;
 
-  // Check if task has pending subtasks
+  // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
-    if (!task.subtasks || task.subtasks.length === 0) {
-      return false;
-    }
-    return task.subtasks.some((subtask) => !subtask.completed);
-  }, [task.subtasks]);
+    return !canCompleteTask(task);
+  }, [task]);
 
-  // Get pending subtasks
+  // Get pending subtasks (using centralized utility)
   const pendingSubtasks = useMemo(() => {
-    if (!task.subtasks) return [];
-    return task.subtasks.filter((subtask) => !subtask.completed);
-  }, [task.subtasks]);
+    return getPendingSubtasks(task);
+  }, [task]);
 
   // Handle focus actions
   const handleStartFocus = () => {
