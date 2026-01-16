@@ -1,12 +1,6 @@
 export { TaskCard } from "./task-card";
-export type { TaskCardProps } from "./task-card";
 export { TaskCardHeader } from "./task-card-header";
-export type { TaskCardHeaderProps } from "./task-card-header";
 export { TaskCardTimer } from "./task-card-timer";
-export type { TaskCardTimerProps } from "./task-card-timer";
 export { TaskCardActions } from "./task-card-actions";
-export type { TaskCardActionsProps } from "./task-card-actions";
 export { TaskCardFocusActions } from "./task-card-focus-actions";
-export type { TaskCardFocusActionsProps } from "./task-card-focus-actions";
 export { TaskCardEditActions } from "./task-card-edit-actions";
-export type { TaskCardEditActionsProps } from "./task-card-edit-actions";

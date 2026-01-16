@@ -4,43 +4,19 @@
  */
 
 import React from "react";
+import type {
+  CompletePendingSubtasksDialogConfig,
+  SubtaskBreakRequiredDialogConfig,
+  SubtaskFocusRequiredDialogConfig,
+} from "@/models/TaskCardProps";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import type { Subtask } from "@/models/Task";
 
-/**
- * Dialog configuration for complete pending subtasks
- */
-export interface CompletePendingSubtasksDialogConfig {
-  titleKey: AccessibilityTextKey;
-  descriptionKey: AccessibilityTextKey;
-  info: React.ReactNode;
-  confirmLabelKey: AccessibilityTextKey;
-  "data-testid": string;
-}
-
-/**
- * Dialog configuration for subtask focus required
- */
-export interface SubtaskFocusRequiredDialogConfig {
-  titleKey: AccessibilityTextKey;
-  descriptionKey: AccessibilityTextKey;
-  info: React.ReactNode;
-  cancelLabelKey: AccessibilityTextKey;
-  confirmLabelKey: AccessibilityTextKey;
-  onCancel: () => void;
-  onConfirm?: () => void;
-  "data-testid": string;
-}
-
-/**
- * Dialog configuration for subtask break required
- */
-export interface SubtaskBreakRequiredDialogConfig {
-  titleKey: AccessibilityTextKey;
-  descriptionKey: AccessibilityTextKey;
-  cancelLabelKey: AccessibilityTextKey;
-  onCancel: () => void;
-}
+export type {
+  CompletePendingSubtasksDialogConfig,
+  SubtaskFocusRequiredDialogConfig,
+  SubtaskBreakRequiredDialogConfig,
+};
 
 /**
  * Create dialog configuration for complete pending subtasks

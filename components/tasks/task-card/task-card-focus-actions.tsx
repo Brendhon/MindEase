@@ -2,35 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Task } from "@/models/Task";
+import type { TaskCardFocusActionsProps } from "@/models/TaskCardProps";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { Check, LucideIcon, Play, Square } from "lucide-react";
-
-export interface TaskCardFocusActionsProps {
-  /** Task data */
-  task: Task;
-
-  /** Whether the timer is running */
-  isRunning: boolean;
-
-  /** Whether there is already an active task (to disable start button) */
-  hasActiveTask: boolean;
-
-  /** Whether the break timer is running for this task */
-  isBreakRunning?: boolean;
-
-  /** Callback to start focus session */
-  onStartFocus: () => void;
-
-  /** Callback to stop timer (ends focus and returns task to To Do) */
-  onStop: () => void;
-
-  /** Callback to complete task (marks as done and stops timer) */
-  onComplete: () => void;
-
-  /** Test ID prefix for testing */
-  "data-testid"?: string;
-}
 
 interface StopButtonProps {
   onStop: () => void;

@@ -55,73 +55,9 @@ import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTasks } from "@/hooks/useTasks";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Task } from "@/models/Task";
+import type { UseTaskCardProps, UseTaskCardReturn } from "@/models/TaskCardProps";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { useCallback, useMemo } from "react";
-
-export interface UseTaskCardProps {
-  /** Task data */
-  task: Task;
-
-  /** Callback when task is edited */
-  onEdit?: (task: Task) => void;
-
-  /** Callback when task is deleted */
-  onDelete?: (taskId: string) => void;
-
-  /** Callback when task status changes */
-  onStatusChange?: (taskId: string, status: number) => void;
-
-  /** Callback when subtask is toggled */
-  onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-
-  /** Test ID for testing */
-  testId?: string;
-}
-
-export interface UseTaskCardReturn {
-  /** CSS classes for the card based on status and focus state */
-  cardClasses: string;
-
-  /** Whether focus timer is active for this task */
-  isActive: boolean;
-
-  /** Whether focus timer is running for this task */
-  isRunning: boolean;
-
-  /** Whether there is already an active task */
-  hasActiveTask: boolean;
-
-  /** Whether break timer is running for this task */
-  isBreakRunning: boolean;
-
-  /** Whether the card is focused (focus or break active) */
-  isFocused: boolean;
-
-  /** Whether task has pending subtasks */
-  hasPendingSubtasks: boolean;
-
-  /** Whether checklist should be interactive */
-  isChecklistInteractive: boolean;
-
-  /** Handler to start focus session */
-  handleStartFocus: () => void;
-
-  /** Handler to stop timer */
-  handleStop: () => void;
-
-  /** Handler to complete task */
-  handleComplete: () => void;
-
-  /** Handler to edit task */
-  handleEdit: () => void;
-
-  /** Handler to delete task */
-  handleDelete: () => void;
-
-  /** Handler to toggle subtask */
-  handleToggleSubtask: (subtaskId: string) => void;
-}
 
 /**
  * Hook for managing TaskCard business logic

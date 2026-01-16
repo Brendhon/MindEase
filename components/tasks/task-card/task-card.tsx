@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useTaskCard } from "@/hooks/useTaskCard";
-import type { Task } from "@/models/Task";
+import type { TaskCardProps } from "@/models/TaskCardProps";
 import { TaskChecklist } from "../task-checklist";
 import { TaskCardActions } from "./task-card-actions";
 import { TaskCardHeader } from "./task-card-header";
@@ -13,25 +13,6 @@ import { TaskCardTimer } from "./task-card-timer";
  * TaskCard Component - MindEase
  * Individual task card with actions and status
  */
-export interface TaskCardProps {
-  /** Task data */
-  task: Task;
-
-  /** Callback when task is edited */
-  onEdit?: (task: Task) => void;
-
-  /** Callback when task is deleted */
-  onDelete?: (taskId: string) => void;
-
-  /** Callback when task status changes */
-  onStatusChange?: (taskId: string, status: number) => void;
-
-  /** Callback when subtask is toggled */
-  onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
 
 export function TaskCard({
   task,

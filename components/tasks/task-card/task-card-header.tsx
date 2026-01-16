@@ -4,18 +4,10 @@ import { CardHeader } from "@/components/ui/card/card-header";
 import { CardTitle } from "@/components/ui/card/card-title";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Task } from "@/models/Task";
+import type { TaskCardHeaderProps } from "@/models/TaskCardProps";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { styles } from "./task-card-styles";
-
-export interface TaskCardHeaderProps {
-  /** Task data */
-  task: Task;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
 
 /**
  * TaskCardHeader Component - MindEase

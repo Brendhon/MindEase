@@ -1,46 +1,11 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import type { Task } from "@/models/Task";
+import type { TaskCardActionsProps } from "@/models/TaskCardProps";
 import { cn } from "@/utils/ui";
 import { TaskCardEditActions } from "./task-card-edit-actions";
 import { TaskCardFocusActions } from "./task-card-focus-actions";
 import { styles } from "./task-card-styles";
-
-export interface TaskCardActionsProps {
-  /** Task data */
-  task: Task;
-  
-  /** Whether the timer is active for this task */
-  isActive: boolean;
-  
-  /** Whether the timer is running */
-  isRunning: boolean;
-  
-  /** Whether there is already an active task (to disable start button) */
-  hasActiveTask: boolean;
-  
-  /** Whether the break timer is running for this task */
-  isBreakRunning?: boolean;
-  
-  /** Callback to start focus session */
-  onStartFocus: () => void;
-  
-  /** Callback to stop timer (ends focus and returns task to To Do) */
-  onStop: () => void;
-  
-  /** Callback to complete task (marks as done and stops timer) */
-  onComplete: () => void;
-  
-  /** Callback when task is edited */
-  onEdit: () => void;
-  
-  /** Callback when task is deleted */
-  onDelete: () => void;
-  
-  /** Test ID prefix for testing */
-  "data-testid"?: string;
-}
 
 /**
  * TaskCardActions Component - MindEase

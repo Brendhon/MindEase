@@ -2,22 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Task } from "@/models/Task";
+import type { TaskCardEditActionsProps } from "@/models/TaskCardProps";
 import { Edit, Trash2 } from "lucide-react";
-
-export interface TaskCardEditActionsProps {
-  /** Task data */
-  task: Task;
-  
-  /** Callback when task is edited */
-  onEdit: () => void;
-  
-  /** Callback when task is deleted */
-  onDelete: () => void;
-  
-  /** Test ID prefix for testing */
-  "data-testid"?: string;
-}
 
 /**
  * TaskCardEditActions Component - MindEase

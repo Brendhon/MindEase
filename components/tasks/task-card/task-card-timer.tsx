@@ -4,18 +4,10 @@ import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Task } from "@/models/Task";
+import type { TaskCardTimerProps } from "@/models/TaskCardProps";
 import { formatTime } from "@/utils/timer";
 import { cn } from "@/utils/ui";
 import { styles } from "./task-card-styles";
-
-export interface TaskCardTimerProps {
-  /** Task data */
-  task: Task;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
 
 /**
  * TaskCardTimer Component - MindEase
