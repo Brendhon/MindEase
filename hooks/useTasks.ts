@@ -1,9 +1,9 @@
-import { useCallback } from "react";
-import { Task, Subtask } from "@/models/Task";
 import { useTasksContext } from "@/contexts/tasks-context";
-import { tasksService } from "@/services/tasks";
 import { useAuth } from "@/hooks/useAuth";
 import { useFeedback } from "@/hooks/useFeedback";
+import { Subtask, Task } from "@/models/Task";
+import { tasksService } from "@/services/tasks";
+import { useCallback } from "react";
 
 /**
  * useTasks Hook - MindEase
@@ -100,8 +100,9 @@ export function useTasks() {
       try {
         const updatedTask = await tasksService.updateTask(user.uid, taskId, updates);
         _setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
-        const messageKey = updatedTask.status === 2 ? "toast_success_task_completed" : "toast_success_task_updated";
-        success(messageKey);
+
+        const isComplete = updatedTask.status === 2;
+        isComplete && success('toast_success_task_completed');
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "Failed to update task";
         _setError(errorMessage);
@@ -201,7 +202,7 @@ export function useTasks() {
     updateTaskStatus,
     toggleSubtask,
     refreshTask,
-    
+
     // Utilities
     getTask,
     initializeTasks,

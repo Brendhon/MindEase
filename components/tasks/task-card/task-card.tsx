@@ -8,7 +8,6 @@ import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { useCallback, useMemo } from "react";
 import { TaskChecklist } from "../task-checklist";
@@ -184,9 +183,9 @@ export function TaskCard({
     
     // Show feedback based on new state (opposite of current state)
     if (wasCompleted) {
-      success("tasks_checklist_step_pending" as AccessibilityTextKey);
+      success("tasks_checklist_step_pending");
     } else {
-      success("tasks_checklist_step_completed" as AccessibilityTextKey);
+      success("tasks_checklist_step_completed");
     }
   };
 

@@ -47,10 +47,10 @@ export function DialogActions({
   const { spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
 
-  const cancelLabel = cancelLabelKey ? getText(cancelLabelKey as AccessibilityTextKey) : getText("button_cancel");
+  const cancelLabel = cancelLabelKey ? getText(cancelLabelKey) : getText("button_cancel");
 
   const confirmLabel = confirmLabelKey ? getText(confirmLabelKey) : getText("button_save");
-  
+
   const actionsClasses = cn(styles.actions, spacingClasses.gap);
 
   // If no actions provided, show OK button

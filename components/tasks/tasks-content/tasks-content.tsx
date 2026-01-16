@@ -6,9 +6,9 @@ import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTasks } from "@/hooks/useTasks";
-import { Subtask, Task } from "@/models/Task";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Task } from "@/models/Task";
+import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
+import { useCallback, useEffect, useState } from "react";
 import { TaskDialog } from "../task-dialog";
 import { TaskList } from "../task-list";
 import { TasksError } from "../tasks-error";
@@ -61,13 +61,6 @@ export function TasksContent({
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
   const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
-  // Get active task name
-  const activeTaskName = useMemo(() => {
-    if (!timerState.activeTaskId) return undefined;
-    const task = tasks.find((t) => t.id === timerState.activeTaskId);
-    return task?.title;
-  }, [timerState.activeTaskId, tasks]);
-
   // Delete task (after confirmation)
   const handleDeleteTask = useCallback(async () => {
     if (!taskToDelete) return;
@@ -110,23 +103,12 @@ export function TasksContent({
   }, []);
 
   // Save task (create or update)
-  const handleSaveTask = useCallback(async (taskData: {
-    title: string;
-    description?: string;
-    subtasks?: Subtask[];
-  }) => {
-    const hasSubtasks = taskData.subtasks && taskData.subtasks.length > 0;
+  const handleSaveTask = useCallback(async (taskData: TaskDialogFormData) => {
     
     if (editingTask) {
       await updateTask(editingTask.id, taskData);
-      // Feedback for subtask changes is already shown in the dialog
-      // when user adds/removes/updates subtasks
     } else {
       await createTask(taskData);
-      // Show feedback if task was created with subtasks
-      if (hasSubtasks) {
-        success("tasks_checklist_added" as AccessibilityTextKey);
-      }
     }
     setIsDialogOpen(false);
     setEditingTask(undefined);

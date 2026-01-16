@@ -1,14 +1,5 @@
+import { AuthUser } from "@/models/auth";
 import { createContext, useContext } from "react";
-
-/**
- * User type for authentication
- */
-export interface AuthUser {
-  uid: string;
-  email: string | null;
-  name: string | null;
-  image: string | null;
-}
 
 /**
  * Auth Context - MindEase

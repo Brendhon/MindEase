@@ -32,11 +32,7 @@ export interface TaskDialogProps {
   task?: Task;
 
   /** Callback when task is saved */
-  onSave: (taskData: {
-    title: string;
-    description?: string;
-    subtasks?: Subtask[];
-  }) => void;
+  onSave: (taskData: TaskDialogFormData) => void;
 
   /** Test ID for testing */
   "data-testid"?: string;
@@ -115,7 +111,7 @@ export function TaskDialog({
 
       onSave({
         title: result.data.title,
-        description: result.data.description,
+        description: result.data.description || "",
         subtasks: result.data.subtasks,
       });
 
