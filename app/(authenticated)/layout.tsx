@@ -31,11 +31,11 @@ export default function AuthenticatedLayout({
       <FocusTimerProvider>
         <BreakTimerProvider>
           <SidebarProvider>
-            <div className="flex min-h-screen bg-bg-secondary font-sans">
+            <div className={styles.container}>
               <Sidebar />
-              <main className="flex-1 flex flex-col">
+              <main className={styles.main}>
                 <Header />
-                <div className="flex-1">{children}</div>
+                <div className={styles.content}>{children}</div>
               </main>
             </div>
             <FocusSessionCompleteDialogWrapper />
@@ -47,3 +47,9 @@ export default function AuthenticatedLayout({
   );
 }
 
+
+const styles = {
+  container: "flex min-h-screen bg-bg-secondary font-sans",
+  main: "flex-1 flex flex-col",
+  content: "flex-1 flex flex-col",
+};
