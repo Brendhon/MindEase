@@ -247,7 +247,9 @@
     "form_required_aria": "Campo obrigatório",
     "tasks_count_aria": "tarefas",
     "tasks_checklist_item_completed": "Concluída",
-    "tasks_checklist_item_pending": "Pendente"
+    "tasks_checklist_item_pending": "Pendente",
+    "profile_info_name": "Nome:",
+    "profile_info_email": "E-mail:"
   },
   "summary": {
     "welcome": "Bem-vindo",
@@ -497,7 +499,9 @@
     "form_required_aria": "Obrigatório",
     "tasks_count_aria": "tarefas",
     "tasks_checklist_item_completed": "Concluída",
-    "tasks_checklist_item_pending": "Pendente"
+    "tasks_checklist_item_pending": "Pendente",
+    "profile_info_name": "Nome:",
+    "profile_info_email": "E-mail:"
   }
 }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { PageHeader } from "@/components/layout";
-import { Button, Card } from "@/components/ui";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useAuth } from "@/hooks/useAuth";
 import { useDialog } from "@/hooks/useDialog";
@@ -9,11 +8,11 @@ import { useFeedback } from "@/hooks/useFeedback";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
-import { LogOut, Trash2 } from "lucide-react";
 import { User } from "next-auth";
-import Image from "next/image";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { AuthUser } from "@/contexts/auth-context";
+import { ProfileInfoCard } from "./profile-info-card";
+import { ProfileActions } from "./profile-actions";
 
 /**
  * ProfileInfo Component - MindEase
@@ -51,15 +50,8 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   const { error: showError, success } = useFeedback();
   const { openDialog } = useDialog();
 
-  const labelClasses = useMemo(
-    () => cn(styles.label, fontSizeClasses.sm),
-    [fontSizeClasses.sm]
-  );
-
-  const valueClasses = useMemo(
-    () => cn(styles.value, fontSizeClasses.base),
-    [fontSizeClasses.base]
-  );
+  const labelClasses = cn(styles.label, fontSizeClasses.sm);
+  const valueClasses = cn(styles.value, fontSizeClasses.base);
 
   // Delete account dialog
   const deleteAccountDialog = useCallback(() => {
@@ -125,55 +117,19 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
         data-testid={testId ? `${testId}-header` : "profile-info-header"}
       />
 
-      <Card className={styles.infoCard}>
-        {user.image && (
-          <div className={styles.avatarContainer}>
-            <Image
-              src={user.image}
-              alt={user.name || "User avatar"}
-              width={96}
-              loading="eager"
-              height={96}
-              className={styles.avatar}
-            />
-          </div>
-        )}
+      <ProfileInfoCard
+        user={user}
+        labelClassName={labelClasses}
+        valueClassName={valueClasses}
+        data-testid={testId ? `${testId}-card` : "profile-info-card"}
+      />
 
-        {user.name && (
-          <div className={styles.infoRow}>
-            <span className={labelClasses}>Nome:</span>
-            <span className={valueClasses}>{user.name}</span>
-          </div>
-        )}
-        
-        <div className={styles.infoRow}>
-          <span className={labelClasses}>E-mail:</span>
-          <span className={valueClasses}>{user.email}</span>
-        </div>
-      </Card>
-
-      <div className={cn(styles.actions, spacingClasses.gap)}>
-        <Button
-          variant="secondary"
-          size="md"
-          onClick={() => signOut()}
-          aria-label={getText("logout")}
-          data-testid={testId ? `${testId}-logout-button` : "profile-logout-button"}
-        >
-          <Button.Icon icon={LogOut} position="left" size="md" />
-          <Button.Text>{getText("logout")}</Button.Text>
-        </Button>
-        <Button
-          variant="danger"
-          size="md"
-          onClick={handleDeleteAccount}
-          aria-label={getText("profile_delete_account_aria")}
-          data-testid={testId ? `${testId}-delete-account-button` : "profile-delete-account-button"}
-        >
-          <Button.Icon icon={Trash2} position="left" size="md" />
-          <Button.Text>{getText("profile_delete_account")}</Button.Text>
-        </Button>
-      </div>
+      <ProfileActions
+        onLogout={() => signOut()}
+        onDeleteAccount={handleDeleteAccount}
+        className={spacingClasses.gap}
+        data-testid={testId ? `${testId}-actions` : "profile-actions"}
+      />
     </div>
   );
 }
@@ -187,13 +143,7 @@ ProfileInfo.displayName = "ProfileInfo";
 
 export const styles = {
   container: "flex flex-col w-full max-w-4xl mx-auto gap-6",
-  infoCard: "gap-4",
-  avatarContainer: "flex justify-center",
-  infoRow: "flex flex-col gap-1",
   label: "text-text-secondary font-medium",
   value: "text-text-primary",
-  avatar: "rounded-full",
-  actions: "flex justify-end gap-3",
-  loading: "text-text-secondary text-center",
   error: "text-action-danger text-center",
 } as const;
