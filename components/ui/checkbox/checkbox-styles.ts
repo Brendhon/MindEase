@@ -5,7 +5,7 @@
  */
 
 export const styles = {
-  container: "flex items-start gap-3",
+  container: "flex items-center gap-2",
   checkbox: "flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50",
   checkboxChecked: "bg-feedback-success border-feedback-success",
   checkboxUnchecked: "bg-surface-primary border-border-strong",
