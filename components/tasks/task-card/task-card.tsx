@@ -48,7 +48,7 @@ export function TaskCard({
   "data-testid": testId,
 }: TaskCardProps) {
   const { startTimer, stopTimer, isActive: isFocusActive, isRunning: isFocusRunning, hasActiveTask: hasFocusActiveTask } = useFocusTimer();
-  const { breakTimerState, stopBreak, isActive: isBreakActive, isRunning: isBreakRunning, hasActiveTask: hasBreakActiveTask } = useBreakTimer();
+  const { stopBreak, isActive: isBreakActive, isRunning: isBreakRunning, hasActiveTask: hasBreakActiveTask } = useBreakTimer();
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
   const { success } = useFeedback();
@@ -73,9 +73,7 @@ export function TaskCard({
 
   const handleStop = () => {
     // Stop both focus timer and break timer if break is active
-    if (isBreakActive(task.id) && isBreakRunning(task.id)) {
-      stopBreak();
-    }
+    stopBreak();
     stopTimer();
     // Return task to To Do when focus is stopped
     onStatusChange?.(task.id, 0);
@@ -103,13 +101,13 @@ export function TaskCard({
     // Check if task has pending subtasks
     if (hasPendingSubtasks) {
       const pendingList = (
-        <div className="flex flex-col gap-2">
-          <p className="font-medium text-text-primary text-sm">
+        <div className={styles.pendingSubtasksContainer}>
+          <p className={styles.pendingSubtasksLabel}>
             {getText("tasks_complete_pending_list_label")}
           </p>
-          <ul className="flex flex-col gap-1 pl-4">
+          <ul className={styles.pendingSubtasksList}>
             {pendingSubtasks.map((subtask) => (
-              <li key={subtask.id} className="text-text-secondary text-sm">
+              <li key={subtask.id} className={styles.pendingSubtasksItem}>
                 • {subtask.title}
               </li>
             ))}
@@ -244,4 +242,8 @@ const styles = {
   cardDone: "m-1 opacity-60",
   subtaskFocusRequiredDialog: "text-text-secondary italic text-sm",
   completePendingSubtasksDialogHint: "text-text-secondary italic text-sm mt-2",
+  pendingSubtasksContainer: "flex flex-col gap-2",
+  pendingSubtasksLabel: "font-medium text-text-primary text-sm",
+  pendingSubtasksList: "flex flex-col gap-1 pl-4",
+  pendingSubtasksItem: "text-text-secondary text-sm",
 } as const;
