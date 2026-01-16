@@ -75,6 +75,9 @@ export interface FormInputProps<
   
   /** Helper text to display below the input */
   helperText?: string;
+
+  /** Number of rows for textarea (only applies when as="textarea") */
+  rows?: number;
 }
 
 export function FormInput<
@@ -92,6 +95,7 @@ export function FormInput<
   inputClassName,
   required,
   helperText,
+  rows,
 }: FormInputProps<TFieldValues, TName>) {
   const {
     control,
@@ -143,6 +147,7 @@ export function FormInput<
             as={as}
             placeholder={placeholder}
             disabled={disabled}
+            rows={rows}
             aria-invalid={!!errorMessage}
             aria-describedby={ariaDescribedBy}
             className={cn(

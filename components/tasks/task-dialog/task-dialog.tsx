@@ -1,7 +1,6 @@
 "use client";
 
-import { Input } from "@/components/form/input";
-import { InputError } from "@/components/form/input/input-error";
+import { FormInput } from "@/components/form/form-input";
 import { InputField } from "@/components/form/input/input-field";
 import { InputLabel } from "@/components/form/input/input-label";
 import { Button } from "@/components/ui/button";
@@ -9,12 +8,14 @@ import { Dialog } from "@/components/ui/dialog";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import type { Subtask, Task } from "@/models/Task";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { Subtask, Task } from "@/models/Task";
+import { taskDialogOutputSchema, taskDialogSchema, TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { cn } from "@/utils/ui";
 import { generateRandomUUID } from "@/utils/uuid";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Plus, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 
 /**
  * TaskDialog Component - MindEase
@@ -52,93 +53,83 @@ export function TaskDialog({
   const { getText } = useTextDetail();
   const { info } = useFeedback();
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [subtasks, setSubtasks] = useState<Subtask[]>([]);
-  const [titleError, setTitleError] = useState("");
-
   const isEditing = !!task;
+
+  // Initialize form with react-hook-form
+  const methods = useForm({
+    resolver: zodResolver(taskDialogSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      subtasks: [],
+    },
+    mode: "onChange",
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "subtasks",
+  });
+
+  const resetForm = useCallback((task?: Task) => {
+    methods.reset({
+      title: task?.title || "",
+      description: task?.description || "",
+      subtasks: task?.subtasks || [],
+    });
+  }, [methods]);
 
   // Initialize form when task changes
   useEffect(() => {
-    if (isOpen) {
-      if (task) {
-        setTitle(task.title || "");
-        setDescription(task.description || "");
-        setSubtasks(task.subtasks || []);
-      } else {
-        setTitle("");
-        setDescription("");
-        setSubtasks([]);
-      }
-      setTitleError("");
-    }
-  }, [isOpen, task]);
+    isOpen && resetForm(task);
+  }, [isOpen, task, resetForm]);
 
   const handleAddSubtask = useCallback(() => {
-    setSubtasks((prevSubtasks) => {
-      const newSubtask: Subtask = {
-        id: generateRandomUUID(),
-        title: "",
-        completed: false,
-        order: prevSubtasks.length,
-      };
-      return [...prevSubtasks, newSubtask];
+    append({
+      id: generateRandomUUID(),
+      title: "",
+      completed: false,
+      order: fields.length,
     });
     info("tasks_checklist_added");
-  }, [info]);
+  }, [append, fields.length, info]);
 
-  const handleRemoveSubtask = useCallback((id: string) => {
-    setSubtasks((prevSubtasks) => prevSubtasks.filter((st) => st.id !== id));
-    info("tasks_checklist_removed");
-  }, [info]);
+  const handleRemoveSubtask = useCallback(
+    (index: number) => {
+      remove(index);
+      info("tasks_checklist_removed");
+    },
+    [remove, info]
+  );
 
-  const handleSubtaskChange = useCallback((id: string, title: string) => {
-    setSubtasks((prevSubtasks) => prevSubtasks.map((st) => (st.id === id ? { ...st, title } : st)));
-  }, [info]);
+  const handleSave = useCallback(
+    (data: TaskDialogFormData) => {
+      // Transform data using output schema
+      const result = taskDialogOutputSchema.safeParse(data);
 
-  const handleSave = useCallback(() => {
-    // Validate
-    if (!title.trim()) {
-      setTitleError(getText("tasks_dialog_field_title"));
-      return;
-    }
+      if (!result.success) {
+        // This should not happen as zodResolver validates before submit
+        console.error("Validation error:", result.error);
+        return;
+      }
 
-    // Filter out empty subtasks
-    const validSubtasks = subtasks
-      .filter((st) => st.title.trim())
-      .map((st, index) => ({
-        ...st,
-        order: index,
-      }));
+      onSave({
+        title: result.data.title,
+        description: result.data.description,
+        subtasks: result.data.subtasks,
+      });
 
-    onSave({
-      title: title.trim(),
-      description: description.trim() || undefined,
-      subtasks: validSubtasks,
-    });
-
-    // Reset form
-    setTitle("");
-    setDescription("");
-    setSubtasks([]);
-    setTitleError("");
-    onClose();
-  }, [title, description, subtasks, onSave, onClose, getText]);
+      // Reset form
+      resetForm();
+      onClose();
+    },
+    [onSave, onClose, resetForm]
+  );
 
   const handleCancel = useCallback(() => {
-    setTitle("");
-    setDescription("");
-    setSubtasks([]);
-    setTitleError("");
+    resetForm();
     onClose();
-  }, [onClose]);
-
-  const dialogTitle = useMemo(() => {
-    return isEditing
-      ? getText("tasks_dialog_edit_title")
-      : getText("tasks_dialog_create_title");
-  }, [isEditing, getText]);
+  }, [onClose, resetForm]);
 
   const formClasses = useMemo(
     () => cn(styles.form, spacingClasses.gap),
@@ -154,124 +145,104 @@ export function TaskDialog({
     <Dialog
       isOpen={isOpen}
       onClose={handleCancel}
-      title={dialogTitle}
+      title={getText(isEditing ? "tasks_dialog_edit_title" : "tasks_dialog_create_title")}
       data-testid={testId || "task-dialog"}
     >
-      <form
-        className={formClasses}
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSave();
-        }}
-      >
-        {/* Title */}
-        <Input>
-          <InputLabel htmlFor="task-title">
-            {getText("tasks_dialog_field_title")}
-          </InputLabel>
-          <InputField
-            id="task-title"
+      <FormProvider {...methods}>
+        <form
+          className={formClasses}
+          onSubmit={methods.handleSubmit(handleSave)}
+        >
+          {/* Title */}
+          <FormInput
+            name="title"
+            label={getText("tasks_dialog_field_title")}
             type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              setTitleError("");
-            }}
             placeholder={getText("tasks_dialog_field_title_placeholder")}
             required
-            data-testid="task-dialog-title-input"
           />
-          {titleError && <InputError>{titleError}</InputError>}
-        </Input>
 
-        {/* Description */}
-        <Input>
-          <InputLabel htmlFor="task-description">
-            {getText("tasks_dialog_field_description")}
-          </InputLabel>
-          <InputField
-            id="task-description"
+          {/* Description */}
+          <FormInput
+            name="description"
+            label={getText("tasks_dialog_field_description")}
             as="textarea"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
             placeholder={getText("tasks_dialog_field_description_placeholder")}
             rows={3}
-            data-testid="task-dialog-description-input"
           />
-        </Input>
 
-        {/* Checklist */}
-        <div className={styles.checklistSection}>
-          <div className={styles.checklistHeader}>
-            <InputLabel>
-              {getText("tasks_dialog_field_checklist")}
-            </InputLabel>
+          {/* Checklist */}
+          <div className={styles.checklistSection}>
+            <div className={styles.checklistHeader}>
+              <InputLabel>
+                {getText("tasks_dialog_field_checklist")}
+              </InputLabel>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={handleAddSubtask}
+                data-testid="task-dialog-add-subtask"
+              >
+                <Button.Icon icon={Plus} position="left" />
+                <Button.Text>
+                  {getText("tasks_checklist_add")}
+                </Button.Text>
+              </Button>
+            </div>
+
+            {fields.length > 0 && (
+              <div className={checklistClasses}>
+                {fields.map((field, index) => (
+                  <div key={field.id} className={styles.checklistItem}>
+                    <InputField
+                      type="text"
+                      {...methods.register(`subtasks.${index}.title`)}
+                      placeholder={`${getText("tasks_checklist_placeholder")} ${index + 1}`}
+                      data-testid={`task-dialog-subtask-${field.id}`}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemoveSubtask(index)}
+                      aria-label={getText("tasks_checklist_remove_aria")}
+                      data-testid={`task-dialog-remove-subtask-${field.id}`}
+                    >
+                      <Button.Icon icon={X} />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Actions */}
+          <div className={styles.actions}>
             <Button
               type="button"
               variant="ghost"
-              size="sm"
-              onClick={handleAddSubtask}
-              data-testid="task-dialog-add-subtask"
+              onClick={handleCancel}
+              data-testid="task-dialog-cancel"
             >
-              <Button.Icon icon={Plus} position="left" />
               <Button.Text>
-                {getText("tasks_checklist_add")}
+                {getText("button_cancel")}
+              </Button.Text>
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              data-testid="task-dialog-save"
+            >
+              <Button.Text>
+                {isEditing
+                  ? getText("button_save")
+                  : getText("button_create")}
               </Button.Text>
             </Button>
           </div>
-
-          {subtasks.length > 0 && (
-            <div className={checklistClasses}>
-              {subtasks.map((subtask, index) => (
-                <div key={subtask.id} className={styles.checklistItem}>
-                  <InputField
-                    type="text"
-                    value={subtask.title}
-                    onChange={(e) => handleSubtaskChange(subtask.id, e.target.value)}
-                    placeholder={`${getText("tasks_checklist_placeholder")} ${index + 1}`}
-                    data-testid={`task-dialog-subtask-${subtask.id}`}
-                  />
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleRemoveSubtask(subtask.id)}
-                    aria-label={getText("tasks_checklist_remove_aria")}
-                    data-testid={`task-dialog-remove-subtask-${subtask.id}`}
-                  >
-                    <Button.Icon icon={X} />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Actions */}
-        <div className={styles.actions}>
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={handleCancel}
-            data-testid="task-dialog-cancel"
-          >
-            <Button.Text>
-              {getText("button_cancel")}
-            </Button.Text>
-          </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            data-testid="task-dialog-save"
-          >
-            <Button.Text>
-              {isEditing
-                ? getText("button_save")
-                : getText("button_create")}
-            </Button.Text>
-          </Button>
-        </div>
-      </form>
+        </form>
+      </FormProvider>
     </Dialog>
   );
 }

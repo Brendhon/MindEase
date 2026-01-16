@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
+      "@/schemas/*": ["./schemas/*"],
       "@/services/*": ["./services/*"],
       "@/utils/*": ["./utils/*"],
       "@/models/*": ["./models/*"],
