@@ -69,7 +69,6 @@ export function TaskCardActions({
     <div className={cn(styles.actions, spacingClasses.gap)}>
       <TaskCardFocusActions
         task={task}
-        isActive={isActive}
         isRunning={isRunning}
         hasActiveTask={hasActiveTask}
         isBreakRunning={isBreakRunning}

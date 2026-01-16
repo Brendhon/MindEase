@@ -48,7 +48,7 @@ function timerReducer(
 
       // If timer completed, preserve activeTaskId for dialog detection and set to idle
       return isTimerCompleted(remainingTime)
-        ? createCompletedTimerState(state.activeTaskId, action.defaultDuration, "timerState", "running")
+        ? createCompletedTimerState(state.activeTaskId, action.defaultDuration, "timerState", "idle")
         : { ...state, remainingTime };
     default:
       return state;

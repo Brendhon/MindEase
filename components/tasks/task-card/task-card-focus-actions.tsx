@@ -3,36 +3,96 @@
 import { Button } from "@/components/ui/button";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
-import { Check, Play, Square } from "lucide-react";
+import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { Check, LucideIcon, Play, Square } from "lucide-react";
 
 export interface TaskCardFocusActionsProps {
   /** Task data */
   task: Task;
-  
-  /** Whether the timer is active for this task */
-  isActive: boolean;
-  
+
   /** Whether the timer is running */
   isRunning: boolean;
-  
+
   /** Whether there is already an active task (to disable start button) */
   hasActiveTask: boolean;
-  
+
   /** Whether the break timer is running for this task */
   isBreakRunning?: boolean;
-  
+
   /** Callback to start focus session */
   onStartFocus: () => void;
-  
+
   /** Callback to stop timer (ends focus and returns task to To Do) */
   onStop: () => void;
-  
+
   /** Callback to complete task (marks as done and stops timer) */
   onComplete: () => void;
-  
+
   /** Test ID prefix for testing */
   "data-testid"?: string;
 }
+
+interface StopButtonProps {
+  onStop: () => void;
+  testId: string;
+}
+
+interface PrimaryButtonProps {
+  onClick: () => void;
+  disabled?: boolean;
+  ariaLabel: AccessibilityTextKey;
+  ariaDisabled?: boolean;
+  testId: string;
+  icon: LucideIcon;
+  textKey: AccessibilityTextKey;
+}
+
+const StopButton = ({ onStop, testId }: StopButtonProps) => {
+  const { getText } = useTextDetail();
+  return (
+    <Button
+      variant="secondary"
+      size="sm"
+      onClick={onStop}
+      aria-label={getText("tasks_action_stop_aria")}
+      data-testid={testId}
+    >
+      <Button.Icon icon={Square} position="left" />
+      <Button.Text>
+        {getText("tasks_action_stop")}
+      </Button.Text>
+    </Button>
+  );
+};
+
+const PrimaryButton = ({
+  onClick,
+  disabled = false,
+  ariaLabel,
+  ariaDisabled = false,
+  testId,
+  icon,
+  textKey,
+}: PrimaryButtonProps) => {
+  const { getText } = useTextDetail();
+  return (
+    <Button
+      variant="primary"
+      size="sm"
+      onClick={onClick}
+      aria-label={getText(ariaLabel)}
+      aria-disabled={ariaDisabled}
+      data-testid={testId}
+      disabled={disabled}
+    >
+      <Button.Icon icon={icon} position="left" />
+      <Button.Text>
+        {getText(textKey)}
+      </Button.Text>
+    </Button>
+  );
+};
+
 
 /**
  * TaskCardFocusActions Component - MindEase
@@ -48,7 +108,6 @@ export interface TaskCardFocusActionsProps {
  */
 export function TaskCardFocusActions({
   task,
-  isActive,
   isRunning,
   hasActiveTask,
   isBreakRunning = false,
@@ -57,46 +116,10 @@ export function TaskCardFocusActions({
   onComplete,
   "data-testid": testId,
 }: TaskCardFocusActionsProps) {
-  const { getText } = useTextDetail();
-
   // During break, show only stop button (end focus)
   if (isBreakRunning) {
     return (
-      <Button
-        variant="secondary"
-        size="sm"
-        onClick={onStop}
-        aria-label={getText("tasks_action_stop_aria")}
-        data-testid={testId || `task-card-stop-break-${task.id}`}
-      >
-        <Button.Icon icon={Square} position="left" />
-        <Button.Text>
-          {getText("tasks_action_stop")}
-        </Button.Text>
-      </Button>
-    );
-  }
-
-  // Show start button when not active
-  if (!isActive) {
-    // Disable start button if there's already an active task
-    const isDisabled = hasActiveTask;
-    
-    return (
-      <Button
-        variant="primary"
-        size="sm"
-        onClick={onStartFocus}
-        disabled={isDisabled}
-        aria-label={getText("tasks_action_start_focus_aria")}
-        aria-disabled={isDisabled}
-        data-testid={testId || `task-card-start-focus-${task.id}`}
-      >
-        <Button.Icon icon={Play} position="left" />
-        <Button.Text>
-          {getText("tasks_action_start_focus")}
-        </Button.Text>
-      </Button>
+      <StopButton onStop={onStop} testId={testId || `task-card-stop-break-${task.id}`} />
     );
   }
 
@@ -104,35 +127,32 @@ export function TaskCardFocusActions({
   if (isRunning) {
     return (
       <>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={onStop}
-          aria-label={getText("tasks_action_stop_aria")}
-          data-testid={testId || `task-card-stop-${task.id}`}
-        >
-          <Button.Icon icon={Square} position="left" />
-          <Button.Text>
-            {getText("tasks_action_stop")}
-          </Button.Text>
-        </Button>
-        <Button
-          variant="primary"
-          size="sm"
+        <StopButton onStop={onStop} testId={testId || `task-card-stop-${task.id}`} />
+        <PrimaryButton
           onClick={onComplete}
-          aria-label={getText("tasks_action_finish_aria")}
-          data-testid={testId || `task-card-complete-${task.id}`}
-        >
-          <Button.Icon icon={Check} position="left" />
-          <Button.Text>
-            {getText("tasks_action_finish")}
-          </Button.Text>
-        </Button>
+          ariaLabel="tasks_action_finish_aria"
+          testId={testId || `task-card-complete-${task.id}`}
+          icon={Check}
+          textKey="tasks_action_finish"
+        />
       </>
     );
   }
 
-  return null;
+  // Disable start button if there's already an active task
+  const isDisabled = hasActiveTask;
+
+  // Show start button when not active
+  return (
+    <PrimaryButton
+      onClick={onStartFocus}
+      disabled={isDisabled}
+      ariaLabel="tasks_action_start_focus_aria"
+      testId={testId || `task-card-start-focus-${task.id}`}
+      icon={Play}
+      textKey="tasks_action_start_focus"
+    />
+  );
 }
 
 TaskCardFocusActions.displayName = "TaskCardFocusActions";
