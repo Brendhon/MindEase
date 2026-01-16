@@ -3,9 +3,11 @@
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialog } from "@/hooks/useDialog";
+import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTasks } from "@/hooks/useTasks";
 import { Subtask, Task } from "@/models/Task";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TaskDialog } from "../task-dialog";
 import { TaskList } from "../task-list";
@@ -38,6 +40,7 @@ export function TasksContent({
 }: TasksContentProps) {
   const { timerState, stopTimer } = useFocusTimer();
   const { openDialog } = useDialog();
+  const { success } = useFeedback();
   const {
     tasks,
     loading,
@@ -112,14 +115,22 @@ export function TasksContent({
     description?: string;
     subtasks?: Subtask[];
   }) => {
+    const hasSubtasks = taskData.subtasks && taskData.subtasks.length > 0;
+    
     if (editingTask) {
       await updateTask(editingTask.id, taskData);
+      // Feedback for subtask changes is already shown in the dialog
+      // when user adds/removes/updates subtasks
     } else {
       await createTask(taskData);
+      // Show feedback if task was created with subtasks
+      if (hasSubtasks) {
+        success("tasks_checklist_added" as AccessibilityTextKey);
+      }
     }
     setIsDialogOpen(false);
     setEditingTask(undefined);
-  }, [editingTask, updateTask, createTask]);
+  }, [editingTask, updateTask, createTask, success]);
 
   // New task button
   const handleNewTask = useCallback(() => {

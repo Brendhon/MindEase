@@ -4,9 +4,11 @@ import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useDialog } from "@/hooks/useDialog";
+import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { useCallback, useMemo } from "react";
 import { TaskChecklist } from "../task-checklist";
@@ -50,6 +52,7 @@ export function TaskCard({
   const { breakTimerState, stopBreak } = useBreakTimer();
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
+  const { success } = useFeedback();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
@@ -173,7 +176,18 @@ export function TaskCard({
       return;
     }
 
+    // Find the subtask to determine its current state
+    const subtask = task.subtasks?.find((st) => st.id === subtaskId);
+    const wasCompleted = subtask?.completed ?? false;
+    
     onToggleSubtask?.(task.id, subtaskId);
+    
+    // Show feedback based on new state (opposite of current state)
+    if (wasCompleted) {
+      success("tasks_checklist_step_pending" as AccessibilityTextKey);
+    } else {
+      success("tasks_checklist_step_completed" as AccessibilityTextKey);
+    }
   };
 
   // Card classes based on status and focus state

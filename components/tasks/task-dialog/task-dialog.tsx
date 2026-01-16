@@ -7,6 +7,7 @@ import { InputLabel } from "@/components/form/input/input-label";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useFeedback } from "@/hooks/useFeedback";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Subtask, Task } from "@/models/Task";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
@@ -22,20 +23,20 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 export interface TaskDialogProps {
   /** Whether dialog is open */
   isOpen: boolean;
-  
+
   /** Callback when dialog is closed */
   onClose: () => void;
-  
+
   /** Task to edit (undefined for new task) */
   task?: Task;
-  
+
   /** Callback when task is saved */
   onSave: (taskData: {
     title: string;
     description?: string;
     subtasks?: Subtask[];
   }) => void;
-  
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -49,7 +50,8 @@ export function TaskDialog({
 }: TaskDialogProps) {
   const { spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
-  
+  const { info } = useFeedback();
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [subtasks, setSubtasks] = useState<Subtask[]>([]);
@@ -74,40 +76,46 @@ export function TaskDialog({
   }, [isOpen, task]);
 
   const handleAddSubtask = useCallback(() => {
-    const newSubtask: Subtask = {
-      id: generateRandomUUID(),
-      title: "",
-      completed: false,
-      order: subtasks.length,
-    };
-    setSubtasks([...subtasks, newSubtask]);
-  }, [subtasks]);
+    setSubtasks((prevSubtasks) => {
+      const newSubtask: Subtask = {
+        id: generateRandomUUID(),
+        title: "",
+        completed: false,
+        order: prevSubtasks.length,
+      };
+      return [...prevSubtasks, newSubtask];
+    });
+    info("tasks_checklist_added");
+  }, [info]);
 
   const handleRemoveSubtask = useCallback((id: string) => {
-    setSubtasks(subtasks.filter((st) => st.id !== id).map((st, index) => ({ ...st, order: index })));
-  }, [subtasks]);
+    setSubtasks((prevSubtasks) => prevSubtasks.filter((st) => st.id !== id));
+    info("tasks_checklist_removed");
+  }, [info]);
 
   const handleSubtaskChange = useCallback((id: string, title: string) => {
-    setSubtasks(subtasks.map((st) => (st.id === id ? { ...st, title } : st)));
-  }, [subtasks]);
+    setSubtasks((prevSubtasks) => prevSubtasks.map((st) => (st.id === id ? { ...st, title } : st)));
+  }, [info]);
 
   const handleSave = useCallback(() => {
     // Validate
     if (!title.trim()) {
-      setTitleError(getText("tasks_dialog_field_title" as AccessibilityTextKey) + " é obrigatório");
+      setTitleError(getText("tasks_dialog_field_title"));
       return;
     }
 
     // Filter out empty subtasks
-    const validSubtasks = subtasks.filter((st) => st.title.trim()).map((st, index) => ({
-      ...st,
-      order: index,
-    }));
+    const validSubtasks = subtasks
+      .filter((st) => st.title.trim())
+      .map((st, index) => ({
+        ...st,
+        order: index,
+      }));
 
     onSave({
       title: title.trim(),
       description: description.trim() || undefined,
-      subtasks: validSubtasks.length > 0 ? validSubtasks : undefined,
+      subtasks: validSubtasks,
     });
 
     // Reset form
@@ -128,8 +136,8 @@ export function TaskDialog({
 
   const dialogTitle = useMemo(() => {
     return isEditing
-      ? getText("tasks_dialog_edit_title" as AccessibilityTextKey)
-      : getText("tasks_dialog_create_title" as AccessibilityTextKey);
+      ? getText("tasks_dialog_edit_title")
+      : getText("tasks_dialog_create_title");
   }, [isEditing, getText]);
 
   const formClasses = useMemo(
@@ -159,7 +167,7 @@ export function TaskDialog({
         {/* Title */}
         <Input>
           <InputLabel htmlFor="task-title">
-            {getText("tasks_dialog_field_title" as AccessibilityTextKey)}
+            {getText("tasks_dialog_field_title")}
           </InputLabel>
           <InputField
             id="task-title"
@@ -169,7 +177,7 @@ export function TaskDialog({
               setTitle(e.target.value);
               setTitleError("");
             }}
-            placeholder={getText("tasks_dialog_field_title_placeholder" as AccessibilityTextKey)}
+            placeholder={getText("tasks_dialog_field_title_placeholder")}
             required
             data-testid="task-dialog-title-input"
           />
@@ -179,14 +187,14 @@ export function TaskDialog({
         {/* Description */}
         <Input>
           <InputLabel htmlFor="task-description">
-            {getText("tasks_dialog_field_description" as AccessibilityTextKey)}
+            {getText("tasks_dialog_field_description")}
           </InputLabel>
           <InputField
             id="task-description"
             as="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder={getText("tasks_dialog_field_description_placeholder" as AccessibilityTextKey)}
+            placeholder={getText("tasks_dialog_field_description_placeholder")}
             rows={3}
             data-testid="task-dialog-description-input"
           />
@@ -196,7 +204,7 @@ export function TaskDialog({
         <div className={styles.checklistSection}>
           <div className={styles.checklistHeader}>
             <InputLabel>
-              {getText("tasks_dialog_field_checklist" as AccessibilityTextKey)}
+              {getText("tasks_dialog_field_checklist")}
             </InputLabel>
             <Button
               type="button"
@@ -207,7 +215,7 @@ export function TaskDialog({
             >
               <Button.Icon icon={Plus} position="left" />
               <Button.Text>
-                {getText("tasks_checklist_add" as AccessibilityTextKey)}
+                {getText("tasks_checklist_add")}
               </Button.Text>
             </Button>
           </div>
@@ -220,7 +228,7 @@ export function TaskDialog({
                     type="text"
                     value={subtask.title}
                     onChange={(e) => handleSubtaskChange(subtask.id, e.target.value)}
-                    placeholder={`${getText("tasks_checklist_placeholder" as AccessibilityTextKey)} ${index + 1}`}
+                    placeholder={`${getText("tasks_checklist_placeholder")} ${index + 1}`}
                     data-testid={`task-dialog-subtask-${subtask.id}`}
                   />
                   <Button
@@ -228,7 +236,7 @@ export function TaskDialog({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveSubtask(subtask.id)}
-                    aria-label={getText("tasks_checklist_remove_aria" as AccessibilityTextKey)}
+                    aria-label={getText("tasks_checklist_remove_aria")}
                     data-testid={`task-dialog-remove-subtask-${subtask.id}`}
                   >
                     <Button.Icon icon={X} />
@@ -248,7 +256,7 @@ export function TaskDialog({
             data-testid="task-dialog-cancel"
           >
             <Button.Text>
-              {getText("button_cancel" as AccessibilityTextKey)}
+              {getText("button_cancel")}
             </Button.Text>
           </Button>
           <Button
@@ -258,8 +266,8 @@ export function TaskDialog({
           >
             <Button.Text>
               {isEditing
-                ? getText("button_save" as AccessibilityTextKey)
-                : getText("button_create" as AccessibilityTextKey)}
+                ? getText("button_save")
+                : getText("button_create")}
             </Button.Text>
           </Button>
         </div>
