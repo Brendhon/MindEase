@@ -1,11 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { fn } from 'storybook/test';
-import { useState } from 'react';
+import { AuthProvider } from '@/providers/auth-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { AlertCircle, CheckCircle2, Info, XCircle } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
-import { Dialog } from './index';
+import { useState } from 'react';
+import { fn } from 'storybook/test';
 import { Button } from '../button';
-import { AlertCircle, Info, CheckCircle2, XCircle } from 'lucide-react';
+import { Dialog } from './index';
 
 const meta = {
   title: 'Components/UI/Dialog',
@@ -16,9 +17,11 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <Story />
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <Story />
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],

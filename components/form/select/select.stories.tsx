@@ -3,6 +3,7 @@ import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provid
 import { SessionProvider } from 'next-auth/react';
 import { Select } from './index';
 import { useState } from 'react';
+import { AuthProvider } from '@/providers/auth-provider';
 
 const meta = {
   title: 'Components/Form/Select',
@@ -13,9 +14,11 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <Story />
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <Story />
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useSidebar } from '@/hooks/useSidebar';
+import { AuthProvider } from '@/providers/auth-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
 import { SidebarProvider } from '@/providers/sidebar-provider';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
@@ -17,19 +18,21 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <SidebarProvider>
-            <div className="flex min-h-screen">
-              <Story />
-              <main className="flex-1 p-8">
-                <h1 className="text-2xl font-semibold">Main Content</h1>
-                <p className="mt-4 text-text-secondary">
-                  This is the main content area. The sidebar is on the left.
-                </p>
-              </main>
-            </div>
-          </SidebarProvider>
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <SidebarProvider>
+              <div className="flex min-h-screen">
+                <Story />
+                <main className="flex-1 p-8">
+                  <h1 className="text-2xl font-semibold">Main Content</h1>
+                  <p className="mt-4 text-text-secondary">
+                    This is the main content area. The sidebar is on the left.
+                  </p>
+                </main>
+              </div>
+            </SidebarProvider>
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],
@@ -327,7 +330,7 @@ export const MobileDrawer: Story = {
 // Helper component for mobile menu button in story
 function MobileMenuButton() {
   const { toggle } = useSidebar();
-  
+
   return (
     <Button
       variant="ghost"

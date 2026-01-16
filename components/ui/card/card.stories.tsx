@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { AuthProvider } from '@/providers/auth-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SessionProvider } from 'next-auth/react';
 import { Card } from './index';
 
@@ -13,9 +14,11 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <Story />
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <Story />
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],

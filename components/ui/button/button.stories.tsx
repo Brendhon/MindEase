@@ -1,9 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { fn } from 'storybook/test';
+import { AuthProvider } from '@/providers/auth-provider';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { Download, LogIn, Save, Settings, Trash2, Upload } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
+import { fn } from 'storybook/test';
 import { Button } from './index';
-import { LogIn, Save, Trash2, Download, Upload, Settings } from 'lucide-react';
 
 const meta = {
   title: 'Components/UI/Button',
@@ -15,9 +16,11 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <Story />
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <Story />
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],

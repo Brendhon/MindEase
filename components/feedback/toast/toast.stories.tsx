@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ToastContainer } from '.';
+import { AuthProvider } from '@/providers/auth-provider';
 
 const meta = {
   title: 'Components/Feedback/Toast',
@@ -20,13 +21,15 @@ const meta = {
   decorators: [
     (Story) => (
       <SessionProvider>
-        <CognitiveSettingsProvider>
-          <FeedbackProvider>
-            <div className="min-h-screen p-8">
-              <Story />
-            </div>
-          </FeedbackProvider>
-        </CognitiveSettingsProvider>
+        <AuthProvider>
+          <CognitiveSettingsProvider>
+            <FeedbackProvider>
+              <div className="min-h-screen p-8">
+                <Story />
+              </div>
+            </FeedbackProvider>
+          </CognitiveSettingsProvider>
+        </AuthProvider>
       </SessionProvider>
     ),
   ],
