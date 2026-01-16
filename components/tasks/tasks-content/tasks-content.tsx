@@ -59,38 +59,34 @@ export function TasksContent({
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
-  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
   // Delete task (after confirmation)
-  const handleDeleteTask = useCallback(async () => {
-    if (!taskToDelete) return;
+  const handleDeleteTask = useCallback(async (taskId: string) => {
+    if (!taskId) return;
 
     try {
-      await deleteTask(taskToDelete);
+      await deleteTask(taskId);
       
       // Stop timer if deleted task was active
-      if (timerState.activeTaskId === taskToDelete) {
+      if (timerState.activeTaskId === taskId) {
         stopTimer();
       }
-    } finally {
-      setTaskToDelete(null);
+    } catch (error) {
+      console.error("Error deleting task:", error);
     }
-  }, [taskToDelete, timerState.activeTaskId, stopTimer, deleteTask]);
+  }, [timerState.activeTaskId, stopTimer, deleteTask]);
 
   // Request delete (show confirmation)
   const handleRequestDelete = useCallback((taskId: string) => {
-    setTaskToDelete(taskId);
     openDialog({
       titleKey: "tasks_delete_confirm_title",
       descriptionKey: "tasks_delete_confirm_message",
       cancelLabelKey: "button_cancel",
       confirmLabelKey: "tasks_delete_confirm_button",
       confirmVariant: "danger",
-      onCancel: () => {
-        setTaskToDelete(null);
-      },
+      onCancel: () => {},
       onConfirm: async () => {
-        await handleDeleteTask();
+        await handleDeleteTask(taskId);
       },
       "data-testid": "task-delete-dialog",
     });
