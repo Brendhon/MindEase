@@ -4,9 +4,7 @@ import { useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { SettingsSection } from "@/components/dashboard/settings-section";
 import { Switch } from "@/components/ui/switch";
-import { Input } from "@/components/form/input";
-import { InputLabel } from "@/components/form/input/input-label";
-import { InputField } from "@/components/form/input/input-field";
+import { Select } from "@/components/form/select";
 import { cn } from "@/utils/ui";
 
 /**
@@ -20,20 +18,6 @@ export interface InteractionSettingsProps {
 
 export function InteractionSettings({ "data-testid": testId }: InteractionSettingsProps) {
   const { settings, updateSetting, textDetail, spacingClasses } = useCognitiveSettings();
-
-  const handleFocusDurationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0 && value <= 120) {
-      updateSetting("focusDuration", value);
-    }
-  };
-
-  const handleBreakDurationChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value > 0 && value <= 60) {
-      updateSetting("shortBreakDuration", value);
-    }
-  };
 
   const timerSettingsClasses = useMemo(
     () => cn(styles.timerSettings, spacingClasses.gap),
@@ -84,44 +68,44 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
       {/* Timer Settings (Pomodoro Adapted) */}
       <div className={timerSettingsClasses}>
         {/* Focus Duration */}
-        <Input>
-          <InputLabel htmlFor="focus-duration">
+        <Select>
+          <Select.Label htmlFor="focus-duration">
             {textDetail.getText("profile_focus_duration_label")}
-          </InputLabel>
-          <InputField
+          </Select.Label>
+          <Select.Field
             id="focus-duration"
-            type="number"
-            min="5"
-            max="120"
-            step="5"
             value={settings.focusDuration || 25}
-            onChange={handleFocusDurationChange}
+            onChange={(e) => updateSetting("focusDuration", +e.target.value)}
             data-testid="profile-focus-duration"
-          />
+          >
+            <option value="15">{textDetail.getText("profile_focus_duration_option_15")}</option>
+            <option value="25">{textDetail.getText("profile_focus_duration_option_25")}</option>
+            <option value="30">{textDetail.getText("profile_focus_duration_option_30")}</option>
+            <option value="40">{textDetail.getText("profile_focus_duration_option_40")}</option>
+          </Select.Field>
           <p className={styles.description}>
             {textDetail.getText("profile_focus_duration_description")}
           </p>
-        </Input>
+        </Select>
 
         {/* Break Duration */}
-        <Input>
-          <InputLabel htmlFor="break-duration">
+        <Select>
+          <Select.Label htmlFor="break-duration">
             {textDetail.getText("profile_break_duration_label")}
-          </InputLabel>
-          <InputField
+          </Select.Label>
+          <Select.Field
             id="break-duration"
-            type="number"
-            min="1"
-            max="60"
-            step="1"
             value={settings.shortBreakDuration || 5}
-            onChange={handleBreakDurationChange}
+            onChange={(e) => updateSetting("shortBreakDuration", +e.target.value)}
             data-testid="profile-break-duration"
-          />
+          >
+            <option value="5">{textDetail.getText("profile_break_duration_option_5")}</option>
+            <option value="10">{textDetail.getText("profile_break_duration_option_10")}</option>
+          </Select.Field>
           <p className={styles.description}>
             {textDetail.getText("profile_break_duration_description")}
           </p>
-        </Input>
+        </Select>
       </div>
     </SettingsSection>
   );
