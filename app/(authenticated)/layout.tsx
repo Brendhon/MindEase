@@ -5,7 +5,7 @@ import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-sess
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { BreakTimerProvider } from "@/contexts/break-timer-context";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
-import { SidebarProvider } from "@/contexts/sidebar-context";
+import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
 
 /**

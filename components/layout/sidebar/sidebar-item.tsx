@@ -6,7 +6,7 @@ import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { styles, getContrastClasses } from "./sidebar-styles";
-import { useSidebar } from "@/contexts/sidebar-context";
+import { useSidebar } from "@/hooks/useSidebar";
 
 /**
  * Sidebar.Item - Navigation item subcomponent

@@ -1,78 +1,42 @@
-"use client";
-
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext } from "react";
 
 /**
  * Sidebar Context - MindEase
+ * Global sidebar state management
  * 
- * Manages sidebar open/close state for mobile menu functionality.
+ * This context provides ONLY basic state:
+ * - Sidebar open/close state
+ * - Internal setter for useSidebar hook
  * 
- * Features:
- * - Toggle sidebar visibility
- * - Close sidebar on navigation
- * - Responsive behavior (desktop always visible, mobile toggleable)
+ * All business logic (toggle, open, close operations)
+ * is handled by the useSidebar hook. Components should use useSidebar(), not useSidebarContext().
  */
-interface SidebarContextType {
+
+export interface SidebarContextValue {
+  /** Sidebar open state */
   isOpen: boolean;
-  toggle: () => void;
-  open: () => void;
-  close: () => void;
+
+  // Internal setter - only used by useSidebar hook
+  _setIsOpen: (isOpen: boolean | ((prev: boolean) => boolean)) => void;
 }
 
-const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
-
-export interface SidebarProviderProps {
-  children: ReactNode;
-}
+export const SidebarContext = createContext<SidebarContextValue | undefined>(undefined);
 
 /**
- * SidebarProvider - Provides sidebar state management
+ * Hook to access sidebar context
  * 
- * @example
- * ```tsx
- * <SidebarProvider>
- *   <Sidebar />
- *   <Header />
- * </SidebarProvider>
- * ```
+ * ⚠️ **Note**: This hook is for internal use by useSidebar hook only.
+ * Components should use useSidebar() instead, which provides all business logic.
+ * 
+ * @throws Error if used outside SidebarProvider
+ * 
+ * @internal
  */
-export function SidebarProvider({ children }: SidebarProviderProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
-
-  const open = useCallback(() => {
-    setIsOpen(true);
-  }, []);
-
-  const close = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  return (
-    <SidebarContext.Provider value={{ isOpen, toggle, open, close }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-}
-
-/**
- * useSidebar - Hook to access sidebar state and controls
- * 
- * @throws {Error} If used outside SidebarProvider
- * 
- * @example
- * ```tsx
- * const { isOpen, toggle, close } = useSidebar();
- * ```
- */
-export function useSidebar() {
+export function useSidebarContext(): SidebarContextValue {
   const context = useContext(SidebarContext);
   
   if (context === undefined) {
-    throw new Error("useSidebar must be used within a SidebarProvider");
+    throw new Error("useSidebarContext must be used within SidebarProvider");
   }
   
   return context;

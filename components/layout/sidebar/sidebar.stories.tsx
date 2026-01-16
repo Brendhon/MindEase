@@ -1,10 +1,11 @@
+import { Button } from '@/components/ui/button';
+import { useSidebar } from '@/hooks/useSidebar';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
-import { SidebarProvider, useSidebar } from '@/contexts/sidebar-context';
+import { SidebarProvider } from '@/providers/sidebar-provider';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Calendar, CheckSquare, Home, LayoutDashboard, Menu, Settings, User } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
 import { Sidebar } from './index';
-import { Button } from '@/components/ui/button';
 
 const meta = {
   title: 'Components/Layout/Sidebar',

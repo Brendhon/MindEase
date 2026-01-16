@@ -11,7 +11,7 @@ import { SidebarIcon } from "./sidebar-icon";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarLabel } from "./sidebar-label";
 import { styles } from "./sidebar-styles";
-import { useSidebar } from "@/contexts/sidebar-context";
+import { useSidebar } from "@/hooks/useSidebar";
 
 /**
  * Sidebar Component - MindEase
