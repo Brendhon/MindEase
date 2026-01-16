@@ -145,9 +145,17 @@ export function useAuth() {
     _setError(null);
 
     try {
+      // Sign out from NextAuth
       await authService.signOut();
+      
       // Session will be updated automatically via useEffect
       _setUser(null);
+
+      // Clear local storage
+      localStorage.clear();
+
+      // Clear session storage
+      sessionStorage.clear();
     } catch (err) {
       console.error("Error signing out:", err);
       _setError(err instanceof Error ? err : new Error("Failed to sign out"));

@@ -23,8 +23,7 @@ export interface BreakTimerState {
 export type BreakTimerAction =
   | { type: "START"; duration: number; taskId?: string }
   | { type: "STOP"; defaultDuration: number }
-  | { type: "TICK"; defaultDuration: number }
-  | { type: "RESTORE"; state: BreakTimerState };
+  | { type: "TICK"; defaultDuration: number };
 
 /**
  * Break Timer Context Value
@@ -37,6 +36,14 @@ export interface BreakTimerContextValue {
   startBreak: (taskId?: string) => void;
   /** Stop break timer and reset to idle */
   stopBreak: () => void;
+  /** Check if a task is active */
+  isActive: (taskId: string) => boolean;
+  /** Check if a task is running */
+  isRunning: (taskId: string) => boolean;
+  /** Get remaining time for a task */
+  remainingTime: number;
+  /** Check if a task has an active task */
+  hasActiveTask: boolean;
 }
 
 export const BreakTimerContext = createContext<BreakTimerContextValue | undefined>(undefined);

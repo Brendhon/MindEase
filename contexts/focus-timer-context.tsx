@@ -23,8 +23,7 @@ export interface FocusTimerState {
 export type TimerAction =
   | { type: "START"; taskId: string; duration: number }
   | { type: "STOP"; defaultDuration: number }
-  | { type: "TICK"; defaultDuration: number }
-  | { type: "RESTORE"; state: FocusTimerState };
+  | { type: "TICK"; defaultDuration: number };
 
 /**
  * Focus Timer Context Value
@@ -37,6 +36,14 @@ export interface FocusTimerContextValue {
   startTimer: (taskId: string) => void;
   /** Stop timer and reset to idle */
   stopTimer: () => void;
+  /** Check if a task is active */
+  isActive: (taskId: string) => boolean;
+  /** Check if a task is running */
+  isRunning: (taskId: string) => boolean;
+  /** Get remaining time for a task */
+  remainingTime: number;
+  /** Check if a task has an active task */
+  hasActiveTask: boolean;
 }
 
 export const FocusTimerContext = createContext<FocusTimerContextValue | undefined>(undefined);

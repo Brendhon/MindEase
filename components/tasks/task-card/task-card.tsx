@@ -47,17 +47,13 @@ export function TaskCard({
   onToggleSubtask,
   "data-testid": testId,
 }: TaskCardProps) {
-  const { timerState, startTimer, stopTimer } = useFocusTimer();
-  const { breakTimerState, stopBreak } = useBreakTimer();
+  const { startTimer, stopTimer, isActive: isFocusActive, isRunning: isFocusRunning, hasActiveTask: hasFocusActiveTask } = useFocusTimer();
+  const { breakTimerState, stopBreak, isActive: isBreakActive, isRunning: isBreakRunning, hasActiveTask: hasBreakActiveTask } = useBreakTimer();
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
   const { success } = useFeedback();
 
-  const isActive = timerState.activeTaskId === task.id;
-  const isRunning = isActive && timerState.timerState === "running";
-  const isBreakActive = breakTimerState.activeTaskId === task.id;
-  const isBreakRunning = isBreakActive && breakTimerState.breakTimerState === "running";
-  const hasActiveTask = !!timerState.activeTaskId || !!breakTimerState.activeTaskId;
+  const hasActiveTask = hasFocusActiveTask || hasBreakActiveTask;
 
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
@@ -77,7 +73,7 @@ export function TaskCard({
 
   const handleStop = () => {
     // Stop both focus timer and break timer if break is active
-    if (isBreakActive && isBreakRunning) {
+    if (isBreakActive(task.id) && isBreakRunning(task.id)) {
       stopBreak();
     }
     stopTimer();
@@ -164,13 +160,13 @@ export function TaskCard({
   }, [openDialog]);
 
   const handleToggleSubtask = (subtaskId: string) => {
-    if (isBreakActive && isBreakRunning) {
+    if (isBreakActive(task.id) && isBreakRunning(task.id)) {
       subtaskBreakRequiredDialog();
       return;
     }
 
     // Only allow toggling subtasks when task is in focus
-    if (!isActive || !isRunning) {
+    if (!isFocusActive(task.id) || !isFocusRunning(task.id)) {
       subtaskFocusRequiredDialog();
       return;
     }
@@ -178,9 +174,9 @@ export function TaskCard({
     // Find the subtask to determine its current state
     const subtask = task.subtasks?.find((st) => st.id === subtaskId);
     const wasCompleted = subtask?.completed ?? false;
-    
+
     onToggleSubtask?.(task.id, subtaskId);
-    
+
     // Show feedback based on new state (opposite of current state)
     if (wasCompleted) {
       success("tasks_checklist_step_pending");
@@ -194,46 +190,40 @@ export function TaskCard({
     switch (true) {
       case task.status === 2:
         return styles.cardDone;
-      case isActive:
+      case isFocusActive(task.id):
         return styles.cardActive;
       default:
         return styles.cardDefault;
     }
-  }, [task.status, isActive]);
+  }, [task, isFocusActive]);
 
   // Determine which actions to show
   const showActions = task.status !== 2; // Don't show actions for completed tasks
 
   return (
-    <Card className={cardClasses} focused={isActive} data-testid={testId || `task-card-${task.id}`}>
+    <Card className={cardClasses} focused={isFocusActive(task.id) || isBreakActive(task.id)} data-testid={testId || `task-card-${task.id}`}>
       <TaskCardHeader task={task} data-testid={testId} />
 
       <CardContent>
-        <TaskCardTimer
-          task={task}
-          isActive={isActive || isBreakActive}
-          isRunning={isRunning}
-          isBreakRunning={isBreakRunning}
-          data-testid={testId}
-        />
+        <TaskCardTimer task={task} data-testid={testId} />
 
         {/* Checklist */}
         {task.subtasks && task.subtasks.length > 0 && (
           <TaskChecklist
             subtasks={task.subtasks}
             onToggleSubtask={showActions ? handleToggleSubtask : undefined}
-            interactive={isActive && isRunning}
-            isInFocus={isActive && isRunning}
+            interactive={isFocusActive(task.id) && isFocusRunning(task.id)}
+            isInFocus={isFocusActive(task.id) && isFocusRunning(task.id)}
             data-testid={`task-card-checklist-${task.id}`}
           />
         )}
 
         <TaskCardActions
           task={task}
-          isActive={isActive}
-          isRunning={isRunning}
+          isActive={isFocusActive(task.id)}
+          isRunning={isFocusRunning(task.id)}
           hasActiveTask={hasActiveTask}
-          isBreakRunning={isBreakActive && isBreakRunning}
+          isBreakRunning={isBreakActive(task.id) && isBreakRunning(task.id)}
           onStartFocus={handleStartFocus}
           onStop={handleStop}
           onComplete={handleComplete}

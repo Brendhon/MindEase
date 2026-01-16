@@ -7,13 +7,10 @@ import {
   createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
-  createTimerStorage,
   isTimerCompleted,
-  restoreTimerState,
   useCountdownInterval,
-  useTimerPersistence
 } from "@/utils/timer";
-import { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef } from "react";
+import { ReactNode, useCallback, useMemo, useReducer } from "react";
 
 
 /**
@@ -22,11 +19,6 @@ import { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef } from "
 export interface BreakTimerProviderProps {
   children: ReactNode;
 }
-
-const STORAGE_KEY = "mindEase_breakTimer";
-
-// Create storage instance
-const breakTimerStorage = createTimerStorage<BreakTimerState>(STORAGE_KEY, "break timer");
 
 // State creation functions using shared utilities
 const createInitialState = (defaultDuration: number) =>
@@ -40,21 +32,6 @@ const createIdleState = (defaultDuration: number) =>
 
 const createBreakEndedState = (defaultDuration: number, taskId?: string | null) =>
   createBreakEndedTimerState<BreakTimerState>(defaultDuration, "breakTimerState", "breakEnded", taskId);
-
-/**
- * Restore break timer state using shared restore function
- */
-function restoreBreakTimerState(
-  saved: BreakTimerState,
-  defaultDuration: number
-): BreakTimerState {
-  return restoreTimerState(saved, defaultDuration, {
-    stateField: "breakTimerState",
-    runningState: "running",
-    createCompletedState: (activeTaskId, defaultDuration) =>
-      createBreakEndedState(defaultDuration, activeTaskId),
-  });
-}
 
 /**
  * Break timer reducer function
@@ -71,19 +48,12 @@ function breakTimerReducer(
       return createIdleState(action.defaultDuration);
     case "TICK":
       // Decrement time
-      const newRemainingTime = state.remainingTime - 1;
-      
+      const remainingTime = state.remainingTime - 1;
+
       // If timer completed, preserve activeTaskId for dialog detection and set to breakEnded
-      if (isTimerCompleted(newRemainingTime)) {
-        return createBreakEndedState(action.defaultDuration, state.activeTaskId);
-      }
-      
-      return {
-        ...state,
-        remainingTime: newRemainingTime,
-      };
-    case "RESTORE":
-      return action.state;
+      return isTimerCompleted(remainingTime)
+        ? createBreakEndedState(action.defaultDuration, state.activeTaskId)
+        : { ...state, remainingTime };
     default:
       return state;
   }
@@ -96,8 +66,6 @@ function breakTimerReducer(
  * This provider manages all break timer logic including:
  * - State management with useReducer
  * - Countdown intervals
- * - localStorage persistence
- * - Initialization and restoration
  */
 export function BreakTimerProvider({
   children,
@@ -112,45 +80,11 @@ export function BreakTimerProvider({
     (duration) => createInitialState(duration)
   );
 
-  const isInitialMount = useRef(true);
-  const defaultDurationRef = useRef(defaultDuration);
-
-  // Keep defaultDuration ref in sync
-  useEffect(() => {
-    defaultDurationRef.current = defaultDuration;
-  }, [defaultDuration]);
-
-  // Initialize: Load saved break timer state from localStorage on mount
-  useEffect(() => {
-    if (!isInitialMount.current) return;
-    isInitialMount.current = false;
-
-    const saved = breakTimerStorage.get();
-    if (saved) {
-      try {
-        const restored = restoreBreakTimerState(saved, defaultDurationRef.current);
-        dispatch({ type: "RESTORE", state: restored });
-      } catch (error) {
-        console.error("Error loading break timer state:", error);
-        // On error, start with initial state
-        dispatch({ type: "RESTORE", state: createInitialState(defaultDurationRef.current) });
-      }
-    }
-  }, []); // Empty deps - only run on mount
-
-  // Persist: Save break timer state to localStorage when it changes
-  // Save if running OR if breakEnded OR if idle but has activeTaskId
-  useTimerPersistence(
-    breakTimerState,
-    (state) => state.breakTimerState !== "idle" || state.activeTaskId !== null,
-    breakTimerStorage
-  );
-
   // Countdown: Handle break timer countdown when running
   const handleTick = useCallback(() => {
-    dispatch({ type: "TICK", defaultDuration: defaultDurationRef.current });
-  }, []);
-  
+    dispatch({ type: "TICK", defaultDuration });
+  }, [defaultDuration]);
+
   useCountdownInterval(breakTimerState.breakTimerState === "running", handleTick);
 
   // Start break function
@@ -173,6 +107,10 @@ export function BreakTimerProvider({
       breakTimerState,
       startBreak,
       stopBreak,
+      isActive: (taskId: string) => breakTimerState.activeTaskId === taskId,
+      isRunning: (taskId: string) => breakTimerState.activeTaskId === taskId && breakTimerState.breakTimerState === "running",
+      hasActiveTask: !!breakTimerState.activeTaskId,
+      remainingTime: breakTimerState.remainingTime,
     }),
     [breakTimerState, startBreak, stopBreak]
   );

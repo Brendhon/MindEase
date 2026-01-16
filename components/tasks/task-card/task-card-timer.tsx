@@ -12,15 +12,6 @@ export interface TaskCardTimerProps {
   /** Task data */
   task: Task;
 
-  /** Whether the timer is active for this task */
-  isActive: boolean;
-
-  /** Whether the timer is running */
-  isRunning: boolean;
-
-  /** Whether the break timer is running */
-  isBreakRunning: boolean;
-
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -29,30 +20,25 @@ export interface TaskCardTimerProps {
  * TaskCardTimer Component - MindEase
  * Displays timer indicator when focus session is active or break timer is running
  */
-export function TaskCardTimer({
-  task,
-  isActive,
-  isRunning,
-  isBreakRunning,
-  "data-testid": testId,
-}: TaskCardTimerProps) {
+export function TaskCardTimer({ task, "data-testid": testId }: TaskCardTimerProps) {
+  const { id } = task;
   const { fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
-  const { timerState } = useFocusTimer();
-  const { breakTimerState } = useBreakTimer();
+  const { remainingTime: focusRemainingTime, isRunning: isFocusRunning } = useFocusTimer();
+  const { remainingTime: breakRemainingTime, isRunning: isBreakRunning } = useBreakTimer();
 
   // Show focus timer when active and running
-  if (isActive && isRunning) {
+  if (isFocusRunning(id)) {
     return (
       <div
         className={cn(styles.timerIndicator, styles.focusTimer)}
-        data-testid={testId || `task-card-timer-${task.id}`}
+        data-testid={testId || `task-card-timer-${id}`}
       >
         <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
           {getText("tasks_focus_time_remaining")}:
         </p>
         <p className={cn(styles.timerValue, styles.focusTimerValue, fontSizeClasses.base)}>
-          {formatTime(timerState.remainingTime)}
+          {formatTime(focusRemainingTime)}
         </p>
         <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
           {getText("tasks_focus_session_active")}
@@ -62,17 +48,17 @@ export function TaskCardTimer({
   }
 
   // Show break timer when break is running (regardless of task)
-  if (isActive && isBreakRunning) {
+  if (isBreakRunning(id)) {
     return (
       <div
         className={cn(styles.timerIndicator, styles.breakTimer)}
-        data-testid={testId ? `${testId}-break-timer` : `task-card-break-timer-${task.id}`}
+        data-testid={testId ? `${testId}-break-timer` : `task-card-break-timer-${id}`}
       >
         <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
           {getText("tasks_break_time_remaining")}:
         </p>
         <p className={cn(styles.timerValue, styles.breakTimerValue, fontSizeClasses.base)}>
-          {formatTime(breakTimerState.remainingTime)}
+          {formatTime(breakRemainingTime)}
         </p>
         <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
           {getText("tasks_break_session_active")}
