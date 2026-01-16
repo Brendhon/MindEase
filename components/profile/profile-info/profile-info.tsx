@@ -11,7 +11,9 @@ import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
 import { User } from "next-auth";
+import Image from "next/image";
 import { useCallback, useMemo } from "react";
+import { AuthUser } from "@/contexts/auth-context";
 
 /**
  * ProfileInfo Component - MindEase
@@ -19,23 +21,35 @@ import { useCallback, useMemo } from "react";
  */
 export interface ProfileInfoProps {
   /** User data from server (optional, falls back to useAuth if not provided) */
-  user: User;
+  user?: User | AuthUser;
   
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
+/**
+ * Helper function to get user ID from either User or AuthUser
+ */
+function getUserId(user: User | AuthUser): string | null {
+  if ("id" in user) {
+    return user.id;
+  }
+  if ("uid" in user) {
+    return user.uid;
+  }
+  return null;
+}
+
 export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileInfoProps) {
   // Use provided user prop or fall back to useAuth for backward compatibility
   const auth = useAuth();
-  const user = userProp || auth.user
+  const user = userProp || auth.user;
   
   const { signOut } = auth;
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
   const { error: showError, success } = useFeedback();
   const { openDialog } = useDialog();
-
 
   const labelClasses = useMemo(
     () => cn(styles.label, fontSizeClasses.sm),
@@ -49,6 +63,14 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
 
   // Delete account dialog
   const deleteAccountDialog = useCallback(() => {
+    if (!user) return;
+    
+    const userId = getUserId(user);
+    if (!userId) {
+      showError("toast_error_account_deletion_failed");
+      return;
+    }
+
     openDialog({
       titleKey: "profile_delete_account_dialog_title",
       descriptionKey: "profile_delete_account_dialog_message",
@@ -58,7 +80,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
       onCancel: () => {},
       onConfirm: async () => {
         try {
-          await authService.deleteAccount(user.id!);
+          await authService.deleteAccount(userId);
           success("toast_success_account_deleted");
         } catch (err) {
           console.error("Error deleting account:", err);
@@ -68,15 +90,22 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
       },
       "data-testid": testId ? `${testId}-delete-dialog` : "delete-account-dialog",
     });
-  }, [openDialog]);
+  }, [user, openDialog, showError, success, testId]);
 
   const handleDeleteAccount = useCallback(() => {
-    if (!user.id) {
+    if (!user) {
       showError("toast_error_account_deletion_failed");
       return;
     }
+    
+    const userId = getUserId(user);
+    if (!userId) {
+      showError("toast_error_account_deletion_failed");
+      return;
+    }
+    
     deleteAccountDialog();
-  }, [user.id, deleteAccountDialog]);
+  }, [user, deleteAccountDialog, showError]);
 
   if (!user) {
     return (
@@ -99,9 +128,12 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
       <Card className={styles.infoCard}>
         {user.image && (
           <div className={styles.avatarContainer}>
-            <img
+            <Image
               src={user.image}
               alt={user.name || "User avatar"}
+              width={96}
+              loading="eager"
+              height={96}
               className={styles.avatar}
             />
           </div>
@@ -160,7 +192,7 @@ export const styles = {
   infoRow: "flex flex-col gap-1",
   label: "text-text-secondary font-medium",
   value: "text-text-primary",
-  avatar: "w-24 h-24 rounded-full",
+  avatar: "rounded-full",
   actions: "flex justify-end gap-3",
   loading: "text-text-secondary text-center",
   error: "text-action-danger text-center",
