@@ -1,23 +1,19 @@
 "use client";
 
-import { ReactNode, useReducer, useEffect, useRef, useMemo, useCallback } from "react";
 import { FocusTimerContext, FocusTimerState, TimerAction } from "@/contexts/focus-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { formatTime as formatTimeUtil, isTimerCompleted } from "@/utils/timer/timer-helpers";
-import { createTimerStorage } from "@/utils/timer/timer-storage";
 import {
+  createCompletedTimerState,
+  createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
-  createIdleTimerState,
-  createCompletedTimerState,
-} from "@/utils/timer/timer-state";
-import { restoreTimerState } from "@/utils/timer/timer-restore";
-import { useCountdownInterval, useTimerPersistence } from "@/utils/timer/timer-hooks";
-
-/**
- * Re-export formatTime for convenience
- */
-export const formatTime = formatTimeUtil;
+  createTimerStorage,
+  isTimerCompleted,
+  restoreTimerState,
+  useCountdownInterval,
+  useTimerPersistence
+} from "@/utils/timer";
+import { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
 /**
  * Focus Timer Provider Props
@@ -72,7 +68,7 @@ function timerReducer(
     case "TICK":
       // Decrement time
       const newRemainingTime = state.remainingTime - 1;
-      
+
       // If timer completed, preserve activeTaskId for dialog detection and set to idle
       if (isTimerCompleted(newRemainingTime)) {
         return createCompletedTimerState(
@@ -82,7 +78,7 @@ function timerReducer(
           "idle"
         );
       }
-      
+
       return {
         ...state,
         remainingTime: newRemainingTime,
@@ -158,7 +154,7 @@ export function FocusTimerProvider({
   const handleTick = useCallback(() => {
     dispatch({ type: "TICK", defaultDuration: defaultDurationRef.current });
   }, []);
-  
+
   useCountdownInterval(timerState.timerState === "running", handleTick);
 
   // Start timer function
@@ -181,7 +177,6 @@ export function FocusTimerProvider({
       timerState,
       startTimer,
       stopTimer,
-      formatTime: formatTimeUtil,
     }),
     [timerState, startTimer, stopTimer]
   );

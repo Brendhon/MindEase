@@ -1,18 +1,19 @@
 "use client";
 
-import { ReactNode, useReducer, useEffect, useRef, useMemo, useCallback } from "react";
-import { BreakTimerContext, BreakTimerState, BreakTimerAction } from "@/contexts/break-timer-context";
+import { BreakTimerAction, BreakTimerContext, BreakTimerState } from "@/contexts/break-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { isTimerCompleted } from "@/utils/timer/timer-helpers";
-import { createTimerStorage } from "@/utils/timer/timer-storage";
 import {
+  createBreakEndedTimerState,
+  createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
-  createIdleTimerState,
-  createBreakEndedTimerState,
-} from "@/utils/timer/timer-state";
-import { restoreTimerState } from "@/utils/timer/timer-restore";
-import { useCountdownInterval, useTimerPersistence } from "@/utils/timer/timer-hooks";
+  createTimerStorage,
+  isTimerCompleted,
+  restoreTimerState,
+  useCountdownInterval,
+  useTimerPersistence
+} from "@/utils/timer";
+import { ReactNode, useCallback, useEffect, useMemo, useReducer, useRef } from "react";
 
 
 /**
