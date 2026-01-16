@@ -1,12 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
 import { canCompleteTask } from "@/utils/tasks";
-import { cn } from "@/utils/ui";
 import { Check, Coffee, Play } from "lucide-react";
 import { useMemo } from "react";
 
@@ -56,125 +53,102 @@ export function FocusSessionCompleteDialog({
   "data-testid": testId,
 }: FocusSessionCompleteDialogProps) {
   const { getTextWithReplace, getText } = useTextDetail();
-  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   // Check if task can be finished (no pending subtasks)
   const canFinish = useMemo(() => {
     return activeTask ? canCompleteTask(activeTask) : false;
   }, [activeTask]);
 
-  const contentClasses = useMemo(
-    () => cn(styles.content, spacingClasses.gap),
-    [spacingClasses.gap]
-  );
-
-  const messageClasses = useMemo(
-    () => cn(styles.message, fontSizeClasses.base),
-    [fontSizeClasses.base]
-  );
-
-  const actionsClasses = useMemo(
-    () => cn(styles.actions, spacingClasses.gap),
-    [spacingClasses.gap]
-  );
-
-  const handleStartBreak = () => {
-    onStartBreak?.();
-    onClose();
-  };
-
-  const handleContinueFocus = () => {
-    onContinueFocus?.();
-    onClose();
-  };
-
-  const handleFinishTask = () => {
-    onFinishTask?.();
-    onClose();
-  };
-
   // Get localized texts with placeholders replaced
   const titleText = getText("tasks_focus_session_complete_title");
   const messageText = getTextWithReplace("tasks_focus_session_complete_message", { minutes: focusDuration.toString() });
+  const questionText = getText("tasks_focus_session_complete");
+
   const startBreakText = getTextWithReplace("tasks_focus_session_start_break", { minutes: breakDuration.toString() });
   const startBreakAria = getTextWithReplace("tasks_focus_session_start_break_aria", { minutes: breakDuration.toString() });
   const continueFocusText = getTextWithReplace("tasks_focus_session_continue_focus", { minutes: focusDuration.toString() });
   const continueFocusAria = getTextWithReplace("tasks_focus_session_continue_focus_aria", { minutes: focusDuration.toString() });
+  const finishText = getText("tasks_focus_session_finish");
+  const finishAria = getText("tasks_focus_session_finish_aria");
+
+  // Build actions array
+  const actions = useMemo<SessionAction[]>(() => {
+    const actionList: SessionAction[] = [];
+
+    if (onStartBreak) {
+      actionList.push({
+        id: "start-break",
+        variant: "secondary",
+        icon: Coffee,
+        text: startBreakText,
+        ariaLabel: startBreakAria,
+        onClick: () => {
+          onStartBreak();
+          onClose();
+        },
+        testId: "focus-session-complete-start-break",
+        condition: true,
+      });
+    }
+
+    if (onContinueFocus) {
+      actionList.push({
+        id: "continue-focus",
+        variant: "primary",
+        icon: Play,
+        text: continueFocusText,
+        ariaLabel: continueFocusAria,
+        onClick: () => {
+          onContinueFocus();
+          onClose();
+        },
+        testId: "focus-session-complete-continue",
+        condition: true,
+      });
+    }
+
+    if (onFinishTask) {
+      actionList.push({
+        id: "finish-task",
+        variant: "primary",
+        icon: Check,
+        text: finishText,
+        ariaLabel: finishAria,
+        onClick: () => {
+          onFinishTask();
+          onClose();
+        },
+        testId: "focus-session-complete-finish",
+        condition: canFinish,
+      });
+    }
+
+    return actionList;
+  }, [
+    onStartBreak,
+    onContinueFocus,
+    onFinishTask,
+    onClose,
+    startBreakText,
+    startBreakAria,
+    continueFocusText,
+    continueFocusAria,
+    finishText,
+    finishAria,
+    canFinish,
+  ]);
 
   return (
-    <Dialog
+    <SessionCompleteDialog
       isOpen={isOpen}
       onClose={onClose}
       title={titleText}
-      preventClose={true}
+      message={messageText}
+      question={questionText}
+      actions={actions}
       data-testid={testId || "focus-session-complete-dialog"}
-    >
-      <div className={contentClasses}>
-        <p className={messageClasses}>
-          {messageText}
-        </p>
-
-        <p className={cn(styles.question, fontSizeClasses.base)}>
-          {getText("tasks_focus_session_complete")}
-        </p>
-
-        <div className={actionsClasses}>
-          {onStartBreak && (
-            <Button
-              variant="secondary"
-              onClick={handleStartBreak}
-              aria-label={startBreakAria}
-              data-testid="focus-session-complete-start-break"
-              className={styles.button}
-            >
-              <Button.Icon icon={Coffee} position="left" />
-              <Button.Text>
-                {startBreakText}
-              </Button.Text>
-            </Button>
-          )}
-
-          {onContinueFocus && (
-            <Button
-              variant="primary"
-              onClick={handleContinueFocus}
-              aria-label={continueFocusAria}
-              data-testid="focus-session-complete-continue"
-              className={styles.button}
-            >
-              <Button.Icon icon={Play} position="left" />
-              <Button.Text>
-                {continueFocusText}
-              </Button.Text>
-            </Button>
-          )}
-
-          {onFinishTask && canFinish && (
-            <Button
-              variant="primary"
-              onClick={handleFinishTask}
-              aria-label={getText("tasks_focus_session_finish_aria")}
-              data-testid="focus-session-complete-finish"
-              className={styles.button}
-            >
-              <Button.Icon icon={Check} position="left" />
-              <Button.Text>
-                {getText("tasks_focus_session_finish")}
-              </Button.Text>
-            </Button>
-          )}
-        </div>
-      </div>
-    </Dialog>
+    />
   );
 }
 
 FocusSessionCompleteDialog.displayName = "FocusSessionCompleteDialog";
-
-const styles = {
-  content: "flex flex-col",
-  message: "text-text-primary mb-2",
-  question: "text-text-secondary mb-4 font-medium",
-  actions: "flex flex-col gap-2 mt-2",
-  button: "w-full justify-start",
-} as const;
