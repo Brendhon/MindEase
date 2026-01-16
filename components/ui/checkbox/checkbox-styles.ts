@@ -12,7 +12,7 @@ export const styles = {
   checkboxDisabled: "opacity-50 cursor-not-allowed",
   checkboxIcon: "text-text-inverse stroke-[3]",
   content: "flex flex-col",
-  label: "text-text-primary cursor-pointer font-medium",
+  label: "text-text-primary cursor-pointer font-medium truncate max-w-72",
   labelChecked: "line-through text-text-secondary",
   description: "text-text-secondary mt-0.5",
 } as const;
