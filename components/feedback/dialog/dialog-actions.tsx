@@ -37,8 +37,8 @@ export interface DialogActionsProps {
 export function DialogActions({
   onCancel,
   onConfirm,
-  cancelLabelKey,
-  confirmLabelKey,
+  cancelLabelKey = "button_cancel",
+  confirmLabelKey = "button_save",
   confirmVariant = "primary",
   isLoading = false,
   onClose,
@@ -46,10 +46,6 @@ export function DialogActions({
 }: DialogActionsProps) {
   const { spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
-
-  const cancelLabel = cancelLabelKey ? getText(cancelLabelKey) : getText("button_cancel");
-
-  const confirmLabel = confirmLabelKey ? getText(confirmLabelKey) : getText("button_save");
 
   const actionsClasses = cn(styles.actions, spacingClasses.gap);
 
@@ -62,7 +58,7 @@ export function DialogActions({
           onClick={onClose}
           data-testid={`${testId}-ok`}
         >
-          <Button.Text>{getText("button_save")}</Button.Text>
+          <Button.Text>{getText(confirmLabelKey)}</Button.Text>
         </Button>
       </div>
     );
@@ -77,7 +73,7 @@ export function DialogActions({
           disabled={isLoading}
           data-testid={`${testId}-cancel`}
         >
-          <Button.Text>{cancelLabel}</Button.Text>
+          <Button.Text>{getText(cancelLabelKey)}</Button.Text>
         </Button>
       )}
       {onConfirm && (
@@ -92,7 +88,7 @@ export function DialogActions({
           <Button.Text>
             {isLoading
               ? getText("loading")
-              : confirmLabel}
+              : getText(confirmLabelKey)}
           </Button.Text>
         </Button>
       )}
