@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { ToastContainer } from '.';
-import { FeedbackProvider } from '@/providers/feedback-provider';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { Button } from '@/components/ui/button';
 import { useFeedbackContext } from '@/contexts/feedback-context';
-import { useCognitiveSettings } from '@/hooks/useCognitiveSettings';
-import { useEffect } from 'react';
 import type { FeedbackMessage } from '@/hooks/useFeedback';
 import { useFeedback } from '@/hooks/useFeedback';
-import { Button } from '@/components/ui/button';
+import { useTextDetail } from '@/hooks/useTextDetail';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { FeedbackProvider } from '@/providers/feedback-provider';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SessionProvider } from 'next-auth/react';
+import { useEffect } from 'react';
+import { ToastContainer } from '.';
 
 const meta = {
   title: 'Components/Feedback/Toast',
@@ -56,21 +56,21 @@ function ToastInitializer({ feedbacks }: { feedbacks: FeedbackMessage[] }) {
  */
 function ToastTriggerButtons() {
   const { success, error, warning, info } = useFeedback();
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   return (
     <div className="flex gap-2 flex-wrap">
       <Button variant="primary" size="sm" onClick={() => success('toast_success_task_completed', 0)}>
-        <Button.Text>{textDetail.getText('button_success')}</Button.Text>
+        <Button.Text>{getText('button_success')}</Button.Text>
       </Button>
       <Button variant="danger" size="sm" onClick={() => error('toast_error_processing', 0)}>
-        <Button.Text>{textDetail.getText('button_error')}</Button.Text>
+        <Button.Text>{getText('button_error')}</Button.Text>
       </Button>
       <Button variant="warning" size="sm" onClick={() => warning('toast_warning_cannot_undo', 0)}>
-        <Button.Text>{textDetail.getText('button_warning')}</Button.Text>
+        <Button.Text>{getText('button_warning')}</Button.Text>
       </Button>
       <Button variant="secondary" size="sm" onClick={() => info('toast_info_new_features', 0)}>
-        <Button.Text>{textDetail.getText('button_info')}</Button.Text>
+        <Button.Text>{getText('button_info')}</Button.Text>
       </Button>
     </div>
   );

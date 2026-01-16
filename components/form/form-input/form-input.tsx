@@ -1,9 +1,9 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { useId, useMemo } from "react";
 import { Controller, ControllerProps, FieldPath, FieldValues, useFormContext } from "react-hook-form";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { InputRoot } from "../input/input";
 import { styles } from "./form-input-styles";
 
@@ -110,7 +110,7 @@ export function FormInput<
   
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class for helper text (use sm)
   const helperTextFontSize = useMemo(

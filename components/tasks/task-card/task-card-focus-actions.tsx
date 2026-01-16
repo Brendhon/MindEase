@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { Play, Square, Check } from "lucide-react";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import { Check, Play, Square } from "lucide-react";
 
 export interface TaskCardFocusActionsProps {
   /** Task data */
@@ -57,7 +57,7 @@ export function TaskCardFocusActions({
   onComplete,
   "data-testid": testId,
 }: TaskCardFocusActionsProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   // During break, show only stop button (end focus)
   if (isBreakRunning) {
@@ -66,12 +66,12 @@ export function TaskCardFocusActions({
         variant="secondary"
         size="sm"
         onClick={onStop}
-        aria-label={textDetail.getText("tasks_action_stop_aria")}
+        aria-label={getText("tasks_action_stop_aria")}
         data-testid={testId || `task-card-stop-break-${task.id}`}
       >
         <Button.Icon icon={Square} position="left" />
         <Button.Text>
-          {textDetail.getText("tasks_action_stop")}
+          {getText("tasks_action_stop")}
         </Button.Text>
       </Button>
     );
@@ -88,13 +88,13 @@ export function TaskCardFocusActions({
         size="sm"
         onClick={onStartFocus}
         disabled={isDisabled}
-        aria-label={textDetail.getText("tasks_action_start_focus_aria")}
+        aria-label={getText("tasks_action_start_focus_aria")}
         aria-disabled={isDisabled}
         data-testid={testId || `task-card-start-focus-${task.id}`}
       >
         <Button.Icon icon={Play} position="left" />
         <Button.Text>
-          {textDetail.getText("tasks_action_start_focus")}
+          {getText("tasks_action_start_focus")}
         </Button.Text>
       </Button>
     );
@@ -108,24 +108,24 @@ export function TaskCardFocusActions({
           variant="secondary"
           size="sm"
           onClick={onStop}
-          aria-label={textDetail.getText("tasks_action_stop_aria")}
+          aria-label={getText("tasks_action_stop_aria")}
           data-testid={testId || `task-card-stop-${task.id}`}
         >
           <Button.Icon icon={Square} position="left" />
           <Button.Text>
-            {textDetail.getText("tasks_action_stop")}
+            {getText("tasks_action_stop")}
           </Button.Text>
         </Button>
         <Button
           variant="primary"
           size="sm"
           onClick={onComplete}
-          aria-label={textDetail.getText("tasks_action_finish_aria")}
+          aria-label={getText("tasks_action_finish_aria")}
           data-testid={testId || `task-card-complete-${task.id}`}
         >
           <Button.Icon icon={Check} position="left" />
           <Button.Text>
-            {textDetail.getText("tasks_action_finish")}
+            {getText("tasks_action_finish")}
           </Button.Text>
         </Button>
       </>

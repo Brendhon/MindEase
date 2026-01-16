@@ -1,11 +1,11 @@
 "use client";
 
-import { CardContent } from "@/components/ui/card/card-content";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { cn } from "@/utils/ui";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import { cn } from "@/utils/ui";
 
 export interface TaskCardTimerProps {
   /** Task data */
@@ -35,7 +35,8 @@ export function TaskCardTimer({
   isBreakRunning,
   "data-testid": testId,
 }: TaskCardTimerProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
   const { timerState, formatTime } = useFocusTimer();
   const { breakTimerState, formatTime: formatBreakTime } = useBreakTimer();
 
@@ -47,13 +48,13 @@ export function TaskCardTimer({
         data-testid={testId || `task-card-timer-${task.id}`}
       >
         <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_focus_time_remaining")}:
+          {getText("tasks_focus_time_remaining")}:
         </p>
         <p className={cn(styles.timerValue, styles.focusTimerValue, fontSizeClasses.base)}>
           {formatTime(timerState.remainingTime)}
         </p>
         <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_focus_session_active")}
+          {getText("tasks_focus_session_active")}
         </p>
       </div>
     );
@@ -67,13 +68,13 @@ export function TaskCardTimer({
         data-testid={testId ? `${testId}-break-timer` : `task-card-break-timer-${task.id}`}
       >
         <p className={cn(styles.timerLabel, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_break_time_remaining")}:
+          {getText("tasks_break_time_remaining")}:
         </p>
         <p className={cn(styles.timerValue, styles.breakTimerValue, fontSizeClasses.base)}>
           {formatBreakTime(breakTimerState.remainingTime)}
         </p>
         <p className={cn(styles.timerStatus, fontSizeClasses.sm)}>
-          {textDetail.getText("tasks_break_session_active")}
+          {getText("tasks_break_session_active")}
         </p>
       </div>
     );

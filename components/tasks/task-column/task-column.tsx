@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
+import type { Task } from "@/models/Task";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
-import type { Task } from "@/models/Task";
+import { useMemo } from "react";
 import { TaskCard } from "../task-card";
 
 /**
@@ -47,7 +48,8 @@ export function TaskColumn({
   onToggleSubtask,
   "data-testid": testId,
 }: TaskColumnProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   // Sort tasks: most recent first for To Do and Done, active first for In Progress
   const sortedTasks = useMemo(() => {
@@ -85,7 +87,7 @@ export function TaskColumn({
     <div className={columnClasses} data-testid={testId || `task-column-${status}`}>
       <div className={headerClasses}>
         <h2 className={titleClasses}>
-          {textDetail.getText(titleKey)}
+          {getText(titleKey)}
         </h2>
         <span className={countClasses} aria-label={`${sortedTasks.length} tarefas`}>
           {sortedTasks.length}
@@ -95,7 +97,7 @@ export function TaskColumn({
         {sortedTasks.length === 0 ? (
           <div className={styles.empty} data-testid={`${testId || `task-column-${status}`}-empty`}>
             <p className={cn(styles.emptyText, fontSizeClasses.sm)}>
-              {textDetail.getText("tasks_empty")}
+              {getText("tasks_empty")}
             </p>
           </div>
         ) : (

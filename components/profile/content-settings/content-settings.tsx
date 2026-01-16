@@ -1,8 +1,9 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { SettingsSection } from "@/components/dashboard";
 import { RadioGroup } from "@/components/ui";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 
 /**
  * ContentSettings Component - MindEase
@@ -14,11 +15,12 @@ export interface ContentSettingsProps {
 }
 
 export function ContentSettings({ "data-testid": testId }: ContentSettingsProps) {
-  const { settings, updateSetting, textDetail } = useCognitiveSettings();
+  const { settings, updateSetting } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   return (
     <SettingsSection
-      title={textDetail.getText("profile_section_content")}
+      title={getText("profile_section_content")}
       data-testid={testId || "profile-section-content"}
     >
       {/* Text Detail Setting */}
@@ -29,22 +31,22 @@ export function ContentSettings({ "data-testid": testId }: ContentSettingsProps)
       >
         <RadioGroup.Header>
           <RadioGroup.Label data-testid="profile-textdetail-label">
-            {textDetail.getText("profile_textdetail_label")}
+            {getText("profile_textdetail_label")}
           </RadioGroup.Label>
           <RadioGroup.Description data-testid="profile-textdetail-description">
-            {textDetail.getText("profile_textdetail_description")}
+            {getText("profile_textdetail_description")}
           </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option
           value="detailed"
-          label={textDetail.getText("profile_textdetail_detailed")}
-          description={textDetail.getText("profile_textdetail_detailed_desc")}
+          label={getText("profile_textdetail_detailed")}
+          description={getText("profile_textdetail_detailed_desc")}
           data-testid="profile-textdetail-detailed"
         />
         <RadioGroup.Option
           value="summary"
-          label={textDetail.getText("profile_textdetail_summary")}
-          description={textDetail.getText("profile_textdetail_summary_desc")}
+          label={getText("profile_textdetail_summary")}
+          description={getText("profile_textdetail_summary_desc")}
           data-testid="profile-textdetail-summary"
         />
       </RadioGroup>

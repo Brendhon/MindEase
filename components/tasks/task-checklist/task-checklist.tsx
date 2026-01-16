@@ -1,6 +1,7 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Subtask } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -35,7 +36,8 @@ export function TaskChecklist({
   isInFocus = false,
   "data-testid": testId,
 }: TaskChecklistProps) {
-  const { spacingClasses, fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   // Sort subtasks by order
   const sortedSubtasks = useMemo(() => {
@@ -80,7 +82,7 @@ export function TaskChecklist({
       </ul>
       {!isInFocus && (
         <p className={cn(styles.hint, fontSizeClasses.sm)} data-testid={`${testId || "task-checklist"}-hint`}>
-          {textDetail.getText("tasks_subtask_focus_required_hint_text")}
+          {getText("tasks_subtask_focus_required_hint_text")}
         </p>
       )}
     </div>

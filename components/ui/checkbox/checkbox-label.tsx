@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./checkbox-styles";
@@ -39,7 +39,7 @@ export function CheckboxLabel({
   onClick,
   "data-testid": testId,
 }: CheckboxLabelProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   const labelClasses = useMemo(
     () => cn(

@@ -3,10 +3,10 @@
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useDialog } from "@/hooks/useDialog";
-import type { Subtask, Task } from "@/models/Task";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
+import { useTextDetail } from "@/hooks/useTextDetail";
+import type { Task } from "@/models/Task";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { useCallback, useMemo } from "react";
 import { TaskChecklist } from "../task-checklist";
@@ -49,7 +49,7 @@ export function TaskCard({
   const { timerState, startTimer, stopTimer } = useFocusTimer();
   const { breakTimerState, stopBreak } = useBreakTimer();
   const { openDialog } = useDialog();
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   const isActive = timerState.activeTaskId === task.id;
   const isRunning = isActive && timerState.timerState === "running";
@@ -92,7 +92,7 @@ export function TaskCard({
         <>
           {pendingList}
           <p className={styles.completePendingSubtasksDialogHint}>
-            {textDetail.getText("tasks_complete_pending_hint")}
+            {getText("tasks_complete_pending_hint")}
           </p>
         </>
       ),
@@ -107,7 +107,7 @@ export function TaskCard({
       const pendingList = (
         <div className="flex flex-col gap-2">
           <p className="font-medium text-text-primary text-sm">
-            {textDetail.getText("tasks_complete_pending_list_label")}
+            {getText("tasks_complete_pending_list_label")}
           </p>
           <ul className="flex flex-col gap-1 pl-4">
             {pendingSubtasks.map((subtask) => (
@@ -141,7 +141,7 @@ export function TaskCard({
       descriptionKey: "tasks_subtask_focus_required_message",
       info: (
         <p className={styles.subtaskFocusRequiredDialog}>
-          {textDetail.getText("tasks_subtask_focus_required_hint")}
+          {getText("tasks_subtask_focus_required_hint")}
         </p>
       ),
       cancelLabelKey: "tasks_subtask_focus_required_cancel",

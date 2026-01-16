@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { Plus } from "lucide-react";
 
 /**
@@ -11,25 +11,25 @@ import { Plus } from "lucide-react";
 export interface TasksToolbarProps {
   /** Callback when "New Task" button is clicked */
   onNewTask: () => void;
-  
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
 export function TasksToolbar({ onNewTask, "data-testid": testId }: TasksToolbarProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   return (
     <div className={styles.container} data-testid={testId || "tasks-toolbar"}>
       <Button
         variant="primary"
         onClick={onNewTask}
-        aria-label={textDetail.getText("tasks_new_task_aria")}
+        aria-label={getText("tasks_new_task_aria")}
         data-testid="tasks-toolbar-new-button"
       >
         <Button.Icon icon={Plus} position="left" />
         <Button.Text>
-          {textDetail.getText("tasks_new_task")}
+          {getText("tasks_new_task")}
         </Button.Text>
       </Button>
     </div>

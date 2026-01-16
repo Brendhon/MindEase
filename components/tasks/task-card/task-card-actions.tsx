@@ -1,10 +1,10 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
-import { TaskCardFocusActions } from "./task-card-focus-actions";
-import { TaskCardEditActions } from "./task-card-edit-actions";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import type { Task } from "@/models/Task";
+import { cn } from "@/utils/ui";
+import { TaskCardEditActions } from "./task-card-edit-actions";
+import { TaskCardFocusActions } from "./task-card-focus-actions";
 
 export interface TaskCardActionsProps {
   /** Task data */
@@ -58,7 +58,7 @@ export function TaskCardActions({
   onDelete,
   "data-testid": testId,
 }: TaskCardActionsProps) {
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Don't show actions for completed tasks
   if (task.status === 2) {

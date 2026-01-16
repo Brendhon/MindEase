@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 
 /**
  * DashboardError Component - MindEase
@@ -17,7 +17,7 @@ export interface DashboardErrorProps {
 }
 
 export function DashboardError({ message, "data-testid": testId }: DashboardErrorProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   // Generate error classes with fontSize preference
   const errorClasses = useMemo(

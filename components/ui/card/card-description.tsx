@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
 import { getTextContrastClasses } from "@/utils/accessibility/tailwind-classes";
+import { cn } from "@/utils/ui";
+import { ReactNode, useMemo } from "react";
 import { styles } from "./card-styles";
 
 /**
@@ -27,7 +28,8 @@ export interface CardDescriptionProps {
 }
 
 export function CardDescription({ children, className, "data-testid": testId }: CardDescriptionProps) {
-  const { fontSizeClasses, settings } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { settings } = useCognitiveSettings();
 
   const textContrastClasses = useMemo(
     () => getTextContrastClasses(settings.contrast, "secondary"),

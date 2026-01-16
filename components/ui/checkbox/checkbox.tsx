@@ -1,13 +1,13 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { Button as HeadlessButton } from "@headlessui/react";
 import { Check } from "lucide-react";
 import { ReactNode, useMemo } from "react";
-import { styles } from "./checkbox-styles";
-import { CheckboxLabel } from "./checkbox-label";
 import { CheckboxDescription } from "./checkbox-description";
+import { CheckboxLabel } from "./checkbox-label";
+import { styles } from "./checkbox-styles";
 
 /**
  * Checkbox Component - MindEase
@@ -65,7 +65,7 @@ function CheckboxRoot({
   "aria-label": ariaLabel,
 }: CheckboxProps) {
   // Use cognitive settings hook for automatic accessibility class generation
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate container classes with spacing preference
   const containerClasses = useMemo(

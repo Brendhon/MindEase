@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
 import { CardHeader } from "@/components/ui/card/card-header";
 import { CardTitle } from "@/components/ui/card/card-title";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 
 export interface TaskCardHeaderProps {
   /** Task data */
@@ -23,17 +24,18 @@ export function TaskCardHeader({
   task,
   "data-testid": testId,
 }: TaskCardHeaderProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   // Get status label
   const statusLabel = useMemo(() => {
     switch (task.status) {
       case 0:
-        return textDetail.getText("tasks_status_todo");
+        return getText("tasks_status_todo");
       case 1:
-        return textDetail.getText("tasks_status_in_progress");
+        return getText("tasks_status_in_progress");
       default:
-        return textDetail.getText("tasks_status_done");
+        return getText("tasks_status_done");
     }
   }, [task.status]);
 

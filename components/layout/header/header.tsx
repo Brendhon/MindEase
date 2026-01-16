@@ -9,6 +9,7 @@ import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useSidebar } from "@/hooks/useSidebar";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { getAccessibilityText } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui/ui";
 import { LogOut, Menu } from "lucide-react";
@@ -21,7 +22,8 @@ export interface HeaderProps {
 export function Header({ title = "MindEase" }: HeaderProps) {
   const { signOut, isLoading } = useAuth();
   const { toggle } = useSidebar();
-  const { settings, textDetail } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   // Show menu button on mobile always, or on desktop when focus mode is enabled (to access hidden sidebar)
@@ -99,13 +101,13 @@ export function Header({ title = "MindEase" }: HeaderProps) {
         {isLoading ? (
           <>
             <Button.Loading size="sm" />
-            <Button.Text>{textDetail.getText("header_logout_loading")}</Button.Text>
+            <Button.Text>{getText("header_logout_loading")}</Button.Text>
           </>
         ) : (
           <>
             <Button.Icon icon={LogOut} position="left" size="sm" />
             <Button.Text className={styles.logoutButtonText}>
-              {getAccessibilityText("header_logout_aria", textDetail.mode)}
+              {getText("header_logout_aria")}
             </Button.Text>
           </>
         )}

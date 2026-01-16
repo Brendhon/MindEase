@@ -1,7 +1,7 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import type { Subtask } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -30,7 +30,7 @@ export function TaskChecklistItem({
   onToggle,
   "data-testid": testId,
 }: TaskChecklistItemProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   const isCompleted = subtask.completed;
 

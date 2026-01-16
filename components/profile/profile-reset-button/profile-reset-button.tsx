@@ -3,6 +3,7 @@
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Button } from "@/components/ui";
 import { RotateCcw } from "lucide-react";
+import { useTextDetail } from "@/hooks/useTextDetail";
 
 /**
  * ProfileResetButton Component - MindEase
@@ -14,7 +15,8 @@ export interface ProfileResetButtonProps {
 }
 
 export function ProfileResetButton({ "data-testid": testId }: ProfileResetButtonProps) {
-  const { resetSettings, textDetail } = useCognitiveSettings();
+  const { resetSettings } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   return (
     <div className={styles.footer} data-testid={testId || "profile-reset-button-container"}>
@@ -23,11 +25,11 @@ export function ProfileResetButton({ "data-testid": testId }: ProfileResetButton
         size="md"
         onClick={resetSettings}
         className={styles.resetButton}
-        aria-label={textDetail.getText("profile_reset_button_aria")}
+        aria-label={getText("profile_reset_button_aria")}
         data-testid={testId || "profile-reset-button"}
       >
         <Button.Icon icon={RotateCcw} position="left" size="md" />
-        <Button.Text>{textDetail.getText("profile_reset_button")}</Button.Text>
+        <Button.Text>{getText("profile_reset_button")}</Button.Text>
       </Button>
     </div>
   );

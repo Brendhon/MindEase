@@ -1,10 +1,10 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 
 /**
  * Dialog.Message - Message subcomponent
@@ -29,7 +29,7 @@ export function DialogMessage({
   className,
   "data-testid": testId,
 }: DialogMessageProps) {
-  const { textDetail } = useCognitiveSettings();
+    const { getText } = useTextDetail();
   const { fontSizeClasses } = useAccessibilityClasses();  
 
   return (
@@ -37,7 +37,7 @@ export function DialogMessage({
       className={cn(styles.message, fontSizeClasses.base, className)}
       data-testid={testId}
     >
-      {textDetail.getText(messageKey)}
+      {getText(messageKey)}
     </p>
   );
 }

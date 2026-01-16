@@ -1,12 +1,12 @@
 "use client";
 
-import { ReactNode, useId, useMemo } from "react";
-import { Field as HeadlessField } from "@headlessui/react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { InputLabel } from "./input-label";
-import { InputField } from "./input-field";
+import { Field as HeadlessField } from "@headlessui/react";
+import { ReactNode, useMemo } from "react";
 import { InputError } from "./input-error";
+import { InputField } from "./input-field";
+import { InputLabel } from "./input-label";
 import { styles } from "./input-styles";
 
 /**
@@ -48,7 +48,7 @@ export interface InputProps {
 export function Input({ children, className }: InputProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Gap automatically updates when user preferences change
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate container classes with spacing preference
   const containerClasses = useMemo(

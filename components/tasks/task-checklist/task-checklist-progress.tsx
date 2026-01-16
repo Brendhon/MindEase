@@ -1,6 +1,7 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 
@@ -24,11 +25,12 @@ export function TaskChecklistProgress({
   totalCount,
   "data-testid": testId,
 }: TaskChecklistProgressProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   const progressText = useMemo(() => {
-    return `${completedCount} ${textDetail.getText("tasks_progress")} ${totalCount} ${textDetail.getText("tasks_progress_steps")}`;
-  }, [completedCount, totalCount, textDetail]);
+    return `${completedCount} ${getText("tasks_progress")} ${totalCount} ${getText("tasks_progress_steps")}`;
+  }, [completedCount, totalCount, getText]);
 
   return (
     <p

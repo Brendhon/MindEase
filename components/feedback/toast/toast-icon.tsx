@@ -1,7 +1,6 @@
 "use client";
 
 import type { FeedbackType } from "@/hooks/useFeedback";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 

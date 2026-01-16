@@ -1,6 +1,7 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 
 /**
@@ -13,7 +14,8 @@ export interface TasksLoadingProps {
 }
 
 export function TasksLoading({ "data-testid": testId }: TasksLoadingProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   return (
     <div
@@ -21,7 +23,7 @@ export function TasksLoading({ "data-testid": testId }: TasksLoadingProps) {
       data-testid={testId || "tasks-loading"}
     >
       <p className={styles.text}>
-        {textDetail.getText("tasks_loading")}
+        {getText("tasks_loading")}
       </p>
     </div>
   );

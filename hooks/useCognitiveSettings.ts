@@ -1,6 +1,5 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
-import { getAccessibilityText, type AccessibilityTextKey } from "@/utils/accessibility/content";
 import { useAuth } from "@/hooks/useAuth";
 import { userPreferencesService } from "@/services/user-preferences";
 import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPreferences";
@@ -14,9 +13,9 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPr
  * - CRUD operations with Firestore
  * - State synchronization (local + remote)
  * - Loading and error handling
- * - Text detail helpers for detailed/summary content
  * 
  * For Tailwind classes generation, use `useAccessibilityClasses` hook instead.
+ * For text detail helpers, use `useTextDetail` hook instead.
  * This separation reduces unnecessary re-renders and improves performance.
  * 
  * The provider only manages basic state, while this hook handles all business logic.
@@ -49,6 +48,12 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPr
  * function StyledComponent() {
  *   const { spacingClasses } = useAccessibilityClasses();
  *   return <div className={spacingClasses.padding}>Content</div>;
+ * }
+ * 
+ * // For text detail, use useTextDetail instead
+ * function TextComponent() {
+ *   const { getText } = useTextDetail();
+ *   return <p>{getText("welcome")}</p>;
  * }
  * ```
  * 
@@ -186,17 +191,6 @@ export function useCognitiveSettings() {
     }
   }, [user?.uid, _setSettings, _setLoading, _setError, loadSettings]);
 
-  // Text detail helpers
-  const textDetail = useMemo(() => ({
-    mode: settings.textDetail,
-    isDetailed: settings.textDetail === "detailed",
-    isSummary: settings.textDetail === "summary",
-    getText: (key: AccessibilityTextKey) => getAccessibilityText(key, settings.textDetail),
-    render: <T,>(detailed: T, summary: T): T => {
-      return settings.textDetail === "summary" ? summary : detailed;
-    },
-  }), [settings.textDetail]);
-
   return {
     // State
     settings,
@@ -208,8 +202,5 @@ export function useCognitiveSettings() {
     updateSetting,
     updateSettings,
     resetSettings,
-    
-    // Text detail helpers
-    textDetail,
   };
 }

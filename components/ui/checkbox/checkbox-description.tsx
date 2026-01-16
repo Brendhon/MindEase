@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./checkbox-styles";
@@ -32,7 +32,7 @@ export function CheckboxDescription({
   className,
   "data-testid": testId,
 }: CheckboxDescriptionProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   const descriptionClasses = useMemo(
     () => cn(styles.description, fontSizeClasses.sm, className),

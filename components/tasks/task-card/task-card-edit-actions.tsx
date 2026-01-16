@@ -1,9 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { Edit, Trash2 } from "lucide-react";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import { Edit, Trash2 } from "lucide-react";
 
 export interface TaskCardEditActionsProps {
   /** Task data */
@@ -29,7 +29,7 @@ export function TaskCardEditActions({
   onDelete,
   "data-testid": testId,
 }: TaskCardEditActionsProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
   return (
     <>
@@ -37,24 +37,24 @@ export function TaskCardEditActions({
         variant="ghost"
         size="sm"
         onClick={onEdit}
-        aria-label={textDetail.getText("tasks_action_edit_aria")}
+        aria-label={getText("tasks_action_edit_aria")}
         data-testid={testId || `task-card-edit-${task.id}`}
       >
         <Button.Icon icon={Edit} position="left" />
         <Button.Text>
-          {textDetail.getText("tasks_action_edit")}
+          {getText("tasks_action_edit")}
         </Button.Text>
       </Button>
       <Button
         variant="ghost"
         size="sm"
         onClick={onDelete}
-        aria-label={textDetail.getText("tasks_action_delete_aria")}
+        aria-label={getText("tasks_action_delete_aria")}
         data-testid={testId || `task-card-delete-${task.id}`}
       >
         <Button.Icon icon={Trash2} position="left" />
         <Button.Text>
-          {textDetail.getText("tasks_action_delete")}
+          {getText("tasks_action_delete")}
         </Button.Text>
       </Button>
     </>

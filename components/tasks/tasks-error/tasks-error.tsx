@@ -1,6 +1,7 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 
 /**
@@ -16,9 +17,10 @@ export interface TasksErrorProps {
 }
 
 export function TasksError({ message, "data-testid": testId }: TasksErrorProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
-  const errorMessage = message || textDetail.getText("tasks_error");
+  const errorMessage = message || getText("tasks_error");
 
   return (
     <div

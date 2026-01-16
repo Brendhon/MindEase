@@ -5,6 +5,7 @@ import { PageContent, PageHeader } from "@/components/layout";
 import { ContentSettings, ProfileResetButton } from "@/components/profile";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 
@@ -34,12 +35,15 @@ export function DashboardContent({
 }: DashboardContentProps) {
   const {
     error: settingsError,
-    textDetail,
   } = useCognitiveSettings();
   
   // Use accessibility classes hook for optimized class generation
   // Only re-renders when spacing changes
   const { spacingClasses } = useAccessibilityClasses();
+  
+  // Use text detail hook for optimized text helpers
+  // Only re-renders when textDetail setting changes
+  const textDetail = useTextDetail();
 
   const hasError = error || settingsError;
 

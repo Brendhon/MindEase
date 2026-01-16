@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import { cn } from "@/utils/ui";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
+import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 import { TaskColumn } from "../task-column";
 
 /**
@@ -39,7 +39,8 @@ export function TaskList({
   onToggleSubtask,
   "data-testid": testId,
 }: TaskListProps) {
-  const { spacingClasses, textDetail } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   const containerClasses = useMemo(
     () => cn(styles.container, spacingClasses.gap),
@@ -53,10 +54,10 @@ export function TaskList({
     return (
       <div className={styles.empty} data-testid={`${testId || "task-list"}-empty`}>
         <p className={styles.emptyText}>
-          {textDetail.getText("tasks_empty" as AccessibilityTextKey)}
+          {getText("tasks_empty")}
         </p>
         <p className={styles.emptyDescription}>
-          {textDetail.getText("tasks_empty_description" as AccessibilityTextKey)}
+          {getText("tasks_empty_description")}
         </p>
       </div>
     );

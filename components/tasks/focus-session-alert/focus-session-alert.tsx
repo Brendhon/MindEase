@@ -2,8 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 import { Check, Pause, Play } from "lucide-react";
 import { useMemo } from "react";
@@ -40,7 +39,7 @@ export function FocusSessionAlert({
   onFinish,
   "data-testid": testId,
 }: FocusSessionAlertProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   if (!isVisible) {
@@ -75,11 +74,11 @@ export function FocusSessionAlert({
     >
       <div className={styles.content}>
         <h3 className={titleClasses}>
-          {textDetail.getText("tasks_focus_session_complete" as AccessibilityTextKey)}
+          {getText("tasks_focus_session_complete")}
         </h3>
         {taskName && (
           <p className={messageClasses}>
-            {textDetail.getText("tasks_focus_active" as AccessibilityTextKey)}: <strong>{taskName}</strong>
+            {getText("tasks_focus_active")}: <strong>{taskName}</strong>
           </p>
         )}
       </div>
@@ -89,12 +88,12 @@ export function FocusSessionAlert({
             variant="primary"
             size="sm"
             onClick={onContinue}
-            aria-label={textDetail.getText("tasks_focus_session_continue_aria" as AccessibilityTextKey)}
+            aria-label={getText("tasks_focus_session_continue_aria")}
             data-testid="focus-session-alert-continue"
           >
             <Button.Icon icon={Play} position="left" />
             <Button.Text>
-              {textDetail.getText("tasks_focus_session_continue" as AccessibilityTextKey)}
+              {getText("tasks_focus_session_continue")}
             </Button.Text>
           </Button>
         )}
@@ -103,12 +102,12 @@ export function FocusSessionAlert({
             variant="secondary"
             size="sm"
             onClick={onPause}
-            aria-label={textDetail.getText("tasks_focus_session_pause_aria" as AccessibilityTextKey)}
+            aria-label={getText("tasks_focus_session_pause_aria")}
             data-testid="focus-session-alert-pause"
           >
             <Button.Icon icon={Pause} position="left" />
             <Button.Text>
-              {textDetail.getText("tasks_focus_session_pause" as AccessibilityTextKey)}
+              {getText("tasks_focus_session_pause")}
             </Button.Text>
           </Button>
         )}
@@ -117,12 +116,12 @@ export function FocusSessionAlert({
             variant="primary"
             size="sm"
             onClick={onFinish}
-            aria-label={textDetail.getText("tasks_focus_session_finish_aria" as AccessibilityTextKey)}
+            aria-label={getText("tasks_focus_session_finish_aria")}
             data-testid="focus-session-alert-finish"
           >
             <Button.Icon icon={Check} position="left" />
             <Button.Text>
-              {textDetail.getText("tasks_focus_session_finish" as AccessibilityTextKey)}
+              {getText("tasks_focus_session_finish")}
             </Button.Text>
           </Button>
         )}

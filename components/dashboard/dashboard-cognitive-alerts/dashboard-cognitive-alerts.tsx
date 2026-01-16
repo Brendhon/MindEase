@@ -1,8 +1,8 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { AlertTriangle, Clock } from "lucide-react";
@@ -30,7 +30,7 @@ export interface DashboardCognitiveAlertsProps {
 const LONG_TASK_ALERT_THRESHOLD_MINUTES = 60; // 1 hour
 
 export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: DashboardCognitiveAlertsProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses(); 
   const { timerState } = useFocusTimer();
   const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
@@ -106,11 +106,11 @@ export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: Dashb
         <div className={styles.alertHeader}>
           <AlertTriangle className={styles.alertIcon} size={20} />
           <h3 className={alertTitleClasses}>
-            {textDetail.getText("dashboard_alert_long_task_title")}
+            {getText("dashboard_alert_long_task_title")}
           </h3>
         </div>
         <p className={alertMessageClasses}>
-          {textDetail.getText("dashboard_alert_long_task_message")}
+          {getText("dashboard_alert_long_task_message")}
           {activeTask?.title && (
             <span className={styles.taskTitle}> "{activeTask.title}"</span>
           )}
@@ -118,7 +118,7 @@ export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: Dashb
         <div className={styles.alertTime}>
           <Clock className={styles.timeIcon} size={16} />
           <span className={cn(styles.timeText, fontSizeClasses.sm)}>
-            {elapsedMinutes} {textDetail.getText("dashboard_alert_minutes")}
+            {elapsedMinutes} {getText("dashboard_alert_minutes")}
           </span>
         </div>
       </div>

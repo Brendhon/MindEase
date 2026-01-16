@@ -2,10 +2,9 @@
 
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { TasksProvider } from "@/providers/tasks-provider";
-import { useTasks } from "@/hooks/useTasks";
 import { useDialog } from "@/hooks/useDialog";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
+import { useTasks } from "@/hooks/useTasks";
 import { Subtask, Task } from "@/models/Task";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { TaskDialog } from "../task-dialog";

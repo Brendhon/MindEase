@@ -3,9 +3,8 @@
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
-import { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { canCompleteTask } from "@/utils/tasks";
 import { cn } from "@/utils/ui";
 import { Check, Coffee, Play } from "lucide-react";
@@ -56,7 +55,7 @@ export function FocusSessionCompleteDialog({
   onFinishTask,
   "data-testid": testId,
 }: FocusSessionCompleteDialogProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getTextWithReplace, getText } = useTextDetail();
   const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   // Check if task can be finished (no pending subtasks)
@@ -94,20 +93,13 @@ export function FocusSessionCompleteDialog({
     onClose();
   };
 
-  // Translate and replace 
-  const translateAndReplace = (text: AccessibilityTextKey, minutes?: number) => {
-    return textDetail.getText(text).replace("{minutes}", minutes?.toString() || "");
-  };
-
   // Get localized texts with placeholders replaced
-  const titleText = translateAndReplace("tasks_focus_session_complete_title");
-  const messageText = translateAndReplace("tasks_focus_session_complete_message", focusDuration);
-
-  const startBreakText = translateAndReplace("tasks_focus_session_start_break", breakDuration);
-  const startBreakAria = translateAndReplace("tasks_focus_session_start_break_aria", breakDuration);
-
-  const continueFocusText = translateAndReplace("tasks_focus_session_continue_focus", focusDuration);
-  const continueFocusAria = translateAndReplace("tasks_focus_session_continue_focus_aria", focusDuration);
+  const titleText = getText("tasks_focus_session_complete_title");
+  const messageText = getTextWithReplace("tasks_focus_session_complete_message", { minutes: focusDuration.toString() });
+  const startBreakText = getTextWithReplace("tasks_focus_session_start_break", { minutes: breakDuration.toString() });
+  const startBreakAria = getTextWithReplace("tasks_focus_session_start_break_aria", { minutes: breakDuration.toString() });
+  const continueFocusText = getTextWithReplace("tasks_focus_session_continue_focus", { minutes: focusDuration.toString() });
+  const continueFocusAria = getTextWithReplace("tasks_focus_session_continue_focus_aria", { minutes: focusDuration.toString() });
 
   return (
     <Dialog
@@ -123,7 +115,7 @@ export function FocusSessionCompleteDialog({
         </p>
 
         <p className={cn(styles.question, fontSizeClasses.base)}>
-          {textDetail.getText("tasks_focus_session_complete")}
+          {getText("tasks_focus_session_complete")}
         </p>
 
         <div className={actionsClasses}>
@@ -161,13 +153,13 @@ export function FocusSessionCompleteDialog({
             <Button
               variant="primary"
               onClick={handleFinishTask}
-              aria-label={textDetail.getText("tasks_focus_session_finish_aria")}
+              aria-label={getText("tasks_focus_session_finish_aria")}
               data-testid="focus-session-complete-finish"
               className={styles.button}
             >
               <Button.Icon icon={Check} position="left" />
               <Button.Text>
-                {textDetail.getText("tasks_focus_session_finish")}
+                {getText("tasks_focus_session_finish")}
               </Button.Text>
             </Button>
           )}

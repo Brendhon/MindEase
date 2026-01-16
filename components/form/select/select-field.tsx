@@ -1,11 +1,11 @@
 "use client";
 
-import { ReactNode, SelectHTMLAttributes, forwardRef, useMemo } from "react";
-import { Select as HeadlessSelect } from "@headlessui/react";
-import { cn } from "@/utils/ui";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
-import { styles, getContrastClasses } from "./select-styles";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { cn } from "@/utils/ui";
+import { Select as HeadlessSelect } from "@headlessui/react";
+import { ReactNode, SelectHTMLAttributes, forwardRef, useMemo } from "react";
+import { getContrastClasses, styles } from "./select-styles";
 
 /**
  * Select.Field - Select field subcomponent
@@ -40,8 +40,8 @@ const SelectFieldRoot = forwardRef<HTMLSelectElement, SelectFieldProps>(
       animationClasses, // Recalculates only when settings.animations changes
     } = useAccessibilityClasses();
     
-    // Get contrast setting directly from context (only re-renders when contrast changes)
-    const { settings } = useCognitiveSettingsContext();
+    // Get contrast setting directly from (only re-renders when contrast changes)
+    const { settings } = useCognitiveSettings();
 
     // Generate contrast classes with select-specific logic
     const contrastClasses = useMemo(

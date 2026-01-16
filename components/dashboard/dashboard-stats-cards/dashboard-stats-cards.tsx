@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { BarChart3, CheckCircle2, Clock, ListTodo } from "lucide-react";
@@ -21,7 +21,7 @@ export interface DashboardStatsCardsProps {
 }
 
 export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardStatsCardsProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   // Calculate statistics
@@ -53,7 +53,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
     <div className={containerClasses} data-testid={testId || "dashboard-stats-cards"}>
       <StatCard
         icon={BarChart3}
-        title={textDetail.getText("dashboard_stats_total")}
+        title={getText("dashboard_stats_total")}
         value={stats.total}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -61,7 +61,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={ListTodo}
-        title={textDetail.getText("dashboard_stats_pending")}
+        title={getText("dashboard_stats_pending")}
         value={stats.pending}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -69,7 +69,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={Clock}
-        title={textDetail.getText("dashboard_stats_in_progress")}
+        title={getText("dashboard_stats_in_progress")}
         value={stats.inProgress}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -77,7 +77,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={CheckCircle2}
-        title={textDetail.getText("dashboard_stats_completed")}
+        title={getText("dashboard_stats_completed")}
         value={stats.completed}
         titleClasses={titleClasses}
         valueClasses={valueClasses}

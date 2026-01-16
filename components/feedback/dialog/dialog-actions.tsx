@@ -1,7 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
@@ -43,16 +44,13 @@ export function DialogActions({
   onClose,
   "data-testid": testId = "dialog",
 }: DialogActionsProps) {
-  const { textDetail, spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
-  const cancelLabel = cancelLabelKey
-    ? textDetail.getText(cancelLabelKey)
-    : textDetail.getText("button_cancel" as any);
+  const cancelLabel = cancelLabelKey ? getText(cancelLabelKey as AccessibilityTextKey) : getText("button_cancel");
 
-  const confirmLabel = confirmLabelKey
-    ? textDetail.getText(confirmLabelKey)
-    : textDetail.getText("button_save" as any);
-
+  const confirmLabel = confirmLabelKey ? getText(confirmLabelKey) : getText("button_save");
+  
   const actionsClasses = cn(styles.actions, spacingClasses.gap);
 
   // If no actions provided, show OK button
@@ -64,7 +62,7 @@ export function DialogActions({
           onClick={onClose}
           data-testid={`${testId}-ok`}
         >
-          <Button.Text>{textDetail.getText("button_save" as any)}</Button.Text>
+          <Button.Text>{getText("button_save")}</Button.Text>
         </Button>
       </div>
     );
@@ -93,7 +91,7 @@ export function DialogActions({
           {isLoading && <Button.Loading />}
           <Button.Text>
             {isLoading
-              ? textDetail.getText("loading" as any)
+              ? getText("loading")
               : confirmLabel}
           </Button.Text>
         </Button>

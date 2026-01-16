@@ -1,6 +1,7 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 
@@ -24,7 +25,8 @@ export interface ToastMessageProps {
 }
 
 export function ToastMessage({ messageKey, className, "data-testid": testId }: ToastMessageProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   return (
     <div className={styles.content}>
@@ -32,7 +34,7 @@ export function ToastMessage({ messageKey, className, "data-testid": testId }: T
         className={cn(styles.message, fontSizeClasses.sm, className)}
         data-testid={testId}
       >
-        {textDetail.getText(messageKey)}
+        {getText(messageKey)}
       </p>
     </div>
   );

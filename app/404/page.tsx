@@ -2,7 +2,8 @@
 
 import { PageContainer } from "@/components/layout";
 import { Button } from "@/components/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { PAGE_ROUTES } from "@/utils/routes";
 import { cn } from "@/utils/ui";
 import Link from "next/link";
@@ -18,12 +19,8 @@ import { useMemo } from "react";
 export default function NotFound404Page() {
   // Use cognitive settings hook for automatic accessibility class generation
   // Uses default settings when user is not authenticated
-  const {
-    spacingClasses, // Recalculates when settings.spacing changes
-    fontSizeClasses, // Recalculates when settings.fontSize changes
-    animationClasses, // Recalculates when settings.animations changes
-    textDetail, // Text detail helper for summary/detailed modes
-  } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses, animationClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   // Generate content classes with spacing preference
   const contentClasses = useMemo(
@@ -69,22 +66,22 @@ export default function NotFound404Page() {
             <div className={headerClasses}>
               <h1 className={titleClasses}>404</h1>
               <h2 className={subtitleClasses}>
-                {textDetail.getText("404_subtitle")}
+                {getText("404_subtitle")}
               </h2>
               <p className={descriptionClasses}>
-                {textDetail.getText("404_description")}
+                {getText("404_description")}
               </p>
             </div>
 
             <div className={actionsClasses}>
               <Link href={PAGE_ROUTES.HOME}>
                 <Button variant="primary" size="lg" className={styles.primaryButton}>
-                  <Button.Text>{textDetail.getText("404_button_home")}</Button.Text>
+                  <Button.Text>{getText("404_button_home")}</Button.Text>
                 </Button>
               </Link>
               <Link href={PAGE_ROUTES.LOGIN}>
                 <Button variant="ghost" size="md" className={styles.secondaryButton}>
-                  <Button.Text>{textDetail.getText("404_button_login")}</Button.Text>
+                  <Button.Text>{getText("404_button_login")}</Button.Text>
                 </Button>
               </Link>
             </div>

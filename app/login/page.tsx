@@ -11,8 +11,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useAuth } from "@/hooks/useAuth";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 import { LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -24,12 +25,8 @@ export default function LoginPage() {
 
   // Use cognitive settings hook for automatic accessibility class generation
   // Uses default settings when user is not authenticated
-  const { 
-    spacingClasses, // Recalculates when settings.spacing changes
-    fontSizeClasses, // Recalculates when settings.fontSize changes
-    animationClasses, // Recalculates when settings.animations changes
-    textDetail, // Text detail helper for summary/detailed modes
-  } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses, animationClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -87,16 +84,16 @@ export default function LoginPage() {
   return (
     <div className={styles.container} data-testid="login-page-container">
       <main className={mainClasses} role="main">
-        <section 
+        <section
           className={cn(cardClasses, animationClasses)} // Dynamically updates based on settings.animations
-          aria-labelledby="login-title" 
+          aria-labelledby="login-title"
           data-testid="login-card"
         >
           <h1 id="login-title" className={titleClasses} data-testid="login-title">
-            {textDetail.getText("login_title")}
+            {getText("login_title")}
           </h1>
           <p className={descriptionClasses} data-testid="login-description">
-            {textDetail.getText("login_description")}
+            {getText("login_description")}
           </p>
 
           <div className={buttonContainerClasses}>
@@ -107,16 +104,16 @@ export default function LoginPage() {
               disabled={isLoading}
               isLoading={isLoading}
               className={styles.button}
-              aria-label={textDetail.getText("login_button_aria")}
+              aria-label={getText("login_button_aria")}
               data-testid="login-button-signin"
             >
               <Button.Icon icon={LogIn} position="left" size="lg" />
-              <Button.Text>{textDetail.getText("login_button")}</Button.Text>
+              <Button.Text>{getText("login_button")}</Button.Text>
             </Button>
           </div>
 
           <p className={disclaimerClasses} data-testid="login-disclaimer">
-            {textDetail.getText("login_disclaimer")}
+            {getText("login_disclaimer")}
           </p>
         </section>
       </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
 
@@ -29,7 +29,7 @@ export function DialogInfo({
   className,
   "data-testid": testId,
 }: DialogInfoProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   return (
     <div

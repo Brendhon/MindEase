@@ -10,6 +10,7 @@ import { DialogActions } from "./dialog-actions";
 import { DialogInfo } from "./dialog-info";
 import { styles } from "./dialog-manager-styles";
 import { DialogMessage } from "./dialog-message";
+import { useTextDetail } from "@/hooks/useTextDetail";
 
 /**
  * DialogManager Component - MindEase
@@ -18,7 +19,7 @@ import { DialogMessage } from "./dialog-message";
  */
 function DialogManagerRoot() {
   const { dialog, closeDialog, updateDialog } = useDialog();
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
   const { spacingClasses } = useAccessibilityClasses();
 
   // Generate content classes with spacing preference
@@ -66,7 +67,7 @@ function DialogManagerRoot() {
     <Dialog
       isOpen={!!dialog}
       onClose={handleClose}
-      title={textDetail.getText(dialog.titleKey)}
+      title={getText(dialog.titleKey)}
       preventClose={dialog.preventClose}
       data-testid={dialogTestId}
     >

@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 
 /**
  * DashboardLoading Component - MindEase
@@ -14,7 +15,8 @@ export interface DashboardLoadingProps {
 }
 
 export function DashboardLoading({ "data-testid": testId }: DashboardLoadingProps) {
-  const { fontSizeClasses, animationClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, animationClasses, spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   const containerClasses = useMemo(
     () => cn(styles.container, animationClasses),
@@ -35,7 +37,7 @@ export function DashboardLoading({ "data-testid": testId }: DashboardLoadingProp
     <div className={containerClasses} data-testid={testId || "dashboard-loading-container"}>
       <div className={mainClasses}>
         <p className={loadingClasses} data-testid={testId ? `${testId}-text` : "dashboard-loading"}>
-          {textDetail.getText("dashboard_loading")}
+          {getText("dashboard_loading")}
         </p>
       </div>
     </div>

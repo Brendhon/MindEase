@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 
 /**
@@ -21,9 +21,9 @@ export interface SidebarLabelProps {
 }
 
 export function SidebarLabel({ labelKey }: SidebarLabelProps) {
-  const { textDetail } = useCognitiveSettings();
+  const { getText } = useTextDetail();
 
-  return <span>{textDetail.getText(labelKey)}</span>;
+  return <span>{getText(labelKey)}</span>;
 }
 
 SidebarLabel.displayName = "Sidebar.Label";

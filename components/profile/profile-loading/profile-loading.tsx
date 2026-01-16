@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 
 /**
  * ProfileLoading Component - MindEase
@@ -14,7 +15,8 @@ export interface ProfileLoadingProps {
 }
 
 export function ProfileLoading({ "data-testid": testId }: ProfileLoadingProps) {
-  const { fontSizeClasses, animationClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, animationClasses, spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   const containerClasses = useMemo(
     () => cn(styles.container, animationClasses),
@@ -35,7 +37,7 @@ export function ProfileLoading({ "data-testid": testId }: ProfileLoadingProps) {
     <div className={containerClasses} data-testid={testId || "profile-loading-container"}>
       <div className={mainClasses}>
         <p className={loadingClasses} data-testid={testId ? `${testId}-text` : "profile-loading"}>
-          {textDetail.getText("profile_loading")}
+          {getText("profile_loading")}
         </p>
       </div>
     </div>

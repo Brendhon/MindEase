@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { X } from "lucide-react";
 
@@ -30,7 +30,7 @@ export function ToastDismiss({
   className,
   "data-testid": testId,
 }: ToastDismissProps) {
-  const { animationClasses } = useCognitiveSettings();
+  const { animationClasses } = useAccessibilityClasses();
 
   return (
     <button

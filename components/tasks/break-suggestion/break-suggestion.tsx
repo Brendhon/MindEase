@@ -2,7 +2,8 @@
 
 import { Card } from "@/components/ui";
 import { Button } from "@/components/ui/button";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 import { Play } from "lucide-react";
 import { useMemo } from "react";
@@ -32,7 +33,8 @@ export function BreakSuggestion({
   onResume,
   "data-testid": testId,
 }: BreakSuggestionProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
 
   const suggestionClasses = useMemo(
     () => cn(styles.suggestion, spacingClasses.padding),
@@ -60,11 +62,11 @@ export function BreakSuggestion({
     >
       <Card.Header>
         <Card.Title className={messageClasses}>
-          {textDetail.getText("tasks_focus_suggest_break")}
+          {getText("tasks_focus_suggest_break")}
         </Card.Title>
 
         <Card.Description className={durationClasses}>
-          {textDetail.getText("tasks_focus_suggest_break_duration")} {breakDuration} {textDetail.getText("tasks_focus_suggest_break_minutes")}
+          {getText("tasks_focus_suggest_break_duration")} {breakDuration} {getText("tasks_focus_suggest_break_minutes")}
         </Card.Description>
       </Card.Header>
 
@@ -74,12 +76,12 @@ export function BreakSuggestion({
             variant="primary"
             size="sm"
             onClick={onResume}
-            aria-label={textDetail.getText("tasks_action_resume_aria")}
+            aria-label={getText("tasks_action_resume_aria")}
             data-testid="break-suggestion-resume"
           >
             <Button.Icon icon={Play} position="left" />
             <Button.Text>
-              {textDetail.getText("tasks_action_resume")}
+              {getText("tasks_action_resume")}
             </Button.Text>
           </Button>
         )}

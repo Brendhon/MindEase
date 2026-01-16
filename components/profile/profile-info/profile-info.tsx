@@ -2,10 +2,11 @@
 
 import { PageHeader } from "@/components/layout";
 import { Button, Card } from "@/components/ui";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useAuth } from "@/hooks/useAuth";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
+import { useTextDetail } from "@/hooks/useTextDetail";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
@@ -30,7 +31,8 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   const user = userProp || auth.user
   
   const { signOut } = auth;
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
+  const { getText } = useTextDetail();
   const { error: showError, success } = useFeedback();
   const { openDialog } = useDialog();
 
@@ -80,7 +82,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
     return (
       <div className={styles.container} data-testid={testId || "profile-info-container"}>
         <p className={cn(styles.error, fontSizeClasses.base)}>
-          {textDetail.getText("error")}
+          {getText("error")}
         </p>
       </div>
     );
@@ -123,21 +125,21 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
           variant="secondary"
           size="md"
           onClick={() => signOut()}
-          aria-label={textDetail.getText("logout")}
+          aria-label={getText("logout")}
           data-testid={testId ? `${testId}-logout-button` : "profile-logout-button"}
         >
           <Button.Icon icon={LogOut} position="left" size="md" />
-          <Button.Text>{textDetail.getText("logout")}</Button.Text>
+          <Button.Text>{getText("logout")}</Button.Text>
         </Button>
         <Button
           variant="danger"
           size="md"
           onClick={handleDeleteAccount}
-          aria-label={textDetail.getText("profile_delete_account_aria")}
+          aria-label={getText("profile_delete_account_aria")}
           data-testid={testId ? `${testId}-delete-account-button` : "profile-delete-account-button"}
         >
           <Button.Icon icon={Trash2} position="left" size="md" />
-          <Button.Text>{textDetail.getText("profile_delete_account")}</Button.Text>
+          <Button.Text>{getText("profile_delete_account")}</Button.Text>
         </Button>
       </div>
     </div>
