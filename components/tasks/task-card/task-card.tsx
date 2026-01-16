@@ -6,6 +6,7 @@ import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
+import { useTasks } from "@/hooks/useTasks";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
@@ -52,8 +53,9 @@ export function TaskCard({
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
   const { success } = useFeedback();
+  const { hasTasksInProgress } = useTasks();
 
-  const hasActiveTask = hasFocusActiveTask || hasBreakActiveTask;
+  const hasActiveTask = hasTasksInProgress(task.id);
 
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {

@@ -172,6 +172,15 @@ export function useTasks() {
   );
 
   /**
+   * Check if has tasks in progress except the given task id
+   * @param taskId - Task id to exclude
+   * @returns true if has tasks in progress, false otherwise
+   */
+  const hasTasksInProgress = useCallback((taskId: string) => {
+    return tasks.some((t) => t.status === 1 && t.id !== taskId);
+  }, [tasks]);
+
+  /**
    * Toggle subtask completion
    * Automatically syncs with Firestore and updates local state
    */
@@ -206,5 +215,6 @@ export function useTasks() {
     // Utilities
     getTask,
     initializeTasks,
+    hasTasksInProgress,
   };
 }
