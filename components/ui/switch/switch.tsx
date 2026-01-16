@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { SwitchDescription } from "./switch-description";
@@ -50,7 +50,7 @@ function SwitchRoot({
 }: SwitchProps) {
 
   // Use cognitive settings hook for automatic accessibility class generation
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate container classes with spacing preference
   const containerClasses = useMemo(

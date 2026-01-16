@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useMemo } from "react";
 import { styles } from "./switch-styles";
 
 /**
@@ -33,7 +33,7 @@ export function SwitchDescription({
   id,
   "data-testid": testId,
 }: SwitchDescriptionProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   const descriptionClasses = useMemo(
     () => cn(styles.description, fontSizeClasses.sm),

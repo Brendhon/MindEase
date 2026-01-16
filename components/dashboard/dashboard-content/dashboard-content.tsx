@@ -4,6 +4,7 @@ import { DashboardCognitiveAlerts, DashboardError, DashboardStatsCards, Interact
 import { PageContent, PageHeader } from "@/components/layout";
 import { ContentSettings, ProfileResetButton } from "@/components/profile";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 
@@ -33,9 +34,12 @@ export function DashboardContent({
 }: DashboardContentProps) {
   const {
     error: settingsError,
-    spacingClasses,
     textDetail,
   } = useCognitiveSettings();
+  
+  // Use accessibility classes hook for optimized class generation
+  // Only re-renders when spacing changes
+  const { spacingClasses } = useAccessibilityClasses();
 
   const hasError = error || settingsError;
 

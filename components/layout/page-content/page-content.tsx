@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 
@@ -41,7 +41,7 @@ export function PageContent({
   mainClassName,
   "data-testid": testId = "page-content",
 }: PageContentProps) {
-  const { spacingClasses, animationClasses } = useCognitiveSettings();
+  const { animationClasses, spacingClasses } = useAccessibilityClasses();
 
   // Generate main container classes with spacing preference
   const mainClasses = useMemo(

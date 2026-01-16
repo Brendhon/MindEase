@@ -1,9 +1,9 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { cn } from "@/utils/ui";
 import { Label } from "@headlessui/react";
 import { useMemo } from "react";
-import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useRadioGroupContext } from "./radio-group-context";
 import { styles } from "./radio-group-styles";
 
@@ -36,7 +36,7 @@ export function RadioGroupLabel({
   id: providedId,
   "data-testid": testId,
 }: RadioGroupLabelProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
   const context = useRadioGroupContext();
   const id = providedId || context.labelId;
 

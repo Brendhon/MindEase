@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useMemo } from "react";
 import { useRadioGroupContext } from "./radio-group-context";
 import { styles } from "./radio-group-styles";
 
@@ -36,7 +36,7 @@ export function RadioGroupDescription({
   id: providedId,
   "data-testid": testId,
 }: RadioGroupDescriptionProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
   const context = useRadioGroupContext();
   const id = providedId || context.descriptionId;
 

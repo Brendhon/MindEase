@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { Card } from "@/components/ui/card";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { Task } from "@/models/Task";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/utils/ui";
-import { CheckCircle2, Clock, ListTodo, BarChart3 } from "lucide-react";
+import { BarChart3, CheckCircle2, Clock, ListTodo } from "lucide-react";
+import { useMemo } from "react";
 
 /**
  * DashboardStatsCards Component - MindEase
@@ -20,7 +21,8 @@ export interface DashboardStatsCardsProps {
 }
 
 export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardStatsCardsProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   // Calculate statistics
   const stats = useMemo(() => {

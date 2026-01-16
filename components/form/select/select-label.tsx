@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode, LabelHTMLAttributes, useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { LabelHTMLAttributes, ReactNode, useMemo } from "react";
 import { styles } from "./select-styles";
 
 /**
@@ -27,7 +27,7 @@ export interface SelectLabelProps extends LabelHTMLAttributes<HTMLLabelElement> 
 export function SelectLabel({ children, className, ...props }: SelectLabelProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class (use sm for labels)
   const fontSizeClass = useMemo(

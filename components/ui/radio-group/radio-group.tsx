@@ -1,15 +1,15 @@
 "use client";
 
-import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
-import { useId, useMemo, ReactNode } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { styles } from "./radio-group-styles";
-import { RadioOption } from "./radio-group-option";
-import { RadioGroupLabel } from "./radio-group-label";
+import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
+import { ReactNode, useId, useMemo } from "react";
+import { RadioGroupContext } from "./radio-group-context";
 import { RadioGroupDescription } from "./radio-group-description";
 import { RadioGroupHeader } from "./radio-group-header";
-import { RadioGroupContext } from "./radio-group-context";
+import { RadioGroupLabel } from "./radio-group-label";
+import { RadioOption } from "./radio-group-option";
+import { styles } from "./radio-group-styles";
 
 /**
  * RadioGroup Component - MindEase
@@ -66,7 +66,7 @@ function RadioGroupRoot<T extends string>({
   const descriptionId = `radio-group-description-${id}`;
 
   // Use cognitive settings hook for automatic accessibility class generation
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate container classes with spacing preference
   const containerClasses = useMemo(

@@ -5,9 +5,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useSidebar } from "@/hooks/useSidebar";
 import { getAccessibilityText } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui/ui";
 import { LogOut, Menu } from "lucide-react";
@@ -20,7 +21,8 @@ export interface HeaderProps {
 export function Header({ title = "MindEase" }: HeaderProps) {
   const { signOut, isLoading } = useAuth();
   const { toggle } = useSidebar();
-  const { settings, fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { settings, textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   // Show menu button on mobile always, or on desktop when focus mode is enabled (to access hidden sidebar)
   // In focus mode, sidebar is hidden as a distraction, so we need the button to access it

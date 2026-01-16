@@ -1,14 +1,15 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
 import { getBorderContrastClasses, getFocusModeClasses } from "@/utils/accessibility/tailwind-classes";
-import { CardHeader } from "./card-header";
-import { CardTitle } from "./card-title";
-import { CardDescription } from "./card-description";
+import { cn } from "@/utils/ui";
+import { ReactNode, useMemo } from "react";
 import { CardContent } from "./card-content";
+import { CardDescription } from "./card-description";
+import { CardHeader } from "./card-header";
 import { styles } from "./card-styles";
+import { CardTitle } from "./card-title";
 
 /**
  * Card Component - MindEase
@@ -70,7 +71,8 @@ const CardRoot = function Card({
   focused = false,
   "data-testid": testId,
 }: CardProps) {
-  const { spacingClasses, contrastClasses, animationClasses, settings } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { spacingClasses, contrastClasses, animationClasses } = useAccessibilityClasses();
 
   const borderClasses = useMemo(
     () => getBorderContrastClasses(settings.contrast, "subtle"),

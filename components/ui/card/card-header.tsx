@@ -1,9 +1,10 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { cn } from "@/utils/ui";
 import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
+import { cn } from "@/utils/ui";
+import { ReactNode, useMemo } from "react";
 import { styles } from "./card-styles";
 
 /**
@@ -26,7 +27,8 @@ export interface CardHeaderProps {
 }
 
 export function CardHeader({ children, className, "data-testid": testId }: CardHeaderProps) {
-  const { spacingClasses, settings } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
   
   const borderClasses = useMemo(
     () => getBorderContrastClasses(settings.contrast, "subtle"),

@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
+import { ReactNode, useMemo } from "react";
 import { styles } from "./card-styles";
 
 /**
@@ -26,7 +26,7 @@ export interface CardContentProps {
 }
 
 export function CardContent({ children, className, role, "data-testid": testId }: CardContentProps) {
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   const contentClasses = useMemo(
     () => cn(styles.content, spacingClasses.gap, className),

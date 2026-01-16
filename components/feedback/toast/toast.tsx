@@ -11,6 +11,7 @@ import { ToastDismiss } from "./toast-dismiss";
 import { ToastIcon } from "./toast-icon";
 import { ToastMessage } from "./toast-message";
 import { getContrastClasses, getTransitionClasses, getTypeClasses, styles } from "./toast-styles";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 
 interface ToastProps {
   id: string;
@@ -41,7 +42,7 @@ function getDismissAriaLabel(type: FeedbackType): string {
  */
 export function ToastContainer() {
   const { feedbacks } = useFeedbackContext();
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   const containerGapClasses = spacingClasses.gap;
 
@@ -79,11 +80,8 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
 
   // Use cognitive settings hook for automatic accessibility class generation
   // These classes automatically update when user preferences change
-  const {
-    settings,
-    spacingClasses, // Recalculates when settings.spacing changes
-    animationClasses // Recalculates when settings.animations changes
-  } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { spacingClasses, animationClasses } = useAccessibilityClasses();
 
   // Generate spacing classes for toast (padding + gap) - uses hook's pre-computed classes
   const toastSpacingClasses = useMemo(

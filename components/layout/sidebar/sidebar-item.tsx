@@ -7,6 +7,7 @@ import { cn } from "@/utils/ui/ui";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { styles, getContrastClasses } from "./sidebar-styles";
 import { useSidebar } from "@/hooks/useSidebar";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 
 /**
  * Sidebar.Item - Navigation item subcomponent
@@ -42,11 +43,8 @@ export function SidebarItem({
   
   // Use cognitive settings hook for automatic accessibility class generation
   // These classes automatically update when user preferences change
-  const { 
-    settings, 
-    fontSizeClasses, // Recalculates when settings.fontSize changes
-    animationClasses // Recalculates when settings.animations changes
-  } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { fontSizeClasses, animationClasses } = useAccessibilityClasses();
 
   // Generate contrast classes with active state (sidebar-specific logic)
   const contrastClasses = useMemo(

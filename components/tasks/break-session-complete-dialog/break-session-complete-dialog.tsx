@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
@@ -45,7 +46,8 @@ export function BreakSessionCompleteDialog({
   onEndFocus,
   "data-testid": testId,
 }: BreakSessionCompleteDialogProps) {
-  const { spacingClasses, fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   const contentClasses = useMemo(
     () => cn(styles.content, spacingClasses.gap),

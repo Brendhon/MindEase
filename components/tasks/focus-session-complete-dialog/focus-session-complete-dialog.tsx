@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { Task } from "@/models/Task";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
@@ -55,7 +56,8 @@ export function FocusSessionCompleteDialog({
   onFinishTask,
   "data-testid": testId,
 }: FocusSessionCompleteDialogProps) {
-  const { spacingClasses, fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   // Check if task can be finished (no pending subtasks)
   const canFinish = useMemo(() => {

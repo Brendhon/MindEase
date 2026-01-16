@@ -1,14 +1,15 @@
 "use client";
 
 import { Dialog } from "@/components/ui/dialog";
-import { useDialog } from "@/hooks/useDialog";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useDialog } from "@/hooks/useDialog";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { DialogActions } from "./dialog-actions";
 import { DialogInfo } from "./dialog-info";
-import { DialogMessage } from "./dialog-message";
 import { styles } from "./dialog-manager-styles";
+import { DialogMessage } from "./dialog-message";
 
 /**
  * DialogManager Component - MindEase
@@ -17,7 +18,8 @@ import { styles } from "./dialog-manager-styles";
  */
 function DialogManagerRoot() {
   const { dialog, closeDialog, updateDialog } = useDialog();
-  const { spacingClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate content classes with spacing preference
   // Must be called before any early returns to maintain Hook order

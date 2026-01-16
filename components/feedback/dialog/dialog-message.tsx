@@ -4,6 +4,7 @@ import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 
 /**
  * Dialog.Message - Message subcomponent
@@ -28,7 +29,8 @@ export function DialogMessage({
   className,
   "data-testid": testId,
 }: DialogMessageProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();  
 
   return (
     <p

@@ -1,5 +1,6 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
@@ -55,7 +56,8 @@ export function PageHeader({
   className,
   "data-testid": testId,
 }: PageHeaderProps) {
-  const { fontSizeClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   // Generate title classes with standardized 2xl size
   const titleClasses = useMemo(

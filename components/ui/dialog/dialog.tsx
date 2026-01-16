@@ -1,10 +1,11 @@
 "use client";
 
-import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
-import { Fragment, ReactNode, useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
-import { styles, getContrastClasses, getTransitionClasses } from "./dialog-styles";
+import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
+import { Fragment, ReactNode, useMemo } from "react";
+import { getContrastClasses, getTransitionClasses, styles } from "./dialog-styles";
 
 /**
  * Dialog Component - MindEase
@@ -32,9 +33,8 @@ export function Dialog({
   // These classes automatically update when user preferences change
   const { 
     settings, 
-    spacingClasses, // Recalculates when settings.spacing changes
-    fontSizeClasses, // Recalculates when settings.fontSize changes
   } = useCognitiveSettings();
+  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   // Generate contrast classes with dialog-specific logic
   const contrastClasses = useMemo(

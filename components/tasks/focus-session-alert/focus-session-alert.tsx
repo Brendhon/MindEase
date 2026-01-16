@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
@@ -39,7 +40,8 @@ export function FocusSessionAlert({
   onFinish,
   "data-testid": testId,
 }: FocusSessionAlertProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   if (!isVisible) {
     return null;

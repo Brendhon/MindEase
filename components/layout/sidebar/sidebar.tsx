@@ -1,17 +1,18 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { PROTECTED_ROUTES } from "@/utils/routes";
-import { cn } from "@/utils/ui/ui";
+import { useSidebar } from "@/hooks/useSidebar";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { getAccessibilityText } from "@/utils/accessibility/content";
+import { PROTECTED_ROUTES } from "@/utils/routes";
+import { cn } from "@/utils/ui/ui";
 import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
-import { useMemo, useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { SidebarIcon } from "./sidebar-icon";
 import { SidebarItem } from "./sidebar-item";
 import { SidebarLabel } from "./sidebar-label";
 import { styles } from "./sidebar-styles";
-import { useSidebar } from "@/hooks/useSidebar";
 
 /**
  * Sidebar Component - MindEase
@@ -72,7 +73,8 @@ const defaultItems: SidebarItemData[] = [
 
 function SidebarRoot({ items = defaultItems }: SidebarProps) {
   // Read cognitive accessibility settings - classes are automatically computed
-  const { spacingClasses, settings } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
   const { isOpen, close } = useSidebar();
 
   // Hide sidebar when focus mode is enabled (unless it's explicitly opened)

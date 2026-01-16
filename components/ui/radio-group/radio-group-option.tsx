@@ -1,6 +1,6 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
 import { Label, Radio } from "@headlessui/react";
 import { useMemo } from "react";
@@ -35,7 +35,7 @@ export interface RadioOptionProps {
 }
 
 export function RadioOption({ value, label, description, "data-testid": testId }: RadioOptionProps) {
-  const { fontSizeClasses, spacingClasses } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   const labelClasses = useMemo(
     () => cn(styles.optionLabel, fontSizeClasses.base),

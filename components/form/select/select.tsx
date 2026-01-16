@@ -1,12 +1,12 @@
 "use client";
 
-import { ReactNode, useMemo } from "react";
-import { Field as HeadlessField } from "@headlessui/react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { SelectLabel } from "./select-label";
-import { SelectField } from "./select-field";
+import { Field as HeadlessField } from "@headlessui/react";
+import { ReactNode, useMemo } from "react";
 import { SelectError } from "./select-error";
+import { SelectField } from "./select-field";
+import { SelectLabel } from "./select-label";
 import { styles } from "./select-styles";
 
 /**
@@ -48,7 +48,7 @@ export interface SelectProps {
 export function Select({ children, className }: SelectProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Gap automatically updates when user preferences change
-  const { spacingClasses } = useCognitiveSettings();
+  const { spacingClasses } = useAccessibilityClasses();
 
   // Generate container classes with spacing preference
   const containerClasses = useMemo(

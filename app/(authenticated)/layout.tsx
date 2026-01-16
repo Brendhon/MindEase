@@ -29,22 +29,13 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isLoading, loadSettings } = useCognitiveSettings();
+  const { loadSettings } = useCognitiveSettings();
 
   // Load settings from Firestore on mount
   // This ensures settings are available before any component renders
   useEffect(() => {
     loadSettings();
   }, [loadSettings]);
-
-  // Show loading state while settings are being loaded
-  if (isLoading) {
-    return (
-      <div className={styles.loadingContainer}>
-        <p className={styles.loadingText}>Carregando configurações...</p>
-      </div>
-    );
-  }
 
   return (
     <TasksProvider>

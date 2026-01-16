@@ -1,5 +1,6 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
 import { Button as HeadlessButton } from "@headlessui/react";
@@ -61,14 +62,16 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isDisabled = disabled || isLoading;
     
-    // Use cognitive settings hook for automatic accessibility class generation
-    // These classes automatically update when user preferences change
+    // Use accessibility classes hook for optimized class generation
+    // Only re-renders when relevant settings change
     const { 
-      settings, 
-      fontSizeClasses, // Recalculates when settings.fontSize changes
-      animationClasses, // Recalculates when settings.animations changes
-      spacingClasses, // Recalculates when settings.spacing changes
-    } = useCognitiveSettings();
+      fontSizeClasses, // Recalculates only when settings.fontSize changes
+      animationClasses, // Recalculates only when settings.animations changes
+      spacingClasses, // Recalculates only when settings.spacing changes
+    } = useAccessibilityClasses();
+    
+    // Get contrast setting directly from (only re-renders when contrast changes)
+    const { settings } = useCognitiveSettings();
 
     // Generate size classes (height, padding, gap)
     const sizeClasses = useMemo(

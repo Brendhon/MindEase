@@ -1,16 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
 import { getAccessibilityText, type AccessibilityTextKey } from "@/utils/accessibility/content";
-import {
-  getAnimationClasses,
-  getCombinedAccessibilityClasses,
-  getContrastClasses,
-  getFocusModeClasses,
-  getFontSizeClasses,
-  getSpacingClasses,
-  getSpacingValue,
-} from "@/utils/accessibility/tailwind-classes";
-import { useMemo } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { userPreferencesService } from "@/services/user-preferences";
 import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPreferences";
@@ -20,12 +10,14 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPr
  * 
  * Centralized hook for managing cognitive accessibility settings with Firestore synchronization.
  * 
- * This hook encapsulates all business logic following Next.js best practices:
+ * This hook handles:
  * - CRUD operations with Firestore
  * - State synchronization (local + remote)
  * - Loading and error handling
- * - Tailwind class generators for all accessibility settings
  * - Text detail helpers for detailed/summary content
+ * 
+ * For Tailwind classes generation, use `useAccessibilityClasses` hook instead.
+ * This separation reduces unnecessary re-renders and improves performance.
  * 
  * The provider only manages basic state, while this hook handles all business logic.
  * 
@@ -53,14 +45,10 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPr
  *   return <div>Settings loaded</div>;
  * }
  * 
- * // Using Tailwind classes
+ * // For classes, use useAccessibilityClasses instead
  * function StyledComponent() {
- *   const { getContrastClasses, getFontSizeClasses } = useCognitiveSettings();
- *   return (
- *     <div className={`${getContrastClasses()} ${getFontSizeClasses().base}`}>
- *       Accessible content
- *     </div>
- *   );
+ *   const { spacingClasses } = useAccessibilityClasses();
+ *   return <div className={spacingClasses.padding}>Content</div>;
  * }
  * ```
  * 
@@ -209,14 +197,6 @@ export function useCognitiveSettings() {
     },
   }), [settings.textDetail]);
 
-  // Memoized class generators bound to current settings
-  const contrastClasses = useMemo(() => getContrastClasses(settings.contrast), [settings.contrast]);
-  const spacingClasses = useMemo(() => getSpacingClasses(settings.spacing), [settings.spacing]);
-  const spacingValue = useMemo(() => getSpacingValue(settings.spacing), [settings.spacing]);
-  const fontSizeClasses = useMemo(() => getFontSizeClasses(settings.fontSize), [settings.fontSize]);
-  const animationClasses = useMemo(() => getAnimationClasses(settings.animations), [settings.animations]);
-  const focusModeClasses = useMemo(() => getFocusModeClasses(settings.focusMode), [settings.focusMode]);
-
   return {
     // State
     settings,
@@ -231,23 +211,5 @@ export function useCognitiveSettings() {
     
     // Text detail helpers
     textDetail,
-    
-    // Tailwind classes (pre-computed for current settings)
-    contrastClasses,
-    spacingClasses,
-    spacingValue,
-    fontSizeClasses,
-    animationClasses,
-    focusModeClasses,
-    
-    // Dynamic class generators (for custom settings)
-    getContrastClasses: (contrast = settings.contrast) => getContrastClasses(contrast),
-    getSpacingClasses: (spacing = settings.spacing) => getSpacingClasses(spacing),
-    getSpacingValue: (spacing = settings.spacing) => getSpacingValue(spacing),
-    getFontSizeClasses: (fontSize = settings.fontSize) => getFontSizeClasses(fontSize),
-    getAnimationClasses: (animations = settings.animations) => getAnimationClasses(animations),
-    getFocusModeClasses: (focusMode = settings.focusMode) => getFocusModeClasses(focusMode),
-    getCombinedClasses: (context: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl" = "base") => 
-      getCombinedAccessibilityClasses(settings, context),
   };
 }

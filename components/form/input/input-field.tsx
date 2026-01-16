@@ -2,7 +2,8 @@
 
 import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useMemo } from "react";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
 import { styles, getContrastClasses } from "./input-styles";
 
 /**
@@ -29,14 +30,16 @@ const InputFieldRoot = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputF
     const inputType = isTextarea ? undefined : type;
     const isDisabled = props.disabled;
 
-    // Use cognitive settings hook for automatic accessibility class generation
-    // These classes automatically update when user preferences change
+    // Use accessibility classes hook for optimized class generation
+    // Only re-renders when relevant settings change
     const { 
-      settings, 
-      fontSizeClasses, // Recalculates when settings.fontSize changes
-      spacingClasses, // Recalculates when settings.spacing changes
-      animationClasses, // Recalculates when settings.animations changes
-    } = useCognitiveSettings();
+      fontSizeClasses, // Recalculates only when settings.fontSize changes
+      spacingClasses, // Recalculates only when settings.spacing changes
+      animationClasses, // Recalculates only when settings.animations changes
+    } = useAccessibilityClasses();
+    
+    // Get contrast setting directly from context (only re-renders when contrast changes)
+    const { settings } = useCognitiveSettingsContext();
 
     // Generate contrast classes with input-specific logic
     const contrastClasses = useMemo(

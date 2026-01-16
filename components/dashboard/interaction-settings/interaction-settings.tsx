@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { SettingsSection } from "@/components/dashboard/settings-section";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/form/select";
@@ -17,7 +18,11 @@ export interface InteractionSettingsProps {
 }
 
 export function InteractionSettings({ "data-testid": testId }: InteractionSettingsProps) {
-  const { settings, updateSetting, textDetail, spacingClasses } = useCognitiveSettings();
+  const { settings, updateSetting, textDetail } = useCognitiveSettings();
+  
+  // Use accessibility classes hook for optimized class generation
+  // Only re-renders when spacing changes
+  const { spacingClasses } = useAccessibilityClasses();
 
   const timerSettingsClasses = useMemo(
     () => cn(styles.timerSettings, spacingClasses.gap),

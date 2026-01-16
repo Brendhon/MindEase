@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { cn } from "@/utils/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useMemo } from "react";
 import { styles } from "./switch-styles";
 
 /**
@@ -36,7 +36,7 @@ export function SwitchLabel({
   disabled = false,
   "data-testid": testId,
 }: SwitchLabelProps) {
-  const { fontSizeClasses } = useCognitiveSettings();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   const labelClasses = useMemo(
     () => cn(styles.label, fontSizeClasses.base),

@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useEffect, useState } from "react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { AlertTriangle, Clock } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 /**
  * DashboardCognitiveAlerts Component - MindEase
@@ -29,7 +30,8 @@ export interface DashboardCognitiveAlertsProps {
 const LONG_TASK_ALERT_THRESHOLD_MINUTES = 60; // 1 hour
 
 export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: DashboardCognitiveAlertsProps) {
-  const { fontSizeClasses, spacingClasses, textDetail } = useCognitiveSettings();
+  const { textDetail } = useCognitiveSettings();
+  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses(); 
   const { timerState } = useFocusTimer();
   const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
 
