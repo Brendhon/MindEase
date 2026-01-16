@@ -1,6 +1,6 @@
 "use client";
 
-import { useBreakTimer } from "@/contexts/break-timer-context";
+import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";

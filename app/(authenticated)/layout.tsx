@@ -3,7 +3,7 @@
 import { Header, Sidebar } from "@/components/layout";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
-import { BreakTimerProvider } from "@/contexts/break-timer-context";
+import { BreakTimerProvider } from "@/providers/break-timer-provider";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";

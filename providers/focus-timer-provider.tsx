@@ -3,6 +3,21 @@
 import { ReactNode, useReducer, useEffect, useRef, useMemo, useCallback } from "react";
 import { FocusTimerContext, FocusTimerState, TimerAction } from "@/contexts/focus-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { formatTime as formatTimeUtil, isTimerCompleted } from "@/utils/timer/timer-helpers";
+import { createTimerStorage } from "@/utils/timer/timer-storage";
+import {
+  createInitialTimerState,
+  createRunningTimerState,
+  createIdleTimerState,
+  createCompletedTimerState,
+} from "@/utils/timer/timer-state";
+import { restoreTimerState } from "@/utils/timer/timer-restore";
+import { useCountdownInterval, useTimerPersistence } from "@/utils/timer/timer-hooks";
+
+/**
+ * Re-export formatTime for convenience
+ */
+export const formatTime = formatTimeUtil;
 
 /**
  * Focus Timer Provider Props
@@ -12,147 +27,33 @@ export interface FocusTimerProviderProps {
 }
 
 const STORAGE_KEY = "mindEase_focusTimer";
-const COUNTDOWN_INTERVAL_MS = 1000;
+
+// Create storage instance
+const timerStorage = createTimerStorage<FocusTimerState>(STORAGE_KEY, "timer");
+
+// State creation functions using shared utilities
+const createInitialState = (defaultDuration: number) =>
+  createInitialTimerState<FocusTimerState>(defaultDuration, "timerState", "idle");
+
+const createRunningState = (taskId: string, duration: number) =>
+  createRunningTimerState<FocusTimerState>(duration, "timerState", "running", taskId);
+
+const createIdleState = (defaultDuration: number) =>
+  createIdleTimerState<FocusTimerState>(defaultDuration, "timerState", "idle");
 
 /**
- * Format time in seconds to MM:SS string
- * Pure function - easily testable
+ * Restore timer state using shared restore function
  */
-export function formatTime(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-}
-
-/**
- * Calculate remaining time based on start time and initial duration
- * Pure function - easily testable
- */
-function calculateRemainingTime(
-  startTime: Date,
-  initialDuration: number,
-  currentTime: Date = new Date()
-): number {
-  const elapsed = Math.floor((currentTime.getTime() - startTime.getTime()) / 1000);
-  return Math.max(0, initialDuration - elapsed);
-}
-
-/**
- * Check if timer has completed based on remaining time
- * Pure function - easily testable
- */
-function isTimerCompleted(remainingTime: number): boolean {
-  return remainingTime <= 0;
-}
-
-/**
- * Create initial timer state
- * Pure function - easily testable
- */
-function createInitialState(defaultDuration: number): FocusTimerState {
-  return {
-    activeTaskId: null,
-    timerState: "idle",
-    remainingTime: defaultDuration,
-    startTime: null,
-  };
-}
-
-/**
- * Create running timer state
- * Pure function - easily testable
- */
-function createRunningState(taskId: string, duration: number): FocusTimerState {
-  return {
-    activeTaskId: taskId,
-    timerState: "running",
-    remainingTime: duration,
-    startTime: new Date(),
-  };
-}
-
-/**
- * Create idle timer state
- * Pure function - easily testable
- */
-function createIdleState(defaultDuration: number): FocusTimerState {
-  return {
-    activeTaskId: null,
-    timerState: "idle",
-    remainingTime: defaultDuration,
-    startTime: null,
-  };
-}
-
-
-/**
- * Storage abstraction for testability
- * Allows mocking localStorage in tests
- */
-const timerStorage = {
-  get: (): FocusTimerState | null => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return null;
-      return JSON.parse(saved) as FocusTimerState;
-    } catch {
-      return null;
-    }
-  },
-  set: (state: FocusTimerState): void => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (error) {
-      console.error("Error saving timer state:", error);
-    }
-  },
-  remove: (): void => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch (error) {
-      console.error("Error removing timer state:", error);
-    }
-  },
-};
-
-/**
- * Restore timer state from storage, calculating remaining time if timer was running
- * Pure function - easily testable
- */
-function restoreTimerState(
+function restoreFocusTimerState(
   saved: FocusTimerState,
-  defaultDuration: number,
-  currentTime: Date = new Date()
+  defaultDuration: number
 ): FocusTimerState {
-  // If timer was running, recalculate remaining time
-  if (saved.timerState === "running" && saved.startTime) {
-    const startTime = new Date(saved.startTime);
-    const remaining = calculateRemainingTime(
-      startTime,
-      saved.remainingTime,
-      currentTime
-    );
-
-    // If timer completed while away, preserve activeTaskId if exists for dialog detection
-    if (isTimerCompleted(remaining)) {
-      return {
-        activeTaskId: saved.activeTaskId, // Preserve for dialog detection
-        timerState: "idle",
-        remainingTime: defaultDuration,
-        startTime: null,
-      };
-    }
-
-    // Otherwise, restore with recalculated time
-    return {
-      ...saved,
-      remainingTime: remaining,
-      startTime,
-    };
-  }
-
-  // For idle state, just restore as-is (may have activeTaskId if completed)
-  return saved;
+  return restoreTimerState(saved, defaultDuration, {
+    stateField: "timerState",
+    runningState: "running",
+    createCompletedState: (activeTaskId, defaultDuration) =>
+      createCompletedTimerState(activeTaskId, defaultDuration, "timerState", "idle"),
+  });
 }
 
 /**
@@ -174,12 +75,12 @@ function timerReducer(
       
       // If timer completed, preserve activeTaskId for dialog detection and set to idle
       if (isTimerCompleted(newRemainingTime)) {
-        return {
-          activeTaskId: state.activeTaskId, // Preserve for dialog detection
-          timerState: "idle",
-          remainingTime: action.defaultDuration,
-          startTime: null,
-        };
+        return createCompletedTimerState(
+          state.activeTaskId,
+          action.defaultDuration,
+          "timerState",
+          "idle"
+        );
       }
       
       return {
@@ -216,7 +117,6 @@ export function FocusTimerProvider({
     (duration) => createInitialState(duration)
   );
 
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const isInitialMount = useRef(true);
   const defaultDurationRef = useRef(defaultDuration);
 
@@ -233,7 +133,7 @@ export function FocusTimerProvider({
     const saved = timerStorage.get();
     if (saved) {
       try {
-        const restored = restoreTimerState(saved, defaultDurationRef.current);
+        const restored = restoreFocusTimerState(saved, defaultDurationRef.current);
         dispatch({ type: "RESTORE", state: restored });
       } catch (error) {
         console.error("Error loading timer state:", error);
@@ -248,44 +148,18 @@ export function FocusTimerProvider({
 
   // Persist: Save timer state to localStorage when it changes
   // Only persist if running, or if idle but has activeTaskId (completed state for dialog)
-  useEffect(() => {
-    if (timerState.timerState === "running" || (timerState.timerState === "idle" && timerState.activeTaskId)) {
-      timerStorage.set(timerState);
-    } else {
-      timerStorage.remove();
-    }
-  }, [timerState]);
+  useTimerPersistence(
+    timerState,
+    (state) => state.timerState === "running" || (state.timerState === "idle" && state.activeTaskId !== null),
+    timerStorage
+  );
 
   // Countdown: Handle timer countdown when running
-  useEffect(() => {
-    // Clean up interval if timer is not running
-    if (timerState.timerState !== "running") {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-      return;
-    }
-
-    // Clear any existing interval before creating a new one
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-
-    // Set up interval for countdown
-    intervalRef.current = setInterval(() => {
-      dispatch({ type: "TICK", defaultDuration: defaultDurationRef.current });
-    }, COUNTDOWN_INTERVAL_MS);
-
-    // Cleanup on unmount or when timer stops
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    };
-  }, [timerState.timerState]); // Only depend on timerState.timerState
+  const handleTick = useCallback(() => {
+    dispatch({ type: "TICK", defaultDuration: defaultDurationRef.current });
+  }, []);
+  
+  useCountdownInterval(timerState.timerState === "running", handleTick);
 
   // Start timer function
   const startTimer = useCallback(
@@ -307,7 +181,7 @@ export function FocusTimerProvider({
       timerState,
       startTimer,
       stopTimer,
-      formatTime,
+      formatTime: formatTimeUtil,
     }),
     [timerState, startTimer, stopTimer]
   );

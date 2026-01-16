@@ -1,7 +1,7 @@
 "use client";
 
 import { CardContent } from "@/components/ui/card/card-content";
-import { useBreakTimer } from "@/contexts/break-timer-context";
+import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { cn } from "@/utils/ui";

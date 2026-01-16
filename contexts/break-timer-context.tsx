@@ -1,53 +1,62 @@
-"use client";
-
-import { createContext, useContext, ReactNode } from "react";
-import type { BreakTimerContextValue } from "@/hooks/useBreakTimer";
-import { useBreakTimer as useBreakTimerHook } from "@/hooks/useBreakTimer";
+import { createContext, useContext } from "react";
 
 /**
  * Break Timer Context - MindEase
- * Global break timer management for Pomodoro sessions
+ * Global break timer state management
  * 
- * Features:
- * - Single active break timer per session
- * - Timer state persistence across page navigation
- * - Simple state: idle, running, or breakEnded
- * - No task association (break is global)
+ * All business logic is handled by the BreakTimerProvider.
+ * Components should use useBreakTimer() hook, not useBreakTimerContext().
  */
 
-// Re-export types from hook for convenience
-export type { BreakTimerState, BreakTimerStateType, BreakTimerContextValue } from "@/hooks/useBreakTimer";
+export type BreakTimerStateType = "idle" | "running" | "breakEnded";
 
-const BreakTimerContext = createContext<BreakTimerContextValue | undefined>(undefined);
-
-/**
- * Break Timer Provider Props
- */
-export interface BreakTimerProviderProps {
-  children: ReactNode;
+export interface BreakTimerState {
+  activeTaskId: string | null;
+  breakTimerState: BreakTimerStateType;
+  remainingTime: number; // in seconds
+  startTime: Date | null;
 }
 
 /**
- * Break Timer Provider Component
- * Wraps children with break timer context using the useBreakTimer hook
+ * Break timer reducer actions
  */
-export function BreakTimerProvider({ children }: BreakTimerProviderProps) {
-  const timerValue = useBreakTimerHook();
+export type BreakTimerAction =
+  | { type: "START"; duration: number; taskId?: string }
+  | { type: "STOP"; defaultDuration: number }
+  | { type: "TICK"; defaultDuration: number }
+  | { type: "RESTORE"; state: BreakTimerState };
 
-  return (
-    <BreakTimerContext.Provider value={timerValue}>
-      {children}
-    </BreakTimerContext.Provider>
-  );
+/**
+ * Break Timer Context Value
+ * Contains timer state and control functions
+ */
+export interface BreakTimerContextValue {
+  /** Current break timer state */
+  breakTimerState: BreakTimerState;
+  /** Start break timer (optionally for a task) */
+  startBreak: (taskId?: string) => void;
+  /** Stop break timer and reset to idle */
+  stopBreak: () => void;
+  /** Format time in seconds to MM:SS string */
+  formatTime: (seconds: number) => string;
 }
+
+export const BreakTimerContext = createContext<BreakTimerContextValue | undefined>(undefined);
 
 /**
  * Hook to access break timer context
+ * 
+ * ⚠️ **Note**: This hook is for internal use by useBreakTimer hook only.
+ * Components should use useBreakTimer() instead.
+ * 
+ * @throws Error if used outside BreakTimerProvider
+ * 
+ * @internal
  */
-export function useBreakTimer(): BreakTimerContextValue {
+export function useBreakTimerContext(): BreakTimerContextValue {
   const context = useContext(BreakTimerContext);
   if (context === undefined) {
-    throw new Error("useBreakTimer must be used within BreakTimerProvider");
+    throw new Error("useBreakTimerContext must be used within BreakTimerProvider");
   }
   return context;
 }

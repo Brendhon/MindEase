@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
-import { useBreakTimer } from "@/contexts/break-timer-context";
+import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useDialog } from "@/hooks/useDialog";
