@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardCognitiveAlerts, DashboardError, DashboardLoading, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
+import { DashboardCognitiveAlerts, DashboardError, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
 import { PageContent, PageHeader } from "@/components/layout";
 import { ContentSettings, ProfileResetButton } from "@/components/profile";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
@@ -32,18 +32,12 @@ export function DashboardContent({
   "data-testid": testId
 }: DashboardContentProps) {
   const {
-    isLoading: settingsLoading,
     error: settingsError,
     spacingClasses,
     textDetail,
   } = useCognitiveSettings();
 
-  const isLoading = settingsLoading;
   const hasError = error || settingsError;
-
-  if (isLoading) {
-    return <DashboardLoading data-testid="dashboard-page-loading" />;
-  }
 
   return (
     <PageContent 

@@ -5,18 +5,24 @@ import { createContext, useContext } from "react";
  * Cognitive Settings Context - MindEase
  * 
  * Context for global cognitive accessibility settings state.
- * Provides read and write access to user preferences.
+ * 
+ * This context provides ONLY basic state:
+ * - Settings state
+ * - Loading and error states
+ * - Internal setters for useCognitiveSettings hook
+ * 
+ * All business logic (CRUD operations, Firestore sync, loading, error handling)
+ * is handled by the useCognitiveSettings hook. Components should use useCognitiveSettings(), not useCognitiveSettingsContext().
  */
 interface CognitiveSettingsContextValue {
   settings: UserPreferences;
-  updateSetting: <K extends keyof UserPreferences>(
-    key: K,
-    value: UserPreferences[K]
-  ) => void;
-  updateSettings: (newSettings: Partial<UserPreferences>) => void;
-  resetSettings: () => void;
   isLoading: boolean;
   error: Error | null;
+  
+  // Internal setters - only used by useCognitiveSettings hook
+  _setSettings: (settings: UserPreferences | ((prev: UserPreferences) => UserPreferences)) => void;
+  _setLoading: (loading: boolean) => void;
+  _setError: (error: Error | null) => void;
 }
 
 export const CognitiveSettingsContext = createContext<
@@ -26,15 +32,12 @@ export const CognitiveSettingsContext = createContext<
 /**
  * Hook to access cognitive settings context
  * 
+ * ⚠️ **Note**: This hook is for internal use by useCognitiveSettings hook only.
+ * Components should use useCognitiveSettings() instead, which provides all business logic.
+ * 
  * @throws Error if used outside CognitiveSettingsProvider
  * 
- * @example
- * ```tsx
- * function MyComponent() {
- *   const { settings } = useCognitiveSettingsContext();
- *   return <div>Contrast: {settings.contrast}</div>;
- * }
- * ```
+ * @internal
  */
 export function useCognitiveSettingsContext(): CognitiveSettingsContextValue {
   const context = useContext(CognitiveSettingsContext);
