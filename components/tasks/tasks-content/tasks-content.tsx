@@ -2,7 +2,7 @@
 
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
-import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { TasksProvider } from "@/providers/tasks-provider";
 import { useTasks } from "@/hooks/useTasks";
 import { useDialog } from "@/hooks/useDialog";

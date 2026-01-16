@@ -3,7 +3,7 @@
 import { CardContent } from "@/components/ui/card/card-content";
 import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { cn } from "@/utils/ui";
 import type { Task } from "@/models/Task";
 

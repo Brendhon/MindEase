@@ -38,6 +38,7 @@ export function Header({ title = "MindEase" }: HeaderProps) {
 
   const handleLogout = async () => {
     try {
+      localStorage.clear();
       await signOut();
     } catch (error) {
       console.error("Error signing out:", error);

@@ -2,7 +2,7 @@
 
 import { useMemo, useEffect, useState } from "react";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useFocusTimer } from "@/contexts/focus-timer-context";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { AlertTriangle, Clock } from "lucide-react";
