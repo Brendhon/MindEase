@@ -5,6 +5,7 @@ import type { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { TaskCardEditActions } from "./task-card-edit-actions";
 import { TaskCardFocusActions } from "./task-card-focus-actions";
+import { styles } from "./task-card-styles";
 
 export interface TaskCardActionsProps {
   /** Task data */
@@ -91,7 +92,3 @@ export function TaskCardActions({
 }
 
 TaskCardActions.displayName = "TaskCardActions";
-
-const styles = {
-  actions: "flex flex-wrap items-center gap-2 mt-3",
-} as const;

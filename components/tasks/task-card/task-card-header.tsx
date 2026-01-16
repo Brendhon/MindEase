@@ -7,6 +7,7 @@ import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
+import { styles } from "./task-card-styles";
 
 export interface TaskCardHeaderProps {
   /** Task data */
@@ -68,13 +69,3 @@ export function TaskCardHeader({
 }
 
 TaskCardHeader.displayName = "TaskCardHeader";
-
-const styles = {
-  headerRow: "flex items-center justify-between gap-4",
-  title: "font-semibold text-text-primary flex-1",
-  status: "px-2 py-1 rounded text-xs font-medium whitespace-nowrap",
-  statusTodo: "bg-action-info/10 text-action-info",
-  statusInProgress: "bg-action-primary/10 text-action-primary",
-  statusDone: "bg-action-success/10 text-action-success",
-  description: "text-text-secondary mt-2",
-} as const;

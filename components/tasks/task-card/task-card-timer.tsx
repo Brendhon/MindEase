@@ -7,6 +7,7 @@ import { useTextDetail } from "@/hooks/useTextDetail";
 import type { Task } from "@/models/Task";
 import { formatTime } from "@/utils/timer";
 import { cn } from "@/utils/ui";
+import { styles } from "./task-card-styles";
 
 export interface TaskCardTimerProps {
   /** Task data */
@@ -71,14 +72,3 @@ export function TaskCardTimer({ task, "data-testid": testId }: TaskCardTimerProp
 }
 
 TaskCardTimer.displayName = "TaskCardTimer";
-
-const styles = {
-  timerIndicator: "flex flex-col gap-1 mb-4 p-3 rounded-lg border",
-  focusTimer: "bg-action-primary/5 border-action-primary/20",
-  breakTimer: "bg-action-secondary/5 border-action-secondary/20",
-  timerLabel: "text-text-secondary",
-  timerValue: "font-semibold",
-  focusTimerValue: "text-action-primary",
-  breakTimerValue: "text-action-secondary",
-  timerStatus: "text-text-secondary italic",
-} as const;
