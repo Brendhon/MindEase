@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { AuthUser } from "@/models/auth";
+import { AuthUser } from "@/models/Auth";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { ProfileAvatar } from "./profile-avatar";

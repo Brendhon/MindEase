@@ -72,7 +72,7 @@
 "use client";
 
 import { useAuthContext } from "@/contexts/auth-context";
-import { AuthUser } from "@/models/auth";
+import { AuthUser } from "@/models/Auth";
 import { authService } from "@/services/auth";
 import { useSession } from "next-auth/react";
 import { useCallback, useEffect } from "react";

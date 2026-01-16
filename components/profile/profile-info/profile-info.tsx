@@ -6,7 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useTextDetail } from "@/hooks/useTextDetail";
-import { AuthUser } from "@/models/auth";
+import { AuthUser } from "@/models/Auth";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
 import { useCallback, useMemo } from "react";

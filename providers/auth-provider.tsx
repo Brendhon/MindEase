@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { SessionProvider } from "next-auth/react";
 import { AuthContext } from "@/contexts/auth-context";
-import { AuthUser } from "@/models/auth";
+import { AuthUser } from "@/models/Auth";
 import { ReactNode } from "react";
 
 interface AuthProviderProps {
