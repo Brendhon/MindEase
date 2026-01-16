@@ -55,6 +55,7 @@ export function CheckboxLabel({
     <span
       className={labelClasses}
       onClick={onClick}
+      title={children?.toString() || ""}
       data-testid={testId || "checkbox-label"}
     >
       {children}
