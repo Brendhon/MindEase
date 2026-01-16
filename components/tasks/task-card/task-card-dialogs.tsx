@@ -110,5 +110,5 @@ const styles = {
   pendingSubtasksContainer: "flex flex-col gap-2",
   pendingSubtasksLabel: "font-medium text-text-primary text-sm",
   pendingSubtasksList: "flex flex-col gap-1 pl-4",
-  pendingSubtasksItem: "text-text-secondary text-sm",
+  pendingSubtasksItem: "text-text-secondary text-sm max-w-72 truncate text-ellipsis",
 } as const;
