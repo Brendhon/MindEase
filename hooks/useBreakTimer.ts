@@ -13,7 +13,7 @@
  * 
  * @example
  * ```tsx
- * const { breakTimerState, startBreak, stopBreak, formatTime } = useBreakTimer();
+ * const { breakTimerState, startBreak, stopBreak } = useBreakTimer();
  * 
  * startBreak("task-123");
  * // Break timer starts running...
@@ -23,12 +23,6 @@
  */
 
 import { useBreakTimerContext } from "@/contexts/break-timer-context";
-import { formatTime as formatTimeUtil } from "@/providers/break-timer-provider";
-
-/**
- * Re-export formatTime for convenience
- */
-export { formatTimeUtil as formatTime };
 
 /**
  * Re-export types for convenience
@@ -42,7 +36,7 @@ export type {
 /**
  * Hook for accessing break timer state and operations
  * 
- * @returns Break timer state, control functions, and formatting utilities
+ * @returns Break timer state, control functions
  * @throws Error if used outside BreakTimerProvider
  */
 export function useBreakTimer() {

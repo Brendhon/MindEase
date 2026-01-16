@@ -37,8 +37,6 @@ export interface BreakTimerContextValue {
   startBreak: (taskId?: string) => void;
   /** Stop break timer and reset to idle */
   stopBreak: () => void;
-  /** Format time in seconds to MM:SS string */
-  formatTime: (seconds: number) => string;
 }
 
 export const BreakTimerContext = createContext<BreakTimerContextValue | undefined>(undefined);

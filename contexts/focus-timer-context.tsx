@@ -37,8 +37,6 @@ export interface FocusTimerContextValue {
   startTimer: (taskId: string) => void;
   /** Stop timer and reset to idle */
   stopTimer: () => void;
-  /** Format time in seconds to MM:SS string */
-  formatTime: (seconds: number) => string;
 }
 
 export const FocusTimerContext = createContext<FocusTimerContextValue | undefined>(undefined);

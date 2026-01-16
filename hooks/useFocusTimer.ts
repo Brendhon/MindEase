@@ -14,11 +14,10 @@
  * @example
  * ```tsx
  * function MyComponent() {
- *   const { timerState, startTimer, stopTimer, formatTime } = useFocusTimer();
+ *   const { timerState, startTimer, stopTimer } = useFocusTimer();
  *   
  *   return (
  *     <div>
- *       <p>Time: {formatTime(timerState.remainingTime)}</p>
  *       <button onClick={() => startTimer("task-123")}>Start</button>
  *       <button onClick={stopTimer}>Stop</button>
  *     </div>
@@ -28,17 +27,11 @@
  */
 
 import { useFocusTimerContext } from "@/contexts/focus-timer-context";
-import { formatTime as formatTimeUtil } from "@/providers/focus-timer-provider";
-
-/**
- * Re-export formatTime for convenience
- */
-export { formatTimeUtil as formatTime };
 
 /**
  * Hook for accessing focus timer state and operations
  * 
- * @returns Timer state, control functions, and formatting utilities
+ * @returns Timer state, control functions
  * @throws Error if used outside FocusTimerProvider
  */
 export function useFocusTimer() {

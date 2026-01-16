@@ -3,7 +3,7 @@
 import { ReactNode, useReducer, useEffect, useRef, useMemo, useCallback } from "react";
 import { BreakTimerContext, BreakTimerState, BreakTimerAction } from "@/contexts/break-timer-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { formatTime as formatTimeUtil, isTimerCompleted } from "@/utils/timer/timer-helpers";
+import { isTimerCompleted } from "@/utils/timer/timer-helpers";
 import { createTimerStorage } from "@/utils/timer/timer-storage";
 import {
   createInitialTimerState,
@@ -14,10 +14,6 @@ import {
 import { restoreTimerState } from "@/utils/timer/timer-restore";
 import { useCountdownInterval, useTimerPersistence } from "@/utils/timer/timer-hooks";
 
-/**
- * Re-export formatTime for convenience
- */
-export const formatTime = formatTimeUtil;
 
 /**
  * Break Timer Provider Props
@@ -176,7 +172,6 @@ export function BreakTimerProvider({
       breakTimerState,
       startBreak,
       stopBreak,
-      formatTime: formatTimeUtil,
     }),
     [breakTimerState, startBreak, stopBreak]
   );
