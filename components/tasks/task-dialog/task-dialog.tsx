@@ -228,7 +228,7 @@ export function TaskDialog({
                     variant="ghost"
                     size="sm"
                     onClick={() => handleRemoveSubtask(subtask.id)}
-                    aria-label={getText("tasks_checklist_remove" as AccessibilityTextKey)}
+                    aria-label={getText("tasks_checklist_remove_aria" as AccessibilityTextKey)}
                     data-testid={`task-dialog-remove-subtask-${subtask.id}`}
                   >
                     <Button.Icon icon={X} />
@@ -248,7 +248,7 @@ export function TaskDialog({
             data-testid="task-dialog-cancel"
           >
             <Button.Text>
-              {getText("tasks_dialog_button_cancel" as AccessibilityTextKey)}
+              {getText("button_cancel" as AccessibilityTextKey)}
             </Button.Text>
           </Button>
           <Button
@@ -258,8 +258,8 @@ export function TaskDialog({
           >
             <Button.Text>
               {isEditing
-                ? getText("tasks_dialog_button_save" as AccessibilityTextKey)
-                : getText("tasks_dialog_button_create" as AccessibilityTextKey)}
+                ? getText("button_save" as AccessibilityTextKey)
+                : getText("button_create" as AccessibilityTextKey)}
             </Button.Text>
           </Button>
         </div>

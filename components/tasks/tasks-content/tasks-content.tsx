@@ -87,7 +87,7 @@ export function TasksContent({
     openDialog({
       titleKey: "tasks_delete_confirm_title",
       descriptionKey: "tasks_delete_confirm_message",
-      cancelLabelKey: "tasks_delete_confirm_cancel",
+      cancelLabelKey: "button_cancel",
       confirmLabelKey: "tasks_delete_confirm_button",
       confirmVariant: "danger",
       onCancel: () => {

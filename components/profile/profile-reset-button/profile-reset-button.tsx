@@ -25,11 +25,11 @@ export function ProfileResetButton({ "data-testid": testId }: ProfileResetButton
         size="md"
         onClick={resetSettings}
         className={styles.resetButton}
-        aria-label={getText("profile_reset_button_aria")}
+        aria-label={getText("profile_reset_aria")}
         data-testid={testId || "profile-reset-button"}
       >
         <Button.Icon icon={RotateCcw} position="left" size="md" />
-        <Button.Text>{getText("profile_reset_button")}</Button.Text>
+        <Button.Text>{getText("profile_reset")}</Button.Text>
       </Button>
     </div>
   );

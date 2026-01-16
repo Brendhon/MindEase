@@ -24,12 +24,12 @@ export function TasksToolbar({ onNewTask, "data-testid": testId }: TasksToolbarP
       <Button
         variant="primary"
         onClick={onNewTask}
-        aria-label={getText("tasks_new_task_aria")}
+        aria-label={getText("tasks_new_aria")}
         data-testid="tasks-toolbar-new-button"
       >
         <Button.Icon icon={Plus} position="left" />
         <Button.Text>
-          {getText("tasks_new_task")}
+          {getText("tasks_new")}
         </Button.Text>
       </Button>
     </div>

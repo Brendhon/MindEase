@@ -49,28 +49,28 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
             onClick={() => updateSetting("animations", !settings.animations)}
             data-testid="profile-animations-label"
           >
-            {textDetail.getText("profile_animations_label")}
+            {textDetail.getText("profile_setting_animations")}
           </Switch.Label>
           <Switch.Description data-testid="profile-animations-description">
-            {textDetail.getText("profile_animations_description")}
+            {textDetail.getText("profile_setting_animations_desc")}
           </Switch.Description>
         </div>
       </Switch>
 
       {/* Focus Mode Setting */}
       <Switch
-        data-testid="profile-focusmode"
+        data-testid="profile-focus-mode"
       >
         <Switch.Toggle checked={settings.focusMode} onChange={(checked) => updateSetting("focusMode", checked)} />
         <div className="flex flex-col">
           <Switch.Label
             onClick={() => updateSetting("focusMode", !settings.focusMode)}
-            data-testid="profile-focusmode-label"
+            data-testid="profile-focus-mode-label"
           >
-            {textDetail.getText("profile_focusmode_label")}
+            {textDetail.getText("profile_setting_focus_mode")}
           </Switch.Label>
-          <Switch.Description data-testid="profile-focusmode-description">
-            {textDetail.getText("profile_focusmode_description")}
+          <Switch.Description data-testid="profile-focus-mode-description">
+            {textDetail.getText("profile_setting_focus_mode_desc")}
           </Switch.Description>
         </div>
       </Switch>
@@ -80,7 +80,7 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
         {/* Focus Duration */}
         <Select>
           <Select.Label htmlFor="focus-duration">
-            {textDetail.getText("profile_focus_duration_label")}
+            {textDetail.getText("profile_setting_focus_duration")}
           </Select.Label>
           <Select.Field
             id="focus-duration"
@@ -89,20 +89,20 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
             data-testid="profile-focus-duration"
           >
             <option value="1">1 minuto - Para testes</option>
-            <option value="15">{textDetail.getText("profile_focus_duration_option_15")}</option>
-            <option value="25">{textDetail.getText("profile_focus_duration_option_25")}</option>
-            <option value="30">{textDetail.getText("profile_focus_duration_option_30")}</option>
-            <option value="40">{textDetail.getText("profile_focus_duration_option_40")}</option>
+            <option value="15">{textDetail.getText("profile_setting_focus_duration_15")}</option>
+            <option value="25">{textDetail.getText("profile_setting_focus_duration_25")}</option>
+            <option value="30">{textDetail.getText("profile_setting_focus_duration_30")}</option>
+            <option value="40">{textDetail.getText("profile_setting_focus_duration_40")}</option>
           </Select.Field>
           <p className={styles.description}>
-            {textDetail.getText("profile_focus_duration_description")}
+            {textDetail.getText("profile_setting_focus_duration_desc")}
           </p>
         </Select>
 
         {/* Break Duration */}
         <Select>
           <Select.Label htmlFor="break-duration">
-            {textDetail.getText("profile_break_duration_label")}
+            {textDetail.getText("profile_setting_break_duration")}
           </Select.Label>
           <Select.Field
             id="break-duration"
@@ -111,11 +111,11 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
             data-testid="profile-break-duration"
           >
             <option value="1">1 minuto - Para testes</option>
-            <option value="5">{textDetail.getText("profile_break_duration_option_5")}</option>
-            <option value="10">{textDetail.getText("profile_break_duration_option_10")}</option>
+            <option value="5">{textDetail.getText("profile_setting_break_duration_5")}</option>
+            <option value="10">{textDetail.getText("profile_setting_break_duration_10")}</option>
           </Select.Field>
           <p className={styles.description}>
-            {textDetail.getText("profile_break_duration_description")}
+            {textDetail.getText("profile_setting_break_duration_desc")}
           </p>
         </Select>
       </div>

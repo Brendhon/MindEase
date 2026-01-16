@@ -96,7 +96,7 @@ export function TaskCard({
           </p>
         </>
       ),
-      confirmLabelKey: "tasks_complete_pending_button",
+      confirmLabelKey: "button_ok",
       "data-testid": testId ? `${testId}-pending-dialog` : "task-pending-subtasks-dialog",
     });
   }, [openDialog]);
@@ -156,7 +156,7 @@ export function TaskCard({
     openDialog({
       titleKey: "tasks_subtask_break_required_title",
       descriptionKey: "tasks_subtask_break_required_message",
-      cancelLabelKey: "tasks_subtask_break_required_cancel",
+      cancelLabelKey: "button_cancel",
       onCancel: () => { },
     });
   }, [openDialog]);

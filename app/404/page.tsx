@@ -66,22 +66,22 @@ export default function NotFound404Page() {
             <div className={headerClasses}>
               <h1 className={titleClasses}>404</h1>
               <h2 className={subtitleClasses}>
-                {getText("404_subtitle")}
+                {getText("page_404_subtitle")}
               </h2>
               <p className={descriptionClasses}>
-                {getText("404_description")}
+                {getText("page_404_description")}
               </p>
             </div>
 
             <div className={actionsClasses}>
               <Link href={PAGE_ROUTES.HOME}>
                 <Button variant="primary" size="lg" className={styles.primaryButton}>
-                  <Button.Text>{getText("404_button_home")}</Button.Text>
+                  <Button.Text>{getText("page_404_button_home")}</Button.Text>
                 </Button>
               </Link>
               <Link href={PAGE_ROUTES.LOGIN}>
                 <Button variant="ghost" size="md" className={styles.secondaryButton}>
-                  <Button.Text>{getText("404_button_login")}</Button.Text>
+                  <Button.Text>{getText("page_404_button_login")}</Button.Text>
                 </Button>
               </Link>
             </div>

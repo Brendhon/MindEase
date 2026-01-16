@@ -31,28 +31,28 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       >
         <RadioGroup.Header>
           <RadioGroup.Label data-testid="profile-contrast-label">
-            {getText("profile_contrast_label")}
+            {getText("profile_setting_contrast")}
           </RadioGroup.Label>
           <RadioGroup.Description data-testid="profile-contrast-description">
-            {getText("profile_contrast_description")}
+            {getText("profile_setting_contrast_desc")}
           </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option
           value="normal"
-          label={getText("profile_contrast_normal")}
-          description={getText("profile_contrast_normal_desc")}
+          label={getText("profile_setting_contrast_normal")}
+          description={getText("profile_setting_contrast_normal_desc")}
           data-testid="profile-contrast-normal"
         />
         <RadioGroup.Option
           value="high"
-          label={getText("profile_contrast_high")}
-          description={getText("profile_contrast_high_desc")}
+          label={getText("profile_setting_contrast_high")}
+          description={getText("profile_setting_contrast_high_desc")}
           data-testid="profile-contrast-high"
         />
         <RadioGroup.Option
           value="low"
-          label={getText("profile_contrast_low")}
-          description={getText("profile_contrast_low_desc")}
+          label={getText("profile_setting_contrast_low")}
+          description={getText("profile_setting_contrast_low_desc")}
           data-testid="profile-contrast-low"
         />
       </RadioGroup>
@@ -65,28 +65,28 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       >
         <RadioGroup.Header>
           <RadioGroup.Label data-testid="profile-spacing-label">
-            {getText("profile_spacing_label")}
+            {getText("profile_setting_spacing")}
           </RadioGroup.Label>
           <RadioGroup.Description data-testid="profile-spacing-description">
-            {getText("profile_spacing_description")}
+            {getText("profile_setting_spacing_desc")}
           </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option
           value="compact"
-            label={getText("profile_spacing_compact")}
-          description={getText("profile_spacing_compact_desc")}
+            label={getText("profile_setting_spacing_compact")}
+          description={getText("profile_setting_spacing_compact_desc")}
           data-testid="profile-spacing-compact"
         />
         <RadioGroup.Option
           value="normal"
-          label={getText("profile_spacing_normal")}
-          description={getText("profile_spacing_normal_desc")}
+          label={getText("profile_setting_spacing_normal")}
+          description={getText("profile_setting_spacing_normal_desc")}
           data-testid="profile-spacing-normal"
         />
         <RadioGroup.Option
           value="relaxed"
-          label={getText("profile_spacing_relaxed")}
-          description={getText("profile_spacing_relaxed_desc")}
+          label={getText("profile_setting_spacing_relaxed")}
+          description={getText("profile_setting_spacing_relaxed_desc")}
           data-testid="profile-spacing-relaxed"
         />
       </RadioGroup>
@@ -99,28 +99,28 @@ export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
       >
         <RadioGroup.Header>
           <RadioGroup.Label data-testid="profile-fontsize-label">
-            {getText("profile_fontsize_label")}
+            {getText("profile_setting_font_size")}
           </RadioGroup.Label>
           <RadioGroup.Description data-testid="profile-fontsize-description">
-            {getText("profile_fontsize_description")}
+            {getText("profile_setting_font_size_desc")}
           </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option
           value="small"
-          label={getText("profile_fontsize_small")}
-          description={getText("profile_fontsize_small_desc")}
+          label={getText("profile_setting_font_size_small")}
+          description={getText("profile_setting_font_size_small_desc")}
           data-testid="profile-fontsize-small"
         />
         <RadioGroup.Option
           value="normal"
-          label={getText("profile_fontsize_normal")}
-          description={getText("profile_fontsize_normal_desc")}
+          label={getText("profile_setting_font_size_normal")}
+          description={getText("profile_setting_font_size_normal_desc")}
           data-testid="profile-fontsize-normal"
         />
         <RadioGroup.Option
           value="large"
-          label={getText("profile_fontsize_large")}
-          description={getText("profile_fontsize_large_desc")}
+          label={getText("profile_setting_font_size_large")}
+          description={getText("profile_setting_font_size_large_desc")}
           data-testid="profile-fontsize-large"
         />
       </RadioGroup>

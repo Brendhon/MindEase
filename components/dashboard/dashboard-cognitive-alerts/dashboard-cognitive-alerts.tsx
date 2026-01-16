@@ -106,11 +106,11 @@ export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: Dashb
         <div className={styles.alertHeader}>
           <AlertTriangle className={styles.alertIcon} size={20} />
           <h3 className={alertTitleClasses}>
-            {getText("dashboard_alert_long_task_title")}
+            {getText("dashboard_alert_title")}
           </h3>
         </div>
         <p className={alertMessageClasses}>
-          {getText("dashboard_alert_long_task_message")}
+          {getText("dashboard_alert_message")}
           {activeTask?.title && (
             <span className={styles.taskTitle}> "{activeTask.title}"</span>
           )}
@@ -118,7 +118,7 @@ export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: Dashb
         <div className={styles.alertTime}>
           <Clock className={styles.timeIcon} size={16} />
           <span className={cn(styles.timeText, fontSizeClasses.sm)}>
-            {elapsedMinutes} {getText("dashboard_alert_minutes")}
+            {elapsedMinutes} {getText("minutes")}
           </span>
         </div>
       </div>

@@ -67,10 +67,10 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
     if (!user?.uid) return;
     
     openDialog({
-      titleKey: "profile_delete_account_dialog_title",
-      descriptionKey: "profile_delete_account_dialog_message",
-      cancelLabelKey: "profile_delete_account_dialog_cancel",
-      confirmLabelKey: "profile_delete_account_dialog_confirm",
+      titleKey: "profile_delete_dialog_title",
+      descriptionKey: "profile_delete_dialog_message",
+      cancelLabelKey: "profile_delete_dialog_cancel",
+      confirmLabelKey: "profile_delete_dialog_confirm",
       confirmVariant: "danger",
       onCancel: () => {},
       onConfirm: async () => {

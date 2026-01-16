@@ -31,22 +31,22 @@ export function ContentSettings({ "data-testid": testId }: ContentSettingsProps)
       >
         <RadioGroup.Header>
           <RadioGroup.Label data-testid="profile-textdetail-label">
-            {getText("profile_textdetail_label")}
+            {getText("profile_setting_text_detail")}
           </RadioGroup.Label>
           <RadioGroup.Description data-testid="profile-textdetail-description">
-            {getText("profile_textdetail_description")}
+            {getText("profile_setting_text_detail_desc")}
           </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option
           value="detailed"
-          label={getText("profile_textdetail_detailed")}
-          description={getText("profile_textdetail_detailed_desc")}
+          label={getText("profile_setting_text_detail_detailed")}
+          description={getText("profile_setting_text_detail_detailed_desc")}
           data-testid="profile-textdetail-detailed"
         />
         <RadioGroup.Option
           value="summary"
-          label={getText("profile_textdetail_summary")}
-          description={getText("profile_textdetail_summary_desc")}
+          label={getText("profile_setting_text_detail_summary")}
+          description={getText("profile_setting_text_detail_summary_desc")}
           data-testid="profile-textdetail-summary"
         />
       </RadioGroup>

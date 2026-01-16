@@ -57,7 +57,7 @@ export function TaskList({
           {getText("tasks_empty")}
         </p>
         <p className={styles.emptyDescription}>
-          {getText("tasks_empty_description")}
+          {getText("tasks_empty_desc")}
         </p>
       </div>
     );
