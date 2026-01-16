@@ -21,19 +21,19 @@ import { TaskCardTimer } from "./task-card-timer";
 export interface TaskCardProps {
   /** Task data */
   task: Task;
-  
+
   /** Callback when task is edited */
   onEdit?: (task: Task) => void;
-  
+
   /** Callback when task is deleted */
   onDelete?: (taskId: string) => void;
-  
+
   /** Callback when task status changes */
   onStatusChange?: (taskId: string, status: number) => void;
-  
+
   /** Callback when subtask is toggled */
   onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-  
+
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -56,7 +56,7 @@ export function TaskCard({
   const isBreakActive = breakTimerState.activeTaskId === task.id;
   const isBreakRunning = isBreakActive && breakTimerState.breakTimerState === "running";
   const hasActiveTask = !!timerState.activeTaskId || !!breakTimerState.activeTaskId;
-  
+
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
     return !canCompleteTask(task);
@@ -146,10 +146,8 @@ export function TaskCard({
       ),
       cancelLabelKey: "tasks_subtask_focus_required_cancel",
       confirmLabelKey: "tasks_subtask_focus_required_button",
-      onCancel: () => {},
-      onConfirm: () => {
-        handleStartFocus();
-      },
+      onCancel: () => { },
+      onConfirm: hasActiveTask ? undefined : () => handleStartFocus(),
       "data-testid": testId ? `${testId}-focus-required-dialog` : "task-focus-required-dialog",
     });
   }, [openDialog]);
@@ -159,7 +157,7 @@ export function TaskCard({
       titleKey: "tasks_subtask_break_required_title",
       descriptionKey: "tasks_subtask_break_required_message",
       cancelLabelKey: "tasks_subtask_break_required_cancel",
-      onCancel: () => {},
+      onCancel: () => { },
     });
   }, [openDialog]);
 
@@ -168,7 +166,7 @@ export function TaskCard({
       subtaskBreakRequiredDialog();
       return;
     }
-    
+
     // Only allow toggling subtasks when task is in focus
     if (!isActive || !isRunning) {
       subtaskFocusRequiredDialog();
