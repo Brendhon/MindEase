@@ -3,6 +3,9 @@
 import { cn } from "@/utils/ui";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useMemo } from "react";
+import { styles } from "./profile-info-styles";
 
 /**
  * ProfileInfoRow Component - MindEase
@@ -37,19 +40,43 @@ export function ProfileInfoRow({
   "data-testid": testId 
 }: ProfileInfoRowProps) {
   const { getText } = useTextDetail();
+  const { fontSizeClasses, spacingClasses, animationClasses } = useAccessibilityClasses();
+  
+  // Generate accessible classes with memoization
+  const rowClasses = useMemo(
+    () => cn(
+      styles.infoRow,
+      spacingClasses.gap,
+      animationClasses,
+      className
+    ),
+    [spacingClasses.gap, animationClasses, className]
+  );
+  
+  const labelClasses = useMemo(
+    () => cn(
+      styles.label,
+      fontSizeClasses.sm,
+      labelClassName
+    ),
+    [fontSizeClasses.sm, labelClassName]
+  );
+  
+  const valueClasses = useMemo(
+    () => cn(
+      styles.value,
+      fontSizeClasses.base,
+      valueClassName
+    ),
+    [fontSizeClasses.base, valueClassName]
+  );
   
   return (
-    <div className={cn(styles.infoRow, className)} data-testid={testId}>
-      <span className={cn(styles.label, labelClassName)}>{getText(labelKey)}</span>
-      <span className={cn(styles.value, valueClassName)}>{value}</span>
+    <div className={rowClasses} data-testid={testId}>
+      <span className={labelClasses}>{getText(labelKey)}</span>
+      <span className={valueClasses}>{value}</span>
     </div>
   );
 }
 
 ProfileInfoRow.displayName = "ProfileInfoRow";
-
-const styles = {
-  infoRow: "flex flex-col gap-1",
-  label: "text-text-secondary font-medium",
-  value: "text-text-primary",
-} as const;

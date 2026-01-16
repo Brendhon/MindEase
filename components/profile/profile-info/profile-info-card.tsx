@@ -1,11 +1,14 @@
 "use client";
 
 import { Card } from "@/components/ui";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { AuthUser } from "@/models/auth";
+import { cn } from "@/utils/ui";
+import { useMemo } from "react";
 import { ProfileAvatar } from "./profile-avatar";
 import { ProfileInfoRow } from "./profile-info-row";
-import { User } from "next-auth";
-import { AuthUser } from "@/contexts/auth-context";
-import { cn } from "@/utils/ui";
+import { getContrastClassesForProfile, styles } from "./profile-info-styles";
 
 /**
  * ProfileInfoCard Component - MindEase
@@ -13,7 +16,7 @@ import { cn } from "@/utils/ui";
  */
 export interface ProfileInfoCardProps {
   /** User data */
-  user: User | AuthUser;
+  user: AuthUser | null;
   
   /** Label CSS classes */
   labelClassName?: string;
@@ -35,39 +38,60 @@ export function ProfileInfoCard({
   className,
   "data-testid": testId 
 }: ProfileInfoCardProps) {
+  const { spacingClasses, animationClasses } = useAccessibilityClasses();
+  const { settings } = useCognitiveSettings();
+  
+  // Generate accessible classes with memoization
+  const cardClasses = useMemo(
+    () => cn(
+      styles.infoCard,
+      spacingClasses.gap,
+      animationClasses,
+      getContrastClassesForProfile(settings.contrast, "card"),
+      className
+    ),
+    [spacingClasses.gap, animationClasses, settings.contrast, className]
+  );
+  
+  const infoSectionClasses = useMemo(
+    () => cn(
+      styles.infoSection,
+      spacingClasses.gap
+    ),
+    [spacingClasses.gap]
+  );
+  
   return (
-    <Card className={cn(styles.infoCard, className)} data-testid={testId}>
-      {user.image && (
+    <Card className={cardClasses} data-testid={testId}>
+      <div className={styles.avatarSection}>
         <ProfileAvatar
-          image={user.image}
-          name={user.name || undefined}
+          image={user?.image || null}
+          name={user?.name || null}
           data-testid={testId ? `${testId}-avatar` : "profile-avatar"}
         />
-      )}
+      </div>
 
-      {user.name && (
+      <div className={infoSectionClasses}>
+        {user?.name && (
+          <ProfileInfoRow
+            labelKey="profile_info_name"
+            value={user?.name}
+            labelClassName={labelClassName}
+            valueClassName={valueClassName}
+            data-testid={testId ? `${testId}-name-row` : "profile-name-row"}
+          />
+        )}
+        
         <ProfileInfoRow
-          labelKey="profile_info_name"
-          value={user.name}
+          labelKey="profile_info_email"
+          value={user?.email || ""}
           labelClassName={labelClassName}
           valueClassName={valueClassName}
-          data-testid={testId ? `${testId}-name-row` : "profile-name-row"}
+          data-testid={testId ? `${testId}-email-row` : "profile-email-row"}
         />
-      )}
-      
-      <ProfileInfoRow
-        labelKey="profile_info_email"
-        value={user.email || ""}
-        labelClassName={labelClassName}
-        valueClassName={valueClassName}
-        data-testid={testId ? `${testId}-email-row` : "profile-email-row"}
-      />
+      </div>
     </Card>
   );
 }
 
 ProfileInfoCard.displayName = "ProfileInfoCard";
-
-const styles = {
-  infoCard: "gap-4",
-} as const;

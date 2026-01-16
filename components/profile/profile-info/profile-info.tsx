@@ -6,13 +6,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useTextDetail } from "@/hooks/useTextDetail";
+import { AuthUser } from "@/models/auth";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
-import { User } from "next-auth";
-import { useCallback } from "react";
-import { AuthUser } from "@/contexts/auth-context";
-import { ProfileInfoCard } from "./profile-info-card";
+import { useCallback, useMemo } from "react";
 import { ProfileActions } from "./profile-actions";
+import { ProfileInfoCard } from "./profile-info-card";
+import { styles } from "./profile-info-styles";
 
 /**
  * ProfileInfo Component - MindEase
@@ -20,23 +20,10 @@ import { ProfileActions } from "./profile-actions";
  */
 export interface ProfileInfoProps {
   /** User data from server (optional, falls back to useAuth if not provided) */
-  user?: User | AuthUser;
+  user?: AuthUser | null;
   
   /** Test ID for testing */
   "data-testid"?: string;
-}
-
-/**
- * Helper function to get user ID from either User or AuthUser
- */
-function getUserId(user: User | AuthUser): string | null {
-  if ("id" in user) {
-    return user.id;
-  }
-  if ("uid" in user) {
-    return user.uid;
-  }
-  return null;
 }
 
 export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileInfoProps) {
@@ -45,24 +32,40 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   const user = userProp || auth.user;
   
   const { signOut } = auth;
-  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
+  const { fontSizeClasses, spacingClasses, animationClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
   const { error: showError, success } = useFeedback();
   const { openDialog } = useDialog();
 
-  const labelClasses = cn(styles.label, fontSizeClasses.sm);
-  const valueClasses = cn(styles.value, fontSizeClasses.base);
+  // Generate accessible classes with memoization
+  const labelClasses = useMemo(
+    () => cn(styles.label, fontSizeClasses.sm),
+    [fontSizeClasses.sm]
+  );
+  
+  const valueClasses = useMemo(
+    () => cn(styles.value, fontSizeClasses.base),
+    [fontSizeClasses.base]
+  );
+  
+  const containerClasses = useMemo(
+    () => cn(
+      styles.container,
+      spacingClasses.gap,
+      animationClasses
+    ),
+    [spacingClasses.gap, animationClasses]
+  );
+  
+  const errorClasses = useMemo(
+    () => cn(styles.error, fontSizeClasses.base),
+    [fontSizeClasses.base]
+  );
 
   // Delete account dialog
   const deleteAccountDialog = useCallback(() => {
-    if (!user) return;
+    if (!user?.uid) return;
     
-    const userId = getUserId(user);
-    if (!userId) {
-      showError("toast_error_account_deletion_failed");
-      return;
-    }
-
     openDialog({
       titleKey: "profile_delete_account_dialog_title",
       descriptionKey: "profile_delete_account_dialog_message",
@@ -72,7 +75,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
       onCancel: () => {},
       onConfirm: async () => {
         try {
-          await authService.deleteAccount(userId);
+          await authService.deleteAccount(user.uid);
           success("toast_success_account_deleted");
         } catch (err) {
           console.error("Error deleting account:", err);
@@ -85,24 +88,18 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   }, [user, openDialog, showError, success, testId]);
 
   const handleDeleteAccount = useCallback(() => {
-    if (!user) {
-      showError("toast_error_account_deletion_failed");
-      return;
-    }
-    
-    const userId = getUserId(user);
-    if (!userId) {
+    if (!user?.uid) {
       showError("toast_error_account_deletion_failed");
       return;
     }
     
     deleteAccountDialog();
-  }, [user, deleteAccountDialog, showError]);
+  }, [user?.uid, deleteAccountDialog, showError]);
 
   if (!user) {
     return (
-      <div className={styles.container} data-testid={testId || "profile-info-container"}>
-        <p className={cn(styles.error, fontSizeClasses.base)}>
+      <div className={containerClasses} data-testid={testId || "profile-info-container"}>
+        <p className={errorClasses}>
           {getText("error")}
         </p>
       </div>
@@ -110,7 +107,7 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
   }
 
   return (
-    <div className={styles.container} data-testid={testId || "profile-info-container"}>
+    <div className={containerClasses} data-testid={testId || "profile-info-container"}>
       <PageHeader
         titleKey="profile_title"
         descriptionKey="profile_description"
@@ -135,15 +132,3 @@ export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileIn
 }
 
 ProfileInfo.displayName = "ProfileInfo";
-
-/**
- * ProfileInfo Styles - MindEase
- * Centralized styles for profile info component
- */
-
-export const styles = {
-  container: "flex flex-col w-full max-w-4xl mx-auto gap-6",
-  label: "text-text-secondary font-medium",
-  value: "text-text-primary",
-  error: "text-action-danger text-center",
-} as const;

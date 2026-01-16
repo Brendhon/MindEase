@@ -4,6 +4,9 @@ import { Button } from "@/components/ui";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
+import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useMemo } from "react";
+import { styles } from "./profile-info-styles";
 
 /**
  * ProfileActions Component - MindEase
@@ -30,9 +33,21 @@ export function ProfileActions({
   "data-testid": testId 
 }: ProfileActionsProps) {
   const { getText } = useTextDetail();
+  const { spacingClasses, animationClasses } = useAccessibilityClasses();
+  
+  // Generate accessible classes with memoization
+  const actionsClasses = useMemo(
+    () => cn(
+      styles.actions,
+      spacingClasses.gap,
+      animationClasses,
+      className
+    ),
+    [spacingClasses.gap, animationClasses, className]
+  );
 
   return (
-    <div className={cn(styles.actions, className)} data-testid={testId}>
+    <div className={actionsClasses} data-testid={testId}>
       <Button
         variant="secondary"
         size="md"
@@ -58,7 +73,3 @@ export function ProfileActions({
 }
 
 ProfileActions.displayName = "ProfileActions";
-
-const styles = {
-  actions: "flex justify-end gap-3",
-} as const;

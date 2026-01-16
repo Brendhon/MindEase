@@ -71,10 +71,11 @@
  */
 "use client";
 
-import { useCallback, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useAuthContext, AuthUser } from "@/contexts/auth-context";
+import { useAuthContext } from "@/contexts/auth-context";
+import { AuthUser } from "@/models/auth";
 import { authService } from "@/services/auth";
+import { useSession } from "next-auth/react";
+import { useCallback, useEffect } from "react";
 
 export function useAuth() {
   const { data: session, status, update: updateSession } = useSession();

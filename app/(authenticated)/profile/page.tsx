@@ -15,6 +15,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/next-auth";
 import { ProfileContent } from "@/components/profile";
+import { convertSession } from "@/services/auth/auth";
 
 export default async function ProfilePage() {
   // Get session on server side
@@ -26,8 +27,8 @@ export default async function ProfilePage() {
   }
 
   return (
-    <ProfileContent 
-      user={session.user}
+    <ProfileContent
+      user={convertSession(session)}
       data-testid="profile-page-container"
     />
   );

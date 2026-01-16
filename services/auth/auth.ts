@@ -6,6 +6,7 @@ import { signIn, signOut, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { tasksService } from "../tasks";
 import { userPreferencesService } from "../user-preferences";
+import { AuthUser } from "@/models/auth";
 
 /**
  * Auth Service interface
@@ -13,7 +14,7 @@ import { userPreferencesService } from "../user-preferences";
 export interface AuthService {
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
-  getCurrentUser: () => Promise<{ uid: string; email: string | null } | null>;
+  getCurrentUser: () => Promise<AuthUser | null>;
   getSession: () => Promise<Session | null>;
   deleteAccount: (userId: string) => Promise<void>;
 }
@@ -21,11 +22,13 @@ export interface AuthService {
 /**
  * Convert NextAuth Session to our user format
  */
-const convertSession = (session: Session | null): { uid: string; email: string | null } | null => {
+export const convertSession = (session: Session | null): AuthUser | null => {
   if (!session?.user) return null;
   return {
     uid: session.user.id,
     email: session.user.email || null,
+    name: session.user.name || null,
+    image: session.user.image || null,
   };
 };
 
@@ -66,7 +69,7 @@ export const authService: AuthService = {
   /**
    * Get current authenticated user
    */
-  getCurrentUser: async (): Promise<{ uid: string; email: string | null } | null> => {
+  getCurrentUser: async (): Promise<AuthUser | null> => {
     try {
       const session = await getSession();
       return convertSession(session);

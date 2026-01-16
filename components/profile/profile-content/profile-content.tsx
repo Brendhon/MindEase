@@ -2,7 +2,7 @@
 
 import { PageContent } from "@/components/layout";
 import { ProfileInfo } from "@/components/profile";
-import { User } from "next-auth";
+import { AuthUser } from "@/models/auth";
 
 /**
  * ProfileContent Component - MindEase
@@ -14,7 +14,7 @@ import { User } from "next-auth";
  */
 export interface ProfileContentProps {
   /** User data from server */
-  user: User;
+  user: AuthUser | null;
   
   /** Test ID for testing */
   "data-testid"?: string;
