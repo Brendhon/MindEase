@@ -1,43 +1,36 @@
 "use client";
 
-import { DialogManager } from "@/components/feedback";
+import { ReactNode, useState, useCallback } from "react";
 import { DialogConfig, DialogContext } from "@/contexts/dialog-context";
-import { generateRandomUUID } from "@/utils/uuid";
-import { useCallback, useState } from "react";
+import { DialogManager } from "@/components/feedback";
 
-interface DialogProviderProps {
-  children: React.ReactNode;
+/**
+ * Dialog Provider Props
+ */
+export interface DialogProviderProps {
+  children: ReactNode;
 }
 
 /**
- * Provider for global dialog management
- * Manages state and lifecycle of dialogs
+ * Dialog Provider Component - MindEase
+ * Provides dialog context to children components
+ * 
+ * This provider manages ONLY basic state (dialog).
+ * All business logic is handled by the useDialog hook.
  */
-export function DialogProvider({ children }: DialogProviderProps) {
+export function DialogProvider({
+  children,
+}: DialogProviderProps) {
   const [dialog, setDialog] = useState<DialogConfig | null>(null);
 
-  const openDialog = useCallback((config: Omit<DialogConfig, "id">) => {
-    setDialog({
-      ...config,
-      id: generateRandomUUID(),
-    });
-  }, []);
-
-  const closeDialog = useCallback(() => {
-    setDialog(null);
-  }, []);
-
-  const updateDialog = useCallback((updates: Partial<DialogConfig>) => {
-    setDialog((prev) => (prev ? { ...prev, ...updates } : null));
-  }, []);
+  // Internal setter for useDialog hook to use
+  const setDialogState = useCallback((newDialog: DialogConfig | null | ((prev: DialogConfig | null) => DialogConfig | null)) => setDialog(newDialog), []);
 
   return (
     <DialogContext.Provider
       value={{
         dialog,
-        openDialog,
-        closeDialog,
-        updateDialog,
+        _setDialog: setDialogState,
       }}
     >
       {children}

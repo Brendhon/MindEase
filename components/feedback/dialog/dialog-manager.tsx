@@ -1,7 +1,7 @@
 "use client";
 
 import { Dialog } from "@/components/ui/dialog";
-import { useDialogContext } from "@/contexts/dialog-context";
+import { useDialog } from "@/hooks/useDialog";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -16,7 +16,7 @@ import { styles } from "./dialog-manager-styles";
  * Uses composition pattern with subcomponents for better testability
  */
 function DialogManagerRoot() {
-  const { dialog, closeDialog, updateDialog } = useDialogContext();
+  const { dialog, closeDialog, updateDialog } = useDialog();
   const { spacingClasses, textDetail } = useCognitiveSettings();
 
   // Generate content classes with spacing preference

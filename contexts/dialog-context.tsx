@@ -19,11 +19,25 @@ export interface DialogConfig {
   "data-testid"?: string;
 }
 
-interface DialogContextValue {
+/**
+ * Dialog Context - MindEase
+ * Global dialog state management
+ * 
+ * This context provides ONLY basic state:
+ * - Dialog configuration
+ * - Internal setters for useDialog hook
+ * 
+ * All business logic (openDialog, closeDialog, updateDialog operations)
+ * is handled by the useDialog hook. Components should use useDialog(), not useDialogContext().
+ * 
+ * Note: DialogManager component uses useDialogContext() directly for internal rendering.
+ */
+export interface DialogContextValue {
+  /** Current dialog configuration */
   dialog: DialogConfig | null;
-  openDialog: (config: Omit<DialogConfig, "id">) => void;
-  closeDialog: () => void;
-  updateDialog: (updates: Partial<DialogConfig>) => void;
+
+  // Internal setters - only used by useDialog hook and DialogManager
+  _setDialog: (dialog: DialogConfig | null | ((prev: DialogConfig | null) => DialogConfig | null)) => void;
 }
 
 export const DialogContext = createContext<DialogContextValue | undefined>(
@@ -32,7 +46,13 @@ export const DialogContext = createContext<DialogContextValue | undefined>(
 
 /**
  * Hook to access dialog context
+ * 
+ * ⚠️ **Note**: This hook is for internal use by useDialog hook and DialogManager component only.
+ * Components should use useDialog() instead, which provides all business logic.
+ * 
  * @throws Error if used outside DialogProvider
+ * 
+ * @internal
  */
 export function useDialogContext(): DialogContextValue {
   const context = useContext(DialogContext);
