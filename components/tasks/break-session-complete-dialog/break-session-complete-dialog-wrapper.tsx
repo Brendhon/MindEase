@@ -2,12 +2,10 @@
 
 import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
-import { useTasksContext } from "@/contexts/tasks-context";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTasks } from "@/hooks/useTasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
-import { tasksService } from "@/services/tasks";
-import { useAuth } from "@/hooks/useAuth";
 
 /**
  * BreakSessionCompleteDialogWrapper Component - MindEase
@@ -15,11 +13,10 @@ import { useAuth } from "@/hooks/useAuth";
  * Monitors break timer state and shows dialog when break timer completes
  */
 export function BreakSessionCompleteDialogWrapper() {
-  const { user } = useAuth();
   const { breakTimerState, stopBreak } = useBreakTimer();
   const { startTimer, stopTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
-  const { refreshTask } = useTasksContext();
+  const { updateTaskStatus } = useTasks();
 
   const [showBreakCompleteDialog, setShowBreakCompleteDialog] = useState(false);
 
@@ -59,13 +56,11 @@ export function BreakSessionCompleteDialogWrapper() {
   }, [stopBreak, breakTimerState.activeTaskId, startTimer]);
 
   const handleEndFocus = useCallback(async () => {
-    console.log("handleEndFocus", breakTimerState.activeTaskId, user?.uid);
     // Return task to To Do when focus is stopped
-    if (breakTimerState.activeTaskId && user?.uid) {
+    if (breakTimerState.activeTaskId) {
       try {
-        await tasksService.updateTask(user.uid, breakTimerState.activeTaskId, { status: 0 });
-        // Refresh task in global state to update UI
-        await refreshTask(breakTimerState.activeTaskId);
+        // Update task status to To Do (0) - automatically syncs with Firestore and updates UI
+        await updateTaskStatus(breakTimerState.activeTaskId, 0);
       } catch (error) {
         console.error("Error updating task status:", error);
       }
@@ -73,7 +68,7 @@ export function BreakSessionCompleteDialogWrapper() {
     // Stop break timer and focus timer
     stopBreak();
     stopTimer();
-  }, [stopBreak, stopTimer, user?.uid, breakTimerState.activeTaskId, refreshTask]);
+  }, [stopBreak, stopTimer, breakTimerState.activeTaskId, updateTaskStatus]);
 
   const handleCloseBreakDialog = useCallback(() => {
     setShowBreakCompleteDialog(false);

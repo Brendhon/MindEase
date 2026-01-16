@@ -2,11 +2,10 @@
 
 import { useBreakTimer } from "@/contexts/break-timer-context";
 import { useFocusTimer } from "@/contexts/focus-timer-context";
-import { useTasksContext } from "@/contexts/tasks-context";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
-import { tasksService } from "@/services/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
 
@@ -16,11 +15,10 @@ import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
  * Monitors timer state and shows dialog when timer completes
  */
 export function FocusSessionCompleteDialogWrapper() {
-  const { user } = useAuth();
   const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
-  const { refreshTask } = useTasksContext();
+  const { updateTaskStatus, getTask, refreshTask } = useTasks();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -31,19 +29,25 @@ export function FocusSessionCompleteDialogWrapper() {
 
   // Fetch active task when needed
   const fetchActiveTask = useCallback(async (taskId: string) => {
-    if (!user?.uid) return;
-
     setLoadingTask(true);
     try {
-      const task = await tasksService.getTask(user.uid, taskId);
-      setActiveTask(task);
+      // First try to get from local state
+      let task = getTask(taskId);
+      
+      // If not found locally, refresh from Firestore
+      if (!task) {
+        await refreshTask(taskId);
+        task = getTask(taskId);
+      }
+      
+      setActiveTask(task || null);
     } catch (error) {
       console.error("Error fetching active task:", error);
       setActiveTask(null);
     } finally {
       setLoadingTask(false);
     }
-  }, [user?.uid]);
+  }, [getTask, refreshTask]);
 
   useEffect(() => {
     const prev = prevTimerStateRef.current;
@@ -94,19 +98,17 @@ export function FocusSessionCompleteDialogWrapper() {
   }, [timerState.activeTaskId, startTimer]);
 
   const handleFinishTask = useCallback(async () => {
-    if (!user?.uid || !timerState.activeTaskId) return;
+    if (!timerState.activeTaskId) return;
 
     try {
-      // Update task status to completed (2) - context will update UI automatically
-      await tasksService.updateTask(user.uid, timerState.activeTaskId, { status: 2 });
-      // Refresh task in global state to update UI
-      await refreshTask(timerState.activeTaskId);
+      // Update task status to completed (2) - automatically syncs with Firestore and updates UI
+      await updateTaskStatus(timerState.activeTaskId, 2);
       stopTimer(); // This clears activeTaskId and resets to idle
     } catch (error) {
       console.error("Error finishing task:", error);
     }
     // Dialog will close itself via onClose callback
-  }, [user?.uid, timerState.activeTaskId, stopTimer, refreshTask]);
+  }, [timerState.activeTaskId, stopTimer, updateTaskStatus]);
 
   const handleCloseSessionDialog = useCallback(() => {
     // Dialog should not close without action (preventClose={true})

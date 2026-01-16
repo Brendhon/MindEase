@@ -6,7 +6,7 @@ import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-sess
 import { BreakTimerProvider } from "@/contexts/break-timer-context";
 import { FocusTimerProvider } from "@/contexts/focus-timer-context";
 import { SidebarProvider } from "@/contexts/sidebar-context";
-import { TasksProvider } from "@/contexts/tasks-context";
+import { TasksProvider } from "@/providers/tasks-provider";
 
 /**
  * Authenticated Layout - MindEase
