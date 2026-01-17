@@ -1,9 +1,9 @@
-import { useCallback, useEffect } from "react";
-import { useProlongedNavigationAlertContext } from "@/contexts/prolonged-navigation-alert-context";
+import { useProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
 import {
-  PROLONGED_NAVIGATION_THRESHOLD_MS,
-  COGNITIVE_ALERT_DISMISS_EXPIRY_MS
+  COGNITIVE_ALERT_DISMISS_EXPIRY_MS,
+  PROLONGED_NAVIGATION_THRESHOLD_MS
 } from "@/utils/cognitive-alerts";
+import { useCallback, useEffect } from "react";
 
 /**
  * useProlongedNavigationAlert Hook - MindEase

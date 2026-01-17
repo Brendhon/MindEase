@@ -6,10 +6,8 @@ import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-sess
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
-import { ExcessiveTimeAlertProvider } from "@/providers/excessive-time-alert-provider";
+import { ExcessiveTimeAlertProvider, MissingBreakAlertProvider, ProlongedNavigationAlertProvider } from "@/providers/cognitive-alerts";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
-import { MissingBreakAlertProvider } from "@/providers/missing-break-alert-provider";
-import { ProlongedNavigationAlertProvider } from "@/providers/prolonged-navigation-alert-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
 import { useEffect } from "react";

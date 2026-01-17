@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useExcessiveTimeAlertContext } from "@/contexts/excessive-time-alert-context";
+import { useExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import {

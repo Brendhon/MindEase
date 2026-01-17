@@ -1,6 +1,6 @@
 "use client";
 
-import { ProlongedNavigationAlertContext } from "@/contexts/prolonged-navigation-alert-context";
+import { ProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
 import { useCallback, useState } from "react";
 
 interface ProlongedNavigationAlertProviderProps {

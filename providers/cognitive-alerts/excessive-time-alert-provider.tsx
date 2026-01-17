@@ -1,6 +1,6 @@
 "use client";
 
-import { ExcessiveTimeAlertContext } from "@/contexts/excessive-time-alert-context";
+import { ExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
 import { useCallback, useState } from "react";
 
 interface ExcessiveTimeAlertProviderProps {

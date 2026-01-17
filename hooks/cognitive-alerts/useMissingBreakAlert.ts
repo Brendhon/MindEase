@@ -1,4 +1,4 @@
-import { useMissingBreakAlertContext } from "@/contexts/missing-break-alert-context";
+import { useMissingBreakAlertContext } from "@/contexts/cognitive-alerts";
 import {
   COGNITIVE_ALERT_DISMISS_EXPIRY_MS,
   MISSING_BREAK_SESSIONS_THRESHOLD

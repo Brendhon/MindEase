@@ -1,6 +1,6 @@
 "use client";
 
-import { MissingBreakAlertContext } from "@/contexts/missing-break-alert-context";
+import { MissingBreakAlertContext } from "@/contexts/cognitive-alerts";
 import { useCallback, useState } from "react";
 
 interface MissingBreakAlertProviderProps {
