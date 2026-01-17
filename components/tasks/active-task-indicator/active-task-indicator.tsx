@@ -6,7 +6,8 @@ import { useTextDetail } from "@/hooks/useTextDetail";
 import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
 import { useRouter } from "next/navigation";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import {
@@ -35,6 +36,7 @@ export function ActiveTaskIndicator() {
   const { settings } = useCognitiveSettings();
   const { getText } = useTextDetail();
   const router = useRouter();
+  const [isMinimized, setIsMinimized] = useState(false);
 
   // Get type-specific classes
   const typeClasses = useMemo(() => timerType ? getTypeClasses(timerType) : null, [timerType]);
@@ -59,14 +61,18 @@ export function ActiveTaskIndicator() {
         typeClasses?.bgColor,
         typeClasses?.borderColor,
         contrastClasses,
-        spacingClasses.padding,
+        !isMinimized && spacingClasses.padding,
+        isMinimized && styles.cardMinimized,
         transitionClasses
       ),
-    [typeClasses, contrastClasses, spacingClasses.padding, transitionClasses]
+    [typeClasses, contrastClasses, spacingClasses.padding, transitionClasses, isMinimized]
   );
 
   // Build container classes
-  const containerClasses = useMemo(() => styles.container, []);
+  const containerClasses = useMemo(
+    () => cn(styles.container, isMinimized && styles.containerMinimized),
+    [isMinimized]
+  );
 
   // Get status text
   const statusText = useMemo(() => {
@@ -78,6 +84,12 @@ export function ActiveTaskIndicator() {
 
   // Handle click to navigate to tasks page
   const handleClick = useCallback(() => router.push(PROTECTED_ROUTES.TASKS), [router]);
+
+  // Handle toggle minimize/maximize
+  const handleToggleMinimize = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsMinimized((prev) => !prev);
+  }, []);
 
   // Build aria label
   const ariaLabel = useMemo(() => {
@@ -101,27 +113,63 @@ export function ActiveTaskIndicator() {
       data-testid="active-task-indicator"
     >
       <div className={cardClasses}>
-        <p className={cn(styles.status, fontSizeClasses.sm)}>
-          {statusText}
-        </p>
-        <div className={styles.content}>
-          <ActiveTaskIndicatorIcon
-            timerType={timerType}
-            data-testid="active-task-indicator-icon"
-          />
-          <div className={styles.textContainer}>
-            <ActiveTaskIndicatorContent
-              task={activeTask}
-              data-testid="active-task-indicator-content"
+        <div className={cn(styles.header, isMinimized && styles.headerMinimized)}>
+          {!isMinimized ? (
+            <p className={cn(styles.status, fontSizeClasses.sm)}>
+              {statusText}
+            </p>
+          ) : (
+            <ActiveTaskIndicatorIcon
+              timerType={timerType}
+              data-testid="active-task-indicator-icon"
+            />
+          )}
+          <button
+            type="button"
+            onClick={handleToggleMinimize}
+            className={styles.minimizeButton}
+            aria-label={isMinimized ? "Maximizar indicador de tarefa" : "Minimizar indicador de tarefa"}
+            aria-expanded={!isMinimized}
+            data-testid="active-task-indicator-toggle"
+          >
+            {isMinimized ? (
+              <ChevronLeft size={18} aria-hidden="true" />
+            ) : (
+              <ChevronRight size={18} aria-hidden="true" />
+            )}
+          </button>
+        </div>
+
+        {!isMinimized && (
+          <>
+            <div className={styles.content}>
+              <ActiveTaskIndicatorIcon
+                timerType={timerType}
+                data-testid="active-task-indicator-icon"
+              />
+              <div className={styles.textContainer}>
+                <ActiveTaskIndicatorContent
+                  task={activeTask}
+                  data-testid="active-task-indicator-content"
+                />
+              </div>
+            </div>
+            <div className={styles.timerContainer}>
+              <ActiveTaskIndicatorTimer
+                remainingTime={remainingTime}
+                data-testid="active-task-indicator-timer"
+              />
+            </div>
+          </>
+        )}
+        {isMinimized && (
+          <div className={styles.minimizedContent}>
+            <ActiveTaskIndicatorTimer
+              remainingTime={remainingTime}
+              data-testid="active-task-indicator-timer"
             />
           </div>
-        </div>
-        <div className={styles.timerContainer}>
-          <ActiveTaskIndicatorTimer
-            remainingTime={remainingTime}
-            data-testid="active-task-indicator-timer"
-          />
-        </div>
+        )}
       </div>
     </div>
   );

@@ -7,8 +7,14 @@ import { UserPreferences } from "@/models/UserPreferences";
 import type { TimerType } from "./use-active-task-indicator";
 
 export const styles = {
-  container: "fixed bottom-4 right-4 z-50 w-56 bg-surface-primary cursor-pointer hover:bg-surface-secondary transition-colors duration-fast",
+  container: "fixed bottom-4 right-4 z-50 w-72 bg-surface-primary cursor-pointer hover:bg-surface-secondary transition-all duration-normal",
+  containerMinimized: "w-24",
   card: "rounded-lg shadow-lg border hover:shadow-xl transition-shadow duration-fast",
+  cardMinimized: "p-2",
+  header: "flex items-start justify-between gap-2 mb-2",
+  headerMinimized: "mb-1 justify-between items-center",
+  minimizeButton: "flex-shrink-0 p-1 cursor-pointer rounded hover:bg-surface-secondary transition-colors duration-fast text-text-secondary hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2",
+  minimizedContent: "flex justify-center items-center gap-2",
   contrast: {
     // Normal contrast: subtle shadow
     normal: "shadow-medium",
@@ -35,8 +41,9 @@ export const styles = {
   content: "flex items-start gap-3",
   iconContainer: "flex-shrink-0",
   textContainer: "flex-1 min-w-0",
-  title: "font-semibold text-text-primary/80 truncate",
-  status: "text-text-secondary text-sm italic mb-4",
+  title: "font-semibold text-text-primary/80 truncate max-w-full",
+  description: "text-text-secondary text-sm truncate max-w-full",
+  status: "text-text-secondary text-sm italic",
   timerContainer: "mt-2 pt-2 border-t border-border-subtle flex items-center justify-end",
   timer: "font-semibold font-bold text-text-secondary",
   transition: {

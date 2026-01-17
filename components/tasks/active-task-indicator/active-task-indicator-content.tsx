@@ -2,9 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import type { Task } from "@/models/Task";
-import { truncateText } from "@/utils/formatting";
 import { cn } from "@/utils/ui";
-import { useMemo } from "react";
 import { styles } from "./active-task-indicator-styles";
 
 /**
@@ -19,30 +17,28 @@ export interface ActiveTaskIndicatorContentProps {
   "data-testid"?: string;
 }
 
-const MAX_TITLE_LENGTH = 40;
-
 export function ActiveTaskIndicatorContent({
   task,
   "data-testid": testId,
 }: ActiveTaskIndicatorContentProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
-  // Truncate task title if needed
-  const displayTitle = useMemo(() => {
-    if (!task?.title) return null;
-    return truncateText(task.title, MAX_TITLE_LENGTH);
-  }, [task?.title]);
-
   return (
     <div
       className={styles.textContainer}
       data-testid={testId || "active-task-indicator-content"}
     >
-      {displayTitle ? (
+      {task?.title ? (
         <p className={cn(styles.title, fontSizeClasses.base)}>
-          {displayTitle}
+          {task.title}
         </p>
       ) : null}
+
+      {task?.description && (
+        <p className={cn(styles.description, fontSizeClasses.sm)}>
+          {task.description}
+        </p>
+      )}
     </div>
   );
 }
