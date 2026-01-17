@@ -3,8 +3,8 @@
 import { DashboardCognitiveAlerts, DashboardError, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
 import { PageContent, PageHeader } from "@/components/layout";
 import { ContentSettings, ProfileResetButton } from "@/components/profile";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
@@ -66,7 +66,6 @@ export function DashboardContent({
 
       {/* Cognitive Alerts */}
       <DashboardCognitiveAlerts
-        tasks={tasks}
         data-testid="dashboard-page-cognitive-alerts"
       />
 

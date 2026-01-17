@@ -9,8 +9,11 @@
  * Default: 60 minutes (2 standard Pomodoro sessions)
  * Advanced users: 90 minutes (3 standard Pomodoro sessions)
  */
-const DEFAULT_EXCESSIVE_TIME_THRESHOLD = 60; // 60 minutes in milliseconds
+const DEFAULT_EXCESSIVE_TIME_THRESHOLD = 60; // 60 minutes
 export const EXCESSIVE_TIME_THRESHOLD_MS = DEFAULT_EXCESSIVE_TIME_THRESHOLD * 60 * 1000; // 60 minutes in milliseconds
+
+const ADVANCED_EXCESSIVE_TIME_THRESHOLD = 90; // 90 minutes
+export const ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS = ADVANCED_EXCESSIVE_TIME_THRESHOLD * 60 * 1000; // 90 minutes in milliseconds
 
 /**
  * Missing break alert threshold

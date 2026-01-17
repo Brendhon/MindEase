@@ -1,11 +1,11 @@
 "use client";
 
-import { Task } from "@/models/Task";
+import { useExcessiveTimeAlert } from "@/hooks/useExcessiveTimeAlert";
 import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
 import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
+import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
 import { CognitiveAlertMissingBreak } from "./cognitive-alert-missing-break";
 import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-navigation";
-import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
 
 /**
  * DashboardCognitiveAlerts Component - MindEase
@@ -19,28 +19,35 @@ import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
  * Priority: excessive_time > missing_break > prolonged_navigation
  */
 export interface DashboardCognitiveAlertsProps {
-  /** Array of tasks to check for alerts */
-  tasks: Task[];
-
   /** Test ID for testing */
   "data-testid"?: string;
 }
 
-export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: DashboardCognitiveAlertsProps) {
+export function DashboardCognitiveAlerts({ "data-testid": testId }: DashboardCognitiveAlertsProps) {
   const { isMissingBreakAlertVisible, dismissMissingBreakAlert } = useMissingBreakAlert();
   const { isProlongedNavigationAlertVisible, dismissProlongedNavigationAlert } = useProlongedNavigationAlert();
+  const { isExcessiveTimeAlertVisible, dismissExcessiveTimeAlert } = useExcessiveTimeAlert();
 
-  return <>
-    <CognitiveAlertExcessiveTime isVisible={false} onDismiss={() => { }} />
-    <CognitiveAlertMissingBreak 
-      isVisible={isMissingBreakAlertVisible}
-      onDismiss={dismissMissingBreakAlert} 
-    />
-    <CognitiveAlertProlongedNavigation 
-      isVisible={isProlongedNavigationAlertVisible}
-      onDismiss={dismissProlongedNavigationAlert} 
-    />
-  </>;
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+      data-testid={testId || "dashboard-cognitive-alerts"}>
+      <CognitiveAlertExcessiveTime
+        isVisible={isExcessiveTimeAlertVisible}
+        onDismiss={dismissExcessiveTimeAlert}
+      />
+      <CognitiveAlertMissingBreak
+        isVisible={isMissingBreakAlertVisible}
+        onDismiss={dismissMissingBreakAlert}
+      />
+      <CognitiveAlertProlongedNavigation
+        isVisible={isProlongedNavigationAlertVisible}
+        onDismiss={dismissProlongedNavigationAlert}
+      />
+    </div>
+  );
 }
 
 DashboardCognitiveAlerts.displayName = "DashboardCognitiveAlerts";

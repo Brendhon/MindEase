@@ -6,9 +6,10 @@ import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-sess
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
+import { ExcessiveTimeAlertProvider } from "@/providers/excessive-time-alert-provider";
+import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { MissingBreakAlertProvider } from "@/providers/missing-break-alert-provider";
 import { ProlongedNavigationAlertProvider } from "@/providers/prolonged-navigation-alert-provider";
-import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ import { useEffect } from "react";
  * Provides:
  * - FocusTimerProvider: Global timer management for task-focused sessions
  * - BreakTimerProvider: Global break timer management for Pomodoro sessions
+ * - ExcessiveTimeAlertProvider: Global excessive time alert state management
  * - MissingBreakAlertProvider: Global missing break alert state management
  * - ProlongedNavigationAlertProvider: Global prolonged navigation alert state management
  * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
@@ -46,22 +48,24 @@ export default function AuthenticatedLayout({
     <TasksProvider>
       <FocusTimerProvider>
         <BreakTimerProvider>
-          <MissingBreakAlertProvider>
-            <ProlongedNavigationAlertProvider>
-              <SidebarProvider>
-              <div className={styles.container}>
-                <Sidebar />
-                <main className={styles.main}>
-                  <Header />
-                  <div className={styles.content}>{children}</div>
-                </main>
-              </div>
-              <FocusSessionCompleteDialogWrapper />
-              <BreakSessionCompleteDialogWrapper />
-              <ActiveTaskIndicator />
-              </SidebarProvider>
-            </ProlongedNavigationAlertProvider>
-          </MissingBreakAlertProvider>
+          <ExcessiveTimeAlertProvider>
+            <MissingBreakAlertProvider>
+              <ProlongedNavigationAlertProvider>
+                <SidebarProvider>
+                  <div className={styles.container}>
+                    <Sidebar />
+                    <main className={styles.main}>
+                      <Header />
+                      <div className={styles.content}>{children}</div>
+                    </main>
+                  </div>
+                  <FocusSessionCompleteDialogWrapper />
+                  <BreakSessionCompleteDialogWrapper />
+                  <ActiveTaskIndicator />
+                </SidebarProvider>
+              </ProlongedNavigationAlertProvider>
+            </MissingBreakAlertProvider>
+          </ExcessiveTimeAlertProvider>
         </BreakTimerProvider>
       </FocusTimerProvider>
     </TasksProvider>
