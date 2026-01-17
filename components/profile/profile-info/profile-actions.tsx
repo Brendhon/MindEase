@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useMemo } from "react";
 import { styles } from "./profile-info-styles";
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useTextDetail } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { X, BellRing } from "lucide-react";
 import { useMemo } from "react";

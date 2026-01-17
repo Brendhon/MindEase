@@ -4,10 +4,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { styles, getContrastClasses } from "./sidebar-styles";
-import { useSidebar } from "@/hooks/useSidebar";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useSidebar } from "@/hooks/sidebar";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 
 /**
  * Sidebar.Item - Navigation item subcomponent

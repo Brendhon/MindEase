@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/utils/ui";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useMemo } from "react";
 import { styles } from "./profile-info-styles";
 

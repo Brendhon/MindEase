@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { styles, getContrastClassesForProfile } from "./profile-info-styles";
 
 /**

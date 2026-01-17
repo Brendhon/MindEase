@@ -1,7 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";

@@ -1,8 +1,8 @@
 "use client";
 
 import { Card } from "@/components/ui";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { AuthUser } from "@/models/Auth";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";

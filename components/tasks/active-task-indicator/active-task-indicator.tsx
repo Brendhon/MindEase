@@ -1,12 +1,12 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useActiveTaskIndicator } from "@/hooks/useActiveTaskIndicator";
-import { useBeforeUnload } from "@/hooks/useBeforeUnload";
-import { useBreakTimer } from "@/hooks/useBreakTimer";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useActiveTaskIndicator } from "@/hooks/tasks";
+import { useBeforeUnload } from "@/hooks/utils";
+import { useBreakTimer } from "@/hooks/break-timer";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useFocusTimer } from "@/hooks/focus-timer";
+import { useTextDetail } from "@/hooks/accessibility";
 import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
 import { useRouter } from "next/navigation";

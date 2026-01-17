@@ -1,9 +1,9 @@
 "use client";
 
 import { useMemo } from "react";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useTextDetail } from "@/hooks/accessibility";
 import { SettingsSection } from "@/components/dashboard/settings-section";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/form/select";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import type { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { styles } from "./active-task-indicator-styles";

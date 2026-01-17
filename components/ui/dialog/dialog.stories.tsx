@@ -1,5 +1,5 @@
-import { AuthProvider } from '@/providers/auth-provider';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { AuthProvider } from '@/providers/auth';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { AlertCircle, CheckCircle2, Info, XCircle } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
 import { SessionProvider } from 'next-auth/react';
 import { Select } from './index';
 import { useState } from 'react';
-import { AuthProvider } from '@/providers/auth-provider';
+import { AuthProvider } from '@/providers/auth';
 
 const meta = {
   title: 'Components/Form/Select',

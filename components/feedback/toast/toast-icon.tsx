@@ -1,6 +1,6 @@
 "use client";
 
-import type { FeedbackType } from "@/hooks/useFeedback";
+import type { FeedbackType } from "@/hooks/feedback";
 import { cn } from "@/utils/ui";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 

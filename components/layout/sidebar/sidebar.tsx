@@ -1,8 +1,8 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useSidebar } from "@/hooks/sidebar";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { getAccessibilityText } from "@/utils/accessibility/content";
 import { PROTECTED_ROUTES } from "@/utils/routes";

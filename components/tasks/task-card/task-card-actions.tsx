@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import type { TaskCardActionsProps } from "@/models/TaskCardProps";
 import { cn } from "@/utils/ui";
 import { TaskCardEditActions } from "./task-card-edit-actions";

@@ -11,9 +11,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useAuth } from "@/hooks/useAuth";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useAuth } from "@/hooks/auth";
+import { useTextDetail } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";

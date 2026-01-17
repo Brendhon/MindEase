@@ -1,7 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useTextDetail } from "@/hooks/accessibility";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 

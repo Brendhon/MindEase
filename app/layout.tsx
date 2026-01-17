@@ -1,8 +1,8 @@
 import { ToastContainer } from "@/components/feedback/toast";
-import { AuthProvider } from "@/providers/auth-provider";
-import { CognitiveSettingsProvider } from "@/providers/cognitive-settings-provider";
-import { DialogProvider } from "@/providers/dialog-provider";
-import { FeedbackProvider } from "@/providers/feedback-provider";
+import { AuthProvider } from "@/providers/auth";
+import { CognitiveSettingsProvider } from "@/providers/cognitive-settings";
+import { DialogProvider } from "@/providers/dialog";
+import { FeedbackProvider } from "@/providers/feedback";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";

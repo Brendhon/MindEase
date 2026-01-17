@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import type { TaskCardFocusActionsProps } from "@/models/TaskCardProps";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { Check, LucideIcon, Play, Square } from "lucide-react";

@@ -4,12 +4,12 @@ import { Header, Sidebar } from "@/components/layout";
 import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { BreakTimerProvider } from "@/providers/break-timer-provider";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BreakTimerProvider } from "@/providers/break-timer";
 import { ExcessiveTimeAlertProvider, MissingBreakAlertProvider, ProlongedNavigationAlertProvider } from "@/providers/cognitive-alerts";
-import { FocusTimerProvider } from "@/providers/focus-timer-provider";
-import { SidebarProvider } from "@/providers/sidebar-provider";
-import { TasksProvider } from "@/providers/tasks-provider";
+import { FocusTimerProvider } from "@/providers/focus-timer";
+import { SidebarProvider } from "@/providers/sidebar";
+import { TasksProvider } from "@/providers/tasks";
 import { useEffect } from "react";
 
 /**

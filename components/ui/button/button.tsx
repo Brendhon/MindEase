@@ -1,7 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { cn } from "@/utils/ui";
 import { Button as HeadlessButton } from "@headlessui/react";
 import { ButtonHTMLAttributes, ReactNode, forwardRef, useMemo } from "react";

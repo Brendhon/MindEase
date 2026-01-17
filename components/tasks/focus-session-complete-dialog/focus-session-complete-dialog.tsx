@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import type { Task } from "@/models/Task";
 import { canCompleteTask } from "@/utils/tasks";
 import { Check, Coffee, Play } from "lucide-react";

@@ -1,7 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { cn } from "@/utils/ui";
 import { Select as HeadlessSelect } from "@headlessui/react";
 import { ReactNode, SelectHTMLAttributes, forwardRef, useMemo } from "react";

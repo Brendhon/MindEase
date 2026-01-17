@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
 import { ReactNode, useId, useMemo } from "react";

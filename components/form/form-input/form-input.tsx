@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { useId, useMemo } from "react";
 import { Controller, ControllerProps, FieldPath, FieldValues, useFormContext } from "react-hook-form";

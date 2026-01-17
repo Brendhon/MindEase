@@ -1,7 +1,7 @@
 "use client";
 
 import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import { Play, X } from "lucide-react";
 import { useMemo } from "react";
 

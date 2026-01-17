@@ -2,8 +2,8 @@
 
 import { InputHTMLAttributes, TextareaHTMLAttributes, forwardRef, useMemo } from "react";
 import { cn } from "@/utils/ui";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings-context";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings";
 import { styles, getContrastClasses } from "./input-styles";
 
 /**

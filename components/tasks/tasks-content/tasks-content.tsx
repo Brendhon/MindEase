@@ -2,10 +2,10 @@
 
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
-import { useDialog } from "@/hooks/useDialog";
-import { useFeedback } from "@/hooks/useFeedback";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useTasks } from "@/hooks/useTasks";
+import { useDialog } from "@/hooks/dialog";
+import { useFeedback } from "@/hooks/feedback";
+import { useFocusTimer } from "@/hooks/focus-timer";
+import { useTasks } from "@/hooks/tasks";
 import { Task } from "@/models/Task";
 import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { useCallback, useEffect, useState } from "react";

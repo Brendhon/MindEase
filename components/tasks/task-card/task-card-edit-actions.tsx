@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import type { TaskCardEditActionsProps } from "@/models/TaskCardProps";
 import { Edit, Trash2 } from "lucide-react";
 

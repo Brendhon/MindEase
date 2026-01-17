@@ -1,8 +1,8 @@
 import { Button } from '@/components/ui/button';
-import { useSidebar } from '@/hooks/useSidebar';
-import { AuthProvider } from '@/providers/auth-provider';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
-import { SidebarProvider } from '@/providers/sidebar-provider';
+import { useSidebar } from '@/hooks/sidebar';
+import { AuthProvider } from '@/providers/auth';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
+import { SidebarProvider } from '@/providers/sidebar';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Calendar, CheckSquare, Home, LayoutDashboard, Menu, Settings, User } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';

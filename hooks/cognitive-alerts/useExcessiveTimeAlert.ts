@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { useExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useFocusTimer } from "@/hooks/focus-timer";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import {
   EXCESSIVE_TIME_THRESHOLD_MS,
   ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS,

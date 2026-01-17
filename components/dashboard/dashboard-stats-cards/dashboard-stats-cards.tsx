@@ -1,8 +1,8 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useTextDetail } from "@/hooks/accessibility";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 import { BarChart3, CheckCircle2, Clock, ListTodo } from "lucide-react";

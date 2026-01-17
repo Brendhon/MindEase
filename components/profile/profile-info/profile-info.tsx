@@ -1,11 +1,11 @@
 "use client";
 
 import { PageHeader } from "@/components/layout";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useAuth } from "@/hooks/useAuth";
-import { useDialog } from "@/hooks/useDialog";
-import { useFeedback } from "@/hooks/useFeedback";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useAuth } from "@/hooks/auth";
+import { useDialog } from "@/hooks/dialog";
+import { useFeedback } from "@/hooks/feedback";
+import { useTextDetail } from "@/hooks/accessibility";
 import { AuthUser } from "@/models/Auth";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";

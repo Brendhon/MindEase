@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { LabelHTMLAttributes, ReactNode, useMemo } from "react";
 import { styles } from "./input-styles";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { TimerType } from "@/models/Timer";
 import { cn } from "@/utils/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";

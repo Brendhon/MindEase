@@ -1,6 +1,6 @@
 "use client";
 
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 
 /**

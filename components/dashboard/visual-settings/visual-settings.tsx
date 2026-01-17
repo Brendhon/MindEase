@@ -2,8 +2,8 @@
 
 import { SettingsSection } from "@/components/dashboard";
 import { RadioGroup } from "@/components/ui";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useTextDetail } from "@/hooks/accessibility";
 
 /**
  * VisualSettings Component - MindEase

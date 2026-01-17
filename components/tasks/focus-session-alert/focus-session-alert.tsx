@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useTextDetail } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { Check, Pause, Play } from "lucide-react";
 import { useMemo } from "react";

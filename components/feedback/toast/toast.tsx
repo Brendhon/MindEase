@@ -1,8 +1,8 @@
 "use client";
 
-import { useFeedbackContext } from "@/contexts/feedback-context";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import type { FeedbackType } from "@/hooks/useFeedback";
+import { useFeedbackContext } from "@/contexts/feedback";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import type { FeedbackType } from "@/hooks/feedback";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
@@ -11,7 +11,7 @@ import { ToastDismiss } from "./toast-dismiss";
 import { ToastIcon } from "./toast-icon";
 import { ToastMessage } from "./toast-message";
 import { getContrastClasses, getTransitionClasses, getTypeClasses, styles } from "./toast-styles";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 
 interface ToastProps {
   id: string;

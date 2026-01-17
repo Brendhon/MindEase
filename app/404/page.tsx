@@ -2,8 +2,8 @@
 
 import { PageContainer } from "@/components/layout";
 import { Button } from "@/components/ui";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useTextDetail } from "@/hooks/accessibility";
 import { PAGE_ROUTES } from "@/utils/routes";
 import { cn } from "@/utils/ui";
 import Link from "next/link";

@@ -3,9 +3,9 @@
 import { DashboardCognitiveAlerts, DashboardError, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
 import { PageContent, PageHeader } from "@/components/layout";
 import { ContentSettings, ProfileResetButton } from "@/components/profile";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useTextDetail } from "@/hooks/accessibility";
 import { Task } from "@/models/Task";
 import { cn } from "@/utils/ui";
 

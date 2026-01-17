@@ -1,15 +1,15 @@
 import { Button } from '@/components/ui/button';
-import { useFeedbackContext } from '@/contexts/feedback-context';
-import type { FeedbackMessage } from '@/hooks/useFeedback';
-import { useFeedback } from '@/hooks/useFeedback';
-import { useTextDetail } from '@/hooks/useTextDetail';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
-import { FeedbackProvider } from '@/providers/feedback-provider';
+import { useFeedbackContext } from '@/contexts/feedback';
+import type { FeedbackMessage } from '@/hooks/feedback';
+import { useFeedback } from '@/hooks/feedback';
+import { useTextDetail } from '@/hooks/accessibility';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
+import { FeedbackProvider } from '@/providers/feedback';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ToastContainer } from '.';
-import { AuthProvider } from '@/providers/auth-provider';
+import { AuthProvider } from '@/providers/auth';
 
 const meta = {
   title: 'Components/Feedback/Toast',

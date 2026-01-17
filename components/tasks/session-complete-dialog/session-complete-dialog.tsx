@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import type { LucideIcon } from "lucide-react";
 import { useMemo } from "react";

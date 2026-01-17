@@ -1,9 +1,9 @@
 "use client";
 
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { Button } from "@/components/ui";
 import { RotateCcw } from "lucide-react";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTextDetail } from "@/hooks/accessibility";
 
 /**
  * ProfileResetButton Component - MindEase

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CognitiveSettingsProvider } from "@/providers/cognitive-settings-provider";
+import { CognitiveSettingsProvider } from "@/providers/cognitive-settings";
 import { SessionProvider } from "next-auth/react";
 import { FormInput } from "./form-input";
 

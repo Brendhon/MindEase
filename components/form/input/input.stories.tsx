@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { CognitiveSettingsProvider } from '@/providers/cognitive-settings-provider';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
 import { SessionProvider } from 'next-auth/react';
 import { Input } from './index';
 import { useState } from 'react';
