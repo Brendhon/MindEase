@@ -1,4 +1,4 @@
-import { getAccessibilityText, type AccessibilityTextKey } from "@/utils/accessibility/content";
+import { getAccessibilityText, type AccessibilityTextKey } from "@/utils/accessibility";
 import { ReactNode, useCallback, useMemo } from "react";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 

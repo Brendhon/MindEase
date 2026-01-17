@@ -4,7 +4,7 @@
  */
 
 import { BaseComponentProps, BaseComponentWithChildren, BaseComponentWithClassName } from "@/models/base";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 
 /**
  * Base props for message components (Dialog.Message and Toast.Message)

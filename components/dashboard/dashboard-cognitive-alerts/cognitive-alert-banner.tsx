@@ -7,7 +7,7 @@ import { cn } from "@/utils/ui";
 import { X, BellRing } from "lucide-react";
 import { useMemo } from "react";
 import { getContrastClassesForAlerts, styles } from "./dashboard-cognitive-alerts-styles";
-import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { AccessibilityTextKey } from "@/utils/accessibility";
 import { BaseComponentProps } from "@/models/base";
 
 /**

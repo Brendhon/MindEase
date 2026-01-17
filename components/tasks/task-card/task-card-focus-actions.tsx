@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useTextDetail } from "@/hooks/accessibility";
 import type { TaskCardFocusActionsProps } from "@/models/task-card-props";
-import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { AccessibilityTextKey } from "@/utils/accessibility";
 import { Check, LucideIcon, Play, Square } from "lucide-react";
 
 interface StopButtonProps {

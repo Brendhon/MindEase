@@ -5,13 +5,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
 import { useAuth } from "@/hooks/auth";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useSidebar } from "@/hooks/sidebar";
-import { useTextDetail } from "@/hooks/accessibility";
-import { getAccessibilityText } from "@/utils/accessibility/content";
-import { cn } from "@/utils/ui/ui";
+import { getAccessibilityText } from "@/utils/accessibility";
+import { cn } from "@/utils/ui";
 import { LogOut, Menu } from "lucide-react";
 import { useMemo } from "react";
 

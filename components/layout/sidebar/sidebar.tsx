@@ -3,10 +3,10 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useSidebar } from "@/hooks/sidebar";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import { getAccessibilityText } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
+import { getAccessibilityText } from "@/utils/accessibility";
 import { PROTECTED_ROUTES } from "@/utils/routes";
-import { cn } from "@/utils/ui/ui";
+import { cn } from "@/utils/ui";
 import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { SidebarIcon } from "./sidebar-icon";

@@ -3,7 +3,7 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { BaseComponentProps } from "@/models/base";
-import { getTextContrastClasses } from "@/utils/accessibility/tailwind-classes";
+import { getTextContrastClasses } from "@/utils/accessibility";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./card-styles";

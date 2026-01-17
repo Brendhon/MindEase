@@ -1,5 +1,5 @@
 import { UserPreferences } from "@/models/user-preferences";
-import { getContrastClasses } from "@/utils/accessibility/tailwind-classes";
+import { getContrastClasses } from "@/utils/accessibility";
 
 /**
  * Dashboard Cognitive Alerts Styles - MindEase

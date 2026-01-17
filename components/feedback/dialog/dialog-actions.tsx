@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
 import { BaseComponentProps } from "@/models/base";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
 

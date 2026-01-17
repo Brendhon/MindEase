@@ -1,14 +1,14 @@
 "use client";
 
+import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useSidebar } from "@/hooks/sidebar";
+import { BaseComponentProps } from "@/models/base";
+import { cn } from "@/utils/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useMemo } from "react";
-import { cn } from "@/utils/ui/ui";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { BaseComponentProps } from "@/models/base";
-import { styles, getContrastClasses } from "./sidebar-styles";
-import { useSidebar } from "@/hooks/sidebar";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { getContrastClasses, styles } from "./sidebar-styles";
 
 /**
  * Sidebar.Item - Navigation item subcomponent

@@ -9,7 +9,7 @@ import type {
   SubtaskBreakRequiredDialogConfig,
   SubtaskFocusRequiredDialogConfig,
 } from "@/models/task-card-props";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import type { Subtask } from "@/models/task";
 
 export type {

@@ -3,7 +3,7 @@
 import { useFeedbackContext } from "@/contexts/feedback";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import type { FeedbackType } from "@/hooks/feedback";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import { cn } from "@/utils/ui";
 import { Transition } from "@headlessui/react";
 import { Fragment, useEffect, useMemo } from "react";

@@ -265,7 +265,7 @@ body {
  * 
  * NOTE: Cognitive accessibility settings (contrast, spacing, fontSize, etc.)
  * are now applied via Tailwind classes in React components.
- * See: @/utils/accessibility/tailwind-classes.ts
+ * See: @/utils/accessibility.ts
  */
 
 /**

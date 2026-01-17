@@ -3,7 +3,7 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
 import { BaseComponentProps } from "@/models/base";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 

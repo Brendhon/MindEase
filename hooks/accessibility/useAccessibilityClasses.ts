@@ -8,7 +8,7 @@ import {
   getFontSizeClasses,
   getSpacingClasses,
   getSpacingValue,
-} from "@/utils/accessibility/tailwind-classes";
+} from "@/utils/accessibility";
 
 /**
  * useAccessibilityClasses Hook - MindEase

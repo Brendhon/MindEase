@@ -2,7 +2,7 @@
 
 import { cn } from "@/utils/ui";
 import { useTextDetail } from "@/hooks/accessibility";
-import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { AccessibilityTextKey } from "@/utils/accessibility";
 import { BaseComponentProps } from "@/models/base";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useMemo } from "react";

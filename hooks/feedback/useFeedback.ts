@@ -2,7 +2,7 @@
 
 import { useFeedbackContext } from "@/contexts/feedback";
 import { generateRandomUUID } from "@/utils/uuid";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import { useCallback } from "react";
 
 /**

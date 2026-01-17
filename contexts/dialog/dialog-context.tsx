@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 
 /**
  * Dialog configuration

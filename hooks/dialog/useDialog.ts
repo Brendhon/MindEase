@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useDialogContext, DialogConfig } from "@/contexts/dialog";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 import { generateRandomUUID } from "@/utils/uuid";
 
 /**

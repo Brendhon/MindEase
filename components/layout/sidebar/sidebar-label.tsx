@@ -1,7 +1,7 @@
 "use client";
 
 import { useTextDetail } from "@/hooks/accessibility";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import type { AccessibilityTextKey } from "@/utils/accessibility";
 
 /**
  * Sidebar.Label - Label subcomponent
