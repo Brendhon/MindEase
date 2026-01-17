@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Header, Sidebar } from "@/components/layout";
+import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
@@ -51,6 +52,7 @@ export default function AuthenticatedLayout({
             </div>
             <FocusSessionCompleteDialogWrapper />
             <BreakSessionCompleteDialogWrapper />
+            <ActiveTaskIndicator />
           </SidebarProvider>
         </BreakTimerProvider>
       </FocusTimerProvider>

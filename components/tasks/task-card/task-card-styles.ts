@@ -22,7 +22,7 @@ export const styles = {
   actions: "flex flex-wrap items-center gap-2 mt-3",
   timerIndicator: "flex flex-col gap-1 mb-4 p-3 rounded-lg border",
   focusTimer: "bg-action-primary/5 border-action-primary/20",
-  breakTimer: "bg-action-secondary/5 border-action-secondary/20",
+  breakTimer: "bg-action-warning/5 border-action-warning/30",
   timerLabel: "text-text-secondary",
   timerValue: "font-semibold",
   focusTimerValue: "text-action-primary",
