@@ -4,6 +4,7 @@ import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
+import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
 import { useTasks } from "@/hooks/useTasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
@@ -18,6 +19,7 @@ export function BreakSessionCompleteDialogWrapper() {
   const { startTimer, stopTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
   const { recordBreakComplete, recordTaskFinished } = useMissingBreakAlert();
+  const { recordUserAction } = useProlongedNavigationAlert();
   const { updateTaskStatus } = useTasks();
 
   const [showBreakCompleteDialog, setShowBreakCompleteDialog] = useState(false);
@@ -54,10 +56,12 @@ export function BreakSessionCompleteDialogWrapper() {
     // Start new focus session if there's an active task in break timer
     if (breakTimerState.activeTaskId) {
       startTimer(breakTimerState.activeTaskId);
+      // Record user action (resets prolonged navigation timer)
+      recordUserAction();
     }
     // Record that break was completed (reset counter)
     recordBreakComplete();
-  }, [stopBreak, breakTimerState.activeTaskId, startTimer, recordBreakComplete]);
+  }, [stopBreak, breakTimerState.activeTaskId, startTimer, recordBreakComplete, recordUserAction]);
 
   const handleEndFocus = useCallback(async () => {
     // Return task to To Do when focus is stopped

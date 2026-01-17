@@ -5,6 +5,7 @@ import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
+import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
 import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -20,6 +21,7 @@ export function FocusSessionCompleteDialogWrapper() {
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
   const { recordFocusSessionComplete, recordTaskFinished } = useMissingBreakAlert();
+  const { recordUserAction } = useProlongedNavigationAlert();
   const { updateTaskStatus, getTask, refreshTask } = useTasks();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
@@ -97,9 +99,11 @@ export function FocusSessionCompleteDialogWrapper() {
       startTimer(timerState.activeTaskId);
       // Record that focus session was completed without break
       recordFocusSessionComplete();
+      // Record user action (resets prolonged navigation timer)
+      recordUserAction();
     }
     // Dialog will close itself via onClose callback
-  }, [timerState.activeTaskId, startTimer, recordFocusSessionComplete]);
+  }, [timerState.activeTaskId, startTimer, recordFocusSessionComplete, recordUserAction]);
 
   const handleFinishTask = useCallback(async () => {
     if (!timerState.activeTaskId) return;

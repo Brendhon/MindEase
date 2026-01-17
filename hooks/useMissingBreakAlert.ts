@@ -1,6 +1,6 @@
 import { useMissingBreakAlertContext } from "@/contexts/missing-break-alert-context";
 import {
-  MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS,
+  COGNITIVE_ALERT_DISMISS_EXPIRY_MS,
   MISSING_BREAK_SESSIONS_THRESHOLD
 } from "@/utils/cognitive-alerts";
 import { useCallback, useEffect } from "react";
@@ -64,7 +64,7 @@ export function useMissingBreakAlert() {
       const now = Date.now();
       const timeSinceDismiss = now - dismissedAt;
 
-      if (timeSinceDismiss >= MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS) {
+      if (timeSinceDismiss >= COGNITIVE_ALERT_DISMISS_EXPIRY_MS) {
         // Dismiss expired - reset dismissed state
         _setIsMissingBreakAlertDismissed(false);
         _setDismissedAt(null);

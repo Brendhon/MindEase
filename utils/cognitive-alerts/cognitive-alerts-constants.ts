@@ -23,8 +23,8 @@ export const MISSING_BREAK_SESSIONS_THRESHOLD = 3;
  * Time after which a dismissed alert can be shown again
  * Default: 2 hours
  */
-const DEFAULT_MISSING_BREAK_ALERT_DISMISS_EXPIRY = 2; // 2 hours in milliseconds
-export const MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS = DEFAULT_MISSING_BREAK_ALERT_DISMISS_EXPIRY * 60 * 60 * 1000; // 2 hours in milliseconds
+const DEFAULT_COGNITIVE_ALERT_DISMISS_EXPIRY = 2; // 2 hours in milliseconds
+export const COGNITIVE_ALERT_DISMISS_EXPIRY_MS = DEFAULT_COGNITIVE_ALERT_DISMISS_EXPIRY * 60 * 60 * 1000; // 2 hours in milliseconds
 
 /**
  * Prolonged navigation alert threshold

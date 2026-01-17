@@ -7,6 +7,7 @@ import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-sess
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
 import { MissingBreakAlertProvider } from "@/providers/missing-break-alert-provider";
+import { ProlongedNavigationAlertProvider } from "@/providers/prolonged-navigation-alert-provider";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
@@ -21,6 +22,7 @@ import { useEffect } from "react";
  * - FocusTimerProvider: Global timer management for task-focused sessions
  * - BreakTimerProvider: Global break timer management for Pomodoro sessions
  * - MissingBreakAlertProvider: Global missing break alert state management
+ * - ProlongedNavigationAlertProvider: Global prolonged navigation alert state management
  * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
  * - BreakSessionCompleteDialogWrapper: Global dialog for completed break sessions
  * - Cognitive settings loading: Loads user preferences from Firestore before rendering
@@ -45,7 +47,8 @@ export default function AuthenticatedLayout({
       <FocusTimerProvider>
         <BreakTimerProvider>
           <MissingBreakAlertProvider>
-            <SidebarProvider>
+            <ProlongedNavigationAlertProvider>
+              <SidebarProvider>
               <div className={styles.container}>
                 <Sidebar />
                 <main className={styles.main}>
@@ -56,7 +59,8 @@ export default function AuthenticatedLayout({
               <FocusSessionCompleteDialogWrapper />
               <BreakSessionCompleteDialogWrapper />
               <ActiveTaskIndicator />
-            </SidebarProvider>
+              </SidebarProvider>
+            </ProlongedNavigationAlertProvider>
           </MissingBreakAlertProvider>
         </BreakTimerProvider>
       </FocusTimerProvider>

@@ -51,6 +51,7 @@ import {
 import { getTaskCardClasses } from "@/components/tasks/task-card/task-card-styles";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
+import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
@@ -77,6 +78,7 @@ export function useTaskCard({
   const { startTimer, stopTimer, isActive: isFocusActive, isRunning: isFocusRunning } = useFocusTimer();
   const { stopBreak, isActive: isBreakActive, isRunning: isBreakRunning } = useBreakTimer();
   const { recordTaskFinished } = useMissingBreakAlert();
+  const { recordUserAction } = useProlongedNavigationAlert();
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
   const { success } = useFeedback();
@@ -111,7 +113,9 @@ export function useTaskCard({
   const handleStartFocus = useCallback(() => {
     startTimer(task.id);
     onStatusChange?.(task.id, 1); // Set to In Progress
-  }, [startTimer, task.id, onStatusChange]);
+    // Record user action (resets prolonged navigation timer)
+    recordUserAction();
+  }, [startTimer, task.id, onStatusChange, recordUserAction]);
 
   const handleStop = useCallback(() => {
     // Stop both focus timer and break timer if break is active
@@ -188,6 +192,8 @@ export function useTaskCard({
         success("tasks_checklist_step_pending");
       } else {
         success("tasks_checklist_step_completed");
+        // Record user action when subtask is completed (resets prolonged navigation timer)
+        recordUserAction();
       }
     },
     [
@@ -201,6 +207,7 @@ export function useTaskCard({
       subtaskFocusRequiredDialog,
       onToggleSubtask,
       success,
+      recordUserAction,
     ]
   );
 
