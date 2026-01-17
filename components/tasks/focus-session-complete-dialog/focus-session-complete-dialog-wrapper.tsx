@@ -4,6 +4,7 @@ import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
 import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -18,6 +19,7 @@ export function FocusSessionCompleteDialogWrapper() {
   const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
+  const { recordFocusSessionComplete, recordTaskFinished } = useMissingBreakAlert();
   const { updateTaskStatus, getTask, refreshTask } = useTasks();
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
@@ -93,9 +95,11 @@ export function FocusSessionCompleteDialogWrapper() {
     if (timerState.activeTaskId) {
       // Start new timer (new Pomodoro) - this changes state to "running"
       startTimer(timerState.activeTaskId);
+      // Record that focus session was completed without break
+      recordFocusSessionComplete();
     }
     // Dialog will close itself via onClose callback
-  }, [timerState.activeTaskId, startTimer]);
+  }, [timerState.activeTaskId, startTimer, recordFocusSessionComplete]);
 
   const handleFinishTask = useCallback(async () => {
     if (!timerState.activeTaskId) return;
@@ -104,11 +108,13 @@ export function FocusSessionCompleteDialogWrapper() {
       // Update task status to completed (2) - automatically syncs with Firestore and updates UI
       await updateTaskStatus(timerState.activeTaskId, 2);
       stopTimer(); // This clears activeTaskId and resets to idle
+      // Record that task was finished (reset counter)
+      recordTaskFinished();
     } catch (error) {
       console.error("Error finishing task:", error);
     }
     // Dialog will close itself via onClose callback
-  }, [timerState.activeTaskId, stopTimer, updateTaskStatus]);
+  }, [timerState.activeTaskId, stopTimer, updateTaskStatus, recordTaskFinished]);
 
   const handleCloseSessionDialog = useCallback(() => {
     // Dialog should not close without action (preventClose={true})

@@ -1,6 +1,7 @@
 "use client";
 
 import { Task } from "@/models/Task";
+import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
 import { CognitiveAlertMissingBreak } from "./cognitive-alert-missing-break";
 import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-navigation";
 import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
@@ -25,10 +26,15 @@ export interface DashboardCognitiveAlertsProps {
 }
 
 export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: DashboardCognitiveAlertsProps) {
+  const { isMissingBreakAlertVisible, dismissMissingBreakAlert } = useMissingBreakAlert();
+
   return <>
-    <CognitiveAlertExcessiveTime isVisible={true} onDismiss={() => { }} />
-    <CognitiveAlertMissingBreak isVisible={true} onDismiss={() => { }} />
-    <CognitiveAlertProlongedNavigation isVisible={true} onDismiss={() => { }} />
+    <CognitiveAlertExcessiveTime isVisible={false} onDismiss={() => { }} />
+    <CognitiveAlertMissingBreak 
+      isVisible={isMissingBreakAlertVisible}
+      onDismiss={dismissMissingBreakAlert} 
+    />
+    <CognitiveAlertProlongedNavigation isVisible={false} onDismiss={() => { }} />
   </>;
 }
 

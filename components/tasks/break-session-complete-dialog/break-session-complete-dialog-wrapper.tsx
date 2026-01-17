@@ -3,6 +3,7 @@
 import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
 import { useTasks } from "@/hooks/useTasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
@@ -16,6 +17,7 @@ export function BreakSessionCompleteDialogWrapper() {
   const { breakTimerState, stopBreak } = useBreakTimer();
   const { startTimer, stopTimer } = useFocusTimer();
   const { settings } = useCognitiveSettings();
+  const { recordBreakComplete, recordTaskFinished } = useMissingBreakAlert();
   const { updateTaskStatus } = useTasks();
 
   const [showBreakCompleteDialog, setShowBreakCompleteDialog] = useState(false);
@@ -53,7 +55,9 @@ export function BreakSessionCompleteDialogWrapper() {
     if (breakTimerState.activeTaskId) {
       startTimer(breakTimerState.activeTaskId);
     }
-  }, [stopBreak, breakTimerState.activeTaskId, startTimer]);
+    // Record that break was completed (reset counter)
+    recordBreakComplete();
+  }, [stopBreak, breakTimerState.activeTaskId, startTimer, recordBreakComplete]);
 
   const handleEndFocus = useCallback(async () => {
     // Return task to To Do when focus is stopped
@@ -68,7 +72,9 @@ export function BreakSessionCompleteDialogWrapper() {
     // Stop break timer and focus timer
     stopBreak();
     stopTimer();
-  }, [stopBreak, stopTimer, breakTimerState.activeTaskId, updateTaskStatus]);
+    // Record that focus was ended (reset counter - cycle was interrupted)
+    recordTaskFinished();
+  }, [stopBreak, stopTimer, breakTimerState.activeTaskId, updateTaskStatus, recordTaskFinished]);
 
   const handleCloseBreakDialog = useCallback(() => {
     setShowBreakCompleteDialog(false);

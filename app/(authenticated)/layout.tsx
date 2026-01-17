@@ -6,6 +6,7 @@ import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-sess
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
+import { MissingBreakAlertProvider } from "@/providers/missing-break-alert-provider";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
@@ -19,6 +20,7 @@ import { useEffect } from "react";
  * Provides:
  * - FocusTimerProvider: Global timer management for task-focused sessions
  * - BreakTimerProvider: Global break timer management for Pomodoro sessions
+ * - MissingBreakAlertProvider: Global missing break alert state management
  * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
  * - BreakSessionCompleteDialogWrapper: Global dialog for completed break sessions
  * - Cognitive settings loading: Loads user preferences from Firestore before rendering
@@ -42,18 +44,20 @@ export default function AuthenticatedLayout({
     <TasksProvider>
       <FocusTimerProvider>
         <BreakTimerProvider>
-          <SidebarProvider>
-            <div className={styles.container}>
-              <Sidebar />
-              <main className={styles.main}>
-                <Header />
-                <div className={styles.content}>{children}</div>
-              </main>
-            </div>
-            <FocusSessionCompleteDialogWrapper />
-            <BreakSessionCompleteDialogWrapper />
-            <ActiveTaskIndicator />
-          </SidebarProvider>
+          <MissingBreakAlertProvider>
+            <SidebarProvider>
+              <div className={styles.container}>
+                <Sidebar />
+                <main className={styles.main}>
+                  <Header />
+                  <div className={styles.content}>{children}</div>
+                </main>
+              </div>
+              <FocusSessionCompleteDialogWrapper />
+              <BreakSessionCompleteDialogWrapper />
+              <ActiveTaskIndicator />
+            </SidebarProvider>
+          </MissingBreakAlertProvider>
         </BreakTimerProvider>
       </FocusTimerProvider>
     </TasksProvider>

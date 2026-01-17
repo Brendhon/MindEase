@@ -50,6 +50,7 @@ import {
 } from "@/components/tasks/task-card/task-card-dialogs";
 import { getTaskCardClasses } from "@/components/tasks/task-card/task-card-styles";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
+import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
@@ -75,6 +76,7 @@ export function useTaskCard({
   // Hooks
   const { startTimer, stopTimer, isActive: isFocusActive, isRunning: isFocusRunning } = useFocusTimer();
   const { stopBreak, isActive: isBreakActive, isRunning: isBreakRunning } = useBreakTimer();
+  const { recordTaskFinished } = useMissingBreakAlert();
   const { openDialog } = useDialog();
   const { getText } = useTextDetail();
   const { success } = useFeedback();
@@ -117,7 +119,9 @@ export function useTaskCard({
     stopTimer();
     // Return task to To Do when focus is stopped
     onStatusChange?.(task.id, 0);
-  }, [stopBreak, stopTimer, task.id, onStatusChange]);
+    // Record that focus was stopped (reset counter - cycle was interrupted)
+    recordTaskFinished();
+  }, [stopBreak, stopTimer, task.id, onStatusChange, recordTaskFinished]);
 
   const handleComplete = useCallback(() => {
     // Check if task has pending subtasks
@@ -131,8 +135,10 @@ export function useTaskCard({
     } else {
       stopTimer();
       onStatusChange?.(task.id, 2);
+      // Record that task was finished (reset counter)
+      recordTaskFinished();
     }
-  }, [hasPendingSubtasks, pendingSubtasks, getText, testId, openDialog, stopTimer, task.id, onStatusChange]);
+  }, [hasPendingSubtasks, pendingSubtasks, getText, testId, openDialog, stopTimer, task.id, onStatusChange, recordTaskFinished]);
 
   const handleEdit = useCallback(() => {
     onEdit?.(task);
