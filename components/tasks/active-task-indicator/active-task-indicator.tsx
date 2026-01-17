@@ -1,7 +1,11 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useActiveTaskIndicator } from "@/hooks/useActiveTaskIndicator";
+import { useBeforeUnload } from "@/hooks/useBeforeUnload";
+import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
@@ -15,7 +19,6 @@ import {
   getTypeClasses,
   styles,
 } from "./active-task-indicator-styles";
-import { useActiveTaskIndicator } from "./use-active-task-indicator";
 
 /**
  * ActiveTaskIndicator Component - MindEase
@@ -35,6 +38,19 @@ export function ActiveTaskIndicator() {
   const { getText } = useTextDetail();
   const router = useRouter();
   const [isMinimized, setIsMinimized] = useState(false);
+  
+  // Get timer states to check if any timer is active (running or paused)
+  const { isRunning: isFocusRunning } = useFocusTimer();
+  const { isRunning: isBreakRunning } = useBreakTimer();
+
+  // Block navigation when timer is running (focus or break)
+  // This shows browser confirmation dialog "Suas alterações serão perdidas" when user tries to leave
+  // Only blocks when timer is actually running (not when idle)
+  const shouldBlockNavigation = useMemo(() => {
+    return isFocusRunning() || isBreakRunning();
+  }, [isFocusRunning, isBreakRunning]);
+
+  useBeforeUnload(shouldBlockNavigation);
 
   // Get type-specific classes
   const typeClasses = useMemo(() => timerType ? getTypeClasses(timerType) : null, [timerType]);

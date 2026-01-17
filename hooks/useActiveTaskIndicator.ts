@@ -25,65 +25,45 @@
 import { useBreakTimer } from "@/hooks/useBreakTimer";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTasks } from "@/hooks/useTasks";
-import type { Task } from "@/models/Task";
+import { TimerType, UseActiveTaskIndicatorReturn } from "@/models/Timer";
 import { useMemo } from "react";
-
-export type TimerType = "focus" | "break";
-
-export interface ActiveTimer {
-  type: TimerType;
-  taskId: string | null;
-  time: number;
-}
-
-export interface UseActiveTaskIndicatorReturn {
-  /** Active timer object with type, taskId, and remaining time, or null */
-  activeTimer: ActiveTimer | null;
-  /** Active task object or null */
-  activeTask: Task | null;
-  /** Timer type: "focus" | "break" | null */
-  timerType: TimerType | null;
-  /** Remaining time in seconds */
-  remainingTime: number;
-}
 
 /**
  * Hook for managing active task indicator business logic
  * @returns Active timer state, task data, and derived values
  */
 export function useActiveTaskIndicator(): UseActiveTaskIndicatorReturn {
-  const { timerState, hasActiveTask: hasFocusTask, remainingTime: focusTime } = useFocusTimer();
-  const { breakTimerState, hasActiveTask: hasBreakTask, remainingTime: breakTime } = useBreakTimer();
+  const { timerState, isRunning: isFocusRunning, remainingTime: focusTime } = useFocusTimer();
+  const { breakTimerState, isRunning: isBreakRunning, remainingTime: breakTime } = useBreakTimer();
   const { getTask } = useTasks();
 
   // Determine which timer is active (prioritize focus)
   const activeTimer = useMemo(() => {
-    if (hasFocusTask && timerState.timerState === "running") {
+    if (isFocusRunning()) {
       return {
-        type: "focus" as const,
+        type: "focus" as TimerType,
         taskId: timerState.activeTaskId,
         time: focusTime,
       };
     }
-    if (hasBreakTask && breakTimerState.breakTimerState === "running") {
+    if (isBreakRunning()) {
       return {
-        type: "break" as const,
+        type: "break" as TimerType,
         taskId: breakTimerState.activeTaskId,
         time: breakTime,
       };
     }
     return null;
-  }, [hasFocusTask, hasBreakTask, timerState, breakTimerState, focusTime, breakTime]);
+  }, [isFocusRunning, isBreakRunning, timerState, breakTimerState, focusTime, breakTime]);
 
   // Fetch task if there's a taskId
   const activeTask = useMemo(() => {
-    if (!activeTimer?.taskId) return null;
-    return getTask(activeTimer.taskId) || null;
+    return !!activeTimer?.taskId && getTask(activeTimer.taskId);
   }, [activeTimer?.taskId, getTask]);
 
   return {
     activeTimer,
-    activeTask,
+    activeTask: activeTask || null,
     timerType: activeTimer?.type || null,
     remainingTime: activeTimer?.time || 0,
   };

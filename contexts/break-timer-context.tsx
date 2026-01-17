@@ -37,9 +37,9 @@ export interface BreakTimerContextValue {
   /** Stop break timer and reset to idle */
   stopBreak: () => void;
   /** Check if a task is active */
-  isActive: (taskId: string) => boolean;
+  isActive: (taskId?: string | undefined) => boolean;
   /** Check if a task is running */
-  isRunning: (taskId: string) => boolean;
+  isRunning: (taskId?: string | undefined) => boolean;
   /** Get remaining time for a task */
   remainingTime: number;
   /** Check if a task has an active task */

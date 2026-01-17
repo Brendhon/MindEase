@@ -5,7 +5,7 @@ import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import { ActiveTaskIndicatorTaskText } from "./active-task-indicator-task-text";
 import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
 import { styles } from "./active-task-indicator-styles";
-import type { TimerType } from "./use-active-task-indicator";
+import { TimerType } from "@/models/Timer";
 
 /**
  * ActiveTaskIndicatorContent Component - MindEase

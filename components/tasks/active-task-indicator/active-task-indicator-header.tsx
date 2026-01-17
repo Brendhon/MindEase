@@ -1,11 +1,11 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { TimerType } from "@/models/Timer";
 import { cn } from "@/utils/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import { styles } from "./active-task-indicator-styles";
-import type { TimerType } from "./use-active-task-indicator";
 
 /**
  * ActiveTaskIndicatorHeader Component - MindEase
