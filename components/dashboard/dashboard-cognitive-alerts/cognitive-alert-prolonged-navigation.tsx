@@ -1,6 +1,7 @@
 "use client";
 
 import { CognitiveAlertBanner } from "./cognitive-alert-banner";
+import { CognitiveAlertProps } from "@/models/dashboard";
 
 /**
  * Cognitive Alert Prolonged Navigation Component - MindEase
@@ -8,16 +9,7 @@ import { CognitiveAlertBanner } from "./cognitive-alert-banner";
  * 
  * Shows when: user has been navigating >X minutes without completing subtasks, starting focus, or other actions
  */
-export interface CognitiveAlertProlongedNavigationProps {
-  /** Whether alert is visible */
-  isVisible: boolean;
-  
-  /** Callback when alert is dismissed */
-  onDismiss: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface CognitiveAlertProlongedNavigationProps extends CognitiveAlertProps {}
 
 export function CognitiveAlertProlongedNavigation({
   isVisible,

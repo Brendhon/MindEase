@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { TaskCardEditActionsProps } from "@/models/TaskCardProps";
+import type { TaskCardEditActionsProps } from "@/models/task-card-props";
 import { Edit, Trash2 } from "lucide-react";
 
 /**

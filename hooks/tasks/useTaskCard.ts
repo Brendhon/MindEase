@@ -56,7 +56,7 @@ import { useFeedback } from "@/hooks/feedback";
 import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { UseTaskCardProps, UseTaskCardReturn } from "@/models/TaskCardProps";
+import type { UseTaskCardProps, UseTaskCardReturn } from "@/models/task-card-props";
 import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
 import { useCallback, useMemo } from "react";
 

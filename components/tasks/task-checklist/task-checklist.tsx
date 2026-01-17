@@ -2,7 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { Subtask } from "@/models/Task";
+import type { Subtask } from "@/models/task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { TaskChecklistItem } from "./task-checklist-item";

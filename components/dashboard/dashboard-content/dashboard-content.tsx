@@ -6,7 +6,8 @@ import { ContentSettings, ProfileResetButton } from "@/components/profile";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useTextDetail } from "@/hooks/accessibility";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 
 /**
@@ -17,15 +18,12 @@ import { cn } from "@/utils/ui";
  * - Cognitive settings management
  * - Real-time accessibility adjustments
  */
-export interface DashboardContentProps {
+export interface DashboardContentProps extends BaseComponentProps {
   /** Tasks data fetched from server */
   tasks: Task[];
 
   /** Error message if any */
   error?: string | null;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function DashboardContent({

@@ -4,4 +4,3 @@
  */
 
 export { DashboardLoading } from "./dashboard-loading";
-export type { DashboardLoadingProps } from "./dashboard-loading";

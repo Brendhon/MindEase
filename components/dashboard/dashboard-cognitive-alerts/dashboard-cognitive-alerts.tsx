@@ -4,6 +4,7 @@ import { useExcessiveTimeAlert, useMissingBreakAlert, useProlongedNavigationAler
 import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
 import { CognitiveAlertMissingBreak } from "./cognitive-alert-missing-break";
 import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-navigation";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * DashboardCognitiveAlerts Component - MindEase
@@ -16,10 +17,7 @@ import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-n
  * 
  * Priority: excessive_time > missing_break > prolonged_navigation
  */
-export interface DashboardCognitiveAlertsProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface DashboardCognitiveAlertsProps extends BaseComponentProps {}
 
 export function DashboardCognitiveAlerts({ "data-testid": testId }: DashboardCognitiveAlertsProps) {
   const { isMissingBreakAlertVisible, dismissMissingBreakAlert } = useMissingBreakAlert();

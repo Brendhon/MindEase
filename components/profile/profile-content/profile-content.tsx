@@ -2,7 +2,7 @@
 
 import { PageContent } from "@/components/layout";
 import { ProfileInfo } from "@/components/profile";
-import { AuthUser } from "@/models/Auth";
+import { AuthUser } from "@/models/auth";
 
 /**
  * ProfileContent Component - MindEase

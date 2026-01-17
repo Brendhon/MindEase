@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { Card } from "@/components/ui/card";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * SettingsSection Component - MindEase
@@ -14,7 +15,7 @@ import { Card } from "@/components/ui/card";
  * </SettingsSection>
  * ```
  */
-export interface SettingsSectionProps {
+export interface SettingsSectionProps extends BaseComponentProps {
   /** Section title */
   title: string;
   
@@ -26,9 +27,6 @@ export interface SettingsSectionProps {
   
   /** Custom className */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function SettingsSection({

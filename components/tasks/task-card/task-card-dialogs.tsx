@@ -8,9 +8,9 @@ import type {
   CompletePendingSubtasksDialogConfig,
   SubtaskBreakRequiredDialogConfig,
   SubtaskFocusRequiredDialogConfig,
-} from "@/models/TaskCardProps";
+} from "@/models/task-card-props";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import type { Subtask } from "@/models/Task";
+import type { Subtask } from "@/models/task";
 
 export type {
   CompletePendingSubtasksDialogConfig,

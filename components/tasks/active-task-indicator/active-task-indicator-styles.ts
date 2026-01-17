@@ -3,8 +3,8 @@
  * Centralized styles for active task indicator component
  */
 
-import { TimerType } from "@/models/Timer";
-import { UserPreferences } from "@/models/UserPreferences";
+import { TimerType } from "@/models/timer";
+import { UserPreferences } from "@/models/user-preferences";
 
 export const styles = {
   container: "fixed bottom-4 right-4 z-50 w-72 bg-surface-primary cursor-pointer hover:bg-surface-secondary transition-all duration-normal",

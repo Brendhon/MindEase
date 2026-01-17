@@ -2,7 +2,7 @@
 
 import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { Task } from "@/models/Task";
+import type { Task } from "@/models/task";
 import { canCompleteTask } from "@/utils/tasks";
 import { Check, Coffee, Play } from "lucide-react";
 import { useMemo } from "react";

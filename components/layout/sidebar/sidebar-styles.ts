@@ -1,4 +1,4 @@
-import { UserPreferences } from "@/models/UserPreferences";
+import { UserPreferences } from "@/models/user-preferences";
 
 /**
  * Sidebar Styles - MindEase

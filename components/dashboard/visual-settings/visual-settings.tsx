@@ -4,15 +4,13 @@ import { SettingsSection } from "@/components/dashboard";
 import { RadioGroup } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * VisualSettings Component - MindEase
  * Visual accessibility settings section (contrast, spacing, fontSize)
  */
-export interface VisualSettingsProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface VisualSettingsProps extends BaseComponentProps {}
 
 export function VisualSettings({ "data-testid": testId }: VisualSettingsProps) {
   const { settings, updateSetting } = useCognitiveSettings();

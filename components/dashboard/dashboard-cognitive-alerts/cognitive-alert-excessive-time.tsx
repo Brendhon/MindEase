@@ -1,6 +1,7 @@
 "use client";
 
 import { CognitiveAlertBanner } from "./cognitive-alert-banner";
+import { CognitiveAlertProps } from "@/models/dashboard";
 
 /**
  * Cognitive Alert Excessive Time Component - MindEase
@@ -8,16 +9,7 @@ import { CognitiveAlertBanner } from "./cognitive-alert-banner";
  * 
  * Shows when: same task in focus for >60-90 min (2-3 standard sessions)
  */
-export interface CognitiveAlertExcessiveTimeProps {
-  /** Whether alert is visible */
-  isVisible: boolean;
-  
-  /** Callback when alert is dismissed */
-  onDismiss: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface CognitiveAlertExcessiveTimeProps extends CognitiveAlertProps {}
 
 export function CognitiveAlertExcessiveTime({
   isVisible,

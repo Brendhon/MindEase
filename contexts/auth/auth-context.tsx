@@ -1,4 +1,4 @@
-import { AuthUser } from "@/models/Auth";
+import { AuthUser } from "@/models/auth";
 import { createContext, useContext } from "react";
 
 /**

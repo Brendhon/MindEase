@@ -6,7 +6,7 @@ import { signIn, signOut, getSession } from "next-auth/react";
 import { Session } from "next-auth";
 import { tasksService } from "../tasks";
 import { userPreferencesService } from "../user-preferences";
-import { AuthUser } from "@/models/Auth";
+import { AuthUser } from "@/models/auth";
 
 /**
  * Auth Service interface

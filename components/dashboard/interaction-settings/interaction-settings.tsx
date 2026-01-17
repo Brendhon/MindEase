@@ -7,16 +7,14 @@ import { useTextDetail } from "@/hooks/accessibility";
 import { SettingsSection } from "@/components/dashboard/settings-section";
 import { Switch } from "@/components/ui/switch";
 import { Select } from "@/components/form/select";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 
 /**
  * InteractionSettings Component - MindEase
  * Interaction accessibility settings section (animations, focusMode, timer settings)
  */
-export interface InteractionSettingsProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface InteractionSettingsProps extends BaseComponentProps {}
 
 export function InteractionSettings({ "data-testid": testId }: InteractionSettingsProps) {
   const { settings, updateSetting } = useCognitiveSettings();

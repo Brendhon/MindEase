@@ -4,15 +4,13 @@ import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * DashboardLoading Component - MindEase
  * Loading state for dashboard page
  */
-export interface DashboardLoadingProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface DashboardLoadingProps extends BaseComponentProps {}
 
 export function DashboardLoading({ "data-testid": testId }: DashboardLoadingProps) {
   const { fontSizeClasses, animationClasses, spacingClasses } = useAccessibilityClasses();

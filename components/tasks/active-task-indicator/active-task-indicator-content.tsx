@@ -1,11 +1,11 @@
 "use client";
 
-import type { Task } from "@/models/Task";
+import type { Task } from "@/models/task";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import { ActiveTaskIndicatorTaskText } from "./active-task-indicator-task-text";
 import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
 import { styles } from "./active-task-indicator-styles";
-import { TimerType } from "@/models/Timer";
+import { TimerType } from "@/models/timer";
 
 /**
  * ActiveTaskIndicatorContent Component - MindEase

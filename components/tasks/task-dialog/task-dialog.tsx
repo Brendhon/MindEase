@@ -8,7 +8,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useFeedback } from "@/hooks/feedback";
 import { useTextDetail } from "@/hooks/accessibility";
-import { Subtask, Task } from "@/models/Task";
+import { Subtask, Task } from "@/models/task";
 import { taskDialogOutputSchema, taskDialogSchema, TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { cn } from "@/utils/ui";
 import { generateRandomUUID } from "@/utils/uuid";

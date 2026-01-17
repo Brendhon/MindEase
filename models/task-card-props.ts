@@ -4,9 +4,9 @@
  */
 
 import type { ReactNode } from "react";
-import type { Task } from "./Task";
+import type { Task } from "./task";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import type { Subtask } from "./Task";
+import type { Subtask } from "./task";
 
 /**
  * Base props shared across TaskCard components

@@ -1,4 +1,4 @@
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
 import { firestoreService } from "../firestore";
 import { getTasksCollectionPath, getTaskDocumentPath } from "@/utils/firestore/paths";
 

@@ -2,7 +2,7 @@
  * Tailwind Classes Utilities - MindEase
  * Dynamic Tailwind class generation for accessibility settings
  */
-import { UserPreferences } from "@/models/UserPreferences";
+import { UserPreferences } from "@/models/user-preferences";
 
 /**
  * Get Tailwind classes for contrast settings

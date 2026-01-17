@@ -3,17 +3,15 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * DashboardError Component - MindEase
  * Error message display for dashboard page
  */
-export interface DashboardErrorProps {
+export interface DashboardErrorProps extends BaseComponentProps {
   /** Error message to display */
   message: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function DashboardError({ message, "data-testid": testId }: DashboardErrorProps) {

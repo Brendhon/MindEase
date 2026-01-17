@@ -4,7 +4,7 @@ import { Clock, Coffee } from "lucide-react";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { getTypeClasses } from "./active-task-indicator-styles";
-import { TimerType } from "@/models/Timer";
+import { TimerType } from "@/models/timer";
 
 /**
  * ActiveTaskIndicatorIcon Component - MindEase

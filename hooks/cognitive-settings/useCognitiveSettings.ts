@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings";
 import { useAuth } from "@/hooks/auth";
 import { userPreferencesService } from "@/services/user-preferences";
-import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPreferences";
+import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/user-preferences";
 
 /**
  * useCognitiveSettings Hook - MindEase

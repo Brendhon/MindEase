@@ -3,7 +3,7 @@
  * Type-safe helpers for accessing detailed/summary text content
  */
 import accessibilityTexts from "@/content/accessibility-texts.json";
-import { UserPreferences } from "@/models/UserPreferences";
+import { UserPreferences } from "@/models/user-preferences";
 
 /**
  * Available text keys in the accessibility content system

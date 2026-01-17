@@ -4,7 +4,7 @@ import { CardHeader } from "@/components/ui/card/card-header";
 import { CardTitle } from "@/components/ui/card/card-title";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { TaskCardHeaderProps } from "@/models/TaskCardProps";
+import type { TaskCardHeaderProps } from "@/models/task-card-props";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { styles } from "./task-card-styles";

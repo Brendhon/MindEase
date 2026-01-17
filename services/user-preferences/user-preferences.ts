@@ -2,7 +2,7 @@
  * User Preferences Service - MindEase
  * User cognitive accessibility preferences management service
  */
-import { DEFAULT_ACCESSIBILITY_SETTINGS, UserPreferences, UserPreferencesDocument } from "@/models/UserPreferences";
+import { DEFAULT_ACCESSIBILITY_SETTINGS, UserPreferences, UserPreferencesDocument } from "@/models/user-preferences";
 import { firestoreService } from "../firestore/firestore";
 
 /**

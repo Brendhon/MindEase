@@ -5,7 +5,7 @@ import { useBreakTimer } from "@/hooks/break-timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
 

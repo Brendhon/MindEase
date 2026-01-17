@@ -1,6 +1,7 @@
 "use client";
 
 import { CognitiveAlertBanner } from "./cognitive-alert-banner";
+import { CognitiveAlertProps } from "@/models/dashboard";
 
 /**
  * Cognitive Alert Missing Break Component - MindEase
@@ -8,16 +9,7 @@ import { CognitiveAlertBanner } from "./cognitive-alert-banner";
  * 
  * Shows when: 3+ focus sessions completed without break
  */
-export interface CognitiveAlertMissingBreakProps {
-  /** Whether alert is visible */
-  isVisible: boolean;
-  
-  /** Callback when alert is dismissed */
-  onDismiss: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface CognitiveAlertMissingBreakProps extends CognitiveAlertProps {}
 
 export function CognitiveAlertMissingBreak({
   isVisible,

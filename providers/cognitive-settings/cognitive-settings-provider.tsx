@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { CognitiveSettingsContext } from "@/contexts/cognitive-settings";
-import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/UserPreferences";
+import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/user-preferences";
 
 interface CognitiveSettingsProviderProps {
   children: React.ReactNode;

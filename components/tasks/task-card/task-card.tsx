@@ -3,7 +3,7 @@
 import { Card } from "@/components/ui/card";
 import { CardContent } from "@/components/ui/card/card-content";
 import { useTaskCard } from "@/hooks/tasks";
-import type { TaskCardProps } from "@/models/TaskCardProps";
+import type { TaskCardProps } from "@/models/task-card-props";
 import { TaskChecklist } from "../task-checklist";
 import { TaskCardActions } from "./task-card-actions";
 import { TaskCardHeader } from "./task-card-header";

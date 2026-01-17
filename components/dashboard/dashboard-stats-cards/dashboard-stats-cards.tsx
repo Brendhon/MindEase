@@ -3,7 +3,8 @@
 import { Card } from "@/components/ui/card";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { BarChart3, CheckCircle2, Clock, ListTodo } from "lucide-react";
 import { useMemo } from "react";
@@ -12,12 +13,9 @@ import { useMemo } from "react";
  * DashboardStatsCards Component - MindEase
  * Display task statistics cards (total, pending, in progress, completed)
  */
-export interface DashboardStatsCardsProps {
+export interface DashboardStatsCardsProps extends BaseComponentProps {
   /** Array of tasks to calculate statistics from */
   tasks: Task[];
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardStatsCardsProps) {

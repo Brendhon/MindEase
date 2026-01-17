@@ -1,7 +1,7 @@
 import { useTasksContext } from "@/contexts/tasks";
 import { useAuth } from "@/hooks/auth";
 import { useFeedback } from "@/hooks/feedback";
-import { Subtask, Task } from "@/models/Task";
+import { Subtask, Task } from "@/models/task";
 import { tasksService } from "@/services/tasks";
 import { useCallback } from "react";
 

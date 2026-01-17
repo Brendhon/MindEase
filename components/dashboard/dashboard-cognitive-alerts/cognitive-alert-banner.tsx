@@ -8,6 +8,7 @@ import { X, BellRing } from "lucide-react";
 import { useMemo } from "react";
 import { getContrastClassesForAlerts, styles } from "./dashboard-cognitive-alerts-styles";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * Cognitive Alert Banner Component - MindEase
@@ -19,7 +20,7 @@ import { AccessibilityTextKey } from "@/utils/accessibility/content";
  * - Support for contrast modes
  * - Responsive layout
  */
-export interface CognitiveAlertBannerProps {
+export interface CognitiveAlertBannerProps extends BaseComponentProps {
   /** Whether banner is visible */
   isVisible: boolean;
   
@@ -31,9 +32,6 @@ export interface CognitiveAlertBannerProps {
   
   /** Callback when banner is dismissed */
   onDismiss: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function CognitiveAlertBanner({

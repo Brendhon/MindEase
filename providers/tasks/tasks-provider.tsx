@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode, useState, useCallback, useEffect } from "react";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
 import { TasksContext } from "@/contexts/tasks";
 
 /**

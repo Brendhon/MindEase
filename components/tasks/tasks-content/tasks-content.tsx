@@ -6,7 +6,7 @@ import { useDialog } from "@/hooks/dialog";
 import { useFeedback } from "@/hooks/feedback";
 import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
 import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { useCallback, useEffect, useState } from "react";
 import { TaskDialog } from "../task-dialog";

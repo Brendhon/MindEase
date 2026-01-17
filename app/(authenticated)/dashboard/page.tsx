@@ -17,7 +17,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/config/next-auth";
 import { tasksService } from "@/services/tasks";
-import { Task } from "@/models/Task";
+import { Task } from "@/models/task";
 import { DashboardContent } from "@/components/dashboard/dashboard-content";
 
 export default async function DashboardPage() {

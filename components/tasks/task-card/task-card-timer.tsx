@@ -4,7 +4,7 @@ import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useBreakTimer } from "@/hooks/break-timer";
 import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { TaskCardTimerProps } from "@/models/TaskCardProps";
+import type { TaskCardTimerProps } from "@/models/task-card-props";
 import { formatTime } from "@/utils/timer";
 import { cn } from "@/utils/ui";
 import { styles } from "./task-card-styles";

@@ -2,7 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
-import type { Task } from "@/models/Task";
+import type { Task } from "@/models/task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { TaskColumn } from "../task-column";

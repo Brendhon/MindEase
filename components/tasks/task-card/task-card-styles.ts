@@ -3,7 +3,7 @@
  * Utility functions for calculating task card styles
  */
 
-import type { Task } from "@/models/Task";
+import type { Task } from "@/models/task";
 
 /**
  * Card style classes based on task status and focus state
