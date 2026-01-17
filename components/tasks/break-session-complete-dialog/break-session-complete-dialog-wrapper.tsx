@@ -1,9 +1,8 @@
 "use client";
 
 import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
-import { useBreakTimer } from "@/hooks/break-timer";
+import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";

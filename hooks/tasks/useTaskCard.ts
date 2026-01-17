@@ -50,10 +50,9 @@ import {
 } from "@/components/tasks/task-card/task-card-dialogs";
 import { getTaskCardClasses } from "@/components/tasks/task-card/task-card-styles";
 import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
-import { useBreakTimer } from "@/hooks/break-timer";
+import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useDialog } from "@/hooks/dialog";
 import { useFeedback } from "@/hooks/feedback";
-import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
 import { useTextDetail } from "@/hooks/accessibility";
 import type { UseTaskCardProps, UseTaskCardReturn } from "@/models/task-card-props";

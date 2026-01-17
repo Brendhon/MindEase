@@ -4,7 +4,7 @@ import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialog } from "@/hooks/dialog";
 import { useFeedback } from "@/hooks/feedback";
-import { useFocusTimer } from "@/hooks/focus-timer";
+import { useFocusTimer } from "@/hooks/timer";
 import { useTasks } from "@/hooks/tasks";
 import { Task } from "@/models/task";
 import { BaseComponentProps } from "@/models/base";

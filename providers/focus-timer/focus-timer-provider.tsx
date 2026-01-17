@@ -2,13 +2,13 @@
 
 import { FocusTimerContext, FocusTimerState, TimerAction } from "@/contexts/focus-timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useCountdownInterval } from "@/hooks/timer";
 import {
   createCompletedTimerState,
   createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
   isTimerCompleted,
-  useCountdownInterval,
 } from "@/utils/timer";
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
 

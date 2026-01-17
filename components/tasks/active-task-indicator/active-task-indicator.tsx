@@ -3,9 +3,8 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useActiveTaskIndicator } from "@/hooks/tasks";
 import { useBeforeUnload } from "@/hooks/utils";
-import { useBreakTimer } from "@/hooks/break-timer";
+import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTextDetail } from "@/hooks/accessibility";
 import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";

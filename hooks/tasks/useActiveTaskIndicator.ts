@@ -22,8 +22,7 @@
 
 "use client";
 
-import { useBreakTimer } from "@/hooks/break-timer";
-import { useFocusTimer } from "@/hooks/focus-timer";
+import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useTasks } from "@/hooks/tasks";
 import { TimerType, UseActiveTaskIndicatorReturn } from "@/models/timer";
 import { useMemo } from "react";

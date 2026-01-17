@@ -4,7 +4,7 @@
  */
 
 import { useEffect, useRef } from "react";
-import { COUNTDOWN_INTERVAL_MS } from "./timer-constants";
+import { COUNTDOWN_INTERVAL_MS } from "@/utils/timer/timer-constants";
 
 /**
  * Hook to manage countdown interval
@@ -49,4 +49,3 @@ export function useCountdownInterval(
     };
   }, [isRunning, onTick]);
 }
-

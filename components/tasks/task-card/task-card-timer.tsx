@@ -1,8 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useBreakTimer } from "@/hooks/break-timer";
-import { useFocusTimer } from "@/hooks/focus-timer";
+import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useTextDetail } from "@/hooks/accessibility";
 import type { TaskCardTimerProps } from "@/models/task-card-props";
 import { formatTime } from "@/utils/timer";

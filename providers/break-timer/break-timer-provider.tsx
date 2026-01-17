@@ -2,13 +2,13 @@
 
 import { BreakTimerAction, BreakTimerContext, BreakTimerState } from "@/contexts/break-timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useCountdownInterval } from "@/hooks/timer";
 import {
   createBreakEndedTimerState,
   createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
   isTimerCompleted,
-  useCountdownInterval,
 } from "@/utils/timer";
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
 
