@@ -1,9 +1,8 @@
 import { useMissingBreakAlertContext } from "@/contexts/cognitive-alerts";
-import {
-  COGNITIVE_ALERT_DISMISS_EXPIRY_MS,
-  MISSING_BREAK_SESSIONS_THRESHOLD
-} from "@/utils/cognitive-alerts";
+import { MISSING_BREAK_SESSIONS_THRESHOLD } from "@/utils/cognitive-alerts";
 import { useCallback, useEffect } from "react";
+import { useDismissExpiry } from "./useDismissExpiry";
+import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
 
 /**
  * useMissingBreakAlert Hook - MindEase
@@ -57,28 +56,11 @@ export function useMissingBreakAlert() {
   } = useMissingBreakAlertContext();
 
   // Check if dismiss has expired (2 hours)
-  useEffect(() => {
-    if (dismissedAt === null) return;
-
-    const checkExpiry = () => {
-      const now = Date.now();
-      const timeSinceDismiss = now - dismissedAt;
-
-      if (timeSinceDismiss >= COGNITIVE_ALERT_DISMISS_EXPIRY_MS) {
-        // Dismiss expired - reset dismissed state
-        _setIsMissingBreakAlertDismissed(false);
-        _setDismissedAt(null);
-      }
-    };
-
-    // Check immediately
-    checkExpiry();
-
-    // Check every minute to see if dismiss expired
-    const intervalId = setInterval(checkExpiry, 60 * 1000); // Check every minute
-
-    return () => clearInterval(intervalId);
-  }, [dismissedAt, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
+  useDismissExpiry(
+    dismissedAt,
+    _setIsMissingBreakAlertDismissed,
+    _setDismissedAt
+  );
 
   // Update alert visibility when consecutive sessions or dismissed state changes
   useEffect(() => {
@@ -127,11 +109,11 @@ export function useMissingBreakAlert() {
    * Hides the alert but keeps the counter (user still needs to take a break)
    * Dismiss expires after 2 hours
    */
-  const dismissMissingBreakAlert = useCallback(() => {
-    _setIsMissingBreakAlertVisible(false);
-    _setIsMissingBreakAlertDismissed(true);
-    _setDismissedAt(Date.now()); // Store current timestamp
-  }, [_setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
+  const dismissMissingBreakAlert = useBaseAlertDismiss(
+    _setIsMissingBreakAlertVisible,
+    _setIsMissingBreakAlertDismissed,
+    _setDismissedAt
+  );
 
   return {
     // State

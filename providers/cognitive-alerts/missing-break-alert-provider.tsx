@@ -1,6 +1,7 @@
 "use client";
 
 import { MissingBreakAlertContext } from "@/contexts/cognitive-alerts";
+import { useCommonAlertState } from "./create-alert-provider";
 import { useCallback, useState } from "react";
 
 interface MissingBreakAlertProviderProps {
@@ -18,29 +19,15 @@ interface MissingBreakAlertProviderProps {
 export function MissingBreakAlertProvider({
   children,
 }: MissingBreakAlertProviderProps) {
-  const [consecutiveFocusSessions, setConsecutiveFocusSessions] = useState(0);
-  const [isMissingBreakAlertVisible, setIsMissingBreakAlertVisible] = useState(false);
-  const [isMissingBreakAlertDismissed, setIsMissingBreakAlertDismissed] = useState(false);
-  const [dismissedAt, setDismissedAt] = useState<number | null>(null);
+  // Common alert state
+  const commonState = useCommonAlertState();
 
-  // Internal setters for useMissingBreakAlert hook to use
+  // Additional state specific to missing break alert
+  const [consecutiveFocusSessions, setConsecutiveFocusSessions] = useState(0);
+
+  // Setters for additional state
   const setConsecutiveFocusSessionsState = useCallback(
     (count: number | ((prev: number) => number)) => setConsecutiveFocusSessions(count),
-    []
-  );
-
-  const setIsMissingBreakAlertVisibleState = useCallback(
-    (visible: boolean) => setIsMissingBreakAlertVisible(visible),
-    []
-  );
-
-  const setIsMissingBreakAlertDismissedState = useCallback(
-    (dismissed: boolean) => setIsMissingBreakAlertDismissed(dismissed),
-    []
-  );
-
-  const setDismissedAtState = useCallback(
-    (timestamp: number | null) => setDismissedAt(timestamp),
     []
   );
 
@@ -48,13 +35,13 @@ export function MissingBreakAlertProvider({
     <MissingBreakAlertContext.Provider
       value={{
         consecutiveFocusSessions,
-        isMissingBreakAlertVisible,
-        isMissingBreakAlertDismissed,
-        dismissedAt,
+        isMissingBreakAlertVisible: commonState.isVisible,
+        isMissingBreakAlertDismissed: commonState.isDismissed,
+        dismissedAt: commonState.dismissedAt,
         _setConsecutiveFocusSessions: setConsecutiveFocusSessionsState,
-        _setIsMissingBreakAlertVisible: setIsMissingBreakAlertVisibleState,
-        _setIsMissingBreakAlertDismissed: setIsMissingBreakAlertDismissedState,
-        _setDismissedAt: setDismissedAtState,
+        _setIsMissingBreakAlertVisible: commonState.setIsVisible,
+        _setIsMissingBreakAlertDismissed: commonState.setIsDismissed,
+        _setDismissedAt: commonState.setDismissedAt,
       }}
     >
       {children}

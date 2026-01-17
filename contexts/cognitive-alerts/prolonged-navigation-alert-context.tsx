@@ -1,4 +1,5 @@
-import { createContext, useContext } from "react";
+import { createAlertContext } from "./create-alert-context";
+import { ProlongedNavigationAlertContextValue } from "@/models/cognitive-alerts";
 
 /**
  * Prolonged Navigation Alert Context - MindEase
@@ -13,29 +14,11 @@ import { createContext, useContext } from "react";
  * All business logic (navigation tracking, alert rules, state management)
  * is handled by the useProlongedNavigationAlert hook. Components should use useProlongedNavigationAlert(), not useProlongedNavigationAlertContext().
  */
-interface ProlongedNavigationAlertContextValue {
-  /** Timestamp of last user action (subtask completion or focus start) */
-  lastActionTimestamp: number | null;
-  
-  /** Whether prolonged navigation alert is visible */
-  isProlongedNavigationAlertVisible: boolean;
-  
-  /** Whether prolonged navigation alert has been dismissed */
-  isProlongedNavigationAlertDismissed: boolean;
-  
-  /** Timestamp when alert was dismissed (in milliseconds) */
-  dismissedAt: number | null;
-  
-  // Internal setters - only used by useProlongedNavigationAlert hook
-  _setLastActionTimestamp: (timestamp: number | null) => void;
-  _setIsProlongedNavigationAlertVisible: (visible: boolean) => void;
-  _setIsProlongedNavigationAlertDismissed: (dismissed: boolean) => void;
-  _setDismissedAt: (timestamp: number | null) => void;
-}
 
-export const ProlongedNavigationAlertContext = createContext<
-  ProlongedNavigationAlertContextValue | undefined
->(undefined);
+const { context: ProlongedNavigationAlertContext, useContext: useProlongedNavigationAlertContextHook } =
+  createAlertContext<ProlongedNavigationAlertContextValue>("ProlongedNavigationAlert");
+
+export { ProlongedNavigationAlertContext };
 
 /**
  * Hook to access prolonged navigation alert context
@@ -48,13 +31,5 @@ export const ProlongedNavigationAlertContext = createContext<
  * @internal
  */
 export function useProlongedNavigationAlertContext(): ProlongedNavigationAlertContextValue {
-  const context = useContext(ProlongedNavigationAlertContext);
-  
-  if (!context) {
-    throw new Error(
-      "useProlongedNavigationAlertContext must be used within ProlongedNavigationAlertProvider"
-    );
-  }
-  
-  return context;
+  return useProlongedNavigationAlertContextHook();
 }

@@ -1,4 +1,5 @@
-import { createContext, useContext } from "react";
+import { createAlertContext } from "./create-alert-context";
+import { ExcessiveTimeAlertContextValue } from "@/models/cognitive-alerts";
 
 /**
  * Excessive Time Alert Context - MindEase
@@ -13,33 +14,11 @@ import { createContext, useContext } from "react";
  * All business logic (time tracking, alert rules, state management)
  * is handled by the useExcessiveTimeAlert hook. Components should use useExcessiveTimeAlert(), not useExcessiveTimeAlertContext().
  */
-interface ExcessiveTimeAlertContextValue {
-  /** ID of the task currently in continuous focus */
-  currentTaskId: string | null;
-  
-  /** Timestamp when continuous focus started on current task (in milliseconds) */
-  focusStartTimestamp: number | null;
-  
-  /** Whether excessive time alert is visible */
-  isExcessiveTimeAlertVisible: boolean;
-  
-  /** Whether excessive time alert has been dismissed */
-  isExcessiveTimeAlertDismissed: boolean;
-  
-  /** Timestamp when alert was dismissed (in milliseconds) */
-  dismissedAt: number | null;
-  
-  // Internal setters - only used by useExcessiveTimeAlert hook
-  _setCurrentTaskId: (taskId: string | null) => void;
-  _setFocusStartTimestamp: (timestamp: number | null) => void;
-  _setIsExcessiveTimeAlertVisible: (visible: boolean) => void;
-  _setIsExcessiveTimeAlertDismissed: (dismissed: boolean) => void;
-  _setDismissedAt: (timestamp: number | null) => void;
-}
 
-export const ExcessiveTimeAlertContext = createContext<
-  ExcessiveTimeAlertContextValue | undefined
->(undefined);
+const { context: ExcessiveTimeAlertContext, useContext: useExcessiveTimeAlertContextHook } =
+  createAlertContext<ExcessiveTimeAlertContextValue>("ExcessiveTimeAlert");
+
+export { ExcessiveTimeAlertContext };
 
 /**
  * Hook to access excessive time alert context
@@ -52,13 +31,5 @@ export const ExcessiveTimeAlertContext = createContext<
  * @internal
  */
 export function useExcessiveTimeAlertContext(): ExcessiveTimeAlertContextValue {
-  const context = useContext(ExcessiveTimeAlertContext);
-  
-  if (!context) {
-    throw new Error(
-      "useExcessiveTimeAlertContext must be used within ExcessiveTimeAlertProvider"
-    );
-  }
-  
-  return context;
+  return useExcessiveTimeAlertContextHook();
 }

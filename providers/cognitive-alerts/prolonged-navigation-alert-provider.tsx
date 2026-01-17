@@ -1,6 +1,7 @@
 "use client";
 
 import { ProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
+import { useCommonAlertState } from "./create-alert-provider";
 import { useCallback, useState } from "react";
 
 interface ProlongedNavigationAlertProviderProps {
@@ -18,29 +19,15 @@ interface ProlongedNavigationAlertProviderProps {
 export function ProlongedNavigationAlertProvider({
   children,
 }: ProlongedNavigationAlertProviderProps) {
-  const [lastActionTimestamp, setLastActionTimestamp] = useState<number | null>(null);
-  const [isProlongedNavigationAlertVisible, setIsProlongedNavigationAlertVisible] = useState(false);
-  const [isProlongedNavigationAlertDismissed, setIsProlongedNavigationAlertDismissed] = useState(false);
-  const [dismissedAt, setDismissedAt] = useState<number | null>(null);
+  // Common alert state
+  const commonState = useCommonAlertState();
 
-  // Internal setters for useProlongedNavigationAlert hook to use
+  // Additional state specific to prolonged navigation alert
+  const [lastActionTimestamp, setLastActionTimestamp] = useState<number | null>(null);
+
+  // Setters for additional state
   const setLastActionTimestampState = useCallback(
     (timestamp: number | null) => setLastActionTimestamp(timestamp),
-    []
-  );
-
-  const setIsProlongedNavigationAlertVisibleState = useCallback(
-    (visible: boolean) => setIsProlongedNavigationAlertVisible(visible),
-    []
-  );
-
-  const setIsProlongedNavigationAlertDismissedState = useCallback(
-    (dismissed: boolean) => setIsProlongedNavigationAlertDismissed(dismissed),
-    []
-  );
-
-  const setDismissedAtState = useCallback(
-    (timestamp: number | null) => setDismissedAt(timestamp),
     []
   );
 
@@ -48,13 +35,13 @@ export function ProlongedNavigationAlertProvider({
     <ProlongedNavigationAlertContext.Provider
       value={{
         lastActionTimestamp,
-        isProlongedNavigationAlertVisible,
-        isProlongedNavigationAlertDismissed,
-        dismissedAt,
+        isProlongedNavigationAlertVisible: commonState.isVisible,
+        isProlongedNavigationAlertDismissed: commonState.isDismissed,
+        dismissedAt: commonState.dismissedAt,
         _setLastActionTimestamp: setLastActionTimestampState,
-        _setIsProlongedNavigationAlertVisible: setIsProlongedNavigationAlertVisibleState,
-        _setIsProlongedNavigationAlertDismissed: setIsProlongedNavigationAlertDismissedState,
-        _setDismissedAt: setDismissedAtState,
+        _setIsProlongedNavigationAlertVisible: commonState.setIsVisible,
+        _setIsProlongedNavigationAlertDismissed: commonState.setIsDismissed,
+        _setDismissedAt: commonState.setDismissedAt,
       }}
     >
       {children}

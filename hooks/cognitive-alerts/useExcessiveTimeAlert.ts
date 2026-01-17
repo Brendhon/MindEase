@@ -1,12 +1,13 @@
-import { useCallback, useEffect } from "react";
 import { useExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
-import { useFocusTimer } from "@/hooks/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useFocusTimer } from "@/hooks/timer";
 import {
-  EXCESSIVE_TIME_THRESHOLD_MS,
   ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS,
-  COGNITIVE_ALERT_DISMISS_EXPIRY_MS
+  EXCESSIVE_TIME_THRESHOLD_MS
 } from "@/utils/cognitive-alerts";
+import { useCallback, useEffect } from "react";
+import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
+import { useDismissExpiry } from "./useDismissExpiry";
 
 /**
  * useExcessiveTimeAlert Hook - MindEase
@@ -101,28 +102,11 @@ export function useExcessiveTimeAlert() {
   ]);
 
   // Check if dismiss has expired (2 hours)
-  useEffect(() => {
-    if (dismissedAt === null) return;
-
-    const checkExpiry = () => {
-      const now = Date.now();
-      const timeSinceDismiss = now - dismissedAt;
-
-      if (timeSinceDismiss >= COGNITIVE_ALERT_DISMISS_EXPIRY_MS) {
-        // Dismiss expired - reset dismissed state
-        _setIsExcessiveTimeAlertDismissed(false);
-        _setDismissedAt(null);
-      }
-    };
-
-    // Check immediately
-    checkExpiry();
-
-    // Check every minute to see if dismiss expired
-    const intervalId = setInterval(checkExpiry, 60 * 1000); // Check every minute
-
-    return () => clearInterval(intervalId);
-  }, [dismissedAt, _setIsExcessiveTimeAlertDismissed, _setDismissedAt]);
+  useDismissExpiry(
+    dismissedAt,
+    _setIsExcessiveTimeAlertDismissed,
+    _setDismissedAt
+  );
 
   // Monitor continuous focus time and update alert visibility
   // Check time even when timer is idle (between sessions) - continuous focus on same task
@@ -166,15 +150,11 @@ export function useExcessiveTimeAlert() {
    * Hides the alert but keeps tracking focus time
    * Dismiss expires after 2 hours
    */
-  const dismissExcessiveTimeAlert = useCallback(() => {
-    _setIsExcessiveTimeAlertVisible(false);
-    _setIsExcessiveTimeAlertDismissed(true);
-    _setDismissedAt(Date.now()); // Store current timestamp
-  }, [
+  const dismissExcessiveTimeAlert = useBaseAlertDismiss(
     _setIsExcessiveTimeAlertVisible,
     _setIsExcessiveTimeAlertDismissed,
-    _setDismissedAt,
-  ]);
+    _setDismissedAt
+  );
 
   return {
     // State

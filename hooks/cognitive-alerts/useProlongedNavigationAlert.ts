@@ -1,9 +1,8 @@
 import { useProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
-import {
-  COGNITIVE_ALERT_DISMISS_EXPIRY_MS,
-  PROLONGED_NAVIGATION_THRESHOLD_MS
-} from "@/utils/cognitive-alerts";
+import { PROLONGED_NAVIGATION_THRESHOLD_MS } from "@/utils/cognitive-alerts";
 import { useCallback, useEffect } from "react";
+import { useDismissExpiry } from "./useDismissExpiry";
+import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
 
 /**
  * useProlongedNavigationAlert Hook - MindEase
@@ -65,28 +64,11 @@ export function useProlongedNavigationAlert() {
   }, [lastActionTimestamp, _setLastActionTimestamp]);
 
   // Check if dismiss has expired (2 hours)
-  useEffect(() => {
-    if (dismissedAt === null) return;
-
-    const checkExpiry = () => {
-      const now = Date.now();
-      const timeSinceDismiss = now - dismissedAt;
-
-      if (timeSinceDismiss >= COGNITIVE_ALERT_DISMISS_EXPIRY_MS) {
-        // Dismiss expired - reset dismissed state
-        _setIsProlongedNavigationAlertDismissed(false);
-        _setDismissedAt(null);
-      }
-    };
-
-    // Check immediately
-    checkExpiry();
-
-    // Check every minute to see if dismiss expired
-    const intervalId = setInterval(checkExpiry, 60 * 1000); // Check every minute
-
-    return () => clearInterval(intervalId);
-  }, [dismissedAt, _setIsProlongedNavigationAlertDismissed, _setDismissedAt]);
+  useDismissExpiry(
+    dismissedAt,
+    _setIsProlongedNavigationAlertDismissed,
+    _setDismissedAt
+  );
 
   // Monitor navigation time and update alert visibility
   useEffect(() => {
@@ -135,15 +117,11 @@ export function useProlongedNavigationAlert() {
    * Hides the alert but keeps tracking navigation time
    * Dismiss expires after 2 hours
    */
-  const dismissProlongedNavigationAlert = useCallback(() => {
-    _setIsProlongedNavigationAlertVisible(false);
-    _setIsProlongedNavigationAlertDismissed(true);
-    _setDismissedAt(Date.now()); // Store current timestamp
-  }, [
+  const dismissProlongedNavigationAlert = useBaseAlertDismiss(
     _setIsProlongedNavigationAlertVisible,
     _setIsProlongedNavigationAlertDismissed,
-    _setDismissedAt,
-  ]);
+    _setDismissedAt
+  );
 
   return {
     // State

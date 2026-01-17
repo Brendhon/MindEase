@@ -1,4 +1,5 @@
-import { createContext, useContext } from "react";
+import { createAlertContext } from "./create-alert-context";
+import { MissingBreakAlertContextValue } from "@/models/cognitive-alerts";
 
 /**
  * Missing Break Alert Context - MindEase
@@ -13,29 +14,11 @@ import { createContext, useContext } from "react";
  * All business logic (session tracking, alert rules, state management)
  * is handled by the useMissingBreakAlert hook. Components should use useMissingBreakAlert(), not useMissingBreakAlertContext().
  */
-interface MissingBreakAlertContextValue {
-  /** Number of consecutive focus sessions without break */
-  consecutiveFocusSessions: number;
-  
-  /** Whether missing break alert is visible */
-  isMissingBreakAlertVisible: boolean;
-  
-  /** Whether missing break alert has been dismissed */
-  isMissingBreakAlertDismissed: boolean;
-  
-  /** Timestamp when alert was dismissed (in milliseconds) */
-  dismissedAt: number | null;
-  
-  // Internal setters - only used by useMissingBreakAlert hook
-  _setConsecutiveFocusSessions: (count: number | ((prev: number) => number)) => void;
-  _setIsMissingBreakAlertVisible: (visible: boolean) => void;
-  _setIsMissingBreakAlertDismissed: (dismissed: boolean) => void;
-  _setDismissedAt: (timestamp: number | null) => void;
-}
 
-export const MissingBreakAlertContext = createContext<
-  MissingBreakAlertContextValue | undefined
->(undefined);
+const { context: MissingBreakAlertContext, useContext: useMissingBreakAlertContextHook } =
+  createAlertContext<MissingBreakAlertContextValue>("MissingBreakAlert");
+
+export { MissingBreakAlertContext };
 
 /**
  * Hook to access missing break alert context
@@ -48,13 +31,5 @@ export const MissingBreakAlertContext = createContext<
  * @internal
  */
 export function useMissingBreakAlertContext(): MissingBreakAlertContextValue {
-  const context = useContext(MissingBreakAlertContext);
-  
-  if (!context) {
-    throw new Error(
-      "useMissingBreakAlertContext must be used within MissingBreakAlertProvider"
-    );
-  }
-  
-  return context;
+  return useMissingBreakAlertContextHook();
 }
