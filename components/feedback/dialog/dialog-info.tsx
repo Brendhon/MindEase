@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { InfoComponentProps } from "@/models/feedback";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
 
@@ -18,17 +19,12 @@ import { styles } from "./dialog-manager-styles";
  * </DialogManager>
  * ```
  */
-export interface DialogInfoProps {
-  children: React.ReactNode;
-  className?: string;
-  "data-testid"?: string;
-}
 
 export function DialogInfo({
   children,
   className,
   "data-testid": testId,
-}: DialogInfoProps) {
+}: InfoComponentProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   return (

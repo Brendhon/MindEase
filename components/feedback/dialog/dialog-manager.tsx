@@ -1,8 +1,7 @@
 "use client";
 
 import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
 import { useDialog } from "@/hooks/dialog";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -10,7 +9,6 @@ import { DialogActions } from "./dialog-actions";
 import { DialogInfo } from "./dialog-info";
 import { styles } from "./dialog-manager-styles";
 import { DialogMessage } from "./dialog-message";
-import { useTextDetail } from "@/hooks/accessibility";
 
 /**
  * DialogManager Component - MindEase

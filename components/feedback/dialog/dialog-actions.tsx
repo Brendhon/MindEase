@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
@@ -23,7 +23,7 @@ import { styles } from "./dialog-manager-styles";
  * </DialogManager>
  * ```
  */
-export interface DialogActionsProps {
+export interface DialogActionsProps extends BaseComponentProps {
   onCancel?: () => void;
   onConfirm?: () => void | Promise<void>;
   cancelLabelKey?: AccessibilityTextKey;
@@ -31,7 +31,6 @@ export interface DialogActionsProps {
   confirmVariant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
   isLoading?: boolean;
   onClose?: () => void;
-  "data-testid"?: string;
 }
 
 export function DialogActions({

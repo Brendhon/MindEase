@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { X } from "lucide-react";
 
@@ -17,11 +18,10 @@ import { X } from "lucide-react";
  * </Toast>
  * ```
  */
-export interface ToastDismissProps {
+export interface ToastDismissProps extends BaseComponentProps {
   onDismiss: () => void;
   ariaLabel?: string;
   className?: string;
-  "data-testid"?: string;
 }
 
 export function ToastDismiss({

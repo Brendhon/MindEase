@@ -1,8 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
+import { MessageComponentProps } from "@/models/feedback";
 import { cn } from "@/utils/ui";
 
 /**
@@ -18,13 +17,8 @@ import { cn } from "@/utils/ui";
  * </Toast>
  * ```
  */
-export interface ToastMessageProps {
-  messageKey: AccessibilityTextKey;
-  className?: string;
-  "data-testid"?: string;
-}
 
-export function ToastMessage({ messageKey, className, "data-testid": testId }: ToastMessageProps) {
+export function ToastMessage({ messageKey, className, "data-testid": testId }: MessageComponentProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
 

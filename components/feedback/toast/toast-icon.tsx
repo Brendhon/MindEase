@@ -1,6 +1,7 @@
 "use client";
 
 import type { FeedbackType } from "@/hooks/feedback";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
 
@@ -16,10 +17,9 @@ import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
  * </Toast>
  * ```
  */
-export interface ToastIconProps {
+export interface ToastIconProps extends BaseComponentProps {
   type: FeedbackType;
   className?: string;
-  "data-testid"?: string;
 }
 
 const iconConfig = {

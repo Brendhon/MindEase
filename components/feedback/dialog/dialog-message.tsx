@@ -1,8 +1,7 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
+import { MessageComponentProps } from "@/models/feedback";
 import { cn } from "@/utils/ui";
 import { styles } from "./dialog-manager-styles";
 
@@ -18,11 +17,7 @@ import { styles } from "./dialog-manager-styles";
  * </DialogManager>
  * ```
  */
-export interface DialogMessageProps {
-  messageKey: AccessibilityTextKey;
-  className?: string;
-  "data-testid"?: string;
-}
+export interface DialogMessageProps extends MessageComponentProps {}
 
 export function DialogMessage({
   messageKey,
