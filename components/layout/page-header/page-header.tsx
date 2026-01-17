@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -36,7 +37,7 @@ import { useMemo } from "react";
  * />
  * ```
  */
-export interface PageHeaderProps {
+export interface PageHeaderProps extends BaseComponentProps {
   /** Title text key for accessibility text system (preferred) */
   titleKey: AccessibilityTextKey;
 
@@ -45,9 +46,6 @@ export interface PageHeaderProps {
 
   /** Custom className */
   className?: string;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function PageHeader({

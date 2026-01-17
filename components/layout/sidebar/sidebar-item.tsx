@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ReactNode, useMemo } from "react";
 import { cn } from "@/utils/ui/ui";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { styles, getContrastClasses } from "./sidebar-styles";
 import { useSidebar } from "@/hooks/sidebar";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
@@ -24,11 +25,10 @@ import { useAccessibilityClasses } from "@/hooks/accessibility";
  * </Sidebar.Item>
  * ```
  */
-export interface SidebarItemProps {
+export interface SidebarItemProps extends BaseComponentProps {
   href: string;
   label: string;
   children?: ReactNode;
-  "data-testid"?: string;
 }
 
 export function SidebarItem({

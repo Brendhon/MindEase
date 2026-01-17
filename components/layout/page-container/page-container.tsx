@@ -1,17 +1,11 @@
+import { PageContainerComponentProps } from "@/models/layout";
 import { cn } from "@/utils/ui";
-import { ReactNode } from "react";
 
 /**
  * Page Container Component - MindEase
  * Consistent page container with cognitive accessibility features
  */
-export interface PageContainerProps {
-  children: ReactNode;
-  className?: string;
-  "data-testid"?: string;
-}
-
-export function PageContainer({ children, className = "", "data-testid": dataTestId = "page-container" }: PageContainerProps) {
+export function PageContainer({ children, className = "", "data-testid": dataTestId = "page-container" }: PageContainerComponentProps) {
   return (
     <div className={cn(styles.container, className)} data-testid={dataTestId}>
       {children}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 
@@ -21,7 +22,7 @@ import { ReactNode, useMemo } from "react";
  * </PageContent>
  * ```
  */
-export interface PageContentProps {
+export interface PageContentProps extends BaseComponentProps {
   /** Page content to render */
   children: ReactNode;
 
@@ -30,9 +31,6 @@ export interface PageContentProps {
 
   /** Additional classes for the main element */
   mainClassName?: string;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function PageContent({

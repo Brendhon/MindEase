@@ -1,1 +1,1 @@
-export { PageContent, type PageContentProps, styles as pageContentStyles } from "./page-content";
+export { PageContent, styles as pageContentStyles } from "./page-content";

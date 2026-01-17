@@ -1,2 +1,2 @@
-export { PageContainer, type PageContainerProps } from "./page-container";
+export { PageContainer } from "./page-container";
 
