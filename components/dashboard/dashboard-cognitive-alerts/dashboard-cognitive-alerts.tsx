@@ -1,19 +1,31 @@
 "use client";
 
-import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
+import { useBreakTimer } from "@/hooks/useBreakTimer";
+import { useCognitiveAlerts } from "@/hooks/useCognitiveAlerts";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useTextDetail } from "@/hooks/useTextDetail";
+import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
-import { cn } from "@/utils/ui";
-import { AlertTriangle, Clock } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
+import { CognitiveAlertMissingBreak } from "./cognitive-alert-missing-break";
+import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-navigation";
+import {
+  EXCESSIVE_TIME_THRESHOLD_MS,
+  MISSING_BREAK_SESSIONS_THRESHOLD,
+  PROLONGED_NAVIGATION_THRESHOLD_MS,
+} from "./cognitive-alerts-constants";
 
 /**
  * DashboardCognitiveAlerts Component - MindEase
- * Display cognitive alerts based on task focus time
+ * Display cognitive alerts based on task focus time, break patterns, and navigation behavior
  * 
  * Alerts:
- * - Long task focus time warning (e.g., "Você está muito tempo nesta tarefa")
+ * - Excessive time: Same task in focus for >60-90 min
+ * - Missing break: Multiple focus sessions without break
+ * - Prolonged navigation: Navigating without actions for extended time
+ * 
+ * Priority: excessive_time > missing_break > prolonged_navigation
  */
 export interface DashboardCognitiveAlertsProps {
   /** Array of tasks to check for alerts */
@@ -23,125 +35,211 @@ export interface DashboardCognitiveAlertsProps {
   "data-testid"?: string;
 }
 
-/**
- * Alert threshold in minutes
- * Show alert if user has been focused on a task for more than this time
- */
-const LONG_TASK_ALERT_THRESHOLD_MINUTES = 60; // 1 hour
-
 export function DashboardCognitiveAlerts({ tasks, "data-testid": testId }: DashboardCognitiveAlertsProps) {
-  const { getText } = useTextDetail();
-  const { fontSizeClasses, spacingClasses } = useAccessibilityClasses(); 
-  const { timerState } = useFocusTimer();
-  const [elapsedMinutes, setElapsedMinutes] = useState<number>(0);
+  const { timerState, isRunning } = useFocusTimer();
+  const { isRunning: isBreakRunning } = useBreakTimer();
+  const { settings } = useCognitiveSettings();
+  const { getTask } = useTasks();
+  const {
+    state,
+    showAlert,
+    dismissAlert,
+    incrementSessions,
+    resetSessions,
+    startNavigation,
+    stopNavigation,
+    startTaskFocus,
+    stopTaskFocus,
+    updateUserAction,
+    shouldShowAlert,
+    getTaskFocusTime,
+    getNavigationTime,
+  } = useCognitiveAlerts();
 
-  // Calculate elapsed time for active task
+  // Track previous timer state to detect session completions
+  const prevTimerStateRef = useRef(timerState);
+  const prevBreakRunningRef = useRef(false);
+
+  // Monitor focus timer state changes
   useEffect(() => {
-    if (!timerState.startTime || timerState.timerState !== "running") {
-      setElapsedMinutes(0);
-      return;
+    const prev = prevTimerStateRef.current;
+    const current = timerState;
+    const activeTaskId = current.activeTaskId;
+
+    // Start tracking focus time when timer starts
+    if (activeTaskId && isRunning(activeTaskId) && !prev.activeTaskId) {
+      startTaskFocus(activeTaskId);
+      updateUserAction(); // User started focus = action
     }
 
-    // Calculate elapsed time in minutes
-    const calculateElapsed = () => {
-      const now = new Date();
-      const start = new Date(timerState.startTime!);
-      const diffMs = now.getTime() - start.getTime();
-      return Math.floor(diffMs / 60000); // Convert to minutes
+    // Stop tracking focus time when timer stops
+    if (prev.activeTaskId && !isRunning(activeTaskId ?? undefined)) {
+      stopTaskFocus(prev.activeTaskId);
+      updateUserAction(); // User stopped focus = action
+    }
+
+    // Detect session completion (timer completed)
+    if (
+      prev.timerState === "running" &&
+      current.timerState === "idle" &&
+      current.activeTaskId !== null &&
+      prev.activeTaskId === current.activeTaskId
+    ) {
+      // Session completed - increment counter
+      incrementSessions();
+      updateUserAction();
+    }
+
+    prevTimerStateRef.current = current;
+  }, [timerState, isRunning, startTaskFocus, stopTaskFocus, incrementSessions, updateUserAction]);
+
+  // Monitor break timer to reset session counter when break is taken
+  useEffect(() => {
+    const wasBreakRunning = prevBreakRunningRef.current;
+    const isBreakRunningNow = isBreakRunning();
+
+    // If break started, reset consecutive sessions counter
+    if (!wasBreakRunning && isBreakRunningNow) {
+      resetSessions();
+      updateUserAction(); // User started break = action
+    }
+
+    prevBreakRunningRef.current = isBreakRunningNow;
+  }, [isBreakRunning, resetSessions, updateUserAction]);
+
+  // Monitor navigation time (when user is not performing actions)
+  useEffect(() => {
+    // Start navigation tracking if no timer is active
+    const hasActiveTimer = isRunning() || isBreakRunning();
+    
+    if (!hasActiveTimer && !state.navigationStartTime) {
+      startNavigation();
+    } else if (hasActiveTimer && state.navigationStartTime) {
+      stopNavigation();
+    }
+  }, [isRunning, isBreakRunning, state.navigationStartTime, startNavigation, stopNavigation]);
+
+  // Check for excessive time alert
+  const excessiveTimeAlert = useMemo(() => {
+    if (!timerState.activeTaskId || !isRunning(timerState.activeTaskId)) {
+      return null;
+    }
+
+    const focusTime = getTaskFocusTime(timerState.activeTaskId);
+    const task = getTask(timerState.activeTaskId);
+
+    if (focusTime >= EXCESSIVE_TIME_THRESHOLD_MS && shouldShowAlert("excessive_time")) {
+      return {
+        type: "excessive_time" as const,
+        taskName: task?.title,
+        elapsedTime: focusTime,
+      };
+    }
+
+    return null;
+  }, [timerState.activeTaskId, isRunning, getTaskFocusTime, getTask, shouldShowAlert]);
+
+  // Check for missing break alert
+  const missingBreakAlert = useMemo(() => {
+    if (state.consecutiveSessions >= MISSING_BREAK_SESSIONS_THRESHOLD && shouldShowAlert("missing_break")) {
+      return {
+        type: "missing_break" as const,
+        sessionsCount: state.consecutiveSessions,
+      };
+    }
+    return null;
+  }, [state.consecutiveSessions, shouldShowAlert]);
+
+  // Check for prolonged navigation alert
+  const prolongedNavigationAlert = useMemo(() => {
+    const navigationTime = getNavigationTime();
+    const hasActiveTimer = isRunning() || isBreakRunning();
+
+    if (
+      !hasActiveTimer &&
+      navigationTime >= PROLONGED_NAVIGATION_THRESHOLD_MS &&
+      shouldShowAlert("prolonged_navigation")
+    ) {
+      return {
+        type: "prolonged_navigation" as const,
+        navigationTime,
+      };
+    }
+    return null;
+  }, [getNavigationTime, isRunning, isBreakRunning, shouldShowAlert]);
+
+  // Determine which alert to show (priority order)
+  const activeAlert = useMemo(() => {
+    if (excessiveTimeAlert) return excessiveTimeAlert;
+    if (missingBreakAlert) return missingBreakAlert;
+    if (prolongedNavigationAlert) return prolongedNavigationAlert;
+    return null;
+  }, [excessiveTimeAlert, missingBreakAlert, prolongedNavigationAlert]);
+
+  // Handle alert dismissal
+  const handleDismiss = useCallback(
+    (alertType: "excessive_time" | "missing_break" | "prolonged_navigation") => {
+      dismissAlert(alertType);
+    },
+    [dismissAlert]
+  );
+
+  // Show alert when conditions are met
+  useEffect(() => {
+    if (activeAlert) {
+      showAlert(activeAlert.type);
+    }
+  }, [activeAlert, showAlert]);
+
+  // Track user actions (clicks, keyboard, etc.) to reset navigation tracking
+  useEffect(() => {
+    const handleUserAction = () => {
+      updateUserAction();
     };
 
-    // Set initial value immediately
-    setElapsedMinutes(calculateElapsed());
+    // Listen to common user interaction events
+    window.addEventListener("click", handleUserAction, true);
+    window.addEventListener("keydown", handleUserAction, true);
+    window.addEventListener("focus", handleUserAction, true);
 
-    // Update every 30 seconds for better UX (but display in minutes)
-    const interval = setInterval(() => {
-      setElapsedMinutes(calculateElapsed());
-    }, 30000); // Update every 30 seconds
-
-    return () => clearInterval(interval);
-  }, [timerState.startTime, timerState.timerState]);
-
-  // Get active task
-  const activeTask = useMemo(() => {
-    if (!timerState.activeTaskId) return null;
-    return tasks.find((task) => task.id === timerState.activeTaskId) || null;
-  }, [tasks, timerState.activeTaskId]);
-
-  // Check if we should show long task alert
-  const showLongTaskAlert = useMemo(() => {
-    return (
-      timerState.timerState === "running" &&
-      activeTask !== null &&
-      elapsedMinutes >= LONG_TASK_ALERT_THRESHOLD_MINUTES
-    );
-  }, [timerState.timerState, activeTask, elapsedMinutes]);
-
-  const containerClasses = useMemo(
-    () => cn(styles.container, spacingClasses.gap),
-    [spacingClasses.gap]
-  );
-
-  const alertClasses = useMemo(
-    () => cn(styles.alert, spacingClasses.padding),
-    [spacingClasses.padding]
-  );
-
-  const alertTitleClasses = useMemo(
-    () => cn(styles.alertTitle, fontSizeClasses.base),
-    [fontSizeClasses.base]
-  );
-
-  const alertMessageClasses = useMemo(
-    () => cn(styles.alertMessage, fontSizeClasses.sm),
-    [fontSizeClasses.sm]
-  );
-
-  if (!showLongTaskAlert) {
-    return null;
-  }
+    return () => {
+      window.removeEventListener("click", handleUserAction, true);
+      window.removeEventListener("keydown", handleUserAction, true);
+      window.removeEventListener("focus", handleUserAction, true);
+    };
+  }, [updateUserAction]);
 
   return (
-    <div className={containerClasses} data-testid={testId || "dashboard-cognitive-alerts"}>
-      <div className={alertClasses} role="alert">
-        <div className={styles.alertHeader}>
-          <AlertTriangle className={styles.alertIcon} size={20} />
-          <h3 className={alertTitleClasses}>
-            {getText("dashboard_alert_title")}
-          </h3>
-        </div>
-        <p className={alertMessageClasses}>
-          {getText("dashboard_alert_message")}
-          {activeTask?.title && (
-            <span className={styles.taskTitle}> "{activeTask.title}"</span>
-          )}
-        </p>
-        <div className={styles.alertTime}>
-          <Clock className={styles.timeIcon} size={16} />
-          <span className={cn(styles.timeText, fontSizeClasses.sm)}>
-            {elapsedMinutes} {getText("minutes")}
-          </span>
-        </div>
-      </div>
+    <div data-testid={testId || "dashboard-cognitive-alerts"}>
+      {activeAlert?.type === "excessive_time" && (
+        <CognitiveAlertExcessiveTime
+          isVisible={state.alertHistory.includes("excessive_time")}
+          taskName={activeAlert.taskName}
+          elapsedTime={activeAlert.elapsedTime}
+          onDismiss={() => handleDismiss("excessive_time")}
+          data-testid={testId ? `${testId}-excessive-time` : "cognitive-alert-excessive-time"}
+        />
+      )}
+
+      {activeAlert?.type === "missing_break" && (
+        <CognitiveAlertMissingBreak
+          isVisible={state.alertHistory.includes("missing_break")}
+          sessionsCount={activeAlert.sessionsCount}
+          onDismiss={() => handleDismiss("missing_break")}
+          data-testid={testId ? `${testId}-missing-break` : "cognitive-alert-missing-break"}
+        />
+      )}
+
+      {activeAlert?.type === "prolonged_navigation" && (
+        <CognitiveAlertProlongedNavigation
+          isVisible={state.alertHistory.includes("prolonged_navigation")}
+          navigationTime={activeAlert.navigationTime}
+          onDismiss={() => handleDismiss("prolonged_navigation")}
+          data-testid={testId ? `${testId}-prolonged-navigation` : "cognitive-alert-prolonged-navigation"}
+        />
+      )}
     </div>
   );
 }
 
 DashboardCognitiveAlerts.displayName = "DashboardCognitiveAlerts";
-
-/**
- * DashboardCognitiveAlerts Styles - MindEase
- * Centralized styles for dashboard cognitive alerts component
- */
-
-export const styles = {
-  container: "flex flex-col w-full",
-  alert: "flex flex-col bg-action-warning/10 border border-action-warning rounded-lg gap-2",
-  alertHeader: "flex items-center gap-2",
-  alertIcon: "text-action-warning flex-shrink-0",
-  alertTitle: "font-semibold text-action-warning",
-  alertMessage: "text-text-secondary",
-  alertTime: "flex items-center gap-2 mt-1",
-  timeIcon: "text-text-secondary",
-  timeText: "text-text-secondary",
-  taskTitle: "font-semibold text-text-primary",
-} as const;

@@ -6,6 +6,7 @@ import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
+import { CognitiveAlertsProvider } from "@/providers/cognitive-alerts-provider";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
@@ -40,22 +41,24 @@ export default function AuthenticatedLayout({
 
   return (
     <TasksProvider>
-      <FocusTimerProvider>
-        <BreakTimerProvider>
-          <SidebarProvider>
-            <div className={styles.container}>
-              <Sidebar />
-              <main className={styles.main}>
-                <Header />
-                <div className={styles.content}>{children}</div>
-              </main>
-            </div>
-            <FocusSessionCompleteDialogWrapper />
-            <BreakSessionCompleteDialogWrapper />
-            <ActiveTaskIndicator />
-          </SidebarProvider>
-        </BreakTimerProvider>
-      </FocusTimerProvider>
+      <CognitiveAlertsProvider>
+        <FocusTimerProvider>
+          <BreakTimerProvider>
+            <SidebarProvider>
+              <div className={styles.container}>
+                <Sidebar />
+                <main className={styles.main}>
+                  <Header />
+                  <div className={styles.content}>{children}</div>
+                </main>
+              </div>
+              <FocusSessionCompleteDialogWrapper />
+              <BreakSessionCompleteDialogWrapper />
+              <ActiveTaskIndicator />
+            </SidebarProvider>
+          </BreakTimerProvider>
+        </FocusTimerProvider>
+      </CognitiveAlertsProvider>
     </TasksProvider>
   );
 }
