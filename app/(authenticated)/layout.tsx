@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect } from "react";
 import { Header, Sidebar } from "@/components/layout";
 import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
+import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { BreakTimerProvider } from "@/providers/break-timer-provider";
-import { CognitiveAlertsProvider } from "@/providers/cognitive-alerts-provider";
 import { FocusTimerProvider } from "@/providers/focus-timer-provider";
 import { SidebarProvider } from "@/providers/sidebar-provider";
 import { TasksProvider } from "@/providers/tasks-provider";
-import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useEffect } from "react";
 
 /**
  * Authenticated Layout - MindEase
@@ -41,24 +40,22 @@ export default function AuthenticatedLayout({
 
   return (
     <TasksProvider>
-      <CognitiveAlertsProvider>
-        <FocusTimerProvider>
-          <BreakTimerProvider>
-            <SidebarProvider>
-              <div className={styles.container}>
-                <Sidebar />
-                <main className={styles.main}>
-                  <Header />
-                  <div className={styles.content}>{children}</div>
-                </main>
-              </div>
-              <FocusSessionCompleteDialogWrapper />
-              <BreakSessionCompleteDialogWrapper />
-              <ActiveTaskIndicator />
-            </SidebarProvider>
-          </BreakTimerProvider>
-        </FocusTimerProvider>
-      </CognitiveAlertsProvider>
+      <FocusTimerProvider>
+        <BreakTimerProvider>
+          <SidebarProvider>
+            <div className={styles.container}>
+              <Sidebar />
+              <main className={styles.main}>
+                <Header />
+                <div className={styles.content}>{children}</div>
+              </main>
+            </div>
+            <FocusSessionCompleteDialogWrapper />
+            <BreakSessionCompleteDialogWrapper />
+            <ActiveTaskIndicator />
+          </SidebarProvider>
+        </BreakTimerProvider>
+      </FocusTimerProvider>
     </TasksProvider>
   );
 }
