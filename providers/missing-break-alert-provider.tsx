@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useCallback } from "react";
 import { MissingBreakAlertContext } from "@/contexts/missing-break-alert-context";
+import { useCallback, useState } from "react";
 
 interface MissingBreakAlertProviderProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ export function MissingBreakAlertProvider({
   const [consecutiveFocusSessions, setConsecutiveFocusSessions] = useState(0);
   const [isMissingBreakAlertVisible, setIsMissingBreakAlertVisible] = useState(false);
   const [isMissingBreakAlertDismissed, setIsMissingBreakAlertDismissed] = useState(false);
+  const [dismissedAt, setDismissedAt] = useState<number | null>(null);
 
   // Internal setters for useMissingBreakAlert hook to use
   const setConsecutiveFocusSessionsState = useCallback(
@@ -38,15 +39,22 @@ export function MissingBreakAlertProvider({
     []
   );
 
+  const setDismissedAtState = useCallback(
+    (timestamp: number | null) => setDismissedAt(timestamp),
+    []
+  );
+
   return (
     <MissingBreakAlertContext.Provider
       value={{
         consecutiveFocusSessions,
         isMissingBreakAlertVisible,
         isMissingBreakAlertDismissed,
+        dismissedAt,
         _setConsecutiveFocusSessions: setConsecutiveFocusSessionsState,
         _setIsMissingBreakAlertVisible: setIsMissingBreakAlertVisibleState,
         _setIsMissingBreakAlertDismissed: setIsMissingBreakAlertDismissedState,
+        _setDismissedAt: setDismissedAtState,
       }}
     >
       {children}

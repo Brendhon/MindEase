@@ -19,6 +19,14 @@ export const EXCESSIVE_TIME_THRESHOLD_MS = DEFAULT_EXCESSIVE_TIME_THRESHOLD * 60
 export const MISSING_BREAK_SESSIONS_THRESHOLD = 3;
 
 /**
+ * Missing break alert dismiss expiry
+ * Time after which a dismissed alert can be shown again
+ * Default: 2 hours
+ */
+const DEFAULT_MISSING_BREAK_ALERT_DISMISS_EXPIRY = 2; // 2 hours in milliseconds
+export const MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS = DEFAULT_MISSING_BREAK_ALERT_DISMISS_EXPIRY * 60 * 60 * 1000; // 2 hours in milliseconds
+
+/**
  * Prolonged navigation alert threshold
  * Alert shown when user has been navigating the app without actions for this duration
  */

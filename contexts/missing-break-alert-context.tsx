@@ -23,10 +23,14 @@ interface MissingBreakAlertContextValue {
   /** Whether missing break alert has been dismissed */
   isMissingBreakAlertDismissed: boolean;
   
+  /** Timestamp when alert was dismissed (in milliseconds) */
+  dismissedAt: number | null;
+  
   // Internal setters - only used by useMissingBreakAlert hook
   _setConsecutiveFocusSessions: (count: number | ((prev: number) => number)) => void;
   _setIsMissingBreakAlertVisible: (visible: boolean) => void;
   _setIsMissingBreakAlertDismissed: (dismissed: boolean) => void;
+  _setDismissedAt: (timestamp: number | null) => void;
 }
 
 export const MissingBreakAlertContext = createContext<

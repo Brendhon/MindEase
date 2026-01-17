@@ -1,6 +1,9 @@
-import { useCallback, useEffect } from "react";
 import { useMissingBreakAlertContext } from "@/contexts/missing-break-alert-context";
-import { MISSING_BREAK_SESSIONS_THRESHOLD } from "@/components/dashboard/dashboard-cognitive-alerts/cognitive-alerts-constants";
+import {
+  MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS,
+  MISSING_BREAK_SESSIONS_THRESHOLD
+} from "@/utils/cognitive-alerts";
+import { useCallback, useEffect } from "react";
 
 /**
  * useMissingBreakAlert Hook - MindEase
@@ -46,10 +49,36 @@ export function useMissingBreakAlert() {
     consecutiveFocusSessions,
     isMissingBreakAlertVisible,
     isMissingBreakAlertDismissed,
+    dismissedAt,
     _setConsecutiveFocusSessions,
     _setIsMissingBreakAlertVisible,
     _setIsMissingBreakAlertDismissed,
+    _setDismissedAt,
   } = useMissingBreakAlertContext();
+
+  // Check if dismiss has expired (2 hours)
+  useEffect(() => {
+    if (dismissedAt === null) return;
+
+    const checkExpiry = () => {
+      const now = Date.now();
+      const timeSinceDismiss = now - dismissedAt;
+
+      if (timeSinceDismiss >= MISSING_BREAK_ALERT_DISMISS_EXPIRY_MS) {
+        // Dismiss expired - reset dismissed state
+        _setIsMissingBreakAlertDismissed(false);
+        _setDismissedAt(null);
+      }
+    };
+
+    // Check immediately
+    checkExpiry();
+
+    // Check every minute to see if dismiss expired
+    const intervalId = setInterval(checkExpiry, 60 * 1000); // Check every minute
+
+    return () => clearInterval(intervalId);
+  }, [dismissedAt, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
 
   // Update alert visibility when consecutive sessions or dismissed state changes
   useEffect(() => {
@@ -79,7 +108,8 @@ export function useMissingBreakAlert() {
     _setConsecutiveFocusSessions(0);
     _setIsMissingBreakAlertVisible(false);
     _setIsMissingBreakAlertDismissed(false); // Allow alert to show again in the future
-  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed]);
+    _setDismissedAt(null); // Clear dismiss timestamp
+  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
 
   /**
    * Record that a task was finished
@@ -89,16 +119,19 @@ export function useMissingBreakAlert() {
     _setConsecutiveFocusSessions(0);
     _setIsMissingBreakAlertVisible(false);
     _setIsMissingBreakAlertDismissed(false); // Allow alert to show again in the future
-  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed]);
+    _setDismissedAt(null); // Clear dismiss timestamp
+  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
 
   /**
    * Dismiss the missing break alert
    * Hides the alert but keeps the counter (user still needs to take a break)
+   * Dismiss expires after 2 hours
    */
   const dismissMissingBreakAlert = useCallback(() => {
     _setIsMissingBreakAlertVisible(false);
     _setIsMissingBreakAlertDismissed(true);
-  }, [_setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed]);
+    _setDismissedAt(Date.now()); // Store current timestamp
+  }, [_setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
 
   return {
     // State

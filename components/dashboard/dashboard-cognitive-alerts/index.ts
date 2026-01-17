@@ -20,10 +20,3 @@ export type { CognitiveAlertProlongedNavigationProps } from "./cognitive-alert-p
 
 export { styles } from "./dashboard-cognitive-alerts-styles";
 export { getContrastClassesForAlerts } from "./dashboard-cognitive-alerts-styles";
-
-export {
-  EXCESSIVE_TIME_THRESHOLD_MS,
-  MISSING_BREAK_SESSIONS_THRESHOLD,
-  PROLONGED_NAVIGATION_THRESHOLD_MS,
-  MIN_ALERT_INTERVAL_MS,
-} from "./cognitive-alerts-constants";
