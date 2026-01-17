@@ -1,8 +1,6 @@
 "use client";
 
-import { useExcessiveTimeAlert } from "@/hooks/useExcessiveTimeAlert";
-import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
-import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
+import { useExcessiveTimeAlert, useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
 import { CognitiveAlertExcessiveTime } from "./cognitive-alert-excessive-time";
 import { CognitiveAlertMissingBreak } from "./cognitive-alert-missing-break";
 import { CognitiveAlertProlongedNavigation } from "./cognitive-alert-prolonged-navigation";

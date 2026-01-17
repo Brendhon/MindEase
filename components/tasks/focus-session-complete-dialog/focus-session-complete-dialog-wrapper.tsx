@@ -1,11 +1,9 @@
 "use client";
 
+import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
-import { useFocusTimer } from "@/hooks/useFocusTimer";
-import { useAuth } from "@/hooks/useAuth";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
-import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
-import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
+import { useFocusTimer } from "@/hooks/useFocusTimer";
 import { useTasks } from "@/hooks/useTasks";
 import { Task } from "@/models/Task";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";

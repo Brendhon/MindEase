@@ -49,9 +49,8 @@ import {
   createSubtaskFocusRequiredDialogConfig,
 } from "@/components/tasks/task-card/task-card-dialogs";
 import { getTaskCardClasses } from "@/components/tasks/task-card/task-card-styles";
+import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
 import { useBreakTimer } from "@/hooks/useBreakTimer";
-import { useMissingBreakAlert } from "@/hooks/useMissingBreakAlert";
-import { useProlongedNavigationAlert } from "@/hooks/useProlongedNavigationAlert";
 import { useDialog } from "@/hooks/useDialog";
 import { useFeedback } from "@/hooks/useFeedback";
 import { useFocusTimer } from "@/hooks/useFocusTimer";
