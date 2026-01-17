@@ -7,6 +7,7 @@ import { useDialog } from "@/hooks/dialog";
 import { useFeedback } from "@/hooks/feedback";
 import { useTextDetail } from "@/hooks/accessibility";
 import { AuthUser } from "@/models/auth";
+import { BaseComponentProps } from "@/models/base";
 import { authService } from "@/services/auth";
 import { cn } from "@/utils/ui";
 import { useCallback, useMemo } from "react";
@@ -18,12 +19,9 @@ import { styles } from "./profile-info-styles";
  * ProfileInfo Component - MindEase
  * Display user information, logout and delete account buttons
  */
-export interface ProfileInfoProps {
+export interface ProfileInfoProps extends BaseComponentProps {
   /** User data from server (optional, falls back to useAuth if not provided) */
   user?: AuthUser | null;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileInfo({ user: userProp, "data-testid": testId }: ProfileInfoProps) {

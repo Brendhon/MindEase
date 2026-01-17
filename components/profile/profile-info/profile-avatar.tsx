@@ -5,13 +5,14 @@ import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { styles, getContrastClassesForProfile } from "./profile-info-styles";
 
 /**
  * ProfileAvatar Component - MindEase
  * Displays user avatar image or initials (like Teams)
  */
-export interface ProfileAvatarProps {
+export interface ProfileAvatarProps extends BaseComponentProps {
   /** Image URL (optional) */
   image?: string | null;
   
@@ -20,9 +21,6 @@ export interface ProfileAvatarProps {
   
   /** Additional CSS classes */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 /**

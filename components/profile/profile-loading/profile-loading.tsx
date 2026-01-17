@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 
@@ -9,10 +10,7 @@ import { useMemo } from "react";
  * ProfileLoading Component - MindEase
  * Loading state for profile page
  */
-export interface ProfileLoadingProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface ProfileLoadingProps extends BaseComponentProps {}
 
 export function ProfileLoading({ "data-testid": testId }: ProfileLoadingProps) {
   const { fontSizeClasses, animationClasses, spacingClasses } = useAccessibilityClasses();

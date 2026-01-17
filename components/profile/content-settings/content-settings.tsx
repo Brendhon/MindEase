@@ -4,15 +4,13 @@ import { SettingsSection } from "@/components/dashboard";
 import { RadioGroup } from "@/components/ui";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * ContentSettings Component - MindEase
  * Content accessibility settings section (textDetail)
  */
-export interface ContentSettingsProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface ContentSettingsProps extends BaseComponentProps {}
 
 export function ContentSettings({ "data-testid": testId }: ContentSettingsProps) {
   const { settings, updateSetting } = useCognitiveSettings();

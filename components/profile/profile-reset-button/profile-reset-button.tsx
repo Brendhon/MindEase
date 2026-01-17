@@ -4,15 +4,13 @@ import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { Button } from "@/components/ui";
 import { RotateCcw } from "lucide-react";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * ProfileResetButton Component - MindEase
  * Reset button for restoring default accessibility settings
  */
-export interface ProfileResetButtonProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface ProfileResetButtonProps extends BaseComponentProps {}
 
 export function ProfileResetButton({ "data-testid": testId }: ProfileResetButtonProps) {
   const { resetSettings } = useCognitiveSettings();

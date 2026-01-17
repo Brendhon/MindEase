@@ -4,6 +4,7 @@ import { Card } from "@/components/ui";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { AuthUser } from "@/models/auth";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { ProfileAvatar } from "./profile-avatar";
@@ -14,7 +15,7 @@ import { getContrastClassesForProfile, styles } from "./profile-info-styles";
  * ProfileInfoCard Component - MindEase
  * Displays user information in a card format
  */
-export interface ProfileInfoCardProps {
+export interface ProfileInfoCardProps extends BaseComponentProps {
   /** User data */
   user: AuthUser | null;
   
@@ -26,9 +27,6 @@ export interface ProfileInfoCardProps {
   
   /** Additional CSS classes */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileInfoCard({ 

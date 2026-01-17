@@ -3,6 +3,7 @@
 import { cn } from "@/utils/ui";
 import { useTextDetail } from "@/hooks/accessibility";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
+import { BaseComponentProps } from "@/models/base";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useMemo } from "react";
 import { styles } from "./profile-info-styles";
@@ -11,7 +12,7 @@ import { styles } from "./profile-info-styles";
  * ProfileInfoRow Component - MindEase
  * Displays a label-value pair for user information
  */
-export interface ProfileInfoRowProps {
+export interface ProfileInfoRowProps extends BaseComponentProps {
   /** Label key from accessibility-texts.json */
   labelKey: AccessibilityTextKey;
   
@@ -26,9 +27,6 @@ export interface ProfileInfoRowProps {
   
   /** Additional CSS classes */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileInfoRow({ 

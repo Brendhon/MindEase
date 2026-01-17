@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { LogOut, Trash2 } from "lucide-react";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
@@ -12,7 +13,7 @@ import { styles } from "./profile-info-styles";
  * ProfileActions Component - MindEase
  * Displays action buttons for profile (logout and delete account)
  */
-export interface ProfileActionsProps {
+export interface ProfileActionsProps extends BaseComponentProps {
   /** Handler for logout action */
   onLogout: () => void;
   
@@ -21,9 +22,6 @@ export interface ProfileActionsProps {
   
   /** Additional CSS classes */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileActions({ 

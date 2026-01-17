@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 
@@ -8,12 +9,9 @@ import { useMemo } from "react";
  * ProfileError Component - MindEase
  * Error message display for profile page
  */
-export interface ProfileErrorProps {
+export interface ProfileErrorProps extends BaseComponentProps {
   /** Error message to display */
   message: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileError({ message, "data-testid": testId }: ProfileErrorProps) {

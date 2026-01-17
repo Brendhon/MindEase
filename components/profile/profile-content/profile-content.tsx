@@ -3,6 +3,7 @@
 import { PageContent } from "@/components/layout";
 import { ProfileInfo } from "@/components/profile";
 import { AuthUser } from "@/models/auth";
+import { BaseComponentProps } from "@/models/base";
 
 /**
  * ProfileContent Component - MindEase
@@ -12,12 +13,9 @@ import { AuthUser } from "@/models/auth";
  * - Cognitive settings management
  * - Real-time accessibility adjustments
  */
-export interface ProfileContentProps {
+export interface ProfileContentProps extends BaseComponentProps {
   /** User data from server */
   user: AuthUser | null;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ProfileContent({ 
