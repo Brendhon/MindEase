@@ -7,8 +7,8 @@ import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
+import { ActiveTaskIndicatorHeader } from "./active-task-indicator-header";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import {
   getContrastClasses,
@@ -32,7 +32,7 @@ import { useActiveTaskIndicator } from "./use-active-task-indicator";
  */
 export function ActiveTaskIndicator() {
   const { activeTimer, activeTask, timerType, remainingTime } = useActiveTaskIndicator();
-  const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
+  const { spacingClasses } = useAccessibilityClasses();
   const { settings } = useCognitiveSettings();
   const { getText } = useTextDetail();
   const router = useRouter();
@@ -113,32 +113,13 @@ export function ActiveTaskIndicator() {
       data-testid="active-task-indicator"
     >
       <div className={cardClasses}>
-        <div className={cn(styles.header, isMinimized && styles.headerMinimized)}>
-          {!isMinimized ? (
-            <p className={cn(styles.status, fontSizeClasses.sm)}>
-              {statusText}
-            </p>
-          ) : (
-            <ActiveTaskIndicatorIcon
-              timerType={timerType}
-              data-testid="active-task-indicator-icon"
-            />
-          )}
-          <button
-            type="button"
-            onClick={handleToggleMinimize}
-            className={styles.minimizeButton}
-            aria-label={isMinimized ? "Maximizar indicador de tarefa" : "Minimizar indicador de tarefa"}
-            aria-expanded={!isMinimized}
-            data-testid="active-task-indicator-toggle"
-          >
-            {isMinimized ? (
-              <ChevronLeft size={18} aria-hidden="true" />
-            ) : (
-              <ChevronRight size={18} aria-hidden="true" />
-            )}
-          </button>
-        </div>
+        <ActiveTaskIndicatorHeader
+          isMinimized={isMinimized}
+          statusText={statusText}
+          timerType={timerType}
+          onToggleMinimize={handleToggleMinimize}
+          data-testid="active-task-indicator-header"
+        />
 
         {!isMinimized && (
           <>
