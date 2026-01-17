@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
 import { Fragment, ReactNode, useMemo } from "react";
@@ -11,14 +12,13 @@ import { getContrastClasses, getTransitionClasses, styles } from "./dialog-style
  * Dialog Component - MindEase
  * Accessible modal dialog with cognitive accessibility features
  */
-export interface DialogProps {
+export interface DialogProps extends BaseComponentProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: ReactNode;
   /** Prevent closing by clicking outside or pressing ESC */
   preventClose?: boolean;
-  "data-testid"?: string;
 }
 
 export function Dialog({ 

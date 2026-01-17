@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { styles } from "./switch-styles";
@@ -16,7 +17,7 @@ import { styles } from "./switch-styles";
  * </Switch>
  * ```
  */
-export interface SwitchLabelProps {
+export interface SwitchLabelProps extends BaseComponentProps {
   /** Label text */
   children: string;
   
@@ -25,9 +26,6 @@ export interface SwitchLabelProps {
   
   /** Disable the switch */
   disabled?: boolean;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function SwitchLabel({

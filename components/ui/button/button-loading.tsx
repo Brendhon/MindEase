@@ -1,5 +1,6 @@
 "use client";
 
+import { BaseComponentProps } from "@/models/base";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/utils/ui";
 
@@ -15,7 +16,7 @@ import { cn } from "@/utils/ui";
  * </Button>
  * ```
  */
-export interface ButtonLoadingProps {
+export interface ButtonLoadingProps extends Omit<BaseComponentProps, "data-testid"> {
   size?: "sm" | "md" | "lg";
   className?: string;
   "aria-label"?: string;

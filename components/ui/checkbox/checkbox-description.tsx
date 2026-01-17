@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./checkbox-styles";
@@ -16,15 +17,12 @@ import { styles } from "./checkbox-styles";
  * </Checkbox>
  * ```
  */
-export interface CheckboxDescriptionProps {
+export interface CheckboxDescriptionProps extends BaseComponentProps {
   /** Description content */
   children: ReactNode;
   
   /** Custom className */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function CheckboxDescription({

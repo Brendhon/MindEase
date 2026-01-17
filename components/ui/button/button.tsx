@@ -4,6 +4,7 @@ import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { cn } from "@/utils/ui";
 import { Button as HeadlessButton } from "@headlessui/react";
+import { BaseComponentProps } from "@/models/base";
 import { ButtonHTMLAttributes, ReactNode, forwardRef, useMemo } from "react";
 import { ButtonIcon } from "./button-icon";
 import { ButtonLoading } from "./button-loading";
@@ -39,12 +40,11 @@ import { ButtonText } from "./button-text";
  * </Button>
  * ```
  */
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
+export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">, BaseComponentProps {
   variant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   children?: ReactNode; // Only accepts Button subcomponents
-  "data-testid"?: string;
 }
 
 const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(

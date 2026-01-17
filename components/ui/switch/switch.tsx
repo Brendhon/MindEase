@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { SwitchDescription } from "./switch-description";
@@ -32,15 +33,12 @@ import { SwitchToggle } from "./switch-toggle";
  * </Switch>
  * ```
  */
-export interface SwitchProps {
+export interface SwitchProps extends BaseComponentProps {
   /** Switch content (Switch subcomponents when using composition API) */
   children?: ReactNode;
   
   /** Custom className for container */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 function SwitchRoot({

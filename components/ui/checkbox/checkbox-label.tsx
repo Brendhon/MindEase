@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./checkbox-styles";
@@ -15,7 +16,7 @@ import { styles } from "./checkbox-styles";
  * </Checkbox>
  * ```
  */
-export interface CheckboxLabelProps {
+export interface CheckboxLabelProps extends BaseComponentProps {
   /** Label content */
   children: ReactNode;
   
@@ -27,9 +28,6 @@ export interface CheckboxLabelProps {
   
   /** Click handler (for making label clickable) */
   onClick?: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function CheckboxLabel({

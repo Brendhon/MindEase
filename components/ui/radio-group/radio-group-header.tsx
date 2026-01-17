@@ -1,5 +1,6 @@
 "use client";
 
+import { BaseComponentProps } from "@/models/base";
 import { ReactNode } from "react";
 import { cn } from "@/utils/ui";
 import { styles } from "./radio-group-styles";
@@ -19,7 +20,7 @@ import { styles } from "./radio-group-styles";
  * </RadioGroup>
  * ```
  */
-export interface RadioGroupHeaderProps {
+export interface RadioGroupHeaderProps extends Omit<BaseComponentProps, "data-testid"> {
   /** Header content (typically Label and Description) */
   children: ReactNode;
   

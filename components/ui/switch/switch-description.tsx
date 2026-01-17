@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { styles } from "./switch-styles";
@@ -17,15 +18,12 @@ import { styles } from "./switch-styles";
  * </Switch>
  * ```
  */
-export interface SwitchDescriptionProps {
+export interface SwitchDescriptionProps extends BaseComponentProps {
   /** Description text */
   children: string;
   
   /** HTML id attribute for accessibility */
   id?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function SwitchDescription({

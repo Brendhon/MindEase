@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { getBorderContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
@@ -20,10 +21,9 @@ import { styles } from "./card-styles";
  * </Card>
  * ```
  */
-export interface CardHeaderProps {
+export interface CardHeaderProps extends BaseComponentProps {
   children: ReactNode;
   className?: string;
-  "data-testid"?: string;
 }
 
 export function CardHeader({ children, className, "data-testid": testId }: CardHeaderProps) {

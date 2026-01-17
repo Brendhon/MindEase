@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
 import { styles } from "./card-styles";
@@ -18,11 +19,10 @@ import { styles } from "./card-styles";
  * </Card>
  * ```
  */
-export interface CardContentProps {
+export interface CardContentProps extends BaseComponentProps {
   children: ReactNode;
   className?: string;
   role?: string;
-  "data-testid"?: string;
 }
 
 export function CardContent({ children, className, role, "data-testid": testId }: CardContentProps) {

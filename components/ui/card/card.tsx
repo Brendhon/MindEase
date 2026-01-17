@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { getBorderContrastClasses, getFocusModeClasses } from "@/utils/accessibility/tailwind-classes";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
@@ -47,7 +48,7 @@ import { CardTitle } from "./card-title";
  * </Card>
  * ```
  */
-export interface CardProps {
+export interface CardProps extends BaseComponentProps {
   /** Card content */
   children: ReactNode;
   
@@ -59,9 +60,6 @@ export interface CardProps {
   
   /** Whether this card is currently focused (applies focus mode styles) */
   focused?: boolean;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 const CardRoot = function Card({

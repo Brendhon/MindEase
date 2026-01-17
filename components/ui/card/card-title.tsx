@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
+import { BaseComponentProps } from "@/models/base";
 import { getTextContrastClasses } from "@/utils/accessibility/tailwind-classes";
 import { cn } from "@/utils/ui";
 import { ReactNode, useMemo } from "react";
@@ -20,11 +21,10 @@ import { styles } from "./card-styles";
  * </Card>
  * ```
  */
-export interface CardTitleProps {
+export interface CardTitleProps extends BaseComponentProps {
   children: ReactNode;
   as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
   className?: string;
-  "data-testid"?: string;
 }
 
 export function CardTitle({ children, as: Component = "h2", className, "data-testid": testId }: CardTitleProps) {

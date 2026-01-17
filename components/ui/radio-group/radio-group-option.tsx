@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { Label, Radio } from "@headlessui/react";
 import { useMemo } from "react";
@@ -20,7 +21,7 @@ import { styles } from "./radio-group-styles";
  * </RadioGroup>
  * ```
  */
-export interface RadioOptionProps {
+export interface RadioOptionProps extends BaseComponentProps {
   /** Option value */
   value: string;
   
@@ -29,9 +30,6 @@ export interface RadioOptionProps {
   
   /** Optional description */
   description?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function RadioOption({ value, label, description, "data-testid": testId }: RadioOptionProps) {

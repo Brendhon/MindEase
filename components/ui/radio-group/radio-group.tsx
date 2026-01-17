@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
 import { ReactNode, useId, useMemo } from "react";
@@ -33,7 +34,7 @@ import { styles } from "./radio-group-styles";
  * </RadioGroup>
  * ```
  */
-export interface RadioGroupProps<T extends string> {
+export interface RadioGroupProps<T extends string> extends BaseComponentProps {
   /** Current selected value */
   value: T;
   
@@ -48,9 +49,6 @@ export interface RadioGroupProps<T extends string> {
   
   /** Custom className for container */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 function RadioGroupRoot<T extends string>({

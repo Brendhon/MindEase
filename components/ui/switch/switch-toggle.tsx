@@ -1,5 +1,6 @@
 "use client";
 
+import { BaseComponentProps } from "@/models/base";
 import { Switch as HeadlessSwitch } from "@headlessui/react";
 import { useMemo } from "react";
 import { cn } from "@/utils/ui";
@@ -16,7 +17,7 @@ import { styles } from "./switch-styles";
  * </Switch>
  * ```
  */
-export interface SwitchToggleProps {
+export interface SwitchToggleProps extends BaseComponentProps {
   /** Current checked state */
   checked: boolean;
   
@@ -25,9 +26,6 @@ export interface SwitchToggleProps {
   
   /** Disable the switch */
   disabled?: boolean;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function SwitchToggle({

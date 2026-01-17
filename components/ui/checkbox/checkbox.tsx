@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { Button as HeadlessButton } from "@headlessui/react";
 import { Check } from "lucide-react";
@@ -32,7 +33,7 @@ import { styles } from "./checkbox-styles";
  * </Checkbox>
  * ```
  */
-export interface CheckboxProps {
+export interface CheckboxProps extends BaseComponentProps {
   /** Current checked state */
   checked: boolean;
   
@@ -47,9 +48,6 @@ export interface CheckboxProps {
   
   /** Custom className for container */
   className?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
   
   /** ARIA label for accessibility */
   "aria-label"?: string;
