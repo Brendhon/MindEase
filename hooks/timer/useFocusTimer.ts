@@ -26,7 +26,7 @@
  * ```
  */
 
-import { useFocusTimerContext } from "@/contexts/focus-timer";
+import { useFocusTimerContext } from "@/contexts/timer";
 
 /**
  * Hook for accessing focus timer state and operations

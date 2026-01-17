@@ -1,6 +1,11 @@
 "use client";
 
-import { FocusTimerContext, FocusTimerState, TimerAction } from "@/contexts/focus-timer";
+import { FocusTimerContext } from "@/contexts/timer";
+import {
+  FocusTimerAction,
+  FocusTimerContextValue,
+  FocusTimerState,
+} from "@/models/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useCountdownInterval } from "@/hooks/timer";
 import {
@@ -35,7 +40,7 @@ const createIdleState = (defaultDuration: number) =>
  */
 function timerReducer(
   state: FocusTimerState,
-  action: TimerAction
+  action: FocusTimerAction
 ): FocusTimerState {
   switch (action.type) {
     case "START":
@@ -98,7 +103,7 @@ export function FocusTimerProvider({
   }, [defaultDuration]);
 
   // Memoize context value to prevent unnecessary re-renders
-  const contextValue = useMemo(
+  const contextValue = useMemo<FocusTimerContextValue>(
     () => ({
       timerState,
       startTimer,

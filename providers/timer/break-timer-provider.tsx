@@ -1,6 +1,11 @@
 "use client";
 
-import { BreakTimerAction, BreakTimerContext, BreakTimerState } from "@/contexts/break-timer";
+import { BreakTimerContext } from "@/contexts/timer";
+import {
+  BreakTimerAction,
+  BreakTimerContextValue,
+  BreakTimerState,
+} from "@/models/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useCountdownInterval } from "@/hooks/timer";
 import {
@@ -11,7 +16,6 @@ import {
   isTimerCompleted,
 } from "@/utils/timer";
 import { ReactNode, useCallback, useMemo, useReducer } from "react";
-
 
 /**
  * Break Timer Provider Props
@@ -102,7 +106,7 @@ export function BreakTimerProvider({
   }, [defaultDuration]);
 
   // Memoize context value to prevent unnecessary re-renders
-  const contextValue = useMemo(
+  const contextValue = useMemo<BreakTimerContextValue>(
     () => ({
       breakTimerState,
       startBreak,
