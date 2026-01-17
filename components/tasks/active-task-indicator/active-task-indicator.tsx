@@ -6,7 +6,7 @@ import { useTextDetail } from "@/hooks/useTextDetail";
 import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
 import { useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import {
@@ -56,8 +56,8 @@ export function ActiveTaskIndicator() {
     () =>
       cn(
         styles.card,
-        typeClasses?.bgColor || "",
-        typeClasses?.borderColor || "",
+        typeClasses?.bgColor,
+        typeClasses?.borderColor,
         contrastClasses,
         spacingClasses.padding,
         transitionClasses
@@ -66,16 +66,25 @@ export function ActiveTaskIndicator() {
   );
 
   // Build container classes
-  const containerClasses = useMemo(
-    () => styles.container,
-    []
-  );
+  const containerClasses = useMemo(() => styles.container, []);
 
+  // Get status text
   const statusText = useMemo(() => {
-    return timerType === "focus"
-      ? getText("tasks_focus_session_active")
-      : getText("tasks_break_session_active");
+    const text = timerType === "focus"
+      ? "tasks_focus_session_active"
+      : "tasks_break_session_active";
+    return getText(text);
   }, [timerType, getText]);
+
+  // Handle click to navigate to tasks page
+  const handleClick = useCallback(() => router.push(PROTECTED_ROUTES.TASKS), [router]);
+
+  // Build aria label
+  const ariaLabel = useMemo(() => {
+    const taskTitle = activeTask?.title || "Sem título";
+    const status = timerType === "focus" ? "em foco" : "em pausa";
+    return `Tarefa ${status}: ${taskTitle}, tempo restante: ${remainingTime} segundos`;
+  }, [timerType, activeTask?.title, remainingTime]);
 
   // Don't render if there's no active timer
   if (!activeTimer || !timerType) {
@@ -85,10 +94,10 @@ export function ActiveTaskIndicator() {
   return (
     <div
       className={containerClasses}
-      role="status"
-      onClick={() => router.push(PROTECTED_ROUTES.TASKS)}
+      role="button"
+      onClick={handleClick}
       aria-live="polite"
-      aria-label={`Tarefa ${timerType === "focus" ? "em foco" : "em pausa"}: ${activeTask?.title || "Sem título"}, tempo restante: ${remainingTime} segundos`}
+      aria-label={ariaLabel}
       data-testid="active-task-indicator"
     >
       <div className={cardClasses}>
