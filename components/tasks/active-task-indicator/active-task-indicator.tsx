@@ -106,8 +106,7 @@ export function ActiveTaskIndicator() {
   return (
     <div
       className={containerClasses}
-      role="button"
-      onClick={handleClick}
+      role="region"
       aria-live="polite"
       aria-label={ariaLabel}
       data-testid="active-task-indicator"
@@ -121,36 +120,38 @@ export function ActiveTaskIndicator() {
           data-testid="active-task-indicator-header"
         />
 
-        {!isMinimized && (
-          <>
-            <div className={styles.content}>
-              <ActiveTaskIndicatorIcon
-                timerType={timerType}
-                data-testid="active-task-indicator-icon"
-              />
-              <div className={styles.textContainer}>
-                <ActiveTaskIndicatorContent
-                  task={activeTask}
-                  data-testid="active-task-indicator-content"
+        <div role="button" onClick={handleClick} className={styles.button}>
+          {!isMinimized && (
+            <>
+              <div className={styles.content}>
+                <ActiveTaskIndicatorIcon
+                  timerType={timerType}
+                  data-testid="active-task-indicator-icon"
+                />
+                <div className={styles.textContainer}>
+                  <ActiveTaskIndicatorContent
+                    task={activeTask}
+                    data-testid="active-task-indicator-content"
+                  />
+                </div>
+              </div>
+              <div className={styles.timerContainer}>
+                <ActiveTaskIndicatorTimer
+                  remainingTime={remainingTime}
+                  data-testid="active-task-indicator-timer"
                 />
               </div>
-            </div>
-            <div className={styles.timerContainer}>
+            </>
+          )}
+          {isMinimized && (
+            <div className={styles.minimizedContent}>
               <ActiveTaskIndicatorTimer
                 remainingTime={remainingTime}
                 data-testid="active-task-indicator-timer"
               />
             </div>
-          </>
-        )}
-        {isMinimized && (
-          <div className={styles.minimizedContent}>
-            <ActiveTaskIndicatorTimer
-              remainingTime={remainingTime}
-              data-testid="active-task-indicator-timer"
-            />
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
