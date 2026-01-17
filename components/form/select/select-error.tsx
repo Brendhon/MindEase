@@ -1,8 +1,9 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { FormErrorProps } from "@/models/form";
 import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 import { styles } from "./select-styles";
 
 /**
@@ -20,13 +21,7 @@ import { styles } from "./select-styles";
  * </Select>
  * ```
  */
-export interface SelectErrorProps {
-  children: ReactNode;
-  id?: string;
-  className?: string;
-}
-
-export function SelectError({ children, id, className }: SelectErrorProps) {
+export function SelectError({ children, id, className }: FormErrorProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
   const { fontSizeClasses } = useAccessibilityClasses();

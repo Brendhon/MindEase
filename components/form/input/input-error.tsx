@@ -1,8 +1,9 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { FormErrorProps } from "@/models/form";
 import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 import { styles } from "./input-styles";
 
 /**
@@ -18,13 +19,7 @@ import { styles } from "./input-styles";
  * </Input>
  * ```
  */
-export interface InputErrorProps {
-  children: ReactNode;
-  id?: string;
-  className?: string;
-}
-
-export function InputError({ children, id, className }: InputErrorProps) {
+export function InputError({ children, id, className }: FormErrorProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
   const { fontSizeClasses } = useAccessibilityClasses();

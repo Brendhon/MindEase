@@ -1,8 +1,9 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { FormLabelProps } from "@/models/form";
 import { cn } from "@/utils/ui";
-import { LabelHTMLAttributes, ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 import { styles } from "./select-styles";
 
 /**
@@ -20,11 +21,7 @@ import { styles } from "./select-styles";
  * </Select>
  * ```
  */
-export interface SelectLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  children: ReactNode;
-}
-
-export function SelectLabel({ children, className, ...props }: SelectLabelProps) {
+export function SelectLabel({ children, className, ...props }: FormLabelProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
   const { fontSizeClasses } = useAccessibilityClasses();

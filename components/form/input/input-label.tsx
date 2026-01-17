@@ -1,8 +1,9 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { FormLabelProps } from "@/models/form";
 import { cn } from "@/utils/ui";
-import { LabelHTMLAttributes, ReactNode, useMemo } from "react";
+import { useMemo } from "react";
 import { styles } from "./input-styles";
 
 /**
@@ -17,11 +18,7 @@ import { styles } from "./input-styles";
  * </Input>
  * ```
  */
-export interface InputLabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
-  children: ReactNode;
-}
-
-export function InputLabel({ children, className, ...props }: InputLabelProps) {
+export function InputLabel({ children, className, ...props }: FormLabelProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // Font size automatically updates when user preferences change
   const { fontSizeClasses } = useAccessibilityClasses();
