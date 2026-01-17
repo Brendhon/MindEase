@@ -2,6 +2,7 @@
 
 import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { Play, X } from "lucide-react";
 import { useMemo } from "react";
 
@@ -10,7 +11,7 @@ import { useMemo } from "react";
  * Dialog shown when break timer reaches zero
  * Provides guided decision: start new focus session or end focus
  */
-export interface BreakSessionCompleteDialogProps {
+export interface BreakSessionCompleteDialogProps extends BaseComponentProps {
   /** Whether dialog is open */
   isOpen: boolean;
 
@@ -28,9 +29,6 @@ export interface BreakSessionCompleteDialogProps {
 
   /** Callback to end focus */
   onEndFocus?: () => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function BreakSessionCompleteDialog({

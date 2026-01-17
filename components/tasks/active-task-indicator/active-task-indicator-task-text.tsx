@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import type { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { styles } from "./active-task-indicator-styles";
 
@@ -9,12 +10,9 @@ import { styles } from "./active-task-indicator-styles";
  * ActiveTaskIndicatorTaskText Component - MindEase
  * Displays task title and description text
  */
-export interface ActiveTaskIndicatorTaskTextProps {
+export interface ActiveTaskIndicatorTaskTextProps extends BaseComponentProps {
   /** Task object or null */
   task: Task | null;
-    
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ActiveTaskIndicatorTaskText({

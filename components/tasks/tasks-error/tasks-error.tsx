@@ -2,18 +2,16 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 
 /**
  * TasksError Component - MindEase
  * Error state for tasks page
  */
-export interface TasksErrorProps {
+export interface TasksErrorProps extends BaseComponentProps {
   /** Error message to display */
   message?: string;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TasksError({ message, "data-testid": testId }: TasksErrorProps) {

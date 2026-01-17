@@ -3,6 +3,7 @@
 import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
 import { useTextDetail } from "@/hooks/accessibility";
 import type { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { canCompleteTask } from "@/utils/tasks";
 import { Check, Coffee, Play } from "lucide-react";
 import { useMemo } from "react";
@@ -12,7 +13,7 @@ import { useMemo } from "react";
  * Dialog shown when focus session timer reaches zero
  * Provides guided decision: start break, continue focus, or finish task
  */
-export interface FocusSessionCompleteDialogProps {
+export interface FocusSessionCompleteDialogProps extends BaseComponentProps {
   /** Whether dialog is open */
   isOpen: boolean;
 
@@ -36,9 +37,6 @@ export interface FocusSessionCompleteDialogProps {
 
   /** Callback to finish task */
   onFinishTask?: () => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function FocusSessionCompleteDialog({

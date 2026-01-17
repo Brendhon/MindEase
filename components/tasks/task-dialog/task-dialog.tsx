@@ -9,6 +9,7 @@ import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useFeedback } from "@/hooks/feedback";
 import { useTextDetail } from "@/hooks/accessibility";
 import { Subtask, Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { taskDialogOutputSchema, taskDialogSchema, TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { cn } from "@/utils/ui";
 import { generateRandomUUID } from "@/utils/uuid";
@@ -21,7 +22,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
  * TaskDialog Component - MindEase
  * Dialog for creating or editing tasks
  */
-export interface TaskDialogProps {
+export interface TaskDialogProps extends BaseComponentProps {
   /** Whether dialog is open */
   isOpen: boolean;
 
@@ -33,9 +34,6 @@ export interface TaskDialogProps {
 
   /** Callback when task is saved */
   onSave: (taskData: TaskDialogFormData) => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TaskDialog({

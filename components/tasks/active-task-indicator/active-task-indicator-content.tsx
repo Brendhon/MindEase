@@ -1,18 +1,19 @@
 "use client";
 
 import type { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
+import { TimerType } from "@/models/timer";
 import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import { ActiveTaskIndicatorTaskText } from "./active-task-indicator-task-text";
 import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
 import { styles } from "./active-task-indicator-styles";
-import { TimerType } from "@/models/timer";
 
 /**
  * ActiveTaskIndicatorContent Component - MindEase
  * Displays main content section with icon, task information, and timer
  * Handles both minimized and expanded states
  */
-export interface ActiveTaskIndicatorContentProps {
+export interface ActiveTaskIndicatorContentProps extends BaseComponentProps {
   /** Task object or null */
   task: Task | null;
   
@@ -27,9 +28,6 @@ export interface ActiveTaskIndicatorContentProps {
   
   /** Callback function to handle click */
   onClick: () => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ActiveTaskIndicatorContent({

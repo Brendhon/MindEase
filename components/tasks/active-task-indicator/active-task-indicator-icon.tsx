@@ -1,21 +1,19 @@
 "use client";
 
+import { BaseComponentProps } from "@/models/base";
+import { TimerType } from "@/models/timer";
 import { Clock, Coffee } from "lucide-react";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 import { getTypeClasses } from "./active-task-indicator-styles";
-import { TimerType } from "@/models/timer";
 
 /**
  * ActiveTaskIndicatorIcon Component - MindEase
  * Displays contextual icon based on timer type
  */
-export interface ActiveTaskIndicatorIconProps {
+export interface ActiveTaskIndicatorIconProps extends BaseComponentProps {
   /** Timer type: "focus" or "break" */
   timerType: TimerType;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ActiveTaskIndicatorIcon({

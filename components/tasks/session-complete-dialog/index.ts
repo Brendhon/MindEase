@@ -1,2 +1,2 @@
 export { SessionCompleteDialog } from "./session-complete-dialog";
-export type { SessionCompleteDialogProps, SessionAction } from "./session-complete-dialog";
+export type { SessionAction } from "./session-complete-dialog";

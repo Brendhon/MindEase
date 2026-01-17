@@ -2,16 +2,14 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 
 /**
  * TasksLoading Component - MindEase
  * Loading state for tasks page
  */
-export interface TasksLoadingProps {
-  /** Test ID for testing */
-  "data-testid"?: string;
-}
+export interface TasksLoadingProps extends BaseComponentProps {}
 
 export function TasksLoading({ "data-testid": testId }: TasksLoadingProps) {
   const { fontSizeClasses } = useAccessibilityClasses();

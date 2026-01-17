@@ -3,6 +3,7 @@
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
 import type { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -12,7 +13,7 @@ import { TaskCard } from "../task-card";
  * TaskColumn Component - MindEase
  * Column for tasks in Kanban layout
  */
-export interface TaskColumnProps {
+export interface TaskColumnProps extends BaseComponentProps {
   /** Column title key */
   titleKey: AccessibilityTextKey;
 
@@ -33,9 +34,6 @@ export interface TaskColumnProps {
 
   /** Callback when subtask is toggled */
   onToggleSubtask?: (taskId: string, subtaskId: string) => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TaskColumn({

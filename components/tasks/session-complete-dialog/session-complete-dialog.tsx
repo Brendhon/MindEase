@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import type { LucideIcon } from "lucide-react";
 import { useMemo } from "react";
@@ -41,7 +42,7 @@ export interface SessionAction {
  * SessionCompleteDialogProps interface - MindEase
  * Props for the generic session complete dialog component
  */
-export interface SessionCompleteDialogProps {
+export interface SessionCompleteDialogProps extends BaseComponentProps {
   /** Whether dialog is open */
   isOpen: boolean;
 
@@ -59,9 +60,6 @@ export interface SessionCompleteDialogProps {
 
   /** Array of action buttons to display */
   actions: SessionAction[];
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 /**

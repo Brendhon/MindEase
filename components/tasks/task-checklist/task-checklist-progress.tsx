@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
 
@@ -9,15 +10,12 @@ import { useMemo } from "react";
  * TaskChecklistProgress Component - MindEase
  * Displays progress information for task checklist
  */
-export interface TaskChecklistProgressProps {
+export interface TaskChecklistProgressProps extends BaseComponentProps {
   /** Number of completed subtasks */
   completedCount: number;
 
   /** Total number of subtasks */
   totalCount: number;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TaskChecklistProgress({

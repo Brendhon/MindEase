@@ -7,16 +7,14 @@ import type { ReactNode } from "react";
 import type { Task } from "./task";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
 import type { Subtask } from "./task";
+import type { BaseComponentProps } from "./base";
 
 /**
  * Base props shared across TaskCard components
  */
-export interface TaskCardBaseProps {
+export interface TaskCardBaseProps extends BaseComponentProps {
   /** Task data */
   task: Task;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 /**

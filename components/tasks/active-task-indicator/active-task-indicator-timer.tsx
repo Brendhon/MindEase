@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { formatTime } from "@/utils/timer";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -10,12 +11,9 @@ import { styles } from "./active-task-indicator-styles";
  * ActiveTaskIndicatorTimer Component - MindEase
  * Displays formatted remaining time
  */
-export interface ActiveTaskIndicatorTimerProps {
+export interface ActiveTaskIndicatorTimerProps extends BaseComponentProps {
   /** Remaining time in seconds */
   remainingTime: number;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ActiveTaskIndicatorTimer({

@@ -2,6 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import type { Subtask } from "@/models/task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -10,7 +11,7 @@ import { useMemo } from "react";
  * TaskChecklistItem Component - MindEase
  * Individual checklist item with checkbox
  */
-export interface TaskChecklistItemProps {
+export interface TaskChecklistItemProps extends BaseComponentProps {
   /** Subtask data */
   subtask: Subtask;
 
@@ -19,9 +20,6 @@ export interface TaskChecklistItemProps {
 
   /** Callback when subtask is toggled */
   onToggle?: (subtaskId: string) => void;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TaskChecklistItem({

@@ -2,6 +2,7 @@
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
 import { useTextDetail } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import type { Subtask } from "@/models/task";
 import { cn } from "@/utils/ui";
 import { useMemo } from "react";
@@ -12,7 +13,7 @@ import { TaskChecklistProgress } from "./task-checklist-progress";
  * TaskChecklist Component - MindEase
  * Displays checklist of subtasks with completion status
  */
-export interface TaskChecklistProps {
+export interface TaskChecklistProps extends BaseComponentProps {
   /** Array of subtasks */
   subtasks: Subtask[];
 
@@ -24,9 +25,6 @@ export interface TaskChecklistProps {
 
   /** Whether task is in focus (to show hint text) */
   isInFocus?: boolean;
-
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function TaskChecklist({

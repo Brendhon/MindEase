@@ -6,6 +6,4 @@ export * from "./task-checklist";
 export * from "./tasks-toolbar";
 export * from "./tasks-loading";
 export * from "./tasks-error";
-export * from "./focus-session-alert";
-export * from "./break-suggestion";
 export * from "./tasks-content";

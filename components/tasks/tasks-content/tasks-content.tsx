@@ -7,6 +7,7 @@ import { useFeedback } from "@/hooks/feedback";
 import { useFocusTimer } from "@/hooks/focus-timer";
 import { useTasks } from "@/hooks/tasks";
 import { Task } from "@/models/task";
+import { BaseComponentProps } from "@/models/base";
 import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { useCallback, useEffect, useState } from "react";
 import { TaskDialog } from "../task-dialog";
@@ -19,15 +20,12 @@ import { TasksToolbar } from "../tasks-toolbar";
  * TasksContent Component - MindEase
  * Main content component for tasks page
  */
-export interface TasksContentProps {
+export interface TasksContentProps extends BaseComponentProps {
   /** Initial tasks loaded from server */
   initialTasks: Task[];
   
   /** Initial error (if any) */
   initialError: string | null;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 /**

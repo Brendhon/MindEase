@@ -1,6 +1,7 @@
 "use client";
 
 import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { BaseComponentProps } from "@/models/base";
 import { TimerType } from "@/models/timer";
 import { cn } from "@/utils/ui";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -11,7 +12,7 @@ import { styles } from "./active-task-indicator-styles";
  * ActiveTaskIndicatorHeader Component - MindEase
  * Displays header with status text/icon and minimize button
  */
-export interface ActiveTaskIndicatorHeaderProps {
+export interface ActiveTaskIndicatorHeaderProps extends BaseComponentProps {
   /** Whether the indicator is minimized */
   isMinimized: boolean;
   
@@ -23,9 +24,6 @@ export interface ActiveTaskIndicatorHeaderProps {
   
   /** Callback function to toggle minimize state */
   onToggleMinimize: (e: React.MouseEvent) => void;
-  
-  /** Test ID for testing */
-  "data-testid"?: string;
 }
 
 export function ActiveTaskIndicatorHeader({
