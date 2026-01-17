@@ -9,14 +9,12 @@ import { useRouter } from "next/navigation";
 import { useCallback, useMemo, useState } from "react";
 import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
 import { ActiveTaskIndicatorHeader } from "./active-task-indicator-header";
-import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import {
   getContrastClasses,
   getTransitionClasses,
   getTypeClasses,
   styles,
 } from "./active-task-indicator-styles";
-import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
 import { useActiveTaskIndicator } from "./use-active-task-indicator";
 
 /**
@@ -120,38 +118,14 @@ export function ActiveTaskIndicator() {
           data-testid="active-task-indicator-header"
         />
 
-        <div role="button" onClick={handleClick} className={styles.button}>
-          {!isMinimized && (
-            <>
-              <div className={styles.content}>
-                <ActiveTaskIndicatorIcon
-                  timerType={timerType}
-                  data-testid="active-task-indicator-icon"
-                />
-                <div className={styles.textContainer}>
-                  <ActiveTaskIndicatorContent
-                    task={activeTask}
-                    data-testid="active-task-indicator-content"
-                  />
-                </div>
-              </div>
-              <div className={styles.timerContainer}>
-                <ActiveTaskIndicatorTimer
-                  remainingTime={remainingTime}
-                  data-testid="active-task-indicator-timer"
-                />
-              </div>
-            </>
-          )}
-          {isMinimized && (
-            <div className={styles.minimizedContent}>
-              <ActiveTaskIndicatorTimer
-                remainingTime={remainingTime}
-                data-testid="active-task-indicator-timer"
-              />
-            </div>
-          )}
-        </div>
+        <ActiveTaskIndicatorContent
+          task={activeTask}
+          timerType={timerType}
+          isMinimized={isMinimized}
+          remainingTime={remainingTime}
+          onClick={handleClick}
+          data-testid="active-task-indicator-content"
+        />
       </div>
     </div>
   );
