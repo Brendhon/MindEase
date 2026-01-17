@@ -12,12 +12,6 @@ export interface CognitiveAlertExcessiveTimeProps {
   /** Whether alert is visible */
   isVisible: boolean;
   
-  /** Task name that has been in focus */
-  taskName?: string;
-  
-  /** Elapsed time in milliseconds */
-  elapsedTime: number;
-  
   /** Callback when alert is dismissed */
   onDismiss: () => void;
   
@@ -27,8 +21,6 @@ export interface CognitiveAlertExcessiveTimeProps {
 
 export function CognitiveAlertExcessiveTime({
   isVisible,
-  taskName,
-  elapsedTime,
   onDismiss,
   "data-testid": testId,
 }: CognitiveAlertExcessiveTimeProps) {
@@ -38,8 +30,6 @@ export function CognitiveAlertExcessiveTime({
       titleKey="cognitive_alerts_excessive_time_title"
       messageKey="cognitive_alerts_excessive_time_message"
       onDismiss={onDismiss}
-      position="top"
-      variant="info"
       data-testid={testId || "cognitive-alert-excessive-time"}
     />
   );

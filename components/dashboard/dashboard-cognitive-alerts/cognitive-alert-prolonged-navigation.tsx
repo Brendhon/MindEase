@@ -12,9 +12,6 @@ export interface CognitiveAlertProlongedNavigationProps {
   /** Whether alert is visible */
   isVisible: boolean;
   
-  /** Navigation time in milliseconds */
-  navigationTime: number;
-  
   /** Callback when alert is dismissed */
   onDismiss: () => void;
   
@@ -24,7 +21,6 @@ export interface CognitiveAlertProlongedNavigationProps {
 
 export function CognitiveAlertProlongedNavigation({
   isVisible,
-  navigationTime,
   onDismiss,
   "data-testid": testId,
 }: CognitiveAlertProlongedNavigationProps) {
@@ -34,8 +30,6 @@ export function CognitiveAlertProlongedNavigation({
       titleKey="cognitive_alerts_prolonged_navigation_title"
       messageKey="cognitive_alerts_prolonged_navigation_message"
       onDismiss={onDismiss}
-      position="bottom"
-      variant="gentle"
       data-testid={testId || "cognitive-alert-prolonged-navigation"}
     />
   );

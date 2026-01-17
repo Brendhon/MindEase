@@ -268,6 +268,27 @@ body {
  * See: @/utils/accessibility/tailwind-classes.ts
  */
 
+/**
+ * Bell Ring Animation
+ * Subtle bell ringing animation for cognitive alert icons
+ */
+@keyframes bell-ring {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: rotate(-10deg);
+  }
+  20%, 40%, 60%, 80% {
+    transform: rotate(10deg);
+  }
+}
+
+.animate-bell-ring {
+  animation: bell-ring 2.5s ease-in-out infinite;
+  transform-origin: top center;
+}
+
 /* Respect user's system preference for reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -277,5 +298,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .animate-bell-ring {
+    animation: none !important;
   }
 }

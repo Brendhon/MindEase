@@ -8,30 +8,18 @@ import { getContrastClasses } from "@/utils/accessibility/tailwind-classes";
 
 export const styles = {
   // Banner base styles
-  banner: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-lg",
+  banner: "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-lg bg-surface-primary border-2 border-action-warning/50 shadow-soft",
   bannerContent: "flex flex-col flex-1 min-w-0",
   bannerTitle: "font-semibold",
   bannerMessage: "text-text-secondary mt-1",
   bannerActions: "flex items-center gap-2 flex-shrink-0",
   
-  // Variant styles
-  variant: {
-    info: {
-      banner: "bg-action-info/10 border border-action-info",
-      title: "text-action-info",
-    },
-    gentle: {
-      banner: "bg-action-info/5 border border-action-info/50",
-      title: "text-action-info/90",
-    },
+  icon: {
+    base: "flex items-center justify-center",
+    color: "text-action-warning",
+    animate: "animate-bell-ring",
   } as const,
-  
-  // Position styles
-  position: {
-    top: "fixed top-4 left-4 right-4 z-40 max-w-4xl mx-auto",
-    bottom: "fixed bottom-4 left-4 right-4 z-40 max-w-4xl mx-auto",
-  } as const,
-  
+
   // Dismiss button styles
   dismissButton: "flex items-center justify-center w-8 h-8 rounded-md hover:bg-action-info/20 transition-colors focus:outline-none focus:ring-2 focus:ring-action-info focus:ring-offset-2",
   dismissIcon: "w-4 h-4 text-action-info",

@@ -4,7 +4,7 @@ import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
 import { useTextDetail } from "@/hooks/useTextDetail";
 import { cn } from "@/utils/ui";
-import { X } from "lucide-react";
+import { X, BellRing } from "lucide-react";
 import { useMemo } from "react";
 import { getContrastClassesForAlerts, styles } from "./dashboard-cognitive-alerts-styles";
 import { AccessibilityTextKey } from "@/utils/accessibility/content";
@@ -32,12 +32,6 @@ export interface CognitiveAlertBannerProps {
   /** Callback when banner is dismissed */
   onDismiss: () => void;
   
-  /** Position of banner (top or bottom) */
-  position?: "top" | "bottom";
-  
-  /** Visual variant (info or gentle) */
-  variant?: "info" | "gentle";
-  
   /** Test ID for testing */
   "data-testid"?: string;
 }
@@ -47,42 +41,29 @@ export function CognitiveAlertBanner({
   titleKey,
   messageKey,
   onDismiss,
-  position = "top",
-  variant = "info",
   "data-testid": testId,
 }: CognitiveAlertBannerProps) {
   const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses, animationClasses } = useAccessibilityClasses();
   const { settings } = useCognitiveSettings();
 
-  if (!isVisible) {
-    return null;
-  }
-
-  // Get variant-specific styles
-  const variantStyles = styles.variant[variant];
-  const positionStyles = styles.position[position];
-
   // Generate accessible classes with memoization
   const bannerClasses = useMemo(
     () => cn(
       styles.banner,
-      variantStyles.banner,
-      positionStyles,
       spacingClasses.padding,
       animationClasses,
       getContrastClassesForAlerts(settings.contrast, "banner")
     ),
-    [variantStyles.banner, positionStyles, spacingClasses.padding, animationClasses, settings.contrast]
+    [spacingClasses.padding, animationClasses, settings.contrast]
   );
 
   const titleClasses = useMemo(
     () => cn(
       styles.bannerTitle,
-      variantStyles.title,
       fontSizeClasses.base
     ),
-    [variantStyles.title, fontSizeClasses.base]
+    [fontSizeClasses.base]
   );
 
   const messageClasses = useMemo(
@@ -101,7 +82,19 @@ export function CognitiveAlertBanner({
     [animationClasses]
   );
 
+  const iconClasses = useMemo(
+    () => cn(
+      styles.icon.color,
+      settings.animations ? styles.icon.animate : ""
+    ),
+    [styles.icon.color, styles.icon.animate, settings.animations]
+  );
+
   const dismissAriaLabel = getText("cognitive_alerts_dismiss_aria") || "Dismiss alert";
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <div
@@ -111,6 +104,9 @@ export function CognitiveAlertBanner({
       aria-atomic="true"
       data-testid={testId || "cognitive-alert-banner"}
     >
+      <div className={styles.icon.base}>
+        <BellRing className={iconClasses} aria-hidden="true" size={24} />  
+      </div>
       <div className={styles.bannerContent}>
         <h3 className={titleClasses}>
           {getText(titleKey)}

@@ -12,9 +12,6 @@ export interface CognitiveAlertMissingBreakProps {
   /** Whether alert is visible */
   isVisible: boolean;
   
-  /** Number of consecutive sessions without break */
-  sessionsCount: number;
-  
   /** Callback when alert is dismissed */
   onDismiss: () => void;
   
@@ -24,7 +21,6 @@ export interface CognitiveAlertMissingBreakProps {
 
 export function CognitiveAlertMissingBreak({
   isVisible,
-  sessionsCount,
   onDismiss,
   "data-testid": testId,
 }: CognitiveAlertMissingBreakProps) {
@@ -34,8 +30,6 @@ export function CognitiveAlertMissingBreak({
       titleKey="cognitive_alerts_missing_break_title"
       messageKey="cognitive_alerts_missing_break_message"
       onDismiss={onDismiss}
-      position="top"
-      variant="gentle"
       data-testid={testId || "cognitive-alert-missing-break"}
     />
   );
