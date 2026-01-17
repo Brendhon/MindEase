@@ -3,11 +3,10 @@
  * Centralized type definitions for TaskCard component and its subcomponents
  */
 
-import type { ReactNode } from "react";
-import type { Task } from "./task";
 import type { AccessibilityTextKey } from "@/utils/accessibility/content";
-import type { Subtask } from "./task";
+import type { ReactNode } from "react";
 import type { BaseComponentProps } from "./base";
+import type { Task } from "./task";
 
 /**
  * Base props shared across TaskCard components
