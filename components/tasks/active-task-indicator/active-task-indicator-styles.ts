@@ -35,10 +35,10 @@ export const styles = {
   content: "flex items-start gap-3",
   iconContainer: "flex-shrink-0",
   textContainer: "flex-1 min-w-0",
-  title: "font-semibold text-text-primary truncate",
+  title: "font-semibold text-text-primary/80 truncate",
   status: "text-text-secondary text-sm italic mb-4",
   timerContainer: "mt-2 pt-2 border-t border-border-subtle flex items-center justify-end",
-  timer: "font-semibold font-bold text-action-secondary",
+  timer: "font-semibold font-bold text-text-secondary",
   transition: {
     // Reduced motion: minimal transition for accessibility
     reduced: "transition-opacity duration-fast",

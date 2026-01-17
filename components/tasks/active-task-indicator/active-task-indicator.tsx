@@ -2,19 +2,21 @@
 
 import { useAccessibilityClasses } from "@/hooks/useAccessibilityClasses";
 import { useCognitiveSettings } from "@/hooks/useCognitiveSettings";
+import { useTextDetail } from "@/hooks/useTextDetail";
+import { PROTECTED_ROUTES } from "@/utils/routes/routes";
 import { cn } from "@/utils/ui";
+import { useRouter } from "next/navigation";
 import { useMemo } from "react";
+import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
+import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import {
   getContrastClasses,
   getTransitionClasses,
   getTypeClasses,
   styles,
 } from "./active-task-indicator-styles";
-import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
-import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
 import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
 import { useActiveTaskIndicator } from "./use-active-task-indicator";
-import { useTextDetail } from "@/hooks/useTextDetail";
 
 /**
  * ActiveTaskIndicator Component - MindEase
@@ -32,6 +34,8 @@ export function ActiveTaskIndicator() {
   const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
   const { settings } = useCognitiveSettings();
   const { getText } = useTextDetail();
+  const router = useRouter();
+
   // Get type-specific classes
   const typeClasses = useMemo(() => timerType ? getTypeClasses(timerType) : null, [timerType]);
 
@@ -66,7 +70,7 @@ export function ActiveTaskIndicator() {
     () => styles.container,
     []
   );
-  
+
   const statusText = useMemo(() => {
     return timerType === "focus"
       ? getText("tasks_focus_session_active")
@@ -82,6 +86,7 @@ export function ActiveTaskIndicator() {
     <div
       className={containerClasses}
       role="status"
+      onClick={() => router.push(PROTECTED_ROUTES.TASKS)}
       aria-live="polite"
       aria-label={`Tarefa ${timerType === "focus" ? "em foco" : "em pausa"}: ${activeTask?.title || "Sem título"}, tempo restante: ${remainingTime} segundos`}
       data-testid="active-task-indicator"
