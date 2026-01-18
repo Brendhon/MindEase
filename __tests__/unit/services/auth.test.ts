@@ -3,8 +3,7 @@ import { authService, convertSession } from '@/services/auth/auth';
 import { signIn, signOut, getSession } from 'next-auth/react';
 import { tasksService } from '@/services/tasks';
 import { userPreferencesService } from '@/services/user-preferences';
-import type { Session } from 'next-auth';
-import type { AuthUser } from '@/models/auth';
+import { createSession, createAuthUser, sessionMocks, authUserMocks } from '@/__tests__/__mocks__/auth';
 
 // Mock next-auth
 vi.mock('next-auth/react', () => ({
@@ -26,6 +25,44 @@ vi.mock('@/services/user-preferences', () => ({
   },
 }));
 
+// Test constants
+const MOCK_USER_ID = 'user-123';
+const MOCK_EMAIL = 'test@example.com';
+const MOCK_NAME = 'Test User';
+const MOCK_IMAGE = 'https://example.com/avatar.jpg';
+const MOCK_EXPIRES = '2024-12-31';
+
+// Helper functions for common mock setups
+const setupSignInSuccess = () => {
+  vi.mocked(signIn).mockResolvedValue(undefined);
+};
+
+const setupSignInFailure = (errorMessage: string = 'Sign in failed') => {
+  vi.mocked(signIn).mockRejectedValue(new Error(errorMessage));
+};
+
+const setupSignOutSuccess = () => {
+  vi.mocked(signOut).mockResolvedValue(undefined);
+};
+
+const setupSignOutFailure = (errorMessage: string = 'Sign out failed') => {
+  vi.mocked(signOut).mockRejectedValue(new Error(errorMessage));
+};
+
+const setupGetSessionSuccess = (session: ReturnType<typeof createSession> | null) => {
+  vi.mocked(getSession).mockResolvedValue(session);
+};
+
+const setupGetSessionFailure = (errorMessage: string = 'Session error') => {
+  vi.mocked(getSession).mockRejectedValue(new Error(errorMessage));
+};
+
+const setupDeleteAccountSuccess = () => {
+  vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
+  vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(undefined);
+  vi.mocked(signOut).mockResolvedValue(undefined);
+};
+
 describe('authService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -33,45 +70,34 @@ describe('authService', () => {
 
   describe('convertSession', () => {
     it('should convert valid session to AuthUser', () => {
-      const session: Session = {
+      const session = createSession({
         user: {
-          id: 'user-123',
-          email: 'test@example.com',
-          name: 'Test User',
-          image: 'https://example.com/avatar.jpg',
+          id: MOCK_USER_ID,
+          email: MOCK_EMAIL,
+          name: MOCK_NAME,
+          image: MOCK_IMAGE,
         },
-        expires: '2024-12-31',
-      } as Session;
+        expires: MOCK_EXPIRES,
+      });
 
       const result = convertSession(session);
 
-      expect(result).toEqual({
-        uid: 'user-123',
-        email: 'test@example.com',
-        name: 'Test User',
-        image: 'https://example.com/avatar.jpg',
-      });
+      expect(result).toEqual(
+        createAuthUser({
+          uid: MOCK_USER_ID,
+          email: MOCK_EMAIL,
+          name: MOCK_NAME,
+          image: MOCK_IMAGE,
+        })
+      );
     });
 
     it('should handle session with null email', () => {
-      const session: Session = {
-        user: {
-          id: 'user-123',
-          email: '',
-          name: 'Test User',
-          image: null,
-        },
-        expires: '2024-12-31',
-      } as Session;
+      const session = sessionMocks.withNullEmail();
 
       const result = convertSession(session);
 
-      expect(result).toEqual({
-        uid: 'user-123',
-        email: null,
-        name: 'Test User',
-        image: null,
-      });
+      expect(result).toEqual(authUserMocks.withNullEmail());
     });
 
     it('should return null when session is null', () => {
@@ -80,9 +106,7 @@ describe('authService', () => {
     });
 
     it('should return null when session has no user', () => {
-      const session = {
-        expires: '2024-12-31',
-      } as Session;
+      const session = sessionMocks.withoutUser();
 
       const result = convertSession(session);
       expect(result).toBeNull();
@@ -91,7 +115,7 @@ describe('authService', () => {
 
   describe('signInWithGoogle', () => {
     it('should call signIn with Google provider', async () => {
-      vi.mocked(signIn).mockResolvedValue(undefined);
+      setupSignInSuccess();
 
       await authService.signInWithGoogle();
 
@@ -102,16 +126,16 @@ describe('authService', () => {
     });
 
     it('should throw error on sign in failure', async () => {
-      const error = new Error('Sign in failed');
-      vi.mocked(signIn).mockRejectedValue(error);
+      const errorMessage = 'Sign in failed';
+      setupSignInFailure(errorMessage);
 
-      await expect(authService.signInWithGoogle()).rejects.toThrow('Sign in failed');
+      await expect(authService.signInWithGoogle()).rejects.toThrow(errorMessage);
     });
   });
 
   describe('signOut', () => {
     it('should call signOut with correct callback URL', async () => {
-      vi.mocked(signOut).mockResolvedValue(undefined);
+      setupSignOutSuccess();
 
       await authService.signOut();
 
@@ -122,39 +146,41 @@ describe('authService', () => {
     });
 
     it('should throw error on sign out failure', async () => {
-      const error = new Error('Sign out failed');
-      vi.mocked(signOut).mockRejectedValue(error);
+      const errorMessage = 'Sign out failed';
+      setupSignOutFailure(errorMessage);
 
-      await expect(authService.signOut()).rejects.toThrow('Sign out failed');
+      await expect(authService.signOut()).rejects.toThrow(errorMessage);
     });
   });
 
   describe('getCurrentUser', () => {
     it('should return AuthUser when session exists', async () => {
-      const session: Session = {
+      const session = createSession({
         user: {
-          id: 'user-123',
-          email: 'test@example.com',
-          name: 'Test User',
+          id: MOCK_USER_ID,
+          email: MOCK_EMAIL,
+          name: MOCK_NAME,
           image: null,
         },
-        expires: '2024-12-31',
-      } as Session;
+        expires: MOCK_EXPIRES,
+      });
 
-      vi.mocked(getSession).mockResolvedValue(session);
+      setupGetSessionSuccess(session);
 
       const result = await authService.getCurrentUser();
 
-      expect(result).toEqual({
-        uid: 'user-123',
-        email: 'test@example.com',
-        name: 'Test User',
-        image: null,
-      });
+      expect(result).toEqual(
+        createAuthUser({
+          uid: MOCK_USER_ID,
+          email: MOCK_EMAIL,
+          name: MOCK_NAME,
+          image: null,
+        })
+      );
     });
 
     it('should return null when session is null', async () => {
-      vi.mocked(getSession).mockResolvedValue(null);
+      setupGetSessionSuccess(null);
 
       const result = await authService.getCurrentUser();
 
@@ -162,7 +188,7 @@ describe('authService', () => {
     });
 
     it('should return null on error', async () => {
-      vi.mocked(getSession).mockRejectedValue(new Error('Session error'));
+      setupGetSessionFailure('Session error');
 
       const result = await authService.getCurrentUser();
 
@@ -172,15 +198,8 @@ describe('authService', () => {
 
   describe('getSession', () => {
     it('should return session when available', async () => {
-      const session: Session = {
-        user: {
-          id: 'user-123',
-          email: 'test@example.com',
-        },
-        expires: '2024-12-31',
-      } as Session;
-
-      vi.mocked(getSession).mockResolvedValue(session);
+      const session = sessionMocks.minimal();
+      setupGetSessionSuccess(session);
 
       const result = await authService.getSession();
 
@@ -188,7 +207,7 @@ describe('authService', () => {
     });
 
     it('should return null when session is not available', async () => {
-      vi.mocked(getSession).mockResolvedValue(null);
+      setupGetSessionSuccess(null);
 
       const result = await authService.getSession();
 
@@ -196,7 +215,7 @@ describe('authService', () => {
     });
 
     it('should return null on error', async () => {
-      vi.mocked(getSession).mockRejectedValue(new Error('Session error'));
+      setupGetSessionFailure('Session error');
 
       const result = await authService.getSession();
 
@@ -206,16 +225,12 @@ describe('authService', () => {
 
   describe('deleteAccount', () => {
     it('should delete all user data and sign out', async () => {
-      const userId = 'user-123';
+      setupDeleteAccountSuccess();
 
-      vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
-      vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(undefined);
-      vi.mocked(signOut).mockResolvedValue(undefined);
+      await authService.deleteAccount(MOCK_USER_ID);
 
-      await authService.deleteAccount(userId);
-
-      expect(tasksService.deleteAllTasks).toHaveBeenCalledWith(userId);
-      expect(userPreferencesService.deleteUserPreferences).toHaveBeenCalledWith(userId);
+      expect(tasksService.deleteAllTasks).toHaveBeenCalledWith(MOCK_USER_ID);
+      expect(userPreferencesService.deleteUserPreferences).toHaveBeenCalledWith(MOCK_USER_ID);
       expect(signOut).toHaveBeenCalledWith({
         callbackUrl: '/login',
         redirect: true,
@@ -223,38 +238,32 @@ describe('authService', () => {
     });
 
     it('should throw error if tasks deletion fails', async () => {
-      const userId = 'user-123';
-      const error = new Error('Failed to delete tasks');
+      const errorMessage = 'Failed to delete tasks';
+      vi.mocked(tasksService.deleteAllTasks).mockRejectedValue(new Error(errorMessage));
 
-      vi.mocked(tasksService.deleteAllTasks).mockRejectedValue(error);
-
-      await expect(authService.deleteAccount(userId)).rejects.toThrow('Failed to delete tasks');
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
       expect(userPreferencesService.deleteUserPreferences).not.toHaveBeenCalled();
       expect(signOut).not.toHaveBeenCalled();
     });
 
     it('should throw error if preferences deletion fails', async () => {
-      const userId = 'user-123';
-      const error = new Error('Failed to delete preferences');
-
+      const errorMessage = 'Failed to delete preferences';
       vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
-      vi.mocked(userPreferencesService.deleteUserPreferences).mockRejectedValue(error);
-
-      await expect(authService.deleteAccount(userId)).rejects.toThrow(
-        'Failed to delete preferences'
+      vi.mocked(userPreferencesService.deleteUserPreferences).mockRejectedValue(
+        new Error(errorMessage)
       );
+
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
       expect(signOut).not.toHaveBeenCalled();
     });
 
     it('should throw error if sign out fails', async () => {
-      const userId = 'user-123';
-      const error = new Error('Failed to sign out');
-
+      const errorMessage = 'Failed to sign out';
       vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
       vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(undefined);
-      vi.mocked(signOut).mockRejectedValue(error);
+      vi.mocked(signOut).mockRejectedValue(new Error(errorMessage));
 
-      await expect(authService.deleteAccount(userId)).rejects.toThrow('Failed to sign out');
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
     });
   });
 });
