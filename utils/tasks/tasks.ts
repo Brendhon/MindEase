@@ -3,7 +3,7 @@
  * Utility functions for task operations
  */
 
-import type { Task, Subtask } from "@/models/task";
+import type { Task, Subtask } from '@/models/task';
 
 /**
  * Check if a task has pending (incomplete) subtasks

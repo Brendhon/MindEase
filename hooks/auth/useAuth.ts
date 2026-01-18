@@ -1,34 +1,34 @@
 /**
  * useAuth Hook - MindEase
- * 
+ *
  * Centralized hook for managing authentication with NextAuth session synchronization.
- * 
+ *
  * This hook handles:
  * - Session synchronization with NextAuth (automatic via useEffect)
  * - State management (local + NextAuth)
  * - Loading and error handling
  * - Authentication operations (sign in, sign out, refresh)
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * Session synchronization happens automatically when NextAuth session changes.
  * All authentication operations are handled through this hook's methods.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage - check authentication status
  * function MyComponent() {
  *   const { user, isAuthenticated, isLoading } = useAuth();
- *   
+ *
  *   if (isLoading) return <div>Loading...</div>;
  *   if (!isAuthenticated) return <div>Please sign in</div>;
  *   return <div>Welcome, {user?.name}</div>;
  * }
- * 
+ *
  * // Sign in/out operations
  * function AuthButtons() {
  *   const { signIn, signOut, isAuthenticated, isLoading } = useAuth();
- *   
+ *
  *   return (
  *     <>
  *       {!isAuthenticated ? (
@@ -43,7 +43,7 @@
  *     </>
  *   );
  * }
- * 
+ *
  * // Manual session refresh
  * function RefreshButton() {
  *   const { refreshSession, isLoading } = useAuth();
@@ -53,11 +53,11 @@
  *     </button>
  *   );
  * }
- * 
+ *
  * // Handle errors
  * function AuthComponent() {
  *   const { error, signIn } = useAuth();
- *   
+ *
  *   return (
  *     <>
  *       {error && <div>Error: {error.message}</div>}
@@ -66,22 +66,22 @@
  *   );
  * }
  * ```
- * 
+ *
  * @throws Error if used outside AuthProvider
  */
-"use client";
+'use client';
 
-import { useAuthContext } from "@/contexts/auth";
-import { AuthUser } from "@/models/auth";
-import { authService } from "@/services/auth";
-import { useSession } from "next-auth/react";
-import { useCallback, useEffect } from "react";
+import { useAuthContext } from '@/contexts/auth';
+import { AuthUser } from '@/models/auth';
+import { authService } from '@/services/auth';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect } from 'react';
 
 export function useAuth() {
   const { data: session, status, update: updateSession } = useSession();
-  
-  const { 
-    user, 
+
+  const {
+    user,
     isLoading: contextLoading,
     error,
     _setUser,
@@ -95,7 +95,7 @@ export function useAuth() {
    * This ensures the context state stays in sync with NextAuth
    */
   useEffect(() => {
-    if (status === "loading") {
+    if (status === 'loading') {
       _setLoading(true);
       return;
     }
@@ -129,8 +129,8 @@ export function useAuth() {
       await authService.signInWithGoogle();
       // Session will be updated automatically via useEffect
     } catch (err) {
-      console.error("Error signing in:", err);
-      _setError(err instanceof Error ? err : new Error("Failed to sign in"));
+      console.error('Error signing in:', err);
+      _setError(err instanceof Error ? err : new Error('Failed to sign in'));
       _setLoading(false);
     }
   }, [_setLoading, _setError]);
@@ -147,7 +147,7 @@ export function useAuth() {
     try {
       // Sign out from NextAuth
       await authService.signOut();
-      
+
       // Session will be updated automatically via useEffect
       _setUser(null);
 
@@ -157,8 +157,8 @@ export function useAuth() {
       // Clear session storage
       sessionStorage.clear();
     } catch (err) {
-      console.error("Error signing out:", err);
-      _setError(err instanceof Error ? err : new Error("Failed to sign out"));
+      console.error('Error signing out:', err);
+      _setError(err instanceof Error ? err : new Error('Failed to sign out'));
       _setLoading(false);
     }
   }, [_setUser, _setLoading, _setError]);
@@ -176,8 +176,10 @@ export function useAuth() {
       await updateSession();
       // Session will be updated automatically via useEffect
     } catch (err) {
-      console.error("Error refreshing session:", err);
-      _setError(err instanceof Error ? err : new Error("Failed to refresh session"));
+      console.error('Error refreshing session:', err);
+      _setError(
+        err instanceof Error ? err : new Error('Failed to refresh session')
+      );
       _setLoading(false);
     }
   }, [updateSession, _setLoading, _setError]);
@@ -186,13 +188,12 @@ export function useAuth() {
     // State
     user,
     isAuthenticated: !!user,
-    isLoading: status === "loading" || contextLoading,
+    isLoading: status === 'loading' || contextLoading,
     error,
-    
+
     // Operations
     signIn,
     signOut,
     refreshSession,
   };
 }
-

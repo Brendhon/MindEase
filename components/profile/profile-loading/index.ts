@@ -1,2 +1,1 @@
-export { ProfileLoading } from "./profile-loading";
-
+export { ProfileLoading } from './profile-loading';

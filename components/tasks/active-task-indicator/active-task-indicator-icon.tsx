@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { BaseComponentProps } from "@/models/base";
-import { TimerType } from "@/models/timer";
-import { Clock, Coffee } from "lucide-react";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { getTypeClasses } from "./active-task-indicator-styles";
+import { BaseComponentProps } from '@/models/base';
+import { TimerType } from '@/models/timer';
+import { Clock, Coffee } from 'lucide-react';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { getTypeClasses } from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicatorIcon Component - MindEase
@@ -18,11 +18,11 @@ export interface ActiveTaskIndicatorIconProps extends BaseComponentProps {
 
 export function ActiveTaskIndicatorIcon({
   timerType,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ActiveTaskIndicatorIconProps) {
   const typeClasses = useMemo(() => getTypeClasses(timerType), [timerType]);
 
-  const Icon = timerType === "focus" ? Clock : Coffee;
+  const Icon = timerType === 'focus' ? Clock : Coffee;
   const iconSize = 20;
 
   return (
@@ -35,8 +35,8 @@ export function ActiveTaskIndicatorIcon({
   );
 }
 
-ActiveTaskIndicatorIcon.displayName = "ActiveTaskIndicatorIcon";
+ActiveTaskIndicatorIcon.displayName = 'ActiveTaskIndicatorIcon';
 
 const styles = {
-  container: "flex-shrink-0",
+  container: 'flex-shrink-0',
 } as const;

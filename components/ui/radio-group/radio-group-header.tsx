@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { BaseComponentProps } from "@/models/base";
-import { ReactNode } from "react";
-import { cn } from "@/utils/ui";
-import { styles } from "./radio-group-styles";
+import { BaseComponentProps } from '@/models/base';
+import { ReactNode } from 'react';
+import { cn } from '@/utils/ui';
+import { styles } from './radio-group-styles';
 
 /**
  * RadioGroup.Header - Header wrapper subcomponent
  * Encapsulates the standard header layout for Label and Description
- * 
+ *
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected}>
@@ -20,10 +20,13 @@ import { styles } from "./radio-group-styles";
  * </RadioGroup>
  * ```
  */
-export interface RadioGroupHeaderProps extends Omit<BaseComponentProps, "data-testid"> {
+export interface RadioGroupHeaderProps extends Omit<
+  BaseComponentProps,
+  'data-testid'
+> {
   /** Header content (typically Label and Description) */
   children: ReactNode;
-  
+
   /** Custom className */
   className?: string;
 }
@@ -32,11 +35,7 @@ export function RadioGroupHeader({
   children,
   className,
 }: RadioGroupHeaderProps) {
-  return (
-    <div className={cn(styles.header, className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn(styles.header, className)}>{children}</div>;
 }
 
-RadioGroupHeader.displayName = "RadioGroup.Header";
+RadioGroupHeader.displayName = 'RadioGroup.Header';

@@ -1,6 +1,6 @@
-import { Task } from "./task";
+import { Task } from './task';
 
-export type TimerType = "focus" | "break";
+export type TimerType = 'focus' | 'break';
 
 export interface ActiveTimer {
   type: TimerType;
@@ -22,8 +22,8 @@ export interface UseActiveTaskIndicatorReturn {
 /**
  * Timer State Types
  */
-export type BreakTimerStateType = "idle" | "running" | "breakEnded";
-export type FocusTimerStateType = "idle" | "running";
+export type BreakTimerStateType = 'idle' | 'running' | 'breakEnded';
+export type FocusTimerStateType = 'idle' | 'running';
 
 /**
  * Timer State Interfaces
@@ -46,14 +46,14 @@ export interface FocusTimerState {
  * Timer Reducer Actions
  */
 export type BreakTimerAction =
-  | { type: "START"; duration: number; taskId?: string }
-  | { type: "STOP"; defaultDuration: number }
-  | { type: "TICK"; defaultDuration: number };
+  | { type: 'START'; duration: number; taskId?: string }
+  | { type: 'STOP'; defaultDuration: number }
+  | { type: 'TICK'; defaultDuration: number };
 
 export type FocusTimerAction =
-  | { type: "START"; taskId: string; duration: number }
-  | { type: "STOP"; defaultDuration: number }
-  | { type: "TICK"; defaultDuration: number };
+  | { type: 'START'; taskId: string; duration: number }
+  | { type: 'STOP'; defaultDuration: number }
+  | { type: 'TICK'; defaultDuration: number };
 
 /**
  * Base Timer Context Value

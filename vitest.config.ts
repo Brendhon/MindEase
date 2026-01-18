@@ -9,7 +9,9 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { playwright } from '@vitest/browser-playwright';
 
 const dirname =
-  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+  typeof __dirname !== 'undefined'
+    ? __dirname
+    : path.dirname(fileURLToPath(import.meta.url));
 
 const rootPath = path.resolve(dirname);
 
@@ -52,7 +54,9 @@ export default defineConfig({
       // Unit tests project
       {
         test: {
-          include: ['**/__tests__/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+          include: [
+            '**/__tests__/unit/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+          ],
           name: 'unit',
           environment: 'node',
         },
@@ -66,7 +70,9 @@ export default defineConfig({
       {
         test: {
           name: 'components',
-          include: ['**/__tests__/components/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+          include: [
+            '**/__tests__/components/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+          ],
           environment: 'jsdom',
         },
         resolve: {
@@ -79,7 +85,9 @@ export default defineConfig({
       {
         test: {
           name: 'snapshot',
-          include: ['**/__tests__/**/*.snapshot.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+          include: [
+            '**/__tests__/**/*.snapshot.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+          ],
           environment: 'jsdom',
         },
         resolve: {

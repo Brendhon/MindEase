@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
-import { MessageComponentProps } from "@/models/feedback";
-import { cn } from "@/utils/ui";
-import { styles } from "./dialog-manager-styles";
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
+import { MessageComponentProps } from '@/models/feedback';
+import { cn } from '@/utils/ui';
+import { styles } from './dialog-manager-styles';
 
 /**
  * Dialog.Message - Message subcomponent
  * Displays the dialog message with accessibility-aware font sizing
  * Uses messageKey to get text from accessibility-texts.json based on user's textDetail preference
- * 
+ *
  * @example
  * ```tsx
  * <DialogManager>
@@ -22,10 +22,10 @@ export interface DialogMessageProps extends MessageComponentProps {}
 export function DialogMessage({
   messageKey,
   className,
-  "data-testid": testId,
+  'data-testid': testId,
 }: DialogMessageProps) {
-    const { getText } = useTextDetail();
-  const { fontSizeClasses } = useAccessibilityClasses();  
+  const { getText } = useTextDetail();
+  const { fontSizeClasses } = useAccessibilityClasses();
 
   return (
     <p
@@ -37,4 +37,4 @@ export function DialogMessage({
   );
 }
 
-DialogMessage.displayName = "Dialog.Message";
+DialogMessage.displayName = 'Dialog.Message';

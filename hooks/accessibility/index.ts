@@ -1,2 +1,2 @@
-export * from "./useAccessibilityClasses";
-export * from "./useTextDetail";
+export * from './useAccessibilityClasses';
+export * from './useTextDetail';

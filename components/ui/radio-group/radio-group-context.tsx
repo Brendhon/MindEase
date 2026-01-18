@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { createContext, useContext } from "react";
+import { createContext, useContext } from 'react';
 
 /**
  * RadioGroup Context
@@ -11,7 +11,9 @@ interface RadioGroupContextValue {
   descriptionId: string;
 }
 
-export const RadioGroupContext = createContext<RadioGroupContextValue | null>(null);
+export const RadioGroupContext = createContext<RadioGroupContextValue | null>(
+  null
+);
 
 /**
  * Hook to access RadioGroup context
@@ -20,7 +22,7 @@ export const RadioGroupContext = createContext<RadioGroupContextValue | null>(nu
 export function useRadioGroupContext(): RadioGroupContextValue {
   const context = useContext(RadioGroupContext);
   if (!context) {
-    throw new Error("RadioGroup subcomponents must be used inside RadioGroup");
+    throw new Error('RadioGroup subcomponents must be used inside RadioGroup');
   }
   return context;
 }

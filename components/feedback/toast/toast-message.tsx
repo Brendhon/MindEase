@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
-import { MessageComponentProps } from "@/models/feedback";
-import { cn } from "@/utils/ui";
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
+import { MessageComponentProps } from '@/models/feedback';
+import { cn } from '@/utils/ui';
 
 /**
  * Toast.Message - Message subcomponent
  * Displays the toast message with accessibility-aware font sizing
  * Uses messageKey to get text from accessibility-texts.json based on user's textDetail preference
- * 
+ *
  * @example
  * ```tsx
  * <Toast type="success">
@@ -18,7 +18,11 @@ import { cn } from "@/utils/ui";
  * ```
  */
 
-export function ToastMessage({ messageKey, className, "data-testid": testId }: MessageComponentProps) {
+export function ToastMessage({
+  messageKey,
+  className,
+  'data-testid': testId,
+}: MessageComponentProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
 
@@ -34,10 +38,9 @@ export function ToastMessage({ messageKey, className, "data-testid": testId }: M
   );
 }
 
-ToastMessage.displayName = "Toast.Message";
+ToastMessage.displayName = 'Toast.Message';
 
 const styles = {
-  content: "flex-1 min-w-0",
-  message: "font-medium leading-normal",
+  content: 'flex-1 min-w-0',
+  message: 'font-medium leading-normal',
 } as const;
-

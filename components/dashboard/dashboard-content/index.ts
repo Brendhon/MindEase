@@ -1,2 +1,2 @@
-export { DashboardContent } from "./dashboard-content";
-export type { DashboardContentProps } from "./dashboard-content";
+export { DashboardContent } from './dashboard-content';
+export type { DashboardContentProps } from './dashboard-content';

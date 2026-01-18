@@ -3,8 +3,12 @@ import { generateRandomUUID } from '@/utils/uuid/uuid';
 
 describe('generateRandomUUID', () => {
   // Helper functions for crypto mocking
-  const createMockCryptoWithRandomUUID = (uuidValue: string = 'test-uuid-123') => {
-    const mockRandomUUID = vi.fn(() => uuidValue as `${string}-${string}-${string}-${string}-${string}`);
+  const createMockCryptoWithRandomUUID = (
+    uuidValue: string = 'test-uuid-123'
+  ) => {
+    const mockRandomUUID = vi.fn(
+      () => uuidValue as `${string}-${string}-${string}-${string}-${string}`
+    );
     return {
       getRandomValues: vi.fn((array: ArrayBufferView) => array),
       subtle: {} as SubtleCrypto,
@@ -45,7 +49,7 @@ describe('generateRandomUUID', () => {
   it('should generate a string', () => {
     // Test fallback behavior when crypto is not available
     removeCrypto();
-    
+
     const uuid = generateRandomUUID();
     expect(typeof uuid).toBe('string');
     expect(uuid.length).toBeGreaterThan(0);
@@ -72,10 +76,10 @@ describe('generateRandomUUID', () => {
   it('should generate unique IDs on multiple calls', () => {
     // Test fallback behavior when crypto is not available
     removeCrypto();
-    
+
     const uuid1 = generateRandomUUID();
     const uuid2 = generateRandomUUID();
-    
+
     // Even with timestamp fallback, IDs should be different
     // (unless called in the exact same millisecond, which is unlikely)
     expect(uuid1).not.toBe(uuid2);

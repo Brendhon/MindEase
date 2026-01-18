@@ -1,5 +1,5 @@
-import type { FeedbackMessage } from "@/hooks/feedback";
-import { createContext, useContext } from "react";
+import type { FeedbackMessage } from '@/hooks/feedback';
+import { createContext, useContext } from 'react';
 
 interface FeedbackContextValue {
   feedbacks: FeedbackMessage[];
@@ -18,8 +18,7 @@ export const FeedbackContext = createContext<FeedbackContextValue | undefined>(
 export function useFeedbackContext(): FeedbackContextValue {
   const context = useContext(FeedbackContext);
   if (!context) {
-    throw new Error("useFeedbackContext must be used within FeedbackProvider");
+    throw new Error('useFeedbackContext must be used within FeedbackProvider');
   }
   return context;
 }
-

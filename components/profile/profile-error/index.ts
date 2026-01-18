@@ -1,2 +1,1 @@
-export { ProfileError } from "./profile-error";
-
+export { ProfileError } from './profile-error';

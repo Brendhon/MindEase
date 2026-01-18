@@ -1,2 +1,2 @@
-export * from "./content";
-export * from "./tailwind-classes";
+export * from './content';
+export * from './tailwind-classes';

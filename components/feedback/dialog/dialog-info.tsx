@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { InfoComponentProps } from "@/models/feedback";
-import { cn } from "@/utils/ui";
-import { styles } from "./dialog-manager-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { InfoComponentProps } from '@/models/feedback';
+import { cn } from '@/utils/ui';
+import { styles } from './dialog-manager-styles';
 
 /**
  * Dialog.Info - Info subcomponent
  * Displays additional information in the dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogManager>
@@ -23,7 +23,7 @@ import { styles } from "./dialog-manager-styles";
 export function DialogInfo({
   children,
   className,
-  "data-testid": testId,
+  'data-testid': testId,
 }: InfoComponentProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -37,4 +37,4 @@ export function DialogInfo({
   );
 }
 
-DialogInfo.displayName = "Dialog.Info";
+DialogInfo.displayName = 'Dialog.Info';

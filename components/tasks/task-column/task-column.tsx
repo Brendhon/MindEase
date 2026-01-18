@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { TaskCard } from "../task-card";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import type { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { TaskCard } from '../task-card';
 
 /**
  * TaskColumn Component - MindEase
@@ -44,7 +44,7 @@ export function TaskColumn({
   onDelete,
   onStatusChange,
   onToggleSubtask,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskColumnProps) {
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
@@ -53,7 +53,10 @@ export function TaskColumn({
   const sortedTasks = useMemo(() => {
     return tasks
       .filter((task) => task.status === status)
-      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
   }, [tasks, status]);
 
   const columnClasses = useMemo(
@@ -82,20 +85,27 @@ export function TaskColumn({
   );
 
   return (
-    <div className={columnClasses} data-testid={testId || `task-column-${status}`}>
+    <div
+      className={columnClasses}
+      data-testid={testId || `task-column-${status}`}
+    >
       <div className={headerClasses}>
-        <h2 className={titleClasses}>
-          {getText(titleKey)}
-        </h2>
-        <span className={countClasses} aria-label={`${sortedTasks.length} tarefas`}>
+        <h2 className={titleClasses}>{getText(titleKey)}</h2>
+        <span
+          className={countClasses}
+          aria-label={`${sortedTasks.length} tarefas`}
+        >
           {sortedTasks.length}
         </span>
       </div>
       <div className={contentClasses}>
         {sortedTasks.length === 0 ? (
-          <div className={styles.empty} data-testid={`${testId || `task-column-${status}`}-empty`}>
+          <div
+            className={styles.empty}
+            data-testid={`${testId || `task-column-${status}`}-empty`}
+          >
             <p className={cn(styles.emptyText, fontSizeClasses.sm)}>
-              {getText("tasks_empty")}
+              {getText('tasks_empty')}
             </p>
           </div>
         ) : (
@@ -116,14 +126,16 @@ export function TaskColumn({
   );
 }
 
-TaskColumn.displayName = "TaskColumn";
+TaskColumn.displayName = 'TaskColumn';
 
 const styles = {
-  column: "flex flex-col min-h-[400px] lg:h-full min-w-[280px] lg:min-w-0",
-  header: "flex items-center justify-between mb-4 sticky top-0 bg-bg-secondary z-10 pb-2 border-b border-border-subtle",
-  title: "font-semibold text-text-primary",
-  count: "px-2 py-1 rounded-full bg-action-info/10 text-action-info font-medium min-w-[2rem] text-center",
-  content: "flex flex-col flex-1 gap-4 min-h-0 pb-4",
-  empty: "flex items-center justify-center py-8 text-center",
-  emptyText: "text-text-secondary",
+  column: 'flex flex-col min-h-[400px] lg:h-full min-w-[280px] lg:min-w-0',
+  header:
+    'flex items-center justify-between mb-4 sticky top-0 bg-bg-secondary z-10 pb-2 border-b border-border-subtle',
+  title: 'font-semibold text-text-primary',
+  count:
+    'px-2 py-1 rounded-full bg-action-info/10 text-action-info font-medium min-w-[2rem] text-center',
+  content: 'flex flex-col flex-1 gap-4 min-h-0 pb-4',
+  empty: 'flex items-center justify-center py-8 text-center',
+  emptyText: 'text-text-secondary',
 } as const;

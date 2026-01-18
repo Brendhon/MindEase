@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
-import { styles } from "./card-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { ReactNode, useMemo } from 'react';
+import { styles } from './card-styles';
 
 /**
  * Card.Content - Content subcomponent
  * Use this for consistent content area styling with spacing preference
- * 
+ *
  * @example
  * ```tsx
  * <Card>
@@ -25,7 +25,12 @@ export interface CardContentProps extends BaseComponentProps {
   role?: string;
 }
 
-export function CardContent({ children, className, role, "data-testid": testId }: CardContentProps) {
+export function CardContent({
+  children,
+  className,
+  role,
+  'data-testid': testId,
+}: CardContentProps) {
   const { spacingClasses } = useAccessibilityClasses();
 
   const contentClasses = useMemo(
@@ -40,4 +45,4 @@ export function CardContent({ children, className, role, "data-testid": testId }
   );
 }
 
-CardContent.displayName = "Card.Content";
+CardContent.displayName = 'Card.Content';

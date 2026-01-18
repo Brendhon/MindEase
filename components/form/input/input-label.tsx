@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { FormLabelProps } from "@/models/form";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./input-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { FormLabelProps } from '@/models/form';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './input-styles';
 
 /**
  * Input.Label - Label subcomponent
  * Use this for consistent label styling within inputs
- * 
+ *
  * @example
  * ```tsx
  * <Input>
@@ -24,10 +24,7 @@ export function InputLabel({ children, className, ...props }: FormLabelProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class (use sm for labels)
-  const fontSizeClass = useMemo(
-    () => fontSizeClasses.sm,
-    [fontSizeClasses.sm]
-  );
+  const fontSizeClass = useMemo(() => fontSizeClasses.sm, [fontSizeClasses.sm]);
 
   return (
     <label
@@ -39,5 +36,4 @@ export function InputLabel({ children, className, ...props }: FormLabelProps) {
   );
 }
 
-InputLabel.displayName = "Input.Label";
-
+InputLabel.displayName = 'Input.Label';

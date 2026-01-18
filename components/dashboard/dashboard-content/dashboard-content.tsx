@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import { DashboardCognitiveAlerts, DashboardError, DashboardStatsCards, InteractionSettings, VisualSettings } from "@/components/dashboard";
-import { PageContent, PageHeader } from "@/components/layout";
-import { ContentSettings, ProfileResetButton } from "@/components/profile";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useTextDetail } from "@/hooks/accessibility";
-import { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
+import {
+  DashboardCognitiveAlerts,
+  DashboardError,
+  DashboardStatsCards,
+  InteractionSettings,
+  VisualSettings,
+} from '@/components/dashboard';
+import { PageContent, PageHeader } from '@/components/layout';
+import { ContentSettings, ProfileResetButton } from '@/components/profile';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useTextDetail } from '@/hooks/accessibility';
+import { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
 
 /**
  * DashboardContent Component - MindEase
  * Client-side interactive content for dashboard
- * 
+ *
  * This component handles all client-side interactivity including:
  * - Cognitive settings management
  * - Real-time accessibility adjustments
@@ -29,16 +35,14 @@ export interface DashboardContentProps extends BaseComponentProps {
 export function DashboardContent({
   tasks,
   error,
-  "data-testid": testId
+  'data-testid': testId,
 }: DashboardContentProps) {
-  const {
-    error: settingsError,
-  } = useCognitiveSettings();
-  
+  const { error: settingsError } = useCognitiveSettings();
+
   // Use accessibility classes hook for optimized class generation
   // Only re-renders when spacing changes
   const { spacingClasses } = useAccessibilityClasses();
-  
+
   // Use text detail hook for optimized text helpers
   // Only re-renders when textDetail setting changes
   const textDetail = useTextDetail();
@@ -46,9 +50,7 @@ export function DashboardContent({
   const hasError = error || settingsError;
 
   return (
-    <PageContent 
-      data-testid={testId || "dashboard-page-container"}
-    >
+    <PageContent data-testid={testId || 'dashboard-page-container'}>
       <PageHeader
         titleKey="dashboard_title"
         descriptionKey="dashboard_description"
@@ -57,15 +59,13 @@ export function DashboardContent({
 
       {hasError && (
         <DashboardError
-          message={textDetail.getText("dashboard_error")}
+          message={textDetail.getText('dashboard_error')}
           data-testid="dashboard-page-error"
         />
       )}
 
       {/* Cognitive Alerts */}
-      <DashboardCognitiveAlerts
-        data-testid="dashboard-page-cognitive-alerts"
-      />
+      <DashboardCognitiveAlerts data-testid="dashboard-page-cognitive-alerts" />
 
       {/* Task Statistics Cards */}
       <DashboardStatsCards
@@ -85,7 +85,7 @@ export function DashboardContent({
   );
 }
 
-DashboardContent.displayName = "DashboardContent";
+DashboardContent.displayName = 'DashboardContent';
 
 /**
  * DashboardContent Styles - MindEase
@@ -93,5 +93,5 @@ DashboardContent.displayName = "DashboardContent";
  */
 
 export const styles = {
-  content: "flex flex-col w-full",
+  content: 'flex flex-col w-full',
 } as const;

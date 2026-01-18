@@ -1,12 +1,22 @@
-"use client";
+'use client';
 
-import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
-import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useTasks } from "@/hooks/tasks";
-import { Task } from "@/models/task";
-import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from "react";
-import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
+import {
+  useMissingBreakAlert,
+  useProlongedNavigationAlert,
+} from '@/hooks/cognitive-alerts';
+import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useTasks } from '@/hooks/tasks';
+import { Task } from '@/models/task';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  startTransition,
+} from 'react';
+import { FocusSessionCompleteDialog } from './focus-session-complete-dialog';
 
 /**
  * FocusSessionCompleteDialogWrapper Component - MindEase
@@ -17,34 +27,39 @@ export function FocusSessionCompleteDialogWrapper() {
   const { timerState, stopTimer, startTimer } = useFocusTimer();
   const { startBreak } = useBreakTimer();
   const { settings } = useCognitiveSettings();
-  const { recordFocusSessionComplete, recordTaskFinished } = useMissingBreakAlert();
+  const { recordFocusSessionComplete, recordTaskFinished } =
+    useMissingBreakAlert();
   const { recordUserAction } = useProlongedNavigationAlert();
   const { updateTaskStatus, getTask, refreshTask } = useTasks();
 
-  const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
+  const [showSessionCompleteDialog, setShowSessionCompleteDialog] =
+    useState(false);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
 
   // Monitor timer completion - use a ref to track previous state
   const prevTimerStateRef = useRef(timerState);
 
   // Fetch active task when needed
-  const fetchActiveTask = useCallback(async (taskId: string) => {
-    try {
-      // First try to get from local state
-      let task = getTask(taskId);
-      
-      // If not found locally, refresh from Firestore
-      if (!task) {
-        await refreshTask(taskId);
-        task = getTask(taskId);
+  const fetchActiveTask = useCallback(
+    async (taskId: string) => {
+      try {
+        // First try to get from local state
+        let task = getTask(taskId);
+
+        // If not found locally, refresh from Firestore
+        if (!task) {
+          await refreshTask(taskId);
+          task = getTask(taskId);
+        }
+
+        setActiveTask(task || null);
+      } catch (error) {
+        console.error('Error fetching active task:', error);
+        setActiveTask(null);
       }
-      
-      setActiveTask(task || null);
-    } catch (error) {
-      console.error("Error fetching active task:", error);
-      setActiveTask(null);
-    }
-  }, [getTask, refreshTask]);
+    },
+    [getTask, refreshTask]
+  );
 
   useEffect(() => {
     const prev = prevTimerStateRef.current;
@@ -54,8 +69,8 @@ export function FocusSessionCompleteDialogWrapper() {
     // This happens when the timer countdown completes and resets the state but before activeTaskId is cleared
     // We detect the transition from "running" to "idle" while activeTaskId is still present
     if (
-      prev.timerState === "running" &&
-      current.timerState === "idle" &&
+      prev.timerState === 'running' &&
+      current.timerState === 'idle' &&
       current.activeTaskId !== null &&
       prev.activeTaskId === current.activeTaskId
     ) {
@@ -71,7 +86,7 @@ export function FocusSessionCompleteDialogWrapper() {
     }
 
     // Hide dialog when timer is fully stopped (no activeTaskId)
-    if (current.timerState === "idle" && current.activeTaskId === null) {
+    if (current.timerState === 'idle' && current.activeTaskId === null) {
       startTransition(() => {
         setShowSessionCompleteDialog(false);
         setActiveTask(null);
@@ -102,7 +117,12 @@ export function FocusSessionCompleteDialogWrapper() {
       recordUserAction();
     }
     // Dialog will close itself via onClose callback
-  }, [timerState.activeTaskId, startTimer, recordFocusSessionComplete, recordUserAction]);
+  }, [
+    timerState.activeTaskId,
+    startTimer,
+    recordFocusSessionComplete,
+    recordUserAction,
+  ]);
 
   const handleFinishTask = useCallback(async () => {
     if (!timerState.activeTaskId) return;
@@ -114,10 +134,15 @@ export function FocusSessionCompleteDialogWrapper() {
       // Record that task was finished (reset counter)
       recordTaskFinished();
     } catch (error) {
-      console.error("Error finishing task:", error);
+      console.error('Error finishing task:', error);
     }
     // Dialog will close itself via onClose callback
-  }, [timerState.activeTaskId, stopTimer, updateTaskStatus, recordTaskFinished]);
+  }, [
+    timerState.activeTaskId,
+    stopTimer,
+    updateTaskStatus,
+    recordTaskFinished,
+  ]);
 
   const handleCloseSessionDialog = useCallback(() => {
     // Dialog should not close without action (preventClose={true})
@@ -126,8 +151,14 @@ export function FocusSessionCompleteDialogWrapper() {
   }, []);
 
   // Get focus duration in minutes
-  const focusDuration = useMemo(() => settings.focusDuration || 25, [settings.focusDuration]);
-  const breakDuration = useMemo(() => settings.shortBreakDuration || 5, [settings.shortBreakDuration]);
+  const focusDuration = useMemo(
+    () => settings.focusDuration || 25,
+    [settings.focusDuration]
+  );
+  const breakDuration = useMemo(
+    () => settings.shortBreakDuration || 5,
+    [settings.shortBreakDuration]
+  );
 
   return (
     <FocusSessionCompleteDialog
@@ -143,4 +174,5 @@ export function FocusSessionCompleteDialogWrapper() {
   );
 }
 
-FocusSessionCompleteDialogWrapper.displayName = "FocusSessionCompleteDialogWrapper";
+FocusSessionCompleteDialogWrapper.displayName =
+  'FocusSessionCompleteDialogWrapper';

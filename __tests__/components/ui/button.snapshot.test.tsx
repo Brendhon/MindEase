@@ -45,10 +45,10 @@ vi.mock('@/hooks/cognitive-settings', () => ({
 
 /**
  * Snapshot tests for Button component
- * 
+ *
  * These tests ensure that the component structure remains consistent.
  * Update snapshots when making intentional visual/structure changes.
- * 
+ *
  * Run `npm run test:snapshot -- -u` to update snapshots after intentional changes.
  */
 describe('Button Snapshot', () => {

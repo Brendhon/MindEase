@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
-import { useDialog } from "@/hooks/dialog";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { DialogActions } from "./dialog-actions";
-import { DialogInfo } from "./dialog-info";
-import { styles } from "./dialog-manager-styles";
-import { DialogMessage } from "./dialog-message";
+import { Dialog } from '@/components/ui/dialog';
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
+import { useDialog } from '@/hooks/dialog';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { DialogActions } from './dialog-actions';
+import { DialogInfo } from './dialog-info';
+import { styles } from './dialog-manager-styles';
+import { DialogMessage } from './dialog-message';
 
 /**
  * DialogManager Component - MindEase
@@ -59,7 +59,7 @@ function DialogManagerRoot() {
     }
   };
 
-  const dialogTestId = dialog["data-testid"] || "dialog-manager";
+  const dialogTestId = dialog['data-testid'] || 'dialog-manager';
 
   return (
     <Dialog
@@ -96,7 +96,7 @@ function DialogManagerRoot() {
   );
 }
 
-DialogManagerRoot.displayName = "DialogManager";
+DialogManagerRoot.displayName = 'DialogManager';
 
 // Compose DialogManager with subcomponents (for testing and composition)
 export const DialogManager = Object.assign(DialogManagerRoot, {

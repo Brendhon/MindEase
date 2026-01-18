@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { ReactNode, useMemo } from 'react';
 
 /**
  * PageContent Component - MindEase
  * Standardized page content wrapper with cognitive accessibility features
- * 
+ *
  * This component provides a consistent structure for authenticated pages:
  * - Container with animation support
  * - Main content area with responsive spacing
  * - Automatic integration with cognitive settings
- * 
+ *
  * @example
  * ```tsx
  * <PageContent data-testid="my-page">
@@ -37,7 +37,7 @@ export function PageContent({
   children,
   containerClassName,
   mainClassName,
-  "data-testid": testId = "page-content",
+  'data-testid': testId = 'page-content',
 }: PageContentProps) {
   const { animationClasses, spacingClasses } = useAccessibilityClasses();
 
@@ -61,7 +61,7 @@ export function PageContent({
   return (
     <div
       className={containerClasses}
-      data-testid={testId || "page-content-container"}
+      data-testid={testId || 'page-content-container'}
     >
       <main className={mainClasses} role="main" data-testid={`${testId}-main`}>
         {children}
@@ -70,13 +70,13 @@ export function PageContent({
   );
 }
 
-PageContent.displayName = "PageContent";
+PageContent.displayName = 'PageContent';
 
 /**
  * PageContent Styles - MindEase
  * Centralized styles for page content component
  */
 export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full max-w-4xl mx-auto",
+  container: 'flex min-h-full w-full bg-bg-secondary',
+  main: 'flex flex-col w-full max-w-4xl mx-auto',
 } as const;

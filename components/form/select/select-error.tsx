@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { FormErrorProps } from "@/models/form";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./select-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { FormErrorProps } from '@/models/form';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './select-styles';
 
 /**
  * Select.Error - Error message subcomponent
  * Use this for displaying error messages
- * 
+ *
  * @example
  * ```tsx
  * <Select>
@@ -27,10 +27,7 @@ export function SelectError({ children, id, className }: FormErrorProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class (use sm for error messages)
-  const fontSizeClass = useMemo(
-    () => fontSizeClasses.sm,
-    [fontSizeClasses.sm]
-  );
+  const fontSizeClass = useMemo(() => fontSizeClasses.sm, [fontSizeClasses.sm]);
 
   return (
     <p
@@ -43,4 +40,4 @@ export function SelectError({ children, id, className }: FormErrorProps) {
   );
 }
 
-SelectError.displayName = "Select.Error";
+SelectError.displayName = 'Select.Error';

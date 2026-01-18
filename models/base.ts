@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 /**
  * Base component props with test ID support
@@ -6,7 +6,7 @@ import { ReactNode } from "react";
  */
 export interface BaseComponentProps {
   /** Test ID for testing */
-  "data-testid"?: string;
+  'data-testid'?: string;
 }
 
 export interface BaseComponentWithChildren {

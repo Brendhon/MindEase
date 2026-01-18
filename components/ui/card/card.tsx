@@ -1,33 +1,36 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { BaseComponentProps } from "@/models/base";
-import { getBorderContrastClasses, getFocusModeClasses } from "@/utils/accessibility";
-import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
-import { CardContent } from "./card-content";
-import { CardDescription } from "./card-description";
-import { CardHeader } from "./card-header";
-import { styles } from "./card-styles";
-import { CardTitle } from "./card-title";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { BaseComponentProps } from '@/models/base';
+import {
+  getBorderContrastClasses,
+  getFocusModeClasses,
+} from '@/utils/accessibility';
+import { cn } from '@/utils/ui';
+import { ReactNode, useMemo } from 'react';
+import { CardContent } from './card-content';
+import { CardDescription } from './card-description';
+import { CardHeader } from './card-header';
+import { styles } from './card-styles';
+import { CardTitle } from './card-title';
 
 /**
  * Card Component - MindEase
  * Base card component with automatic accessibility settings application
- * 
+ *
  * Uses composition pattern - accepts Card subcomponents:
  * - Card.Header for header section
  * - Card.Title for title
  * - Card.Description for description
  * - Card.Content for main content
- * 
+ *
  * This component automatically applies:
  * - Spacing preferences (padding, gap)
  * - Contrast settings
  * - Animation preferences
  * - Focus mode styles (only when focused prop is true)
- * 
+ *
  * @example
  * ```tsx
  * <Card>
@@ -40,7 +43,7 @@ import { CardTitle } from "./card-title";
  *   </Card.Content>
  * </Card>
  * ```
- * 
+ *
  * @example
  * ```tsx
  * <Card focused={isActive}>
@@ -51,13 +54,13 @@ import { CardTitle } from "./card-title";
 export interface CardProps extends BaseComponentProps {
   /** Card content */
   children: ReactNode;
-  
+
   /** Custom className to extend base styles */
   className?: string;
-  
+
   /** HTML element to render (default: div) */
-  as?: "div" | "section" | "article";
-  
+  as?: 'div' | 'section' | 'article';
+
   /** Whether this card is currently focused (applies focus mode styles) */
   focused?: boolean;
 }
@@ -65,15 +68,16 @@ export interface CardProps extends BaseComponentProps {
 const CardRoot = function Card({
   children,
   className,
-  as: Component = "div",
+  as: Component = 'div',
   focused = false,
-  "data-testid": testId,
+  'data-testid': testId,
 }: CardProps) {
   const { settings } = useCognitiveSettings();
-  const { spacingClasses, contrastClasses, animationClasses } = useAccessibilityClasses();
+  const { spacingClasses, contrastClasses, animationClasses } =
+    useAccessibilityClasses();
 
   const borderClasses = useMemo(
-    () => getBorderContrastClasses(settings.contrast, "subtle"),
+    () => getBorderContrastClasses(settings.contrast, 'subtle'),
     [settings.contrast]
   );
 
@@ -84,17 +88,26 @@ const CardRoot = function Card({
   );
 
   const cardClasses = useMemo(
-    () => cn(
-      styles.base,
+    () =>
+      cn(
+        styles.base,
+        spacingClasses.padding,
+        spacingClasses.gap,
+        contrastClasses,
+        borderClasses,
+        animationClasses,
+        focusModeClasses,
+        className
+      ),
+    [
       spacingClasses.padding,
       spacingClasses.gap,
       contrastClasses,
       borderClasses,
       animationClasses,
       focusModeClasses,
-      className
-    ),
-    [spacingClasses.padding, spacingClasses.gap, contrastClasses, borderClasses, animationClasses, focusModeClasses, className]
+      className,
+    ]
   );
 
   return (
@@ -104,7 +117,7 @@ const CardRoot = function Card({
   );
 };
 
-CardRoot.displayName = "Card";
+CardRoot.displayName = 'Card';
 
 // Compose Card with subcomponents
 export const Card = Object.assign(CardRoot, {

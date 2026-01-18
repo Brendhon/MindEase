@@ -88,7 +88,9 @@ export const WithError: Story = {
         <option value="br">Brazil</option>
         <option value="us">United States</option>
       </Select.Field>
-      <Select.Error id="error-select-error">Please select a country</Select.Error>
+      <Select.Error id="error-select-error">
+        Please select a country
+      </Select.Error>
     </Select>
   ),
 };
@@ -131,7 +133,9 @@ export const Disabled: Story = {
 export const Multiple: Story = {
   render: () => (
     <Select>
-      <Select.Label htmlFor="multiple-select">Select multiple countries</Select.Label>
+      <Select.Label htmlFor="multiple-select">
+        Select multiple countries
+      </Select.Label>
       <Select.Field id="multiple-select" multiple className="h-32">
         <option value="br">Brazil</option>
         <option value="us">United States</option>
@@ -180,7 +184,9 @@ export const FormExample: Story = {
           <Select.Field
             id="form-country"
             value={formData.country}
-            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, country: e.target.value })
+            }
             aria-invalid={errors.country ? 'true' : 'false'}
             aria-describedby={errors.country ? 'form-country-error' : undefined}
           >
@@ -191,7 +197,9 @@ export const FormExample: Story = {
             <option value="ca">Canada</option>
           </Select.Field>
           {errors.country && (
-            <Select.Error id="form-country-error">{errors.country}</Select.Error>
+            <Select.Error id="form-country-error">
+              {errors.country}
+            </Select.Error>
           )}
         </Select>
 
@@ -271,7 +279,9 @@ export const AccessibilityShowcase: Story = {
   render: () => (
     <div className="flex gap-6 flex-col p-6 w-full max-w-2xl">
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Normal Settings
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -294,7 +304,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -306,7 +318,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="high-contrast-select">High Contrast Select</Select.Label>
+            <Select.Label htmlFor="high-contrast-select">
+              High Contrast Select
+            </Select.Label>
             <Select.Field id="high-contrast-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -317,7 +331,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Compact Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -329,7 +345,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="compact-select">Compact Spacing</Select.Label>
+            <Select.Label htmlFor="compact-select">
+              Compact Spacing
+            </Select.Label>
             <Select.Field id="compact-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -340,7 +358,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Relaxed Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -352,7 +372,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="relaxed-select">Relaxed Spacing</Select.Label>
+            <Select.Label htmlFor="relaxed-select">
+              Relaxed Spacing
+            </Select.Label>
             <Select.Field id="relaxed-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -363,7 +385,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Small Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -375,7 +399,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="small-font-select">Small Font Select</Select.Label>
+            <Select.Label htmlFor="small-font-select">
+              Small Font Select
+            </Select.Label>
             <Select.Field id="small-font-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -386,7 +412,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Large Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -398,7 +426,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="large-font-select">Large Font Select</Select.Label>
+            <Select.Label htmlFor="large-font-select">
+              Large Font Select
+            </Select.Label>
             <Select.Field id="large-font-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -409,7 +439,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Animations Disabled
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -421,7 +453,9 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Select>
-            <Select.Label htmlFor="no-animations-select">No Animations</Select.Label>
+            <Select.Label htmlFor="no-animations-select">
+              No Animations
+            </Select.Label>
             <Select.Field id="no-animations-select">
               <option value="">Select an option</option>
               <option value="1">Option 1</option>
@@ -432,7 +466,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast with Error
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -454,7 +490,9 @@ export const AccessibilityShowcase: Story = {
               <option value="br">Brazil</option>
               <option value="us">United States</option>
             </Select.Field>
-            <Select.Error id="error-select-error">Please select a country</Select.Error>
+            <Select.Error id="error-select-error">
+              Please select a country
+            </Select.Error>
           </Select>
         </CognitiveSettingsProvider>
       </div>

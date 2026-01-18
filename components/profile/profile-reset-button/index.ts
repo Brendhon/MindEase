@@ -1,2 +1,1 @@
-export { ProfileResetButton } from "./profile-reset-button";
-
+export { ProfileResetButton } from './profile-reset-button';

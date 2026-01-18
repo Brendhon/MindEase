@@ -2,38 +2,38 @@ MindEase is a platform focused on **cognitive accessibility** for neurodivergent
 
 All technical decisions **must support**:
 
-* Reduction of cognitive load
-* Predictability and consistency
-* User-controlled complexity
-* Accessibility-first design (WCAG + cognitive accessibility)
+- Reduction of cognitive load
+- Predictability and consistency
+- User-controlled complexity
+- Accessibility-first design (WCAG + cognitive accessibility)
 
 ---
 
 ## 🧱 Code Style
 
-* Write **concise, readable, and type-safe TypeScript**
-* Use **functional components and React Hooks only**
-* Prefer **simple logic over clever abstractions**
-* Keep components **small, composable, and easy to reason about**
-* **Group files by feature**, not by type
+- Write **concise, readable, and type-safe TypeScript**
+- Use **functional components and React Hooks only**
+- Prefer **simple logic over clever abstractions**
+- Keep components **small, composable, and easy to reason about**
+- **Group files by feature**, not by type
 
 ---
 
 ## 📛 Naming Conventions
 
-* **Variables & functions:** `camelCase`
-* **React Components:** `PascalCase`
-* **Directories:** `lowercase-hyphenated`
-* **Accessibility-related components/hooks:** prefix with `useAccessibility`, `Cognitive`, or `Focus`
+- **Variables & functions:** `camelCase`
+- **React Components:** `PascalCase`
+- **Directories:** `lowercase-hyphenated`
+- **Accessibility-related components/hooks:** prefix with `useAccessibility`, `Cognitive`, or `Focus`
 
 ---
 
 ## 🟦 TypeScript Rules
 
-* Use **TypeScript everywhere** (no `.js` files) — enable **strict mode**
-* **Prefer `interface`** for component props and domain models
-* **Avoid `any`** — use `unknown` when flexibility is needed
-* Domain logic must be **framework-agnostic**
+- Use **TypeScript everywhere** (no `.js` files) — enable **strict mode**
+- **Prefer `interface`** for component props and domain models
+- **Avoid `any`** — use `unknown` when flexibility is needed
+- Domain logic must be **framework-agnostic**
 
 ---
 
@@ -41,10 +41,10 @@ All technical decisions **must support**:
 
 ### Layers
 
-* **Domain:** Entities, use cases, business rules
-* **Application:** Services, orchestrators
-* **Infrastructure:** API clients, storage (LocalStorage, IndexedDB, backend)
-* **UI:** React components, hooks, pages
+- **Domain:** Entities, use cases, business rules
+- **Application:** Services, orchestrators
+- **Infrastructure:** API clients, storage (LocalStorage, IndexedDB, backend)
+- **UI:** React components, hooks, pages
 
 > ❌ UI must never contain business rules  
 > ✅ Use cases must not depend on React, Next.js, or browser APIs
@@ -53,19 +53,19 @@ All technical decisions **must support**:
 
 ## ⚙️ Server vs Client Components
 
-* **Server Components by default**
-* Use `"use client"` **only when necessary** (interactivity, forms, animations, user preferences)
-* Keep **Client Components minimal** — move data fetching, heavy logic, and transformations to Server Components or services
+- **Server Components by default**
+- Use `"use client"` **only when necessary** (interactivity, forms, animations, user preferences)
+- Keep **Client Components minimal** — move data fetching, heavy logic, and transformations to Server Components or services
 
 ---
 
 ## ⚡ Performance & Hooks
 
-* `useState` → only when truly needed
-* `useEffect` → avoid when logic can be derived
-* `useMemo` → only for expensive computations
-* `useCallback` → only for memoized child components
-* Avoid re-renders that increase **cognitive noise**
+- `useState` → only when truly needed
+- `useEffect` → avoid when logic can be derived
+- `useMemo` → only for expensive computations
+- `useCallback` → only for memoized child components
+- Avoid re-renders that increase **cognitive noise**
 
 ---
 
@@ -83,9 +83,10 @@ const styles = {
   image: `h-auto object-contain`,
 } as const;
 ```
-* **Headless UI** for accessible primitives (Menu, Dialog, Switch, Listbox)
-* **lucide-react** for all icons (consistent + low visual noise)
-* **Framer Motion allowed** — must be optional, subtle, and disableable (no mandatory animations)
+
+- **Headless UI** for accessible primitives (Menu, Dialog, Switch, Listbox)
+- **lucide-react** for all icons (consistent + low visual noise)
+- **Framer Motion allowed** — must be optional, subtle, and disableable (no mandatory animations)
 
 ---
 
@@ -99,9 +100,9 @@ Every feature must support: adjustable font size, spacing, contrast; **Focus Mod
 
 ## 🖼️ Images
 
-* Always use **`next/image`**
-* Avoid decorative images
-* Images must never convey essential information alone
+- Always use **`next/image`**
+- Avoid decorative images
+- Images must never convey essential information alone
 
 ---
 
@@ -118,50 +119,50 @@ docs/
 
 ### Documentation Rules
 
-* All documentation in **English**
-* ❌ Do not document pages or one-off components
-* ✅ Document shared hooks, accessibility utilities, and design tokens
-* No large code blocks in `.md` — link to source instead
+- All documentation in **English**
+- ❌ Do not document pages or one-off components
+- ✅ Document shared hooks, accessibility utilities, and design tokens
+- No large code blocks in `.md` — link to source instead
 
 ---
 
 ## 🧪 Testing (Mandatory)
 
-* Unit tests for hooks, domain use cases, and services
-* Component tests for shared UI and accessibility behavior
-* Tests are required for CI to pass
+- Unit tests for hooks, domain use cases, and services
+- Component tests for shared UI and accessibility behavior
+- Tests are required for CI to pass
 
 ### Test Identifiers
 
-* **All testable components must include `data-testid` attributes**
-* Use consistent naming pattern: `{component-name}-{element-type}`
-* Examples:
-  * `data-testid="button-submit"`
-  * `data-testid="input-email"`
-  * `data-testid="task-card-checkbox"`
-  * `data-testid="header-logout-button"`
-* For lists or repeated elements, append an identifier: `data-testid="task-card-${task.id}"`
-* Avoid generic names like "button" or "div" — be specific about the element's purpose
+- **All testable components must include `data-testid` attributes**
+- Use consistent naming pattern: `{component-name}-{element-type}`
+- Examples:
+  - `data-testid="button-submit"`
+  - `data-testid="input-email"`
+  - `data-testid="task-card-checkbox"`
+  - `data-testid="header-logout-button"`
+- For lists or repeated elements, append an identifier: `data-testid="task-card-${task.id}"`
+- Avoid generic names like "button" or "div" — be specific about the element's purpose
 
 ---
 
 ## 🔁 CI/CD
 
-* Use **GitHub Actions** — pipeline must include lint, type check, and tests
-* No direct push to main without passing checks
+- Use **GitHub Actions** — pipeline must include lint, type check, and tests
+- No direct push to main without passing checks
 
 ---
 
 ## 🧰 Libraries & Tools
 
-* **Next.js (App Router)**
-* **TypeScript**
-* **Tailwind CSS**
-* **Headless UI**
-* **lucide-react**
-* **React Hook Form**
-* **Zod**
-* **GitHub Actions**
+- **Next.js (App Router)**
+- **TypeScript**
+- **Tailwind CSS**
+- **Headless UI**
+- **lucide-react**
+- **React Hook Form**
+- **Zod**
+- **GitHub Actions**
 
 > Deployment may be manual or custom, CI/CD is mandatory.
 

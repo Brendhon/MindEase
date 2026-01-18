@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
-import { ReactNode, useId, useMemo } from "react";
-import { RadioGroupContext } from "./radio-group-context";
-import { RadioGroupDescription } from "./radio-group-description";
-import { RadioGroupHeader } from "./radio-group-header";
-import { RadioGroupLabel } from "./radio-group-label";
-import { RadioOption } from "./radio-group-option";
-import { styles } from "./radio-group-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { RadioGroup as HeadlessRadioGroup } from '@headlessui/react';
+import { ReactNode, useId, useMemo } from 'react';
+import { RadioGroupContext } from './radio-group-context';
+import { RadioGroupDescription } from './radio-group-description';
+import { RadioGroupHeader } from './radio-group-header';
+import { RadioGroupLabel } from './radio-group-label';
+import { RadioOption } from './radio-group-option';
+import { styles } from './radio-group-styles';
 
 /**
  * RadioGroup Component - MindEase
  * Accessible radio group with cognitive accessibility features
- * 
+ *
  * Uses composition pattern exclusively - only accepts RadioGroup subcomponents:
  * - RadioGroup.Header for label and description wrapper
  * - RadioGroup.Label for the group label
  * - RadioGroup.Description for optional description
  * - RadioGroup.Option for individual radio options
- * 
+ *
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected}>
@@ -37,16 +37,16 @@ import { styles } from "./radio-group-styles";
 export interface RadioGroupProps<T extends string> extends BaseComponentProps {
   /** Current selected value */
   value: T;
-  
+
   /** Change handler */
   onChange: (value: T) => void;
-  
+
   /** Radio group content (RadioGroup subcomponents) */
   children: ReactNode;
-  
+
   /** Disable the radio group */
   disabled?: boolean;
-  
+
   /** Custom className for container */
   className?: string;
 }
@@ -57,7 +57,7 @@ function RadioGroupRoot<T extends string>({
   children,
   disabled = false,
   className,
-  "data-testid": testId,
+  'data-testid': testId,
 }: RadioGroupProps<T>) {
   const id = useId();
   const labelId = `radio-group-label-${id}`;
@@ -86,7 +86,10 @@ function RadioGroupRoot<T extends string>({
 
   return (
     <RadioGroupContext.Provider value={contextValue}>
-      <div className={containerClasses} data-testid={testId || "radio-group-container"}>
+      <div
+        className={containerClasses}
+        data-testid={testId || 'radio-group-container'}
+      >
         <HeadlessRadioGroup
           value={value}
           onChange={onChange}
@@ -94,7 +97,7 @@ function RadioGroupRoot<T extends string>({
           className={optionsClasses}
           aria-labelledby={labelId}
           aria-describedby={descriptionId}
-          data-testid={testId ? `${testId}-group` : "radio-group"}
+          data-testid={testId ? `${testId}-group` : 'radio-group'}
         >
           {children}
         </HeadlessRadioGroup>
@@ -103,7 +106,7 @@ function RadioGroupRoot<T extends string>({
   );
 }
 
-RadioGroupRoot.displayName = "RadioGroup";
+RadioGroupRoot.displayName = 'RadioGroup';
 
 // Compose RadioGroup with subcomponents
 export const RadioGroup = Object.assign(RadioGroupRoot, {
@@ -112,4 +115,3 @@ export const RadioGroup = Object.assign(RadioGroupRoot, {
   Label: RadioGroupLabel,
   Description: RadioGroupDescription,
 });
-

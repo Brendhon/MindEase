@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import type { LucideIcon } from "lucide-react";
-import { useMemo } from "react";
+import { Button } from '@/components/ui/button';
+import { Dialog } from '@/components/ui/dialog';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import type { LucideIcon } from 'lucide-react';
+import { useMemo } from 'react';
 
 /**
  * SessionAction interface - MindEase
@@ -17,7 +17,7 @@ export interface SessionAction {
   id: string;
 
   /** Button variant */
-  variant: "primary" | "secondary";
+  variant: 'primary' | 'secondary';
 
   /** Icon component from lucide-react */
   icon: LucideIcon;
@@ -74,7 +74,7 @@ export function SessionCompleteDialog({
   message,
   question,
   actions,
-  "data-testid": testId,
+  'data-testid': testId,
 }: SessionCompleteDialogProps) {
   const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
@@ -108,13 +108,9 @@ export function SessionCompleteDialog({
       data-testid={testId}
     >
       <div className={contentClasses}>
-        <p className={messageClasses}>
-          {message}
-        </p>
+        <p className={messageClasses}>{message}</p>
 
-        <p className={cn(styles.question, fontSizeClasses.base)}>
-          {question}
-        </p>
+        <p className={cn(styles.question, fontSizeClasses.base)}>{question}</p>
 
         <div className={actionsClasses}>
           {visibleActions.map((action) => (
@@ -127,9 +123,7 @@ export function SessionCompleteDialog({
               className={styles.button}
             >
               <Button.Icon icon={action.icon} position="left" />
-              <Button.Text>
-                {action.text}
-              </Button.Text>
+              <Button.Text>{action.text}</Button.Text>
             </Button>
           ))}
         </div>
@@ -138,12 +132,12 @@ export function SessionCompleteDialog({
   );
 }
 
-SessionCompleteDialog.displayName = "SessionCompleteDialog";
+SessionCompleteDialog.displayName = 'SessionCompleteDialog';
 
 const styles = {
-  content: "flex flex-col",
-  message: "text-text-primary mb-2",
-  question: "text-text-secondary mb-4 font-medium",
-  actions: "flex flex-col gap-2 mt-2",
-  button: "w-full justify-start",
+  content: 'flex flex-col',
+  message: 'text-text-primary mb-2',
+  question: 'text-text-secondary mb-4 font-medium',
+  actions: 'flex flex-col gap-2 mt-2',
+  button: 'w-full justify-start',
 } as const;

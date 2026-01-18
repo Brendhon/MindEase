@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { Button } from "@/components/ui";
-import { RotateCcw } from "lucide-react";
-import { useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { Button } from '@/components/ui';
+import { RotateCcw } from 'lucide-react';
+import { useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
 
 /**
  * ProfileResetButton Component - MindEase
@@ -12,28 +12,33 @@ import { BaseComponentProps } from "@/models/base";
  */
 export interface ProfileResetButtonProps extends BaseComponentProps {}
 
-export function ProfileResetButton({ "data-testid": testId }: ProfileResetButtonProps) {
+export function ProfileResetButton({
+  'data-testid': testId,
+}: ProfileResetButtonProps) {
   const { resetSettings } = useCognitiveSettings();
   const { getText } = useTextDetail();
 
   return (
-    <div className={styles.footer} data-testid={testId || "profile-reset-button-container"}>
+    <div
+      className={styles.footer}
+      data-testid={testId || 'profile-reset-button-container'}
+    >
       <Button
         variant="secondary"
         size="md"
         onClick={resetSettings}
         className={styles.resetButton}
-        aria-label={getText("profile_reset_aria")}
-        data-testid={testId || "profile-reset-button"}
+        aria-label={getText('profile_reset_aria')}
+        data-testid={testId || 'profile-reset-button'}
       >
         <Button.Icon icon={RotateCcw} position="left" size="md" />
-        <Button.Text>{getText("profile_reset")}</Button.Text>
+        <Button.Text>{getText('profile_reset')}</Button.Text>
       </Button>
     </div>
   );
 }
 
-ProfileResetButton.displayName = "ProfileResetButton";
+ProfileResetButton.displayName = 'ProfileResetButton';
 
 /**
  * ProfileResetButton Styles - MindEase
@@ -41,7 +46,6 @@ ProfileResetButton.displayName = "ProfileResetButton";
  */
 
 export const styles = {
-  footer: "flex justify-end mt-6",
-  resetButton: "",
+  footer: 'flex justify-end mt-6',
+  resetButton: '',
 } as const;
-

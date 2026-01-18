@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import type { FeedbackType } from "@/hooks/feedback";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { AlertCircle, AlertTriangle, CheckCircle2, Info } from "lucide-react";
+import type { FeedbackType } from '@/hooks/feedback';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react';
 
 /**
  * Toast.Icon - Icon subcomponent
  * Displays the appropriate icon based on toast type
- * 
+ *
  * @example
  * ```tsx
  * <Toast type="success">
@@ -25,23 +25,27 @@ export interface ToastIconProps extends BaseComponentProps {
 const iconConfig = {
   success: {
     icon: CheckCircle2,
-    ariaLabel: "Success",
+    ariaLabel: 'Success',
   },
   error: {
     icon: AlertCircle,
-    ariaLabel: "Error",
+    ariaLabel: 'Error',
   },
   warning: {
     icon: AlertTriangle,
-    ariaLabel: "Warning",
+    ariaLabel: 'Warning',
   },
   info: {
     icon: Info,
-    ariaLabel: "Information",
+    ariaLabel: 'Information',
   },
 } as const;
 
-export function ToastIcon({ type, className, "data-testid": testId }: ToastIconProps) {
+export function ToastIcon({
+  type,
+  className,
+  'data-testid': testId,
+}: ToastIconProps) {
   const config = iconConfig[type];
   const Icon = config.icon;
 
@@ -56,10 +60,9 @@ export function ToastIcon({ type, className, "data-testid": testId }: ToastIconP
   );
 }
 
-ToastIcon.displayName = "Toast.Icon";
+ToastIcon.displayName = 'Toast.Icon';
 
 const styles = {
-  iconWrapper: "flex-shrink-0",
-  icon: "w-5 h-5 text-white",
+  iconWrapper: 'flex-shrink-0',
+  icon: 'w-5 h-5 text-white',
 } as const;
-

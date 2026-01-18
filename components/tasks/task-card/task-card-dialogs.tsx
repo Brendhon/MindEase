@@ -3,14 +3,14 @@
  * Pure functions that return dialog configurations for task card operations
  */
 
-import React from "react";
+import React from 'react';
 import type {
   CompletePendingSubtasksDialogConfig,
   SubtaskBreakRequiredDialogConfig,
   SubtaskFocusRequiredDialogConfig,
-} from "@/models/task-card-props";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import type { Subtask } from "@/models/task";
+} from '@/models/task-card-props';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import type { Subtask } from '@/models/task';
 
 export type {
   CompletePendingSubtasksDialogConfig,
@@ -33,7 +33,7 @@ export function createCompletePendingSubtasksDialogConfig(
   const pendingList = (
     <div className={styles.pendingSubtasksContainer}>
       <p className={styles.pendingSubtasksLabel}>
-        {getText("tasks_complete_pending_list_label")}
+        {getText('tasks_complete_pending_list_label')}
       </p>
       <ul className={styles.pendingSubtasksList}>
         {pendingSubtasks.map((subtask) => (
@@ -46,18 +46,20 @@ export function createCompletePendingSubtasksDialogConfig(
   );
 
   return {
-    titleKey: "tasks_complete_pending_title",
-    descriptionKey: "tasks_complete_pending_message",
+    titleKey: 'tasks_complete_pending_title',
+    descriptionKey: 'tasks_complete_pending_message',
     info: (
       <>
         {pendingList}
         <p className={styles.completePendingSubtasksDialogHint}>
-          {getText("tasks_complete_pending_hint")}
+          {getText('tasks_complete_pending_hint')}
         </p>
       </>
     ),
-    confirmLabelKey: "button_ok",
-    "data-testid": testId ? `${testId}-pending-dialog` : "task-pending-subtasks-dialog",
+    confirmLabelKey: 'button_ok',
+    'data-testid': testId
+      ? `${testId}-pending-dialog`
+      : 'task-pending-subtasks-dialog',
   };
 }
 
@@ -76,18 +78,20 @@ export function createSubtaskFocusRequiredDialogConfig(
   testId?: string
 ): SubtaskFocusRequiredDialogConfig {
   return {
-    titleKey: "tasks_subtask_focus_required_title",
-    descriptionKey: "tasks_subtask_focus_required_message",
+    titleKey: 'tasks_subtask_focus_required_title',
+    descriptionKey: 'tasks_subtask_focus_required_message',
     info: (
       <p className={styles.subtaskFocusRequiredDialog}>
-        {getText("tasks_subtask_focus_required_hint")}
+        {getText('tasks_subtask_focus_required_hint')}
       </p>
     ),
-    cancelLabelKey: "tasks_subtask_focus_required_cancel",
-    confirmLabelKey: "tasks_subtask_focus_required_button",
+    cancelLabelKey: 'tasks_subtask_focus_required_cancel',
+    confirmLabelKey: 'tasks_subtask_focus_required_button',
     onCancel: () => {},
     onConfirm: hasActiveTask ? undefined : onStartFocus,
-    "data-testid": testId ? `${testId}-focus-required-dialog` : "task-focus-required-dialog",
+    'data-testid': testId
+      ? `${testId}-focus-required-dialog`
+      : 'task-focus-required-dialog',
   };
 }
 
@@ -97,18 +101,19 @@ export function createSubtaskFocusRequiredDialogConfig(
  */
 export function createSubtaskBreakRequiredDialogConfig(): SubtaskBreakRequiredDialogConfig {
   return {
-    titleKey: "tasks_subtask_break_required_title",
-    descriptionKey: "tasks_subtask_break_required_message",
-    cancelLabelKey: "button_cancel",
+    titleKey: 'tasks_subtask_break_required_title',
+    descriptionKey: 'tasks_subtask_break_required_message',
+    cancelLabelKey: 'button_cancel',
     onCancel: () => {},
   };
 }
 
 const styles = {
-  subtaskFocusRequiredDialog: "text-text-secondary italic text-sm",
-  completePendingSubtasksDialogHint: "text-text-secondary italic text-sm mt-2",
-  pendingSubtasksContainer: "flex flex-col gap-2",
-  pendingSubtasksLabel: "font-medium text-text-primary text-sm",
-  pendingSubtasksList: "flex flex-col gap-1 pl-4",
-  pendingSubtasksItem: "text-text-secondary text-sm max-w-72 truncate text-ellipsis",
+  subtaskFocusRequiredDialog: 'text-text-secondary italic text-sm',
+  completePendingSubtasksDialogHint: 'text-text-secondary italic text-sm mt-2',
+  pendingSubtasksContainer: 'flex flex-col gap-2',
+  pendingSubtasksLabel: 'font-medium text-text-primary text-sm',
+  pendingSubtasksList: 'flex flex-col gap-1 pl-4',
+  pendingSubtasksItem:
+    'text-text-secondary text-sm max-w-72 truncate text-ellipsis',
 } as const;

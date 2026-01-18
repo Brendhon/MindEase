@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import type { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import { TimerType } from "@/models/timer";
-import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
-import { ActiveTaskIndicatorTaskText } from "./active-task-indicator-task-text";
-import { ActiveTaskIndicatorTimer } from "./active-task-indicator-timer";
-import { styles } from "./active-task-indicator-styles";
+import type { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import { TimerType } from '@/models/timer';
+import { ActiveTaskIndicatorIcon } from './active-task-indicator-icon';
+import { ActiveTaskIndicatorTaskText } from './active-task-indicator-task-text';
+import { ActiveTaskIndicatorTimer } from './active-task-indicator-timer';
+import { styles } from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicatorContent Component - MindEase
@@ -16,16 +16,16 @@ import { styles } from "./active-task-indicator-styles";
 export interface ActiveTaskIndicatorContentProps extends BaseComponentProps {
   /** Task object or null */
   task: Task | null;
-  
+
   /** Timer type: "focus" or "break" */
   timerType: TimerType;
-  
+
   /** Whether the indicator is minimized */
   isMinimized: boolean;
-  
+
   /** Remaining time in seconds */
   remainingTime: number;
-  
+
   /** Callback function to handle click */
   onClick: () => void;
 }
@@ -36,14 +36,14 @@ export function ActiveTaskIndicatorContent({
   isMinimized,
   remainingTime,
   onClick,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ActiveTaskIndicatorContentProps) {
   return (
     <div
       role="button"
       onClick={onClick}
       className={styles.button}
-      data-testid={testId || "active-task-indicator-content"}
+      data-testid={testId || 'active-task-indicator-content'}
     >
       {!isMinimized ? (
         <>
@@ -76,4 +76,4 @@ export function ActiveTaskIndicatorContent({
   );
 }
 
-ActiveTaskIndicatorContent.displayName = "ActiveTaskIndicatorContent";
+ActiveTaskIndicatorContent.displayName = 'ActiveTaskIndicatorContent';

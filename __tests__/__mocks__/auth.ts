@@ -11,16 +11,17 @@ import type { AuthUser } from '@/models/auth';
  * @param overrides - Partial Session object to override defaults
  * @returns A complete Session object
  */
-export const createSession = (overrides?: Partial<Session>): Session => ({
-  user: {
-    id: 'user-123',
-    email: 'test@example.com',
-    name: 'Test User',
-    image: 'https://example.com/avatar.jpg',
-  },
-  expires: '2024-12-31',
-  ...overrides,
-} as Session);
+export const createSession = (overrides?: Partial<Session>): Session =>
+  ({
+    user: {
+      id: 'user-123',
+      email: 'test@example.com',
+      name: 'Test User',
+      image: 'https://example.com/avatar.jpg',
+    },
+    expires: '2024-12-31',
+    ...overrides,
+  }) as Session;
 
 /**
  * Creates a mock AuthUser with default values

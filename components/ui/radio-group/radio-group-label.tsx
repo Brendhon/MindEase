@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { Label } from "@headlessui/react";
-import { useMemo } from "react";
-import { useRadioGroupContext } from "./radio-group-context";
-import { styles } from "./radio-group-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { Label } from '@headlessui/react';
+import { useMemo } from 'react';
+import { useRadioGroupContext } from './radio-group-context';
+import { styles } from './radio-group-styles';
 
 /**
  * RadioGroup.Label - Label subcomponent
- * 
+ *
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected}>
@@ -24,7 +24,7 @@ import { styles } from "./radio-group-styles";
 export interface RadioGroupLabelProps extends BaseComponentProps {
   /** Label text */
   children: string;
-  
+
   /** HTML id attribute for accessibility (optional, uses context ID if not provided) */
   id?: string;
 }
@@ -32,7 +32,7 @@ export interface RadioGroupLabelProps extends BaseComponentProps {
 export function RadioGroupLabel({
   children,
   id: providedId,
-  "data-testid": testId,
+  'data-testid': testId,
 }: RadioGroupLabelProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const context = useRadioGroupContext();
@@ -47,11 +47,11 @@ export function RadioGroupLabel({
     <Label
       id={id}
       className={labelClasses}
-      data-testid={testId || "radio-group-label"}
+      data-testid={testId || 'radio-group-label'}
     >
       {children}
     </Label>
   );
 }
 
-RadioGroupLabel.displayName = "RadioGroup.Label";
+RadioGroupLabel.displayName = 'RadioGroup.Label';

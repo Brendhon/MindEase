@@ -63,16 +63,32 @@ function ToastTriggerButtons() {
 
   return (
     <div className="flex gap-2 flex-wrap">
-      <Button variant="primary" size="sm" onClick={() => success('toast_success_task_completed', 0)}>
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={() => success('toast_success_task_completed', 0)}
+      >
         <Button.Text>{getText('button_success')}</Button.Text>
       </Button>
-      <Button variant="danger" size="sm" onClick={() => error('toast_error_processing', 0)}>
+      <Button
+        variant="danger"
+        size="sm"
+        onClick={() => error('toast_error_processing', 0)}
+      >
         <Button.Text>{getText('button_error')}</Button.Text>
       </Button>
-      <Button variant="warning" size="sm" onClick={() => warning('toast_warning_cannot_undo', 0)}>
+      <Button
+        variant="warning"
+        size="sm"
+        onClick={() => warning('toast_warning_cannot_undo', 0)}
+      >
         <Button.Text>{getText('button_warning')}</Button.Text>
       </Button>
-      <Button variant="secondary" size="sm" onClick={() => info('toast_info_new_features', 0)}>
+      <Button
+        variant="secondary"
+        size="sm"
+        onClick={() => info('toast_info_new_features', 0)}
+      >
         <Button.Text>{getText('button_info')}</Button.Text>
       </Button>
     </div>
@@ -267,7 +283,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          High Contrast
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -287,7 +305,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Compact Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -307,7 +327,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Relaxed Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -327,7 +349,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Small Font</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Small Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -347,7 +371,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Large Font</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Large Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -367,7 +393,9 @@ export const AccessibilityShowcase: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">No Animations</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          No Animations
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -398,11 +426,14 @@ export const TextDetailModes: Story = {
   render: () => (
     <div className="flex gap-8 flex-col">
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Detailed Mode (Default)</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Detailed Mode (Default)
+        </h3>
         <p className="mb-4 text-xs text-text-muted">
-          Shows full messages with complete information. Click the buttons below to see detailed toast messages.
+          Shows full messages with complete information. Click the buttons below
+          to see detailed toast messages.
         </p>
-        <CognitiveSettingsProvider  
+        <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -421,9 +452,17 @@ export const TextDetailModes: Story = {
         </CognitiveSettingsProvider>
       </div>
       <div>
-        <h3 className="mb-4 text-sm font-medium text-text-secondary">Summary Mode</h3>
+        <h3 className="mb-4 text-sm font-medium text-text-secondary">
+          Summary Mode
+        </h3>
         <p className="mb-4 text-xs text-text-muted">
-          Shows concise messages for reduced cognitive load. In summary mode, developers can use <code className="text-xs bg-gray-100 px-1 rounded">useCognitiveSettings().textDetail</code> to render shorter messages or access text content from the JSON system. Click the buttons below to see summary toast messages.
+          Shows concise messages for reduced cognitive load. In summary mode,
+          developers can use{' '}
+          <code className="text-xs bg-gray-100 px-1 rounded">
+            useCognitiveSettings().textDetail
+          </code>{' '}
+          to render shorter messages or access text content from the JSON
+          system. Click the buttons below to see summary toast messages.
         </p>
         <CognitiveSettingsProvider
           initialSettings={{
@@ -449,4 +488,3 @@ export const TextDetailModes: Story = {
     layout: 'fullscreen',
   },
 };
-

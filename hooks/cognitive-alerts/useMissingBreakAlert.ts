@@ -1,37 +1,37 @@
-import { useMissingBreakAlertContext } from "@/contexts/cognitive-alerts";
-import { MISSING_BREAK_SESSIONS_THRESHOLD } from "@/utils/cognitive-alerts";
-import { useCallback, useEffect } from "react";
-import { useDismissExpiry } from "./useDismissExpiry";
-import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
+import { useMissingBreakAlertContext } from '@/contexts/cognitive-alerts';
+import { MISSING_BREAK_SESSIONS_THRESHOLD } from '@/utils/cognitive-alerts';
+import { useCallback, useEffect } from 'react';
+import { useDismissExpiry } from './useDismissExpiry';
+import { useBaseAlertDismiss } from './useBaseAlertDismiss';
 
 /**
  * useMissingBreakAlert Hook - MindEase
- * 
+ *
  * Centralized hook for managing missing break alert state and business logic.
- * 
+ *
  * This hook handles:
  * - Tracking consecutive focus sessions without breaks
  * - Managing alert visibility based on business rules
  * - Resetting counters when breaks are taken or tasks are finished
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * @example
  * ```tsx
  * // Record focus session completion
  * function FocusSessionDialog() {
  *   const { recordFocusSessionComplete } = useMissingBreakAlert();
- *   
+ *
  *   const handleContinueFocus = () => {
  *     recordFocusSessionComplete();
  *     // ... other logic
  *   };
  * }
- * 
+ *
  * // Check alert visibility
  * function AlertsComponent() {
  *   const { isMissingBreakAlertVisible, dismissMissingBreakAlert } = useMissingBreakAlert();
- *   
+ *
  *   return (
  *     <Alert
  *       isVisible={isMissingBreakAlertVisible}
@@ -40,7 +40,7 @@ import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
  *   );
  * }
  * ```
- * 
+ *
  * @throws Error if used outside MissingBreakAlertProvider
  */
 export function useMissingBreakAlert() {
@@ -72,7 +72,11 @@ export function useMissingBreakAlert() {
     } else if (consecutiveFocusSessions < MISSING_BREAK_SESSIONS_THRESHOLD) {
       _setIsMissingBreakAlertVisible(false);
     }
-  }, [consecutiveFocusSessions, isMissingBreakAlertDismissed, _setIsMissingBreakAlertVisible]);
+  }, [
+    consecutiveFocusSessions,
+    isMissingBreakAlertDismissed,
+    _setIsMissingBreakAlertVisible,
+  ]);
 
   /**
    * Record that a focus session was completed without taking a break
@@ -91,7 +95,12 @@ export function useMissingBreakAlert() {
     _setIsMissingBreakAlertVisible(false);
     _setIsMissingBreakAlertDismissed(false); // Allow alert to show again in the future
     _setDismissedAt(null); // Clear dismiss timestamp
-  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
+  }, [
+    _setConsecutiveFocusSessions,
+    _setIsMissingBreakAlertVisible,
+    _setIsMissingBreakAlertDismissed,
+    _setDismissedAt,
+  ]);
 
   /**
    * Record that a task was finished
@@ -102,7 +111,12 @@ export function useMissingBreakAlert() {
     _setIsMissingBreakAlertVisible(false);
     _setIsMissingBreakAlertDismissed(false); // Allow alert to show again in the future
     _setDismissedAt(null); // Clear dismiss timestamp
-  }, [_setConsecutiveFocusSessions, _setIsMissingBreakAlertVisible, _setIsMissingBreakAlertDismissed, _setDismissedAt]);
+  }, [
+    _setConsecutiveFocusSessions,
+    _setIsMissingBreakAlertVisible,
+    _setIsMissingBreakAlertDismissed,
+    _setDismissedAt,
+  ]);
 
   /**
    * Dismiss the missing break alert
@@ -119,7 +133,7 @@ export function useMissingBreakAlert() {
     // State
     consecutiveFocusSessions,
     isMissingBreakAlertVisible,
-    
+
     // Operations
     recordFocusSessionComplete,
     recordBreakComplete,

@@ -59,7 +59,9 @@ export const WithDescription: Story = {
       <Switch>
         <Switch.Toggle checked={checked} onChange={_setChecked} />
         <Switch.Label>Enable notifications</Switch.Label>
-        <Switch.Description>Receive email notifications about important updates</Switch.Description>
+        <Switch.Description>
+          Receive email notifications about important updates
+        </Switch.Description>
       </Switch>
     );
   },
@@ -71,7 +73,7 @@ export const Checked: Story = {
   render: () => {
     const [checked, _setChecked] = useState(true);
     return (
-      <Switch  >
+      <Switch>
         <Switch.Toggle checked={checked} onChange={_setChecked} />
         <Switch.Label>Notifications enabled</Switch.Label>
         <Switch.Description>You will receive notifications</Switch.Description>
@@ -89,7 +91,9 @@ export const Disabled: Story = {
       <Switch>
         <Switch.Toggle checked={checked} onChange={_setChecked} disabled />
         <Switch.Label>Disabled switch</Switch.Label>
-        <Switch.Description>This switch is disabled and cannot be toggled</Switch.Description>
+        <Switch.Description>
+          This switch is disabled and cannot be toggled
+        </Switch.Description>
       </Switch>
     );
   },
@@ -104,7 +108,9 @@ export const DisabledChecked: Story = {
       <Switch>
         <Switch.Toggle checked={checked} onChange={_setChecked} disabled />
         <Switch.Label>Disabled and checked</Switch.Label>
-        <Switch.Description>This switch is disabled and checked</Switch.Description>
+        <Switch.Description>
+          This switch is disabled and checked
+        </Switch.Description>
       </Switch>
     );
   },
@@ -122,12 +128,16 @@ export const MultipleSwitches: Story = {
         <Switch>
           <Switch.Toggle checked={notifications} onChange={_setNotifications} />
           <Switch.Label>Email notifications</Switch.Label>
-          <Switch.Description>Receive notifications via email</Switch.Description>
+          <Switch.Description>
+            Receive notifications via email
+          </Switch.Description>
         </Switch>
         <Switch>
           <Switch.Toggle checked={push} onChange={setPush} />
           <Switch.Label>Push notifications</Switch.Label>
-          <Switch.Description>Receive push notifications on your device</Switch.Description>
+          <Switch.Description>
+            Receive push notifications on your device
+          </Switch.Description>
         </Switch>
       </div>
     );

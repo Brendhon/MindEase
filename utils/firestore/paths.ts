@@ -9,8 +9,8 @@
  * @returns Collection path (e.g., "users/{userId}/tasks")
  */
 export const getTasksCollectionPath = (userId: string): string => {
-  if (!userId || userId.trim() === "") {
-    throw new Error("User ID is required");
+  if (!userId || userId.trim() === '') {
+    throw new Error('User ID is required');
   }
   return `users/${userId}/tasks`;
 };
@@ -22,11 +22,11 @@ export const getTasksCollectionPath = (userId: string): string => {
  * @returns Document path (e.g., "users/{userId}/tasks/{taskId}")
  */
 export const getTaskDocumentPath = (userId: string, taskId: string): string => {
-  if (!userId || userId.trim() === "") {
-    throw new Error("User ID is required");
+  if (!userId || userId.trim() === '') {
+    throw new Error('User ID is required');
   }
-  if (!taskId || taskId.trim() === "") {
-    throw new Error("Task ID is required");
+  if (!taskId || taskId.trim() === '') {
+    throw new Error('Task ID is required');
   }
   return `users/${userId}/tasks/${taskId}`;
 };
@@ -37,8 +37,8 @@ export const getTaskDocumentPath = (userId: string, taskId: string): string => {
  * @returns Document path (e.g., "user-preferences/{userId}")
  */
 export const getUserPreferencesDocumentPath = (userId: string): string => {
-  if (!userId || userId.trim() === "") {
-    throw new Error("User ID is required");
+  if (!userId || userId.trim() === '') {
+    throw new Error('User ID is required');
   }
   return `users/${userId}`;
 };

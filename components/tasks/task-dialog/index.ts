@@ -1,1 +1,1 @@
-export { TaskDialog } from "./task-dialog";
+export { TaskDialog } from './task-dialog';

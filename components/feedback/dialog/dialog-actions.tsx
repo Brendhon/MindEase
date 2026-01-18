@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import { cn } from "@/utils/ui";
-import { styles } from "./dialog-manager-styles";
+import { Button } from '@/components/ui/button';
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { cn } from '@/utils/ui';
+import { styles } from './dialog-manager-styles';
 
 /**
  * Dialog.Actions - Actions subcomponent
  * Displays action buttons (cancel, confirm, or ok) in the dialog
- * 
+ *
  * @example
  * ```tsx
  * <DialogManager>
@@ -28,7 +28,7 @@ export interface DialogActionsProps extends BaseComponentProps {
   onConfirm?: () => void | Promise<void>;
   cancelLabelKey?: AccessibilityTextKey;
   confirmLabelKey?: AccessibilityTextKey;
-  confirmVariant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
+  confirmVariant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'warning';
   isLoading?: boolean;
   onClose?: () => void;
 }
@@ -36,12 +36,12 @@ export interface DialogActionsProps extends BaseComponentProps {
 export function DialogActions({
   onCancel,
   onConfirm,
-  cancelLabelKey = "button_cancel",
-  confirmLabelKey = "button_save",
-  confirmVariant = "primary",
+  cancelLabelKey = 'button_cancel',
+  confirmLabelKey = 'button_save',
+  confirmVariant = 'primary',
   isLoading = false,
   onClose,
-  "data-testid": testId = "dialog",
+  'data-testid': testId = 'dialog',
 }: DialogActionsProps) {
   const { spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
@@ -51,7 +51,10 @@ export function DialogActions({
   // If no actions provided, show OK button
   if (!onCancel && !onConfirm) {
     return (
-      <div className={actionsClasses} data-testid={testId ? `${testId}-actions` : "dialog-actions"}>
+      <div
+        className={actionsClasses}
+        data-testid={testId ? `${testId}-actions` : 'dialog-actions'}
+      >
         <Button
           variant="primary"
           onClick={onClose}
@@ -64,7 +67,10 @@ export function DialogActions({
   }
 
   return (
-    <div className={actionsClasses} data-testid={testId ? `${testId}-actions` : "dialog-actions"}>
+    <div
+      className={actionsClasses}
+      data-testid={testId ? `${testId}-actions` : 'dialog-actions'}
+    >
       {onCancel && (
         <Button
           variant="ghost"
@@ -85,9 +91,7 @@ export function DialogActions({
         >
           {isLoading && <Button.Loading />}
           <Button.Text>
-            {isLoading
-              ? getText("loading")
-              : getText(confirmLabelKey)}
+            {isLoading ? getText('loading') : getText(confirmLabelKey)}
           </Button.Text>
         </Button>
       )}
@@ -95,4 +99,4 @@ export function DialogActions({
   );
 }
 
-DialogActions.displayName = "Dialog.Actions";
+DialogActions.displayName = 'Dialog.Actions';

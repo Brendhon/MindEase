@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
-import { useCommonAlertState } from "./create-alert-provider";
-import { useCallback, useState } from "react";
+import { ProlongedNavigationAlertContext } from '@/contexts/cognitive-alerts';
+import { useCommonAlertState } from './create-alert-provider';
+import { useCallback, useState } from 'react';
 
 interface ProlongedNavigationAlertProviderProps {
   children: React.ReactNode;
@@ -10,9 +10,9 @@ interface ProlongedNavigationAlertProviderProps {
 
 /**
  * Prolonged Navigation Alert Provider - MindEase
- * 
+ *
  * Provides prolonged navigation alert context to children components.
- * 
+ *
  * This provider manages ONLY basic state (navigation timestamps, alert visibility).
  * All business logic is handled by the useProlongedNavigationAlert hook.
  */
@@ -23,7 +23,9 @@ export function ProlongedNavigationAlertProvider({
   const commonState = useCommonAlertState();
 
   // Additional state specific to prolonged navigation alert
-  const [lastActionTimestamp, setLastActionTimestamp] = useState<number | null>(null);
+  const [lastActionTimestamp, setLastActionTimestamp] = useState<number | null>(
+    null
+  );
 
   // Setters for additional state
   const setLastActionTimestampState = useCallback(

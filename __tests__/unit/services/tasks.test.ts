@@ -63,7 +63,9 @@ describe('tasksService', () => {
       const result = await tasksService.getTasks(MOCK_USER_ID);
 
       expect(result).toEqual(mockTasks);
-      expect(firestoreService.getCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
+      expect(firestoreService.getCollection).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH
+      );
     });
 
     it('should return empty array when user has no tasks', async () => {
@@ -72,7 +74,9 @@ describe('tasksService', () => {
       const result = await tasksService.getTasks(MOCK_USER_ID);
 
       expect(result).toEqual([]);
-      expect(firestoreService.getCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
+      expect(firestoreService.getCollection).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH
+      );
     });
   });
 
@@ -176,7 +180,8 @@ describe('tasksService', () => {
 
       await tasksService.createTask(MOCK_USER_ID, taskData);
 
-      const callArgs = vi.mocked(firestoreService.createDocument).mock.calls[0][1] as any;
+      const callArgs = vi.mocked(firestoreService.createDocument).mock
+        .calls[0][1] as any;
       expect(callArgs.createdAt).toBeInstanceOf(Date);
       expect(callArgs.updatedAt).toBeInstanceOf(Date);
     });
@@ -197,7 +202,11 @@ describe('tasksService', () => {
 
       setupUpdateDocumentSuccess(updatedTask);
 
-      const result = await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
+      const result = await tasksService.updateTask(
+        MOCK_USER_ID,
+        MOCK_TASK_ID,
+        updates
+      );
 
       expect(result).toEqual(updatedTask);
       expect(firestoreService.updateDocument).toHaveBeenCalledWith(
@@ -237,13 +246,18 @@ describe('tasksService', () => {
 
     it('should include updatedAt timestamp', async () => {
       const updates = { title: 'Updated' };
-      const updatedTask = createTask({ id: MOCK_TASK_ID, userId: MOCK_USER_ID, ...updates });
+      const updatedTask = createTask({
+        id: MOCK_TASK_ID,
+        userId: MOCK_USER_ID,
+        ...updates,
+      });
 
       setupUpdateDocumentSuccess(updatedTask);
 
       await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
 
-      const callArgs = vi.mocked(firestoreService.updateDocument).mock.calls[0][2] as any;
+      const callArgs = vi.mocked(firestoreService.updateDocument).mock
+        .calls[0][2] as any;
       expect(callArgs.updatedAt).toBeInstanceOf(Date);
     });
   });
@@ -267,7 +281,9 @@ describe('tasksService', () => {
 
       await tasksService.deleteAllTasks(MOCK_USER_ID);
 
-      expect(firestoreService.deleteCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
+      expect(firestoreService.deleteCollection).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH
+      );
     });
   });
 });

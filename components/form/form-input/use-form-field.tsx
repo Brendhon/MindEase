@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext } from 'react-hook-form';
 
 /**
  * Hook to get field state and error from react-hook-form context
  * Useful for building custom form components
- * 
+ *
  * @example
  * ```tsx
  * function CustomFormField({ name }: { name: string }) {
  *   const { error, invalid } = useFormField(name);
- *   
+ *
  *   return (
  *     <div>
  *       <input aria-invalid={invalid} />
@@ -36,4 +36,3 @@ export function useFormField(name: string) {
     isTouched: fieldState.isTouched,
   };
 }
-

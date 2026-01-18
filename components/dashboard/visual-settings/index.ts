@@ -1,2 +1,1 @@
-export { VisualSettings } from "./visual-settings";
-
+export { VisualSettings } from './visual-settings';

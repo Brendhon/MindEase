@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { LucideIcon } from "lucide-react";
-import { styles } from "./sidebar-styles";
+import { LucideIcon } from 'lucide-react';
+import { styles } from './sidebar-styles';
 
 /**
  * Sidebar.Icon - Icon subcomponent
  * Renders icons for sidebar navigation items
- * 
+ *
  * Supports both LucideIcon components and ReactNode icons
- * 
+ *
  * @example
  * ```tsx
  * <Sidebar.Item href="/dashboard">
@@ -26,14 +26,7 @@ export function SidebarIcon({ icon }: SidebarIconProps) {
 
   // Check if it's a LucideIcon component
   const IconComponent = icon as LucideIcon;
-  return (
-    <IconComponent
-      className={styles.icon}
-      size={20}
-      aria-hidden="true"
-    />
-  );
+  return <IconComponent className={styles.icon} size={20} aria-hidden="true" />;
 }
 
-SidebarIcon.displayName = "Sidebar.Icon";
-
+SidebarIcon.displayName = 'Sidebar.Icon';

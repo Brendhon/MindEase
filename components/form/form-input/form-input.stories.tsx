@@ -1,34 +1,34 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { FormProvider, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { CognitiveSettingsProvider } from "@/providers/cognitive-settings";
-import { SessionProvider } from "next-auth/react";
-import { FormInput } from "./form-input";
+import type { Meta, StoryObj } from '@storybook/react';
+import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
+import { SessionProvider } from 'next-auth/react';
+import { FormInput } from './form-input';
 
 /**
  * FormInput Component - Integrated with react-hook-form and zod
- * 
+ *
  * This component automatically:
  * - Connects to react-hook-form context
  * - Displays validation errors from zod schema
  * - Handles accessibility (aria-invalid, aria-describedby)
  * - Generates unique IDs
- * 
+ *
  * ## Usage
- * 
+ *
  * Always use inside a FormProvider with a zod schema:
- * 
+ *
  * ```tsx
  * const schema = z.object({
  *   email: z.string().email("Invalid email"),
  *   password: z.string().min(8, "Min 8 characters"),
  * });
- * 
+ *
  * const methods = useForm({
  *   resolver: zodResolver(schema),
  * });
- * 
+ *
  * return (
  *   <FormProvider {...methods}>
  *     <form onSubmit={methods.handleSubmit(onSubmit)}>
@@ -41,13 +41,14 @@ import { FormInput } from "./form-input";
  * ```
  */
 const meta = {
-  title: "Components/Form/FormInput",
+  title: 'Components/Form/FormInput',
   component: FormInput,
   parameters: {
-    layout: "centered",
+    layout: 'centered',
     docs: {
       description: {
-        component: "Integrated input component for forms with automatic validation and error handling.",
+        component:
+          'Integrated input component for forms with automatic validation and error handling.',
       },
     },
   },
@@ -66,29 +67,32 @@ export default meta;
 type Story = StoryObj;
 
 // Demo form wrapper with validation
-function FormWrapper({ 
-  children, 
-  schema, 
-  defaultValues = {} 
-}: { 
-  children: React.ReactNode; 
-  schema: z.ZodObject<any>; 
+function FormWrapper({
+  children,
+  schema,
+  defaultValues = {},
+}: {
+  children: React.ReactNode;
+  schema: z.ZodObject<any>;
   defaultValues?: any;
 }) {
   const methods = useForm({
     resolver: zodResolver(schema),
     defaultValues,
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onSubmit = (data: any) => {
-    console.log("Form submitted:", data);
+    console.log('Form submitted:', data);
     alert(JSON.stringify(data, null, 2));
   };
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-4 w-80">
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="space-y-4 w-80"
+      >
         {children}
         <button
           type="submit"
@@ -107,7 +111,7 @@ function FormWrapper({
 export const BasicTextInput: Story = {
   render: () => {
     const schema = z.object({
-      email: z.email("Please enter a valid email address"),
+      email: z.email('Please enter a valid email address'),
     });
 
     return (
@@ -132,9 +136,9 @@ export const PasswordInput: Story = {
     const schema = z.object({
       password: z
         .string()
-        .min(8, "Password must be at least 8 characters")
-        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-        .regex(/[0-9]/, "Password must contain at least one number"),
+        .min(8, 'Password must be at least 8 characters')
+        .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+        .regex(/[0-9]/, 'Password must contain at least one number'),
     });
 
     return (
@@ -160,8 +164,8 @@ export const TextareaInput: Story = {
     const schema = z.object({
       description: z
         .string()
-        .min(10, "Description must be at least 10 characters")
-        .max(200, "Description must be less than 200 characters"),
+        .min(10, 'Description must be at least 10 characters')
+        .max(200, 'Description must be less than 200 characters'),
     });
 
     return (
@@ -187,27 +191,27 @@ export const CompleteForm: Story = {
     const schema = z.object({
       username: z
         .string()
-        .min(3, "Username must be at least 3 characters")
-        .regex(/^[a-zA-Z0-9_]+$/, "Only letters, numbers, and underscores"),
-      email: z.string().email("Invalid email address"),
+        .min(3, 'Username must be at least 3 characters')
+        .regex(/^[a-zA-Z0-9_]+$/, 'Only letters, numbers, and underscores'),
+      email: z.string().email('Invalid email address'),
       age: z.coerce
         .number()
-        .min(18, "Must be 18 or older")
-        .max(120, "Invalid age"),
+        .min(18, 'Must be 18 or older')
+        .max(120, 'Invalid age'),
       bio: z
         .string()
-        .max(500, "Bio must be less than 500 characters")
+        .max(500, 'Bio must be less than 500 characters')
         .optional(),
     });
 
     return (
-      <FormWrapper 
+      <FormWrapper
         schema={schema}
         defaultValues={{
-          username: "",
-          email: "",
-          age: "",
-          bio: "",
+          username: '',
+          email: '',
+          age: '',
+          bio: '',
         }}
       >
         <FormInput
@@ -254,7 +258,10 @@ export const DisabledInput: Story = {
     });
 
     return (
-      <FormWrapper schema={schema} defaultValues={{ email: "locked@example.com" }}>
+      <FormWrapper
+        schema={schema}
+        defaultValues={{ email: 'locked@example.com' }}
+      >
         <FormInput
           name="email"
           label="Email (Locked)"
@@ -273,11 +280,11 @@ export const DisabledInput: Story = {
 export const WithError: Story = {
   render: () => {
     const schema = z.object({
-      email: z.email("Please enter a valid email address"),
+      email: z.email('Please enter a valid email address'),
     });
 
     return (
-      <FormWrapper schema={schema} defaultValues={{ email: "invalid-email" }}>
+      <FormWrapper schema={schema} defaultValues={{ email: 'invalid-email' }}>
         <FormInput
           name="email"
           label="Email"
@@ -296,7 +303,7 @@ export const WithError: Story = {
 export const AccessibilityDemo: Story = {
   render: () => {
     const schema = z.object({
-      username: z.string().min(3, "Username must be at least 3 characters"),
+      username: z.string().min(3, 'Username must be at least 3 characters'),
     });
 
     return (
@@ -308,7 +315,10 @@ export const AccessibilityDemo: Story = {
             <li>✅ aria-invalid when field has error</li>
             <li>✅ aria-describedby linking to error/helper text</li>
             <li>✅ Proper focus management</li>
-            <li>✅ Adapts to user accessibility preferences (font size, spacing, contrast, animations)</li>
+            <li>
+              ✅ Adapts to user accessibility preferences (font size, spacing,
+              contrast, animations)
+            </li>
           </ul>
         </div>
         <FormWrapper schema={schema}>
@@ -331,7 +341,9 @@ export const AccessibilityShowcase: Story = {
   render: () => (
     <div className="flex gap-6 flex-col p-6 w-full max-w-2xl">
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Normal Settings
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -344,7 +356,7 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              email: z.string().email("Please enter a valid email address"),
+              email: z.string().email('Please enter a valid email address'),
             })}
           >
             <FormInput
@@ -360,7 +372,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -373,7 +387,7 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              email: z.string().email("Please enter a valid email address"),
+              email: z.string().email('Please enter a valid email address'),
             })}
           >
             <FormInput
@@ -388,7 +402,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Compact Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -401,7 +417,9 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              username: z.string().min(3, "Username must be at least 3 characters"),
+              username: z
+                .string()
+                .min(3, 'Username must be at least 3 characters'),
             })}
           >
             <FormInput
@@ -416,7 +434,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Relaxed Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -429,7 +449,9 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              description: z.string().min(10, "Description must be at least 10 characters"),
+              description: z
+                .string()
+                .min(10, 'Description must be at least 10 characters'),
             })}
           >
             <FormInput
@@ -444,7 +466,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Large Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -457,7 +481,7 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              email: z.string().email("Please enter a valid email address"),
+              email: z.string().email('Please enter a valid email address'),
             })}
           >
             <FormInput
@@ -473,7 +497,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast with Error
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -486,9 +512,9 @@ export const AccessibilityShowcase: Story = {
         >
           <FormWrapper
             schema={z.object({
-              email: z.string().email("Please enter a valid email address"),
+              email: z.string().email('Please enter a valid email address'),
             })}
-            defaultValues={{ email: "invalid-email" }}
+            defaultValues={{ email: 'invalid-email' }}
           >
             <FormInput
               name="email"
@@ -506,4 +532,3 @@ export const AccessibilityShowcase: Story = {
     layout: 'padded',
   },
 };
-

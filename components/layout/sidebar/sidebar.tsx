@@ -1,35 +1,38 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useSidebar } from "@/hooks/sidebar";
-import { AccessibilityTextKey, getAccessibilityText } from "@/utils/accessibility";
-import { PROTECTED_ROUTES } from "@/utils/routes";
-import { cn } from "@/utils/ui";
-import { CheckSquare, LayoutDashboard, LucideIcon, User } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import { SidebarIcon } from "./sidebar-icon";
-import { SidebarItem } from "./sidebar-item";
-import { SidebarLabel } from "./sidebar-label";
-import { styles } from "./sidebar-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useSidebar } from '@/hooks/sidebar';
+import {
+  AccessibilityTextKey,
+  getAccessibilityText,
+} from '@/utils/accessibility';
+import { PROTECTED_ROUTES } from '@/utils/routes';
+import { cn } from '@/utils/ui';
+import { CheckSquare, LayoutDashboard, LucideIcon, User } from 'lucide-react';
+import { useEffect, useMemo } from 'react';
+import { SidebarIcon } from './sidebar-icon';
+import { SidebarItem } from './sidebar-item';
+import { SidebarLabel } from './sidebar-label';
+import { styles } from './sidebar-styles';
 
 /**
  * Sidebar Component - MindEase
- * 
+ *
  * Navigation sidebar for authenticated layout with cognitive accessibility support.
- * 
+ *
  * Features:
  * - Responsive to user accessibility preferences (contrast, spacing, font size, animations)
  * - Keyboard navigation support
  * - ARIA labels and semantic HTML
  * - Low visual stimulation design
  * - Uses design tokens for consistent styling
- * 
+ *
  * Uses composition pattern - accepts Sidebar subcomponents:
  * - Sidebar.Item for navigation items
  * - Sidebar.Icon for icons
  * - Sidebar.Label for text labels
- * 
+ *
  * @example
  * ```tsx
  * <Sidebar>
@@ -39,7 +42,7 @@ import { styles } from "./sidebar-styles";
  *   </Sidebar.Item>
  * </Sidebar>
  * ```
- * 
+ *
  * @see https://nextjs.org/docs/app/building-your-application/routing/linking-and-navigating
  */
 export interface SidebarItemData {
@@ -53,20 +56,20 @@ export interface SidebarProps {
 }
 
 const defaultItems: SidebarItemData[] = [
-  { 
-    href: PROTECTED_ROUTES.DASHBOARD, 
-    labelKey: "sidebar_dashboard", 
-    icon: LayoutDashboard 
+  {
+    href: PROTECTED_ROUTES.DASHBOARD,
+    labelKey: 'sidebar_dashboard',
+    icon: LayoutDashboard,
   },
-  { 
-    href: PROTECTED_ROUTES.TASKS, 
-    labelKey: "sidebar_tasks", 
-    icon: CheckSquare 
+  {
+    href: PROTECTED_ROUTES.TASKS,
+    labelKey: 'sidebar_tasks',
+    icon: CheckSquare,
   },
-  { 
-    href: PROTECTED_ROUTES.PROFILE, 
-    labelKey: "sidebar_profile", 
-    icon: User 
+  {
+    href: PROTECTED_ROUTES.PROFILE,
+    labelKey: 'sidebar_profile',
+    icon: User,
   },
 ];
 
@@ -90,22 +93,22 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
   // Close sidebar when clicking outside (on mobile)
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         close();
       }
     };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscape);
+      document.addEventListener('keydown', handleEscape);
       // Prevent body scroll when sidebar is open on mobile
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "";
+      document.body.style.overflow = '';
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscape);
-      document.body.style.overflow = "";
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = '';
     };
   }, [isOpen, close]);
 
@@ -131,12 +134,12 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
           // Desktop: hide when focus mode is active (unless explicitly opened)
           isOpen ? styles.containerOpen : styles.containerClosed,
           // Hide sidebar on desktop when focus mode is active
-          shouldHideSidebar && "md:hidden"
+          shouldHideSidebar && 'md:hidden'
         )}
         data-testid="sidebar-container"
         role="complementary"
         aria-label="Navigation sidebar"
-        aria-hidden={shouldHideSidebar || !isOpen ? "true" : undefined}
+        aria-hidden={shouldHideSidebar || !isOpen ? 'true' : undefined}
       >
         <nav
           className={cn(styles.nav, spacingClasses.gap)}
@@ -145,8 +148,8 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
         >
           {items.map((item) => {
             // Use detailed label for aria-label and testid (always use detailed mode for accessibility)
-            const labelString = getAccessibilityText(item.labelKey, "detailed");
-            
+            const labelString = getAccessibilityText(item.labelKey, 'detailed');
+
             return (
               <SidebarItem
                 key={item.href}
@@ -165,7 +168,7 @@ function SidebarRoot({ items = defaultItems }: SidebarProps) {
   );
 }
 
-SidebarRoot.displayName = "Sidebar";
+SidebarRoot.displayName = 'Sidebar';
 
 // Compose Sidebar with subcomponents
 export const Sidebar = Object.assign(SidebarRoot, {

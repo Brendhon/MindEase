@@ -1,2 +1,1 @@
-export { firestoreService, type FirestoreService } from "./firestore";
-
+export { firestoreService, type FirestoreService } from './firestore';

@@ -1,9 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { hasPendingSubtasks, getPendingSubtasks, canCompleteTask } from '@/utils/tasks/tasks';
+import {
+  hasPendingSubtasks,
+  getPendingSubtasks,
+  canCompleteTask,
+} from '@/utils/tasks/tasks';
 import { createTask, createSubtask } from '@/__tests__/__mocks__/tasks';
 
 describe('tasks utils', () => {
-
   describe('hasPendingSubtasks', () => {
     it('should return false when task has no subtasks', () => {
       const task = createTask();
@@ -69,7 +72,11 @@ describe('tasks utils', () => {
 
     it('should return only pending subtasks', () => {
       const pending1 = createSubtask({ id: '1', title: 'Pending 1' });
-      const completed = createSubtask({ id: '2', title: 'Completed', completed: true });
+      const completed = createSubtask({
+        id: '2',
+        title: 'Completed',
+        completed: true,
+      });
       const pending2 = createSubtask({ id: '3', title: 'Pending 2' });
 
       const task = createTask({

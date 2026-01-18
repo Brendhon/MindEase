@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
 
 /**
  * ProfileError Component - MindEase
@@ -14,7 +14,10 @@ export interface ProfileErrorProps extends BaseComponentProps {
   message: string;
 }
 
-export function ProfileError({ message, "data-testid": testId }: ProfileErrorProps) {
+export function ProfileError({
+  message,
+  'data-testid': testId,
+}: ProfileErrorProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   // Generate error classes with fontSize preference
@@ -27,14 +30,14 @@ export function ProfileError({ message, "data-testid": testId }: ProfileErrorPro
     <div
       className={errorClasses}
       role="alert"
-      data-testid={testId || "profile-error"}
+      data-testid={testId || 'profile-error'}
     >
       {message}
     </div>
   );
 }
 
-ProfileError.displayName = "ProfileError";
+ProfileError.displayName = 'ProfileError';
 
 /**
  * ProfileError Styles - MindEase
@@ -42,6 +45,6 @@ ProfileError.displayName = "ProfileError";
  */
 
 export const styles = {
-  error: "bg-action-danger/10 text-action-danger border border-action-danger rounded-lg p-4",
+  error:
+    'bg-action-danger/10 text-action-danger border border-action-danger rounded-lg p-4',
 } as const;
-

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { X } from "lucide-react";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { X } from 'lucide-react';
 
 /**
  * Toast.Dismiss - Dismiss button subcomponent
  * Provides a button to manually dismiss the toast
- * 
+ *
  * @example
  * ```tsx
  * <Toast type="success">
@@ -26,9 +26,9 @@ export interface ToastDismissProps extends BaseComponentProps {
 
 export function ToastDismiss({
   onDismiss,
-  ariaLabel = "Dismiss message",
+  ariaLabel = 'Dismiss message',
   className,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ToastDismissProps) {
   const { animationClasses } = useAccessibilityClasses();
 
@@ -36,11 +36,7 @@ export function ToastDismiss({
     <button
       type="button"
       onClick={onDismiss}
-      className={cn(
-        styles.dismissButton,
-        animationClasses,
-        className
-      )}
+      className={cn(styles.dismissButton, animationClasses, className)}
       aria-label={ariaLabel}
       data-testid={testId}
     >
@@ -49,11 +45,10 @@ export function ToastDismiss({
   );
 }
 
-ToastDismiss.displayName = "Toast.Dismiss";
+ToastDismiss.displayName = 'Toast.Dismiss';
 
 const styles = {
   dismissButton:
-    "flex-shrink-0 p-1 rounded-md hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-colors",
-  dismissIcon: "w-4 h-4",
+    'flex-shrink-0 p-1 rounded-md hover:bg-black/10 focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-transparent transition-colors',
+  dismissIcon: 'w-4 h-4',
 } as const;
-

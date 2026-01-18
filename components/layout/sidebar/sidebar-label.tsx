@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useTextDetail } from "@/hooks/accessibility";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
+import { useTextDetail } from '@/hooks/accessibility';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
 
 /**
  * Sidebar.Label - Label subcomponent
  * Renders text labels for sidebar navigation items
  * Uses labelKey to get text from accessibility-texts.json based on user's textDetail preference
- * 
+ *
  * @example
  * ```tsx
  * <Sidebar.Item href="/dashboard">
@@ -26,5 +26,4 @@ export function SidebarLabel({ labelKey }: SidebarLabelProps) {
   return <span>{getText(labelKey)}</span>;
 }
 
-SidebarLabel.displayName = "Sidebar.Label";
-
+SidebarLabel.displayName = 'Sidebar.Label';

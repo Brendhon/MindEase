@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { CardHeader } from "@/components/ui/card/card-header";
-import { CardTitle } from "@/components/ui/card/card-title";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { TaskCardHeaderProps } from "@/models/task-card-props";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./task-card-styles";
+import { CardHeader } from '@/components/ui/card/card-header';
+import { CardTitle } from '@/components/ui/card/card-title';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import type { TaskCardHeaderProps } from '@/models/task-card-props';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './task-card-styles';
 
 /**
  * TaskCardHeader Component - MindEase
@@ -15,7 +15,7 @@ import { styles } from "./task-card-styles";
  */
 export function TaskCardHeader({
   task,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskCardHeaderProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
@@ -24,11 +24,11 @@ export function TaskCardHeader({
   const statusLabel = useMemo(() => {
     switch (task.status) {
       case 0:
-        return getText("tasks_status_todo");
+        return getText('tasks_status_todo');
       case 1:
-        return getText("tasks_status_in_progress");
+        return getText('tasks_status_in_progress');
       default:
-        return getText("tasks_status_done");
+        return getText('tasks_status_done');
     }
   }, [task.status, getText]);
 
@@ -60,4 +60,4 @@ export function TaskCardHeader({
   );
 }
 
-TaskCardHeader.displayName = "TaskCardHeader";
+TaskCardHeader.displayName = 'TaskCardHeader';

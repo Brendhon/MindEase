@@ -3,7 +3,7 @@
  * Reusable interfaces for cognitive alert components
  */
 
-import { BaseComponentProps } from "@/models/base";
+import { BaseComponentProps } from '@/models/base';
 
 /**
  * Base props for cognitive alert components
@@ -12,7 +12,7 @@ import { BaseComponentProps } from "@/models/base";
 export interface CognitiveAlertProps extends BaseComponentProps {
   /** Whether alert is visible */
   isVisible: boolean;
-  
+
   /** Callback when alert is dismissed */
   onDismiss: () => void;
 }

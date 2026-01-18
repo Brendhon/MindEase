@@ -1,6 +1,6 @@
-import { Task } from "@/models/task";
-import { getTasksCollectionPath } from "@/utils/firestore/paths";
-import { firestoreService } from "../firestore";
+import { Task } from '@/models/task';
+import { getTasksCollectionPath } from '@/utils/firestore/paths';
+import { firestoreService } from '../firestore';
 
 /**
  * Tasks Service - MindEase
@@ -9,8 +9,15 @@ import { firestoreService } from "../firestore";
 export interface TasksService {
   getTasks: (userId: string) => Promise<Task[]>;
   getTask: (userId: string, taskId: string) => Promise<Task | null>;
-  createTask: (userId: string, task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">) => Promise<Task>;
-  updateTask: (userId: string, taskId: string, updates: Partial<Omit<Task, "id" | "userId">>) => Promise<Task>;
+  createTask: (
+    userId: string,
+    task: Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
+  ) => Promise<Task>;
+  updateTask: (
+    userId: string,
+    taskId: string,
+    updates: Partial<Omit<Task, 'id' | 'userId'>>
+  ) => Promise<Task>;
   deleteTask: (userId: string, taskId: string) => Promise<void>;
   deleteAllTasks: (userId: string) => Promise<void>;
 }
@@ -36,16 +43,19 @@ export const tasksService: TasksService = {
    */
   createTask: async (
     userId: string,
-    task: Omit<Task, "id" | "userId" | "createdAt" | "updatedAt">
+    task: Omit<Task, 'id' | 'userId' | 'createdAt' | 'updatedAt'>
   ): Promise<Task> => {
-    const taskData: Omit<Task, "id"> = {
+    const taskData: Omit<Task, 'id'> = {
       ...task,
       status: task.status ?? 0, // Default to 0 (To Do) if not provided
       userId,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    return firestoreService.createDocument<Task>(getTasksCollectionPath(userId), taskData);
+    return firestoreService.createDocument<Task>(
+      getTasksCollectionPath(userId),
+      taskData
+    );
   },
 
   /**
@@ -54,14 +64,18 @@ export const tasksService: TasksService = {
   updateTask: async (
     userId: string,
     taskId: string,
-    updates: Partial<Omit<Task, "id" | "userId">>
+    updates: Partial<Omit<Task, 'id' | 'userId'>>
   ): Promise<Task> => {
     const updatedData = {
       ...updates,
       updatedAt: new Date(),
     };
     const collectionPath = getTasksCollectionPath(userId);
-    return firestoreService.updateDocument<Task>(collectionPath, taskId, updatedData);
+    return firestoreService.updateDocument<Task>(
+      collectionPath,
+      taskId,
+      updatedData
+    );
   },
 
   /**

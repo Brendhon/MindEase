@@ -1,11 +1,21 @@
-"use client";
+'use client';
 
-import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
-import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useTasks } from "@/hooks/tasks";
-import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from "react";
-import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
+import {
+  useMissingBreakAlert,
+  useProlongedNavigationAlert,
+} from '@/hooks/cognitive-alerts';
+import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useTasks } from '@/hooks/tasks';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  startTransition,
+} from 'react';
+import { BreakSessionCompleteDialog } from './break-session-complete-dialog';
 
 /**
  * BreakSessionCompleteDialogWrapper Component - MindEase
@@ -31,8 +41,8 @@ export function BreakSessionCompleteDialogWrapper() {
 
     // Detect when break timer completes: was running, now breakEnded
     if (
-      prev.breakTimerState === "running" &&
-      current.breakTimerState === "breakEnded"
+      prev.breakTimerState === 'running' &&
+      current.breakTimerState === 'breakEnded'
     ) {
       // Show dialog when break completes
       // Use startTransition to avoid cascading renders
@@ -42,7 +52,7 @@ export function BreakSessionCompleteDialogWrapper() {
     }
 
     // Hide dialog when break timer is fully stopped (idle)
-    if (current.breakTimerState === "idle") {
+    if (current.breakTimerState === 'idle') {
       startTransition(() => {
         setShowBreakCompleteDialog(false);
       });
@@ -55,7 +65,7 @@ export function BreakSessionCompleteDialogWrapper() {
   const handleStartFocus = useCallback(() => {
     // Stop break timer
     stopBreak();
-    
+
     // Start new focus session if there's an active task in break timer
     if (breakTimerState.activeTaskId) {
       startTimer(breakTimerState.activeTaskId);
@@ -64,7 +74,13 @@ export function BreakSessionCompleteDialogWrapper() {
     }
     // Record that break was completed (reset counter)
     recordBreakComplete();
-  }, [stopBreak, breakTimerState.activeTaskId, startTimer, recordBreakComplete, recordUserAction]);
+  }, [
+    stopBreak,
+    breakTimerState.activeTaskId,
+    startTimer,
+    recordBreakComplete,
+    recordUserAction,
+  ]);
 
   const handleEndFocus = useCallback(async () => {
     // Return task to To Do when focus is stopped
@@ -73,7 +89,7 @@ export function BreakSessionCompleteDialogWrapper() {
         // Update task status to To Do (0) - automatically syncs with Firestore and updates UI
         await updateTaskStatus(breakTimerState.activeTaskId, 0);
       } catch (error) {
-        console.error("Error updating task status:", error);
+        console.error('Error updating task status:', error);
       }
     }
     // Stop break timer and focus timer
@@ -81,15 +97,27 @@ export function BreakSessionCompleteDialogWrapper() {
     stopTimer();
     // Record that focus was ended (reset counter - cycle was interrupted)
     recordTaskFinished();
-  }, [stopBreak, stopTimer, breakTimerState.activeTaskId, updateTaskStatus, recordTaskFinished]);
+  }, [
+    stopBreak,
+    stopTimer,
+    breakTimerState.activeTaskId,
+    updateTaskStatus,
+    recordTaskFinished,
+  ]);
 
   const handleCloseBreakDialog = useCallback(() => {
     setShowBreakCompleteDialog(false);
   }, []);
 
   // Get durations in minutes
-  const breakDuration = useMemo(() => settings.shortBreakDuration || 5, [settings.shortBreakDuration]);
-  const focusDuration = useMemo(() => settings.focusDuration || 25, [settings.focusDuration]);
+  const breakDuration = useMemo(
+    () => settings.shortBreakDuration || 5,
+    [settings.shortBreakDuration]
+  );
+  const focusDuration = useMemo(
+    () => settings.focusDuration || 25,
+    [settings.focusDuration]
+  );
 
   return (
     <BreakSessionCompleteDialog
@@ -103,4 +131,5 @@ export function BreakSessionCompleteDialogWrapper() {
   );
 }
 
-BreakSessionCompleteDialogWrapper.displayName = "BreakSessionCompleteDialogWrapper";
+BreakSessionCompleteDialogWrapper.displayName =
+  'BreakSessionCompleteDialogWrapper';

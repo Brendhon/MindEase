@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import type { Subtask } from "@/models/task";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { TaskChecklistItem } from "./task-checklist-item";
-import { TaskChecklistProgress } from "./task-checklist-progress";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import type { Subtask } from '@/models/task';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { TaskChecklistItem } from './task-checklist-item';
+import { TaskChecklistProgress } from './task-checklist-progress';
 
 /**
  * TaskChecklist Component - MindEase
@@ -32,7 +32,7 @@ export function TaskChecklist({
   onToggleSubtask,
   interactive = false,
   isInFocus = false,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskChecklistProps) {
   const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
@@ -59,11 +59,11 @@ export function TaskChecklist({
   }
 
   return (
-    <div className={containerClasses} data-testid={testId || "task-checklist"}>
+    <div className={containerClasses} data-testid={testId || 'task-checklist'}>
       <TaskChecklistProgress
         completedCount={completedCount}
         totalCount={totalCount}
-        data-testid={`${testId || "task-checklist"}-progress`}
+        data-testid={`${testId || 'task-checklist'}-progress`}
       />
       <ul className={styles.list} role="list">
         {sortedSubtasks.map((subtask) => {
@@ -73,24 +73,27 @@ export function TaskChecklist({
               subtask={subtask}
               interactive={interactive}
               onToggle={onToggleSubtask}
-              data-testid={`${testId || "task-checklist"}-item-${subtask.id}`}
+              data-testid={`${testId || 'task-checklist'}-item-${subtask.id}`}
             />
           );
         })}
       </ul>
       {!isInFocus && (
-        <p className={cn(styles.hint, fontSizeClasses.sm)} data-testid={`${testId || "task-checklist"}-hint`}>
-          {getText("tasks_subtask_focus_required_hint_text")}
+        <p
+          className={cn(styles.hint, fontSizeClasses.sm)}
+          data-testid={`${testId || 'task-checklist'}-hint`}
+        >
+          {getText('tasks_subtask_focus_required_hint_text')}
         </p>
       )}
     </div>
   );
 }
 
-TaskChecklist.displayName = "TaskChecklist";
+TaskChecklist.displayName = 'TaskChecklist';
 
 const styles = {
-  container: "flex flex-col",
-  list: "flex flex-col list-none p-0 m-0 gap-2",
-  hint: "text-text-secondary italic mt-2",
+  container: 'flex flex-col',
+  list: 'flex flex-col list-none p-0 m-0 gap-2',
+  hint: 'text-text-secondary italic mt-2',
 } as const;

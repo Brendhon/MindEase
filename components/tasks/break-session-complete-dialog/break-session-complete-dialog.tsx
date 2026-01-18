@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
-import { useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { Play, X } from "lucide-react";
-import { useMemo } from "react";
+import {
+  SessionCompleteDialog,
+  type SessionAction,
+} from '@/components/tasks/session-complete-dialog';
+import { useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { Play, X } from 'lucide-react';
+import { useMemo } from 'react';
 
 /**
  * BreakSessionCompleteDialog Component - MindEase
@@ -38,20 +41,28 @@ export function BreakSessionCompleteDialog({
   focusDuration,
   onStartFocus,
   onEndFocus,
-  "data-testid": testId,
+  'data-testid': testId,
 }: BreakSessionCompleteDialogProps) {
   const { getTextWithReplace, getText } = useTextDetail();
 
   // Get localized texts with placeholders replaced
-  const titleText = getText("tasks_break_session_complete_title");
-  const messageText = getTextWithReplace("tasks_break_session_complete_message", { minutes: breakDuration.toString() });
-  const questionText = getText("tasks_break_session_complete");
+  const titleText = getText('tasks_break_session_complete_title');
+  const messageText = getTextWithReplace(
+    'tasks_break_session_complete_message',
+    { minutes: breakDuration.toString() }
+  );
+  const questionText = getText('tasks_break_session_complete');
 
-  const startFocusText = getTextWithReplace("tasks_break_session_start_focus", { minutes: focusDuration.toString() });
-  const startFocusAria = getTextWithReplace("tasks_break_session_start_focus_aria", { minutes: focusDuration.toString() });
+  const startFocusText = getTextWithReplace('tasks_break_session_start_focus', {
+    minutes: focusDuration.toString(),
+  });
+  const startFocusAria = getTextWithReplace(
+    'tasks_break_session_start_focus_aria',
+    { minutes: focusDuration.toString() }
+  );
 
-  const endFocusText = getText("tasks_break_session_end_focus");
-  const endFocusAria = getText("tasks_break_session_end_focus_aria");
+  const endFocusText = getText('tasks_break_session_end_focus');
+  const endFocusAria = getText('tasks_break_session_end_focus_aria');
 
   // Build actions array
   const actions = useMemo<SessionAction[]>(() => {
@@ -59,8 +70,8 @@ export function BreakSessionCompleteDialog({
 
     if (onStartFocus) {
       actionList.push({
-        id: "start-focus",
-        variant: "primary",
+        id: 'start-focus',
+        variant: 'primary',
         icon: Play,
         text: startFocusText,
         ariaLabel: startFocusAria,
@@ -68,15 +79,15 @@ export function BreakSessionCompleteDialog({
           onStartFocus();
           onClose();
         },
-        testId: "break-session-complete-start-focus",
+        testId: 'break-session-complete-start-focus',
         condition: true,
       });
     }
 
     if (onEndFocus) {
       actionList.push({
-        id: "end-focus",
-        variant: "secondary",
+        id: 'end-focus',
+        variant: 'secondary',
         icon: X,
         text: endFocusText,
         ariaLabel: endFocusAria,
@@ -84,13 +95,21 @@ export function BreakSessionCompleteDialog({
           onEndFocus();
           onClose();
         },
-        testId: "break-session-complete-end-focus",
+        testId: 'break-session-complete-end-focus',
         condition: true,
       });
     }
 
     return actionList;
-  }, [onStartFocus, onEndFocus, onClose, startFocusText, startFocusAria, endFocusText, endFocusAria]);
+  }, [
+    onStartFocus,
+    onEndFocus,
+    onClose,
+    startFocusText,
+    startFocusAria,
+    endFocusText,
+    endFocusAria,
+  ]);
 
   return (
     <SessionCompleteDialog
@@ -100,9 +119,9 @@ export function BreakSessionCompleteDialog({
       message={messageText}
       question={questionText}
       actions={actions}
-      data-testid={testId || "break-session-complete-dialog"}
+      data-testid={testId || 'break-session-complete-dialog'}
     />
   );
 }
 
-BreakSessionCompleteDialog.displayName = "BreakSessionCompleteDialog";
+BreakSessionCompleteDialog.displayName = 'BreakSessionCompleteDialog';

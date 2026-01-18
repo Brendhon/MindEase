@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
 
 /**
  * ProfileLoading Component - MindEase
@@ -12,8 +12,9 @@ import { useMemo } from "react";
  */
 export interface ProfileLoadingProps extends BaseComponentProps {}
 
-export function ProfileLoading({ "data-testid": testId }: ProfileLoadingProps) {
-  const { fontSizeClasses, animationClasses, spacingClasses } = useAccessibilityClasses();
+export function ProfileLoading({ 'data-testid': testId }: ProfileLoadingProps) {
+  const { fontSizeClasses, animationClasses, spacingClasses } =
+    useAccessibilityClasses();
   const { getText } = useTextDetail();
 
   const containerClasses = useMemo(
@@ -32,17 +33,23 @@ export function ProfileLoading({ "data-testid": testId }: ProfileLoadingProps) {
   );
 
   return (
-    <div className={containerClasses} data-testid={testId || "profile-loading-container"}>
+    <div
+      className={containerClasses}
+      data-testid={testId || 'profile-loading-container'}
+    >
       <div className={mainClasses}>
-        <p className={loadingClasses} data-testid={testId ? `${testId}-text` : "profile-loading"}>
-          {getText("profile_loading")}
+        <p
+          className={loadingClasses}
+          data-testid={testId ? `${testId}-text` : 'profile-loading'}
+        >
+          {getText('profile_loading')}
         </p>
       </div>
     </div>
   );
 }
 
-ProfileLoading.displayName = "ProfileLoading";
+ProfileLoading.displayName = 'ProfileLoading';
 
 /**
  * ProfileLoading Styles - MindEase
@@ -50,8 +57,7 @@ ProfileLoading.displayName = "ProfileLoading";
  */
 
 export const styles = {
-  container: "flex min-h-full w-full bg-bg-secondary",
-  main: "flex flex-col w-full max-w-4xl mx-auto",
-  loading: "text-text-secondary text-center",
+  container: 'flex min-h-full w-full bg-bg-secondary',
+  main: 'flex flex-col w-full max-w-4xl mx-auto',
+  loading: 'text-text-secondary text-center',
 } as const;
-

@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { Label, Radio } from "@headlessui/react";
-import { useMemo } from "react";
-import { styles } from "./radio-group-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { Label, Radio } from '@headlessui/react';
+import { useMemo } from 'react';
+import { styles } from './radio-group-styles';
 
 /**
  * RadioGroup.Option - Individual radio option
- * 
+ *
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected}>
@@ -24,15 +24,20 @@ import { styles } from "./radio-group-styles";
 export interface RadioOptionProps extends BaseComponentProps {
   /** Option value */
   value: string;
-  
+
   /** Option label */
   label: string;
-  
+
   /** Optional description */
   description?: string;
 }
 
-export function RadioOption({ value, label, description, "data-testid": testId }: RadioOptionProps) {
+export function RadioOption({
+  value,
+  label,
+  description,
+  'data-testid': testId,
+}: RadioOptionProps) {
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
   const labelClasses = useMemo(
@@ -58,7 +63,7 @@ export function RadioOption({ value, label, description, "data-testid": testId }
           optionClasses,
           checked ? styles.optionChecked : styles.optionUnchecked,
           disabled && styles.optionDisabled,
-          "focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2"
+          'focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2'
         )
       }
       data-testid={testId || `radio-option-${value}`}
@@ -70,9 +75,7 @@ export function RadioOption({ value, label, description, "data-testid": testId }
               {checked && <div className={styles.radioDot} />}
             </div>
             <div className={styles.optionText}>
-              <Label className={labelClasses}>
-                {label}
-              </Label>
+              <Label className={labelClasses}>{label}</Label>
               {description && (
                 <p className={descriptionClasses}>{description}</p>
               )}
@@ -84,4 +87,4 @@ export function RadioOption({ value, label, description, "data-testid": testId }
   );
 }
 
-RadioOption.displayName = "RadioGroup.Option";
+RadioOption.displayName = 'RadioGroup.Option';

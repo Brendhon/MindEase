@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { MissingBreakAlertContext } from "@/contexts/cognitive-alerts";
-import { useCommonAlertState } from "./create-alert-provider";
-import { useCallback, useState } from "react";
+import { MissingBreakAlertContext } from '@/contexts/cognitive-alerts';
+import { useCommonAlertState } from './create-alert-provider';
+import { useCallback, useState } from 'react';
 
 interface MissingBreakAlertProviderProps {
   children: React.ReactNode;
@@ -10,9 +10,9 @@ interface MissingBreakAlertProviderProps {
 
 /**
  * Missing Break Alert Provider - MindEase
- * 
+ *
  * Provides missing break alert context to children components.
- * 
+ *
  * This provider manages ONLY basic state (session counters, alert visibility).
  * All business logic is handled by the useMissingBreakAlert hook.
  */
@@ -27,7 +27,8 @@ export function MissingBreakAlertProvider({
 
   // Setters for additional state
   const setConsecutiveFocusSessionsState = useCallback(
-    (count: number | ((prev: number) => number)) => setConsecutiveFocusSessions(count),
+    (count: number | ((prev: number) => number)) =>
+      setConsecutiveFocusSessions(count),
     []
   );
 

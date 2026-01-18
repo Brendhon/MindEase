@@ -1,17 +1,22 @@
-"use client";
+'use client';
 
-import { useFeedbackContext } from "@/contexts/feedback";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import type { FeedbackType } from "@/hooks/feedback";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import { cn } from "@/utils/ui";
-import { Transition } from "@headlessui/react";
-import { Fragment, useEffect, useMemo } from "react";
-import { ToastDismiss } from "./toast-dismiss";
-import { ToastIcon } from "./toast-icon";
-import { ToastMessage } from "./toast-message";
-import { getContrastClasses, getTransitionClasses, getTypeClasses, styles } from "./toast-styles";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useFeedbackContext } from '@/contexts/feedback';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import type { FeedbackType } from '@/hooks/feedback';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { cn } from '@/utils/ui';
+import { Transition } from '@headlessui/react';
+import { Fragment, useEffect, useMemo } from 'react';
+import { ToastDismiss } from './toast-dismiss';
+import { ToastIcon } from './toast-icon';
+import { ToastMessage } from './toast-message';
+import {
+  getContrastClasses,
+  getTransitionClasses,
+  getTypeClasses,
+  styles,
+} from './toast-styles';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
 
 interface ToastProps {
   id: string;
@@ -25,15 +30,14 @@ interface ToastProps {
  */
 function getDismissAriaLabel(type: FeedbackType): string {
   const labels = {
-    success: "Dismiss Success message",
-    error: "Dismiss Error message",
-    warning: "Dismiss Warning message",
-    info: "Dismiss Information message",
+    success: 'Dismiss Success message',
+    error: 'Dismiss Error message',
+    warning: 'Dismiss Warning message',
+    info: 'Dismiss Information message',
   };
 
   return labels[type];
 }
-
 
 /**
  * Toast container that renders all active toasts
@@ -96,10 +100,7 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
   );
 
   // Get type-specific colors (background and text)
-  const typeClasses = useMemo(
-    () => getTypeClasses(type),
-    [type]
-  );
+  const typeClasses = useMemo(() => getTypeClasses(type), [type]);
 
   // Generate transition classes with toast-specific logic
   const transitionClass = useMemo(
@@ -117,7 +118,7 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
   const handleDismiss = () => removeFeedback(id);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Escape") handleDismiss();
+    if (e.key === 'Escape') handleDismiss();
   };
 
   return (
@@ -134,7 +135,7 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
     >
       <div
         role="alert"
-        aria-live={type === "error" ? "assertive" : "polite"}
+        aria-live={type === 'error' ? 'assertive' : 'polite'}
         aria-atomic="true"
         className={cn(
           styles.toastCard,
@@ -163,7 +164,7 @@ function ToastRoot({ id, type, messageKey, duration }: ToastProps) {
   );
 }
 
-ToastRoot.displayName = "Toast";
+ToastRoot.displayName = 'Toast';
 
 // Compose Toast with subcomponents (for testing and composition)
 export const Toast = Object.assign(ToastRoot, {
@@ -171,4 +172,3 @@ export const Toast = Object.assign(ToastRoot, {
   Message: ToastMessage,
   Dismiss: ToastDismiss,
 });
-

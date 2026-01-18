@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { FeedbackContext } from "@/contexts/feedback";
-import { FeedbackMessage } from "@/hooks/feedback";
-import { useCallback, useState } from "react";
+import { FeedbackContext } from '@/contexts/feedback';
+import { FeedbackMessage } from '@/hooks/feedback';
+import { useCallback, useState } from 'react';
 
 interface FeedbackProviderProps {
   children: React.ReactNode;

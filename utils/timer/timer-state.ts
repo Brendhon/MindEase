@@ -15,7 +15,7 @@ export interface BaseTimerState {
 
 /**
  * Create initial timer state (idle state)
- * 
+ *
  * @param defaultDuration - Default duration in seconds
  * @param stateField - Field name for the state type (e.g., "timerState", "breakTimerState")
  * @param idleState - Idle state value (e.g., "idle")
@@ -36,7 +36,7 @@ export function createInitialTimerState<T extends BaseTimerState>(
 
 /**
  * Create running timer state
- * 
+ *
  * @param duration - Duration in seconds
  * @param stateField - Field name for the state type
  * @param runningState - Running state value (e.g., "running")
@@ -59,7 +59,7 @@ export function createRunningTimerState<T extends BaseTimerState>(
 
 /**
  * Create idle timer state
- * 
+ *
  * @param defaultDuration - Default duration in seconds
  * @param stateField - Field name for the state type
  * @param idleState - Idle state value (e.g., "idle")
@@ -81,7 +81,7 @@ export function createIdleTimerState<T extends BaseTimerState>(
 /**
  * Helper to create a completed state preserving activeTaskId
  * Used when timer completes and we need to preserve taskId for dialog detection
- * 
+ *
  * @param activeTaskId - Task ID to preserve (can be null)
  * @param defaultDuration - Default duration in seconds
  * @param stateField - Field name for the state type (e.g., "timerState", "breakTimerState")
@@ -104,7 +104,7 @@ export function createCompletedTimerState<T extends BaseTimerState>(
 
 /**
  * Create break ended state (specific to break timer)
- * 
+ *
  * @param defaultDuration - Default duration in seconds (not used, but kept for consistency)
  * @param stateField - Field name for the state type
  * @param breakEndedState - Break ended state value (e.g., "breakEnded")

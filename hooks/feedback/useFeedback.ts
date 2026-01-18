@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useFeedbackContext } from "@/contexts/feedback";
-import { generateRandomUUID } from "@/utils/uuid";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import { useCallback } from "react";
+import { useFeedbackContext } from '@/contexts/feedback';
+import { generateRandomUUID } from '@/utils/uuid';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { useCallback } from 'react';
 
 /**
  * Feedback types for semantic meaning
  */
-export type FeedbackType = "success" | "error" | "warning" | "info";
+export type FeedbackType = 'success' | 'error' | 'warning' | 'info';
 
 /**
  * Feedback message configuration
@@ -65,28 +65,27 @@ export function useFeedback() {
     showFeedback,
     success: useCallback(
       (messageKey: AccessibilityTextKey, duration?: number) => {
-        showFeedback({ type: "success", messageKey, duration });
+        showFeedback({ type: 'success', messageKey, duration });
       },
       [showFeedback]
     ),
     error: useCallback(
       (messageKey: AccessibilityTextKey, duration?: number) => {
-        showFeedback({ type: "error", messageKey, duration });
+        showFeedback({ type: 'error', messageKey, duration });
       },
       [showFeedback]
     ),
     warning: useCallback(
       (messageKey: AccessibilityTextKey, duration?: number) => {
-        showFeedback({ type: "warning", messageKey, duration });
+        showFeedback({ type: 'warning', messageKey, duration });
       },
       [showFeedback]
     ),
     info: useCallback(
       (messageKey: AccessibilityTextKey, duration?: number) => {
-        showFeedback({ type: "info", messageKey, duration });
+        showFeedback({ type: 'info', messageKey, duration });
       },
       [showFeedback]
     ),
   };
 }
-

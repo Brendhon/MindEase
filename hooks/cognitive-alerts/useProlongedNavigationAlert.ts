@@ -1,38 +1,38 @@
-import { useProlongedNavigationAlertContext } from "@/contexts/cognitive-alerts";
-import { PROLONGED_NAVIGATION_THRESHOLD_MS } from "@/utils/cognitive-alerts";
-import { useCallback, useEffect } from "react";
-import { useDismissExpiry } from "./useDismissExpiry";
-import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
+import { useProlongedNavigationAlertContext } from '@/contexts/cognitive-alerts';
+import { PROLONGED_NAVIGATION_THRESHOLD_MS } from '@/utils/cognitive-alerts';
+import { useCallback, useEffect } from 'react';
+import { useDismissExpiry } from './useDismissExpiry';
+import { useBaseAlertDismiss } from './useBaseAlertDismiss';
 
 /**
  * useProlongedNavigationAlert Hook - MindEase
- * 
+ *
  * Centralized hook for managing prolonged navigation alert state and business logic.
- * 
+ *
  * This hook handles:
  * - Tracking time since last user action (subtask completion or focus start)
  * - Detecting navigation without actions
  * - Managing alert visibility based on business rules
  * - Resetting timestamps when actions occur
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * @example
  * ```tsx
  * // Record user action
  * function TaskCard() {
  *   const { recordUserAction } = useProlongedNavigationAlert();
- *   
+ *
  *   const handleStartFocus = () => {
  *     recordUserAction();
  *     // ... other logic
  *   };
  * }
- * 
+ *
  * // Check alert visibility
  * function AlertsComponent() {
  *   const { isProlongedNavigationAlertVisible, dismissProlongedNavigationAlert } = useProlongedNavigationAlert();
- *   
+ *
  *   return (
  *     <Alert
  *       isVisible={isProlongedNavigationAlertVisible}
@@ -41,7 +41,7 @@ import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
  *   );
  * }
  * ```
- * 
+ *
  * @throws Error if used outside ProlongedNavigationAlertProvider
  */
 export function useProlongedNavigationAlert() {

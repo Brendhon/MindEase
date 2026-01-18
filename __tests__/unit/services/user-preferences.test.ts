@@ -1,6 +1,6 @@
 import {
   createUserPreferencesDocument,
-  userPreferencesDocumentMocks
+  userPreferencesDocumentMocks,
 } from '@/__tests__/__mocks__/user-preferences';
 import type { UserPreferences } from '@/models/user-preferences';
 import { DEFAULT_ACCESSIBILITY_SETTINGS } from '@/models/user-preferences';
@@ -27,24 +27,36 @@ const setupGetDocumentSuccess = <T>(data: T | null) => {
   vi.mocked(firestoreService.getDocument).mockResolvedValue(data);
 };
 
-const setupGetDocumentFailure = (errorMessage: string = MOCK_FIRESTORE_ERROR) => {
-  vi.mocked(firestoreService.getDocument).mockRejectedValue(new Error(errorMessage));
+const setupGetDocumentFailure = (
+  errorMessage: string = MOCK_FIRESTORE_ERROR
+) => {
+  vi.mocked(firestoreService.getDocument).mockRejectedValue(
+    new Error(errorMessage)
+  );
 };
 
 const setupSetDocumentSuccess = <T extends { id: string }>(data: T) => {
   (vi.mocked(firestoreService.setDocument) as any).mockResolvedValue(data);
 };
 
-const setupSetDocumentFailure = (errorMessage: string = MOCK_FIRESTORE_ERROR) => {
-  vi.mocked(firestoreService.setDocument).mockRejectedValue(new Error(errorMessage));
+const setupSetDocumentFailure = (
+  errorMessage: string = MOCK_FIRESTORE_ERROR
+) => {
+  vi.mocked(firestoreService.setDocument).mockRejectedValue(
+    new Error(errorMessage)
+  );
 };
 
 const setupDeleteDocumentSuccess = () => {
   vi.mocked(firestoreService.deleteDocument).mockResolvedValue(undefined);
 };
 
-const setupDeleteDocumentFailure = (errorMessage: string = MOCK_FIRESTORE_ERROR) => {
-  vi.mocked(firestoreService.deleteDocument).mockRejectedValue(new Error(errorMessage));
+const setupDeleteDocumentFailure = (
+  errorMessage: string = MOCK_FIRESTORE_ERROR
+) => {
+  vi.mocked(firestoreService.deleteDocument).mockRejectedValue(
+    new Error(errorMessage)
+  );
 };
 
 describe('userPreferencesService', () => {
@@ -69,7 +81,8 @@ describe('userPreferencesService', () => {
 
       setupGetDocumentSuccess(mockPreferences);
 
-      const result = await userPreferencesService.getUserPreferences(MOCK_USER_ID);
+      const result =
+        await userPreferencesService.getUserPreferences(MOCK_USER_ID);
 
       expect(result).toEqual({
         contrast: 'high',
@@ -90,7 +103,8 @@ describe('userPreferencesService', () => {
     it('should return default settings when preferences do not exist', async () => {
       setupGetDocumentSuccess(null);
 
-      const result = await userPreferencesService.getUserPreferences(MOCK_USER_ID);
+      const result =
+        await userPreferencesService.getUserPreferences(MOCK_USER_ID);
 
       expect(result).toEqual(DEFAULT_ACCESSIBILITY_SETTINGS);
       expect(firestoreService.getDocument).toHaveBeenCalledWith(
@@ -102,7 +116,8 @@ describe('userPreferencesService', () => {
     it('should return default settings on error', async () => {
       setupGetDocumentFailure();
 
-      const result = await userPreferencesService.getUserPreferences(MOCK_USER_ID);
+      const result =
+        await userPreferencesService.getUserPreferences(MOCK_USER_ID);
 
       expect(result).toEqual(DEFAULT_ACCESSIBILITY_SETTINGS);
     });
@@ -112,7 +127,8 @@ describe('userPreferencesService', () => {
 
       setupGetDocumentSuccess(mockDocument);
 
-      const result = await userPreferencesService.getUserPreferences(MOCK_USER_ID);
+      const result =
+        await userPreferencesService.getUserPreferences(MOCK_USER_ID);
 
       expect(result).not.toHaveProperty('id');
       expect(result).not.toHaveProperty('userId');
@@ -142,7 +158,10 @@ describe('userPreferencesService', () => {
       setupGetDocumentSuccess(null); // No existing prefs
       setupSetDocumentSuccess(updatedDocument);
 
-      const result = await userPreferencesService.updateUserPreferences(MOCK_USER_ID, updates);
+      const result = await userPreferencesService.updateUserPreferences(
+        MOCK_USER_ID,
+        updates
+      );
 
       expect(result).toEqual(expectedUpdated);
       expect(firestoreService.setDocument).toHaveBeenCalledWith(
@@ -182,7 +201,10 @@ describe('userPreferencesService', () => {
       setupGetDocumentSuccess(existingPrefs);
       setupSetDocumentSuccess(updatedDocument);
 
-      const result = await userPreferencesService.updateUserPreferences(MOCK_USER_ID, updates);
+      const result = await userPreferencesService.updateUserPreferences(
+        MOCK_USER_ID,
+        updates
+      );
 
       expect(result.contrast).toBe('high');
       expect(result.spacing).toBe('normal'); // Preserved from existing
@@ -193,7 +215,9 @@ describe('userPreferencesService', () => {
       setupSetDocumentFailure();
 
       await expect(
-        userPreferencesService.updateUserPreferences(MOCK_USER_ID, { contrast: 'high' })
+        userPreferencesService.updateUserPreferences(MOCK_USER_ID, {
+          contrast: 'high',
+        })
       ).rejects.toThrow(MOCK_FIRESTORE_ERROR);
     });
   });
@@ -209,7 +233,8 @@ describe('userPreferencesService', () => {
       setupGetDocumentSuccess(null);
       setupSetDocumentSuccess(resetDocument);
 
-      const result = await userPreferencesService.resetUserPreferences(MOCK_USER_ID);
+      const result =
+        await userPreferencesService.resetUserPreferences(MOCK_USER_ID);
 
       expect(result).toEqual(DEFAULT_ACCESSIBILITY_SETTINGS);
       expect(firestoreService.setDocument).toHaveBeenCalledWith(
@@ -227,9 +252,9 @@ describe('userPreferencesService', () => {
       setupGetDocumentSuccess(null);
       setupSetDocumentFailure();
 
-      await expect(userPreferencesService.resetUserPreferences(MOCK_USER_ID)).rejects.toThrow(
-        MOCK_FIRESTORE_ERROR
-      );
+      await expect(
+        userPreferencesService.resetUserPreferences(MOCK_USER_ID)
+      ).rejects.toThrow(MOCK_FIRESTORE_ERROR);
     });
   });
 
@@ -248,9 +273,9 @@ describe('userPreferencesService', () => {
     it('should throw error on Firestore failure', async () => {
       setupDeleteDocumentFailure();
 
-      await expect(userPreferencesService.deleteUserPreferences(MOCK_USER_ID)).rejects.toThrow(
-        MOCK_FIRESTORE_ERROR
-      );
+      await expect(
+        userPreferencesService.deleteUserPreferences(MOCK_USER_ID)
+      ).rejects.toThrow(MOCK_FIRESTORE_ERROR);
     });
   });
 });

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./switch-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './switch-styles';
 
 /**
  * Switch.Description - Description subcomponent
- * 
+ *
  * @example
  * ```tsx
  * <Switch checked={enabled} onChange={setEnabled}>
@@ -21,7 +21,7 @@ import { styles } from "./switch-styles";
 export interface SwitchDescriptionProps extends BaseComponentProps {
   /** Description text */
   children: string;
-  
+
   /** HTML id attribute for accessibility */
   id?: string;
 }
@@ -29,7 +29,7 @@ export interface SwitchDescriptionProps extends BaseComponentProps {
 export function SwitchDescription({
   children,
   id,
-  "data-testid": testId,
+  'data-testid': testId,
 }: SwitchDescriptionProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -42,11 +42,11 @@ export function SwitchDescription({
     <p
       id={id}
       className={descriptionClasses}
-      data-testid={testId || "switch-description"}
+      data-testid={testId || 'switch-description'}
     >
       {children}
     </p>
   );
 }
 
-SwitchDescription.displayName = "Switch.Description";
+SwitchDescription.displayName = 'Switch.Description';

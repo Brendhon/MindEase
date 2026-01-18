@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { TaskCardFocusActionsProps } from "@/models/task-card-props";
-import { AccessibilityTextKey } from "@/utils/accessibility";
-import { Check, LucideIcon, Play, Square } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { useTextDetail } from '@/hooks/accessibility';
+import type { TaskCardFocusActionsProps } from '@/models/task-card-props';
+import { AccessibilityTextKey } from '@/utils/accessibility';
+import { Check, LucideIcon, Play, Square } from 'lucide-react';
 
 interface StopButtonProps {
   onStop: () => void;
@@ -28,13 +28,11 @@ const StopButton = ({ onStop, testId }: StopButtonProps) => {
       variant="secondary"
       size="sm"
       onClick={onStop}
-      aria-label={getText("tasks_action_stop_aria")}
+      aria-label={getText('tasks_action_stop_aria')}
       data-testid={testId}
     >
       <Button.Icon icon={Square} position="left" />
-      <Button.Text>
-        {getText("tasks_action_stop")}
-      </Button.Text>
+      <Button.Text>{getText('tasks_action_stop')}</Button.Text>
     </Button>
   );
 };
@@ -60,22 +58,19 @@ const PrimaryButton = ({
       disabled={disabled}
     >
       <Button.Icon icon={icon} position="left" />
-      <Button.Text>
-        {getText(textKey)}
-      </Button.Text>
+      <Button.Text>{getText(textKey)}</Button.Text>
     </Button>
   );
 };
 
-
 /**
  * TaskCardFocusActions Component - MindEase
  * Displays focus-related action buttons (start, stop, complete)
- * 
+ *
  * Note: Pause/resume actions are not available during focus sessions
  * to maintain cognitive accessibility and prevent micro-interruptions.
  * The focus session must complete before offering a break.
- * 
+ *
  * During focus, only essential actions are available:
  * - Stop focus (returns task to To Do)
  * - Complete task (marks as done)
@@ -88,12 +83,15 @@ export function TaskCardFocusActions({
   onStartFocus,
   onStop,
   onComplete,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskCardFocusActionsProps) {
   // During break, show only stop button (end focus)
   if (isBreakRunning) {
     return (
-      <StopButton onStop={onStop} testId={testId || `task-card-stop-break-${task.id}`} />
+      <StopButton
+        onStop={onStop}
+        testId={testId || `task-card-stop-break-${task.id}`}
+      />
     );
   }
 
@@ -101,7 +99,10 @@ export function TaskCardFocusActions({
   if (isRunning) {
     return (
       <>
-        <StopButton onStop={onStop} testId={testId || `task-card-stop-${task.id}`} />
+        <StopButton
+          onStop={onStop}
+          testId={testId || `task-card-stop-${task.id}`}
+        />
         <PrimaryButton
           onClick={onComplete}
           ariaLabel="tasks_action_finish_aria"
@@ -129,4 +130,4 @@ export function TaskCardFocusActions({
   );
 }
 
-TaskCardFocusActions.displayName = "TaskCardFocusActions";
+TaskCardFocusActions.displayName = 'TaskCardFocusActions';

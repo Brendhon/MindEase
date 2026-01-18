@@ -86,7 +86,9 @@ export const WithDescription: Story = {
     children: (
       <>
         <Checkbox.Label>Enable notifications</Checkbox.Label>
-        <Checkbox.Description>Receive email and push notifications</Checkbox.Description>
+        <Checkbox.Description>
+          Receive email and push notifications
+        </Checkbox.Description>
       </>
     ),
   },
@@ -99,7 +101,9 @@ export const WithDescriptionChecked: Story = {
     children: (
       <>
         <Checkbox.Label>Enable dark mode</Checkbox.Label>
-        <Checkbox.Description>Switch to dark theme for better visibility</Checkbox.Description>
+        <Checkbox.Description>
+          Switch to dark theme for better visibility
+        </Checkbox.Description>
       </>
     ),
   },
@@ -129,7 +133,9 @@ export const DisabledWithDescription: Story = {
     children: (
       <>
         <Checkbox.Label>Premium feature</Checkbox.Label>
-        <Checkbox.Description>This feature requires a premium subscription</Checkbox.Description>
+        <Checkbox.Description>
+          This feature requires a premium subscription
+        </Checkbox.Description>
       </>
     ),
   },
@@ -146,7 +152,9 @@ export const Interactive: Story = {
     return (
       <Checkbox checked={checked} onChange={setChecked}>
         <Checkbox.Label>Click me to toggle</Checkbox.Label>
-        <Checkbox.Description>Current state: {checked ? 'checked' : 'unchecked'}</Checkbox.Description>
+        <Checkbox.Description>
+          Current state: {checked ? 'checked' : 'unchecked'}
+        </Checkbox.Description>
       </Checkbox>
     );
   },
@@ -198,11 +206,15 @@ export const AllStates: Story = {
         <div className="flex flex-col gap-3">
           <Checkbox checked={state1} onChange={setState1}>
             <Checkbox.Label>With description</Checkbox.Label>
-            <Checkbox.Description>This is a description text</Checkbox.Description>
+            <Checkbox.Description>
+              This is a description text
+            </Checkbox.Description>
           </Checkbox>
           <Checkbox checked={state2} onChange={setState2}>
             <Checkbox.Label>Checked with description</Checkbox.Label>
-            <Checkbox.Description>This checkbox is checked</Checkbox.Description>
+            <Checkbox.Description>
+              This checkbox is checked
+            </Checkbox.Description>
           </Checkbox>
         </div>
       </div>
@@ -226,9 +238,11 @@ export const AccessibilityShowcase: Story = {
     return (
       <div className="flex gap-6 flex-col p-6">
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Normal Settings
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
               fontSize: 'normal',
@@ -240,7 +254,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>Normal checkbox</Checkbox.Label>
-                <Checkbox.Description>With normal spacing and font size</Checkbox.Description>
+                <Checkbox.Description>
+                  With normal spacing and font size
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Checked state</Checkbox.Label>
@@ -250,9 +266,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            High Contrast
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'high',
               spacing: 'normal',
               fontSize: 'normal',
@@ -264,7 +282,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>High contrast checkbox</Checkbox.Label>
-                <Checkbox.Description>Better visibility with high contrast</Checkbox.Description>
+                <Checkbox.Description>
+                  Better visibility with high contrast
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Checked in high contrast</Checkbox.Label>
@@ -274,9 +294,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Compact Spacing
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'compact',
               fontSize: 'normal',
@@ -288,7 +310,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>Compact spacing</Checkbox.Label>
-                <Checkbox.Description>Less space between elements</Checkbox.Description>
+                <Checkbox.Description>
+                  Less space between elements
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Another checkbox</Checkbox.Label>
@@ -298,9 +322,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Relaxed Spacing
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'relaxed',
               fontSize: 'normal',
@@ -312,7 +338,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>Relaxed spacing</Checkbox.Label>
-                <Checkbox.Description>More space between elements for better readability</Checkbox.Description>
+                <Checkbox.Description>
+                  More space between elements for better readability
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Another checkbox</Checkbox.Label>
@@ -322,9 +350,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Small Font
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
               fontSize: 'small',
@@ -336,7 +366,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>Small font size</Checkbox.Label>
-                <Checkbox.Description>Text rendered with smaller font</Checkbox.Description>
+                <Checkbox.Description>
+                  Text rendered with smaller font
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Checked with small font</Checkbox.Label>
@@ -346,9 +378,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Large Font
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
               fontSize: 'large',
@@ -360,7 +394,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>Large font size</Checkbox.Label>
-                <Checkbox.Description>Text rendered with larger font for better readability</Checkbox.Description>
+                <Checkbox.Description>
+                  Text rendered with larger font for better readability
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Checked with large font</Checkbox.Label>
@@ -370,9 +406,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Animations Disabled
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
               fontSize: 'normal',
@@ -384,7 +422,9 @@ export const AccessibilityShowcase: Story = {
             <div className="flex flex-col gap-3">
               <Checkbox checked={state1} onChange={setState1}>
                 <Checkbox.Label>No animations</Checkbox.Label>
-                <Checkbox.Description>Animations are disabled for reduced motion</Checkbox.Description>
+                <Checkbox.Description>
+                  Animations are disabled for reduced motion
+                </Checkbox.Description>
               </Checkbox>
               <Checkbox checked={state2} onChange={setState2}>
                 <Checkbox.Label>Checked without animations</Checkbox.Label>
@@ -394,9 +434,11 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">All States with High Contrast</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            All States with High Contrast
+          </h3>
           <CognitiveSettingsProvider
-              initialSettings={{
+            initialSettings={{
               contrast: 'high',
               spacing: 'normal',
               fontSize: 'normal',
@@ -420,7 +462,9 @@ export const AccessibilityShowcase: Story = {
               </Checkbox>
               <Checkbox checked={false} onChange={fn()}>
                 <Checkbox.Label>With description</Checkbox.Label>
-                <Checkbox.Description>This is a description</Checkbox.Description>
+                <Checkbox.Description>
+                  This is a description
+                </Checkbox.Description>
               </Checkbox>
             </div>
           </CognitiveSettingsProvider>

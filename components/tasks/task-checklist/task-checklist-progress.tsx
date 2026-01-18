@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
 
 /**
  * TaskChecklistProgress Component - MindEase
@@ -21,27 +21,27 @@ export interface TaskChecklistProgressProps extends BaseComponentProps {
 export function TaskChecklistProgress({
   completedCount,
   totalCount,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskChecklistProgressProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
 
   const progressText = useMemo(() => {
-    return `${completedCount} ${getText("tasks_progress")} ${totalCount} ${getText("tasks_progress_steps")}`;
+    return `${completedCount} ${getText('tasks_progress')} ${totalCount} ${getText('tasks_progress_steps')}`;
   }, [completedCount, totalCount, getText]);
 
   return (
     <p
       className={cn(styles.progress, fontSizeClasses.sm)}
-      data-testid={testId || "task-checklist-progress"}
+      data-testid={testId || 'task-checklist-progress'}
     >
       {progressText}
     </p>
   );
 }
 
-TaskChecklistProgress.displayName = "TaskChecklistProgress";
+TaskChecklistProgress.displayName = 'TaskChecklistProgress';
 
 const styles = {
-  progress: "text-text-secondary mb-2",
+  progress: 'text-text-secondary mb-2',
 } as const;

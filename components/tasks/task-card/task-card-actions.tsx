@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import type { TaskCardActionsProps } from "@/models/task-card-props";
-import { cn } from "@/utils/ui";
-import { TaskCardEditActions } from "./task-card-edit-actions";
-import { TaskCardFocusActions } from "./task-card-focus-actions";
-import { styles } from "./task-card-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import type { TaskCardActionsProps } from '@/models/task-card-props';
+import { cn } from '@/utils/ui';
+import { TaskCardEditActions } from './task-card-edit-actions';
+import { TaskCardFocusActions } from './task-card-focus-actions';
+import { styles } from './task-card-styles';
 
 /**
  * TaskCardActions Component - MindEase
@@ -22,7 +22,7 @@ export function TaskCardActions({
   onComplete,
   onEdit,
   onDelete,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskCardActionsProps) {
   const { spacingClasses } = useAccessibilityClasses();
 
@@ -56,4 +56,4 @@ export function TaskCardActions({
   );
 }
 
-TaskCardActions.displayName = "TaskCardActions";
+TaskCardActions.displayName = 'TaskCardActions';

@@ -76,7 +76,9 @@ export const WithDescription: Story = {
       <RadioGroup value={value} onChange={setValue}>
         <RadioGroup.Header>
           <RadioGroup.Label>Choose an option</RadioGroup.Label>
-          <RadioGroup.Description>Select one of the available options below.</RadioGroup.Description>
+          <RadioGroup.Description>
+            Select one of the available options below.
+          </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option value="option1" label="Option 1" />
         <RadioGroup.Option value="option2" label="Option 2" />
@@ -99,26 +101,28 @@ export const WithOptionDescriptions: Story = {
       <RadioGroup value={value} onChange={setValue}>
         <RadioGroup.Header>
           <RadioGroup.Label>Notification preferences</RadioGroup.Label>
-          <RadioGroup.Description>Choose how you want to receive notifications.</RadioGroup.Description>
+          <RadioGroup.Description>
+            Choose how you want to receive notifications.
+          </RadioGroup.Description>
         </RadioGroup.Header>
-        <RadioGroup.Option 
-          value="email" 
-          label="Email" 
+        <RadioGroup.Option
+          value="email"
+          label="Email"
           description="Receive notifications via email"
         />
-        <RadioGroup.Option 
-          value="sms" 
-          label="SMS" 
+        <RadioGroup.Option
+          value="sms"
+          label="SMS"
           description="Receive notifications via text message"
         />
-        <RadioGroup.Option 
-          value="push" 
-          label="Push notifications" 
+        <RadioGroup.Option
+          value="push"
+          label="Push notifications"
           description="Receive push notifications on your device"
         />
-        <RadioGroup.Option 
-          value="none" 
-          label="None" 
+        <RadioGroup.Option
+          value="none"
+          label="None"
           description="Do not receive any notifications"
         />
       </RadioGroup>
@@ -139,7 +143,9 @@ export const Disabled: Story = {
       <RadioGroup value={value} onChange={setValue} disabled>
         <RadioGroup.Header>
           <RadioGroup.Label>Disabled radio group</RadioGroup.Label>
-          <RadioGroup.Description>This radio group is disabled and cannot be changed.</RadioGroup.Description>
+          <RadioGroup.Description>
+            This radio group is disabled and cannot be changed.
+          </RadioGroup.Description>
         </RadioGroup.Header>
         <RadioGroup.Option value="option1" label="Option 1" />
         <RadioGroup.Option value="option2" label="Option 2" />
@@ -178,23 +184,31 @@ export const MultipleGroups: Story = {
   render: () => {
     const [theme, setTheme] = useState('light');
     const [language, setLanguage] = useState('en');
-    
+
     return (
       <div className="flex flex-col gap-6 max-w-md">
         <RadioGroup value={theme} onChange={setTheme}>
           <RadioGroup.Header>
             <RadioGroup.Label>Theme</RadioGroup.Label>
-            <RadioGroup.Description>Choose your preferred theme.</RadioGroup.Description>
+            <RadioGroup.Description>
+              Choose your preferred theme.
+            </RadioGroup.Description>
           </RadioGroup.Header>
           <RadioGroup.Option value="light" label="Light" />
           <RadioGroup.Option value="dark" label="Dark" />
-          <RadioGroup.Option value="auto" label="Auto" description="Follow system preference" />
+          <RadioGroup.Option
+            value="auto"
+            label="Auto"
+            description="Follow system preference"
+          />
         </RadioGroup>
-        
+
         <RadioGroup value={language} onChange={setLanguage}>
           <RadioGroup.Header>
             <RadioGroup.Label>Language</RadioGroup.Label>
-            <RadioGroup.Description>Select your preferred language.</RadioGroup.Description>
+            <RadioGroup.Description>
+              Select your preferred language.
+            </RadioGroup.Description>
           </RadioGroup.Header>
           <RadioGroup.Option value="en" label="English" />
           <RadioGroup.Option value="pt" label="Portuguese" />

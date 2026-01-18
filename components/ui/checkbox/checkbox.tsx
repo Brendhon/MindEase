@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { Button as HeadlessButton } from "@headlessui/react";
-import { Check } from "lucide-react";
-import { ReactNode, useMemo } from "react";
-import { CheckboxDescription } from "./checkbox-description";
-import { CheckboxLabel } from "./checkbox-label";
-import { styles } from "./checkbox-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { Button as HeadlessButton } from '@headlessui/react';
+import { Check } from 'lucide-react';
+import { ReactNode, useMemo } from 'react';
+import { CheckboxDescription } from './checkbox-description';
+import { CheckboxLabel } from './checkbox-label';
+import { styles } from './checkbox-styles';
 
 /**
  * Checkbox Component - MindEase
  * Accessible checkbox with cognitive accessibility features
- * 
+ *
  * Supports both prop-based API (for simplicity) and composition API (for flexibility):
- * 
+ *
  * @example
  * ```tsx
  * // Prop-based API (recommended for simple cases)
@@ -25,7 +25,7 @@ import { styles } from "./checkbox-styles";
  *   label="Complete task"
  *   description="Mark this task as completed"
  * />
- * 
+ *
  * // Composition API (for custom layouts)
  * <Checkbox checked={completed} onChange={setCompleted}>
  *   <Checkbox.Label>Complete task</Checkbox.Label>
@@ -36,21 +36,21 @@ import { styles } from "./checkbox-styles";
 export interface CheckboxProps extends BaseComponentProps {
   /** Current checked state */
   checked: boolean;
-  
+
   /** Change handler */
   onChange: (checked: boolean) => void;
-  
+
   /** Disable the checkbox */
   disabled?: boolean;
-  
+
   /** Checkbox content (Checkbox subcomponents when using composition API) */
   children?: ReactNode;
-  
+
   /** Custom className for container */
   className?: string;
-  
+
   /** ARIA label for accessibility */
-  "aria-label"?: string;
+  'aria-label'?: string;
 }
 
 function CheckboxRoot({
@@ -59,8 +59,8 @@ function CheckboxRoot({
   disabled = false,
   children,
   className,
-  "data-testid": testId,
-  "aria-label": ariaLabel,
+  'data-testid': testId,
+  'aria-label': ariaLabel,
 }: CheckboxProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   const { spacingClasses } = useAccessibilityClasses();
@@ -73,11 +73,12 @@ function CheckboxRoot({
 
   // Generate checkbox classes
   const checkboxClasses = useMemo(
-    () => cn(
-      styles.checkbox,
-      checked ? styles.checkboxChecked : styles.checkboxUnchecked,
-      disabled && styles.checkboxDisabled
-    ),
+    () =>
+      cn(
+        styles.checkbox,
+        checked ? styles.checkboxChecked : styles.checkboxUnchecked,
+        disabled && styles.checkboxDisabled
+      ),
     [checked, disabled]
   );
 
@@ -88,14 +89,17 @@ function CheckboxRoot({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if ((e.key === "Enter" || e.key === " ") && !disabled) {
+    if ((e.key === 'Enter' || e.key === ' ') && !disabled) {
       e.preventDefault();
       onChange(!checked);
     }
   };
 
   return (
-    <div className={containerClasses} data-testid={testId || "checkbox-container"}>
+    <div
+      className={containerClasses}
+      data-testid={testId || 'checkbox-container'}
+    >
       <HeadlessButton
         type="button"
         role="checkbox"
@@ -105,20 +109,16 @@ function CheckboxRoot({
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={checkboxClasses}
-        data-testid={testId ? `${testId}-checkbox` : "checkbox"}
+        data-testid={testId ? `${testId}-checkbox` : 'checkbox'}
       >
         {checked && <Check size={14} className={styles.checkboxIcon} />}
       </HeadlessButton>
-      {children && (
-        <div className={styles.content}>
-          {children}
-        </div>
-      )}
+      {children && <div className={styles.content}>{children}</div>}
     </div>
   );
 }
 
-CheckboxRoot.displayName = "Checkbox";
+CheckboxRoot.displayName = 'Checkbox';
 
 // Compose Checkbox with subcomponents
 export const Checkbox = Object.assign(CheckboxRoot, {

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
-import { styles } from "./checkbox-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { ReactNode, useMemo } from 'react';
+import { styles } from './checkbox-styles';
 
 /**
  * Checkbox.Description - Description text for checkbox
- * 
+ *
  * @example
  * ```tsx
  * <Checkbox checked={enabled} onChange={setEnabled}>
@@ -20,7 +20,7 @@ import { styles } from "./checkbox-styles";
 export interface CheckboxDescriptionProps extends BaseComponentProps {
   /** Description content */
   children: ReactNode;
-  
+
   /** Custom className */
   className?: string;
 }
@@ -28,7 +28,7 @@ export interface CheckboxDescriptionProps extends BaseComponentProps {
 export function CheckboxDescription({
   children,
   className,
-  "data-testid": testId,
+  'data-testid': testId,
 }: CheckboxDescriptionProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -38,10 +38,13 @@ export function CheckboxDescription({
   );
 
   return (
-    <span className={descriptionClasses} data-testid={testId || "checkbox-description"}>
+    <span
+      className={descriptionClasses}
+      data-testid={testId || 'checkbox-description'}
+    >
       {children}
     </span>
   );
 }
 
-CheckboxDescription.displayName = "Checkbox.Description";
+CheckboxDescription.displayName = 'Checkbox.Description';

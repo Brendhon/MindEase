@@ -1,2 +1,1 @@
-export { ActiveTaskIndicator } from "./active-task-indicator";
-
+export { ActiveTaskIndicator } from './active-task-indicator';

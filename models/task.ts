@@ -26,4 +26,3 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
 }
-

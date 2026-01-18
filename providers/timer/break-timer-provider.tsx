@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { BreakTimerContext } from "@/contexts/timer";
+import { BreakTimerContext } from '@/contexts/timer';
 import {
   BreakTimerAction,
   BreakTimerContextValue,
   BreakTimerState,
-} from "@/models/timer";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useCountdownInterval } from "@/hooks/timer";
+} from '@/models/timer';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useCountdownInterval } from '@/hooks/timer';
 import {
   createBreakEndedTimerState,
   createIdleTimerState,
   createInitialTimerState,
   createRunningTimerState,
   isTimerCompleted,
-} from "@/utils/timer";
-import { ReactNode, useCallback, useMemo, useReducer } from "react";
+} from '@/utils/timer';
+import { ReactNode, useCallback, useMemo, useReducer } from 'react';
 
 /**
  * Break Timer Provider Props
@@ -26,16 +26,37 @@ export interface BreakTimerProviderProps {
 
 // State creation functions using shared utilities
 const createInitialState = (defaultDuration: number) =>
-  createInitialTimerState<BreakTimerState>(defaultDuration, "breakTimerState", "idle");
+  createInitialTimerState<BreakTimerState>(
+    defaultDuration,
+    'breakTimerState',
+    'idle'
+  );
 
 const createRunningState = (duration: number, taskId?: string) =>
-  createRunningTimerState<BreakTimerState>(duration, "breakTimerState", "running", taskId);
+  createRunningTimerState<BreakTimerState>(
+    duration,
+    'breakTimerState',
+    'running',
+    taskId
+  );
 
 const createIdleState = (defaultDuration: number) =>
-  createIdleTimerState<BreakTimerState>(defaultDuration, "breakTimerState", "idle");
+  createIdleTimerState<BreakTimerState>(
+    defaultDuration,
+    'breakTimerState',
+    'idle'
+  );
 
-const createBreakEndedState = (defaultDuration: number, taskId?: string | null) =>
-  createBreakEndedTimerState<BreakTimerState>(defaultDuration, "breakTimerState", "breakEnded", taskId);
+const createBreakEndedState = (
+  defaultDuration: number,
+  taskId?: string | null
+) =>
+  createBreakEndedTimerState<BreakTimerState>(
+    defaultDuration,
+    'breakTimerState',
+    'breakEnded',
+    taskId
+  );
 
 /**
  * Break timer reducer function
@@ -46,11 +67,11 @@ function breakTimerReducer(
   action: BreakTimerAction
 ): BreakTimerState {
   switch (action.type) {
-    case "START":
+    case 'START':
       return createRunningState(action.duration, action.taskId);
-    case "STOP":
+    case 'STOP':
       return createIdleState(action.defaultDuration);
-    case "TICK":
+    case 'TICK':
       // Decrement time
       const remainingTime = state.remainingTime - 1;
 
@@ -66,16 +87,17 @@ function breakTimerReducer(
 /**
  * Break Timer Provider Component - MindEase
  * Provides break timer context to children components
- * 
+ *
  * This provider manages all break timer logic including:
  * - State management with useReducer
  * - Countdown intervals
  */
-export function BreakTimerProvider({
-  children,
-}: BreakTimerProviderProps) {
+export function BreakTimerProvider({ children }: BreakTimerProviderProps) {
   const { settings } = useCognitiveSettings();
-  const defaultDuration = useMemo(() => (settings.shortBreakDuration || 5) * 60, [settings.shortBreakDuration]);
+  const defaultDuration = useMemo(
+    () => (settings.shortBreakDuration || 5) * 60,
+    [settings.shortBreakDuration]
+  );
 
   // Initialize state with default duration
   const [breakTimerState, dispatch] = useReducer(
@@ -86,23 +108,26 @@ export function BreakTimerProvider({
 
   // Countdown: Handle break timer countdown when running
   const handleTick = useCallback(() => {
-    dispatch({ type: "TICK", defaultDuration });
+    dispatch({ type: 'TICK', defaultDuration });
   }, [defaultDuration]);
 
-  useCountdownInterval(breakTimerState.breakTimerState === "running", handleTick);
+  useCountdownInterval(
+    breakTimerState.breakTimerState === 'running',
+    handleTick
+  );
 
   // Start break function
   const startBreak = useCallback(
     (taskId?: string) => {
       const breakDuration = (settings.shortBreakDuration || 5) * 60;
-      dispatch({ type: "START", duration: breakDuration, taskId });
+      dispatch({ type: 'START', duration: breakDuration, taskId });
     },
     [settings.shortBreakDuration]
   );
 
   // Stop break function
   const stopBreak = useCallback(() => {
-    dispatch({ type: "STOP", defaultDuration });
+    dispatch({ type: 'STOP', defaultDuration });
   }, [defaultDuration]);
 
   // Memoize context value to prevent unnecessary re-renders
@@ -111,8 +136,15 @@ export function BreakTimerProvider({
       breakTimerState,
       startBreak,
       stopBreak,
-      isActive: (taskId?: string) => taskId ? breakTimerState.activeTaskId === taskId : !!breakTimerState.activeTaskId,
-      isRunning: (taskId?: string) => taskId ? breakTimerState.activeTaskId === taskId && breakTimerState.breakTimerState === "running" : breakTimerState.breakTimerState === "running",
+      isActive: (taskId?: string) =>
+        taskId
+          ? breakTimerState.activeTaskId === taskId
+          : !!breakTimerState.activeTaskId,
+      isRunning: (taskId?: string) =>
+        taskId
+          ? breakTimerState.activeTaskId === taskId &&
+            breakTimerState.breakTimerState === 'running'
+          : breakTimerState.breakTimerState === 'running',
       hasActiveTask: !!breakTimerState.activeTaskId,
       remainingTime: breakTimerState.remainingTime,
     }),

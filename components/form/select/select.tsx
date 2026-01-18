@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { cn } from "@/utils/ui";
-import { Field as HeadlessField } from "@headlessui/react";
-import { ReactNode, useMemo } from "react";
-import { SelectError } from "./select-error";
-import { SelectField } from "./select-field";
-import { SelectLabel } from "./select-label";
-import { styles } from "./select-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { cn } from '@/utils/ui';
+import { Field as HeadlessField } from '@headlessui/react';
+import { ReactNode, useMemo } from 'react';
+import { SelectError } from './select-error';
+import { SelectField } from './select-field';
+import { SelectLabel } from './select-label';
+import { styles } from './select-styles';
 
 /**
  * Select Component - MindEase
  * Accessible select with cognitive accessibility features
- * 
+ *
  * Uses composition pattern exclusively - only accepts Select subcomponents:
  * - Select.Label for labels
  * - Select.Field for select elements
  * - Select.Error for error messages
- * 
+ *
  * @example
  * ```tsx
  * // Basic select
@@ -29,7 +29,7 @@ import { styles } from "./select-styles";
  *     <option value="us">United States</option>
  *   </Select.Field>
  * </Select>
- * 
+ *
  * // With error
  * <Select>
  *   <Select.Label htmlFor="country">Country</Select.Label>

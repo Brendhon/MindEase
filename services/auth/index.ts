@@ -1,2 +1,1 @@
-export { authService, type AuthService } from "./auth";
-
+export { authService, type AuthService } from './auth';

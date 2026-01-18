@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { useRadioGroupContext } from "./radio-group-context";
-import { styles } from "./radio-group-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { useRadioGroupContext } from './radio-group-context';
+import { styles } from './radio-group-styles';
 
 /**
  * RadioGroup.Description - Description subcomponent
- * 
+ *
  * @example
  * ```tsx
  * <RadioGroup value={selected} onChange={setSelected}>
@@ -24,7 +24,7 @@ import { styles } from "./radio-group-styles";
 export interface RadioGroupDescriptionProps extends BaseComponentProps {
   /** Description text */
   children: string;
-  
+
   /** HTML id attribute for accessibility (optional, uses context ID if not provided) */
   id?: string;
 }
@@ -32,7 +32,7 @@ export interface RadioGroupDescriptionProps extends BaseComponentProps {
 export function RadioGroupDescription({
   children,
   id: providedId,
-  "data-testid": testId,
+  'data-testid': testId,
 }: RadioGroupDescriptionProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
   const context = useRadioGroupContext();
@@ -47,11 +47,11 @@ export function RadioGroupDescription({
     <p
       id={id}
       className={descriptionClasses}
-      data-testid={testId || "radio-group-description"}
+      data-testid={testId || 'radio-group-description'}
     >
       {children}
     </p>
   );
 }
 
-RadioGroupDescription.displayName = "RadioGroup.Description";
+RadioGroupDescription.displayName = 'RadioGroup.Description';

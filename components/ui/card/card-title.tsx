@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { BaseComponentProps } from "@/models/base";
-import { getTextContrastClasses } from "@/utils/accessibility";
-import { cn } from "@/utils/ui";
-import { ReactNode, useMemo } from "react";
-import { styles } from "./card-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { BaseComponentProps } from '@/models/base';
+import { getTextContrastClasses } from '@/utils/accessibility';
+import { cn } from '@/utils/ui';
+import { ReactNode, useMemo } from 'react';
+import { styles } from './card-styles';
 
 /**
  * Card.Title - Title subcomponent
  * Use this for consistent title styling with fontSize preference
- * 
+ *
  * @example
  * ```tsx
  * <Card>
@@ -23,16 +23,21 @@ import { styles } from "./card-styles";
  */
 export interface CardTitleProps extends BaseComponentProps {
   children: ReactNode;
-  as?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
+  as?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
   className?: string;
 }
 
-export function CardTitle({ children, as: Component = "h2", className, "data-testid": testId }: CardTitleProps) {
+export function CardTitle({
+  children,
+  as: Component = 'h2',
+  className,
+  'data-testid': testId,
+}: CardTitleProps) {
   const { settings } = useCognitiveSettings();
   const { fontSizeClasses } = useAccessibilityClasses();
 
   const textContrastClasses = useMemo(
-    () => getTextContrastClasses(settings.contrast, "primary"),
+    () => getTextContrastClasses(settings.contrast, 'primary'),
     [settings.contrast]
   );
 
@@ -48,4 +53,4 @@ export function CardTitle({ children, as: Component = "h2", className, "data-tes
   );
 }
 
-CardTitle.displayName = "Card.Title";
+CardTitle.displayName = 'Card.Title';

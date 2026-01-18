@@ -1,38 +1,38 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { cn } from "@/utils/ui";
-import { Button as HeadlessButton } from "@headlessui/react";
-import { BaseComponentProps } from "@/models/base";
-import { ButtonHTMLAttributes, ReactNode, forwardRef, useMemo } from "react";
-import { ButtonIcon } from "./button-icon";
-import { ButtonLoading } from "./button-loading";
-import { getContrastClasses, getSizeClasses, styles } from "./button-styles";
-import { ButtonText } from "./button-text";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { cn } from '@/utils/ui';
+import { Button as HeadlessButton } from '@headlessui/react';
+import { BaseComponentProps } from '@/models/base';
+import { ButtonHTMLAttributes, ReactNode, forwardRef, useMemo } from 'react';
+import { ButtonIcon } from './button-icon';
+import { ButtonLoading } from './button-loading';
+import { getContrastClasses, getSizeClasses, styles } from './button-styles';
+import { ButtonText } from './button-text';
 
 /**
  * Button Component - MindEase
  * Accessible, extensible button with cognitive accessibility features
- * 
+ *
  * Uses composition pattern exclusively - only accepts Button subcomponents:
  * - Button.Icon for icons
  * - Button.Text for text content
  * - Button.Loading for loading states
- * 
+ *
  * @example
  * ```tsx
  * // With text only
  * <Button variant="primary" size="md">
  *   <Button.Text>Click me</Button.Text>
  * </Button>
- * 
+ *
  * // With icon and text
  * <Button variant="primary">
  *   <Button.Icon icon={LogIn} position="left" />
  *   <Button.Text>Sign in</Button.Text>
  * </Button>
- * 
+ *
  * // With loading state
  * <Button variant="primary" isLoading>
  *   <Button.Loading />
@@ -40,9 +40,12 @@ import { ButtonText } from "./button-text";
  * </Button>
  * ```
  */
-export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children">, BaseComponentProps {
-  variant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
-  size?: "sm" | "md" | "lg";
+export interface ButtonProps
+  extends
+    Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'>,
+    BaseComponentProps {
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'warning';
+  size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   children?: ReactNode; // Only accepts Button subcomponents
 }
@@ -50,9 +53,9 @@ export interface ButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement
 const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      className = "",
-      variant = "primary",
-      size = "md",
+      className = '',
+      variant = 'primary',
+      size = 'md',
       isLoading = false,
       children,
       disabled,
@@ -61,23 +64,20 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isDisabled = disabled || isLoading;
-    
+
     // Use accessibility classes hook for optimized class generation
     // Only re-renders when relevant settings change
-    const { 
+    const {
       fontSizeClasses, // Recalculates only when settings.fontSize changes
       animationClasses, // Recalculates only when settings.animations changes
       spacingClasses, // Recalculates only when settings.spacing changes
     } = useAccessibilityClasses();
-    
+
     // Get contrast setting directly from (only re-renders when contrast changes)
     const { settings } = useCognitiveSettings();
 
     // Generate size classes (height, padding, gap)
-    const sizeClasses = useMemo(
-      () => getSizeClasses(size),
-      [size]
-    );
+    const sizeClasses = useMemo(() => getSizeClasses(size), [size]);
 
     // Generate contrast classes with button-specific logic (variant-based borders)
     const contrastClasses = useMemo(
@@ -88,10 +88,10 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
     // Get fontSize class based on size prop and user preference
     // Map button size to fontSize context: sm -> sm, md -> base, lg -> lg
     const fontSizeClass = useMemo(() => {
-      const sizeToFontContext: Record<typeof size, "sm" | "base" | "lg"> = {
-        sm: "sm",
-        md: "base",
-        lg: "lg",
+      const sizeToFontContext: Record<typeof size, 'sm' | 'base' | 'lg'> = {
+        sm: 'sm',
+        md: 'base',
+        lg: 'lg',
       };
       return fontSizeClasses[sizeToFontContext[size]];
     }, [fontSizeClasses, size]);
@@ -113,20 +113,16 @@ const ButtonRoot = forwardRef<HTMLButtonElement, ButtonProps>(
         )}
         aria-busy={isLoading}
         aria-disabled={isDisabled}
-        data-testid={props["data-testid"]}
+        data-testid={props['data-testid']}
         {...props}
       >
-        {isLoading ? (
-          <ButtonLoading size={size} />
-        ) : (
-          children
-        )}
+        {isLoading ? <ButtonLoading size={size} /> : children}
       </HeadlessButton>
     );
   }
 );
 
-ButtonRoot.displayName = "Button";
+ButtonRoot.displayName = 'Button';
 
 // Compose Button with subcomponents
 export const Button = Object.assign(ButtonRoot, {

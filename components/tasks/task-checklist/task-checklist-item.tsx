@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import type { Subtask } from "@/models/task";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
+import { Checkbox } from '@/components/ui/checkbox';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import type { Subtask } from '@/models/task';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
 
 /**
  * TaskChecklistItem Component - MindEase
@@ -26,7 +26,7 @@ export function TaskChecklistItem({
   subtask,
   interactive = false,
   onToggle,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskChecklistItemProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -55,9 +55,12 @@ export function TaskChecklistItem({
         checked={isCompleted}
         onChange={handleToggle}
         disabled={false}
-        aria-label={`${subtask.title} - ${isCompleted ? "Concluída" : "Pendente"}${!interactive ? " - Entre em foco para marcar" : ""}`}
+        aria-label={`${subtask.title} - ${isCompleted ? 'Concluída' : 'Pendente'}${!interactive ? ' - Entre em foco para marcar' : ''}`}
         data-testid={`task-checklist-checkbox-${subtask.id}`}
-        className={cn(styles.checkboxWrapper, !interactive && styles.checkboxDisabled)}
+        className={cn(
+          styles.checkboxWrapper,
+          !interactive && styles.checkboxDisabled
+        )}
       >
         <Checkbox.Label
           checked={isCompleted}
@@ -71,13 +74,13 @@ export function TaskChecklistItem({
   );
 }
 
-TaskChecklistItem.displayName = "TaskChecklistItem";
+TaskChecklistItem.displayName = 'TaskChecklistItem';
 
 const styles = {
-  item: "flex items-start",
-  itemCompleted: "opacity-60",
-  itemNonInteractive: "opacity-70",
-  checkboxWrapper: "w-full",
-  checkboxDisabled: "cursor-pointer",
-  label: "text-text-primary",
+  item: 'flex items-start',
+  itemCompleted: 'opacity-60',
+  itemNonInteractive: 'opacity-70',
+  checkboxWrapper: 'w-full',
+  checkboxDisabled: 'cursor-pointer',
+  label: 'text-text-primary',
 } as const;

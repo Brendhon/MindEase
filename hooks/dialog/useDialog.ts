@@ -1,31 +1,31 @@
-import { useCallback } from "react";
-import { useDialogContext, DialogConfig } from "@/contexts/dialog";
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import { generateRandomUUID } from "@/utils/uuid";
+import { useCallback } from 'react';
+import { useDialogContext, DialogConfig } from '@/contexts/dialog';
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { generateRandomUUID } from '@/utils/uuid';
 
 /**
  * useDialog Hook - MindEase
  * Centralized hook for managing dialogs
- * 
+ *
  * This hook encapsulates all business logic following Next.js best practices:
  * - Open dialog with configuration
  * - Close dialog
  * - Update dialog state
  * - Automatic ID generation
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * Features:
  * - Centralized dialog management
  * - Automatic translation support
  * - Flexible configuration
  * - Simple API
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { openDialog, closeDialog } = useDialog();
- *   
+ *
  *   const handleDelete = () => {
  *     openDialog({
  *       titleKey: "tasks_delete_confirm_title",
@@ -37,7 +37,7 @@ import { generateRandomUUID } from "@/utils/uuid";
  *       confirmVariant: "danger",
  *     });
  *   };
- *   
+ *
  *   return <button onClick={handleDelete}>Delete</button>;
  * }
  * ```
@@ -58,10 +58,10 @@ export function useDialog() {
       onConfirm?: () => void | Promise<void>;
       cancelLabelKey?: AccessibilityTextKey;
       confirmLabelKey?: AccessibilityTextKey;
-      confirmVariant?: "primary" | "secondary" | "ghost" | "danger" | "warning";
+      confirmVariant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'warning';
       preventClose?: boolean;
       isLoading?: boolean;
-      "data-testid"?: string;
+      'data-testid'?: string;
     }) => {
       _setDialog({
         ...config,

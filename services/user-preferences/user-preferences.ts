@@ -2,15 +2,22 @@
  * User Preferences Service - MindEase
  * User cognitive accessibility preferences management service
  */
-import { DEFAULT_ACCESSIBILITY_SETTINGS, UserPreferences, UserPreferencesDocument } from "@/models/user-preferences";
-import { firestoreService } from "../firestore/firestore";
+import {
+  DEFAULT_ACCESSIBILITY_SETTINGS,
+  UserPreferences,
+  UserPreferencesDocument,
+} from '@/models/user-preferences';
+import { firestoreService } from '../firestore/firestore';
 
 /**
  * User Preferences Service interface
  */
 export interface UserPreferencesService {
   getUserPreferences: (userId: string) => Promise<UserPreferences>;
-  updateUserPreferences: (userId: string, preferences: Partial<UserPreferences>) => Promise<UserPreferences>;
+  updateUserPreferences: (
+    userId: string,
+    preferences: Partial<UserPreferences>
+  ) => Promise<UserPreferences>;
   resetUserPreferences: (userId: string) => Promise<UserPreferences>;
   deleteUserPreferences: (userId: string) => Promise<void>;
 }
@@ -25,7 +32,11 @@ export const userPreferencesService: UserPreferencesService = {
    */
   getUserPreferences: async (userId: string): Promise<UserPreferences> => {
     try {
-      const document = await firestoreService.getDocument<UserPreferencesDocument>("users", userId);
+      const document =
+        await firestoreService.getDocument<UserPreferencesDocument>(
+          'users',
+          userId
+        );
 
       if (document) {
         // Return only the preferences, not metadata
@@ -44,7 +55,10 @@ export const userPreferencesService: UserPreferencesService = {
       // If no preferences exist, return defaults
       return DEFAULT_ACCESSIBILITY_SETTINGS;
     } catch (error) {
-      console.error(`Error getting user preferences for user ${userId}:`, error);
+      console.error(
+        `Error getting user preferences for user ${userId}:`,
+        error
+      );
       // Return defaults on error
       return DEFAULT_ACCESSIBILITY_SETTINGS;
     }
@@ -61,7 +75,7 @@ export const userPreferencesService: UserPreferencesService = {
     try {
       // Get current preferences or defaults
       const current = await userPreferencesService.getUserPreferences(userId);
-      
+
       // Merge with updates
       const updated: UserPreferences = {
         ...current,
@@ -69,18 +83,25 @@ export const userPreferencesService: UserPreferencesService = {
       };
 
       // Prepare document with metadata
-      const docData: Omit<UserPreferencesDocument, "id"> = {
+      const docData: Omit<UserPreferencesDocument, 'id'> = {
         ...updated,
         userId,
         updatedAt: new Date(),
       };
 
       // Use setDocument with merge to create or update
-      await firestoreService.setDocument<UserPreferencesDocument>("users", userId, docData);
+      await firestoreService.setDocument<UserPreferencesDocument>(
+        'users',
+        userId,
+        docData
+      );
 
       return updated;
     } catch (error) {
-      console.error(`Error updating user preferences for user ${userId}:`, error);
+      console.error(
+        `Error updating user preferences for user ${userId}:`,
+        error
+      );
       throw error;
     }
   },
@@ -95,7 +116,10 @@ export const userPreferencesService: UserPreferencesService = {
         DEFAULT_ACCESSIBILITY_SETTINGS
       );
     } catch (error) {
-      console.error(`Error resetting user preferences for user ${userId}:`, error);
+      console.error(
+        `Error resetting user preferences for user ${userId}:`,
+        error
+      );
       throw error;
     }
   },
@@ -105,11 +129,13 @@ export const userPreferencesService: UserPreferencesService = {
    */
   deleteUserPreferences: async (userId: string): Promise<void> => {
     try {
-      await firestoreService.deleteDocument("users", userId);
+      await firestoreService.deleteDocument('users', userId);
     } catch (error) {
-      console.error(`Error deleting user preferences for user ${userId}:`, error);
+      console.error(
+        `Error deleting user preferences for user ${userId}:`,
+        error
+      );
       throw error;
     }
   },
 };
-

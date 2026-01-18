@@ -1,2 +1,1 @@
-export { InteractionSettings } from "./interaction-settings";
-
+export { InteractionSettings } from './interaction-settings';

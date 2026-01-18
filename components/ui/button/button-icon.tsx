@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { LucideIcon } from "lucide-react";
-import { cn } from "@/utils/ui";
-import { styles } from "./button-styles";
+import { LucideIcon } from 'lucide-react';
+import { cn } from '@/utils/ui';
+import { styles } from './button-styles';
 
 /**
  * Button.Icon - Icon subcomponent
  * Use this for consistent icon styling and positioning
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="primary">
@@ -18,19 +18,24 @@ import { styles } from "./button-styles";
  */
 export interface ButtonIconProps {
   icon: LucideIcon;
-  position?: "left" | "right";
-  size?: "sm" | "md" | "lg";
+  position?: 'left' | 'right';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
 }
 
-export function ButtonIcon({ icon: Icon, position = "left", size = "md", className }: ButtonIconProps) {
+export function ButtonIcon({
+  icon: Icon,
+  position = 'left',
+  size = 'md',
+  className,
+}: ButtonIconProps) {
   return (
     <Icon
       className={cn(
         styles.icon.base,
         styles.icon.sizes[size],
-        position === "left" && styles.icon.left,
-        position === "right" && styles.icon.right,
+        position === 'left' && styles.icon.left,
+        position === 'right' && styles.icon.right,
         className
       )}
       aria-hidden="true"
@@ -38,4 +43,4 @@ export function ButtonIcon({ icon: Icon, position = "left", size = "md", classNa
   );
 }
 
-ButtonIcon.displayName = "Button.Icon";
+ButtonIcon.displayName = 'Button.Icon';

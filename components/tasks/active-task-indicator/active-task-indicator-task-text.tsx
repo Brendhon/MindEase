@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import type { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { styles } from "./active-task-indicator-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import type { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { styles } from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicatorTaskText Component - MindEase
@@ -17,19 +17,17 @@ export interface ActiveTaskIndicatorTaskTextProps extends BaseComponentProps {
 
 export function ActiveTaskIndicatorTaskText({
   task,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ActiveTaskIndicatorTaskTextProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   return (
     <div
       className={styles.textContainer}
-      data-testid={testId || "active-task-indicator-task-text"}
+      data-testid={testId || 'active-task-indicator-task-text'}
     >
       {task?.title ? (
-        <p className={cn(styles.title, fontSizeClasses.base)}>
-          {task.title}
-        </p>
+        <p className={cn(styles.title, fontSizeClasses.base)}>{task.title}</p>
       ) : null}
 
       {task?.description && (
@@ -41,4 +39,4 @@ export function ActiveTaskIndicatorTaskText({
   );
 }
 
-ActiveTaskIndicatorTaskText.displayName = "ActiveTaskIndicatorTaskText";
+ActiveTaskIndicatorTaskText.displayName = 'ActiveTaskIndicatorTaskText';

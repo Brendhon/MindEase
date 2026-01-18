@@ -1,12 +1,22 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { DialogPanel, DialogTitle, Dialog as HeadlessDialog, Transition, TransitionChild } from "@headlessui/react";
-import { Fragment, ReactNode, useMemo } from "react";
-import { getContrastClasses, getTransitionClasses, styles } from "./dialog-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import {
+  DialogPanel,
+  DialogTitle,
+  Dialog as HeadlessDialog,
+  Transition,
+  TransitionChild,
+} from '@headlessui/react';
+import { Fragment, ReactNode, useMemo } from 'react';
+import {
+  getContrastClasses,
+  getTransitionClasses,
+  styles,
+} from './dialog-styles';
 
 /**
  * Dialog Component - MindEase
@@ -21,19 +31,17 @@ export interface DialogProps extends BaseComponentProps {
   preventClose?: boolean;
 }
 
-export function Dialog({ 
-  isOpen, 
-  onClose, 
-  title, 
-  children, 
+export function Dialog({
+  isOpen,
+  onClose,
+  title,
+  children,
   preventClose = false,
-  "data-testid": dataTestId = "dialog" 
+  'data-testid': dataTestId = 'dialog',
 }: DialogProps) {
   // Use cognitive settings hook for automatic accessibility class generation
   // These classes automatically update when user preferences change
-  const { 
-    settings, 
-  } = useCognitiveSettings();
+  const { settings } = useCognitiveSettings();
   const { spacingClasses, fontSizeClasses } = useAccessibilityClasses();
 
   // Generate contrast classes with dialog-specific logic
@@ -56,22 +64,24 @@ export function Dialog({
 
   // Generate panel classes with spacing and contrast
   const panelClasses = useMemo(
-    () => cn(
-      styles.panel,
-      spacingClasses.padding, // Dynamically updates based on settings.spacing
-      contrastClasses.panel
-    ),
+    () =>
+      cn(
+        styles.panel,
+        spacingClasses.padding, // Dynamically updates based on settings.spacing
+        contrastClasses.panel
+      ),
     [spacingClasses.padding, contrastClasses.panel]
   );
 
   // Generate title classes with fontSize and contrast
   const titleClasses = useMemo(
-    () => cn(
-      styles.title,
-      fontSizeClasses.lg, // Dynamically updates based on settings.fontSize
-      contrastClasses.title,
-      styles.marginBottom // Margin bottom for spacing
-    ),
+    () =>
+      cn(
+        styles.title,
+        fontSizeClasses.lg, // Dynamically updates based on settings.fontSize
+        contrastClasses.title,
+        styles.marginBottom // Margin bottom for spacing
+      ),
     [fontSizeClasses.lg, contrastClasses.title]
   );
 
@@ -80,7 +90,11 @@ export function Dialog({
 
   return (
     <Transition show={isOpen} as={Fragment}>
-      <HeadlessDialog onClose={handleClose} className={styles.dialog} data-testid={dataTestId}>
+      <HeadlessDialog
+        onClose={handleClose}
+        className={styles.dialog}
+        data-testid={dataTestId}
+      >
         <TransitionChild
           as={Fragment}
           enter={transitionClasses.backdrop.enter}
@@ -90,7 +104,11 @@ export function Dialog({
           leaveFrom={transitionClasses.backdrop.leaveFrom}
           leaveTo={transitionClasses.backdrop.leaveTo}
         >
-          <div className={styles.backdrop} aria-hidden="true" data-testid={`${dataTestId}-backdrop`} />
+          <div
+            className={styles.backdrop}
+            aria-hidden="true"
+            data-testid={`${dataTestId}-backdrop`}
+          />
         </TransitionChild>
 
         <div className={containerClasses}>
@@ -103,8 +121,14 @@ export function Dialog({
             leaveFrom={transitionClasses.panel.leaveFrom}
             leaveTo={transitionClasses.panel.leaveTo}
           >
-            <DialogPanel className={panelClasses} data-testid={`${dataTestId}-panel`}>
-              <DialogTitle className={titleClasses} data-testid={`${dataTestId}-title`}>
+            <DialogPanel
+              className={panelClasses}
+              data-testid={`${dataTestId}-panel`}
+            >
+              <DialogTitle
+                className={titleClasses}
+                data-testid={`${dataTestId}-title`}
+              >
                 {title}
               </DialogTitle>
               <div data-testid={`${dataTestId}-content`}>{children}</div>
@@ -115,4 +139,3 @@ export function Dialog({
     </Transition>
   );
 }
-

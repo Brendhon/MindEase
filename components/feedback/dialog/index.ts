@@ -1,2 +1,2 @@
-export { DialogManager } from "./dialog-manager";
-export type { DialogActionsProps } from "./dialog-actions";
+export { DialogManager } from './dialog-manager';
+export type { DialogActionsProps } from './dialog-actions';

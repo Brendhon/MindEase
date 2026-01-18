@@ -1,1 +1,1 @@
-export * from "./cognitive-alerts-constants";
+export * from './cognitive-alerts-constants';

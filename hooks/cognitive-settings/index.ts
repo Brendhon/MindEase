@@ -1,1 +1,1 @@
-export * from "./useCognitiveSettings";
+export * from './useCognitiveSettings';

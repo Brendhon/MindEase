@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { ReactNode } from "react";
-import { cn } from "@/utils/ui";
-import { styles } from "./button-styles";
+import { ReactNode } from 'react';
+import { cn } from '@/utils/ui';
+import { styles } from './button-styles';
 
 /**
  * Button.Text - Text subcomponent
  * Use this for consistent text styling within buttons
- * 
+ *
  * @example
  * ```tsx
  * <Button variant="primary">
@@ -21,11 +21,7 @@ export interface ButtonTextProps {
 }
 
 export function ButtonText({ children, className }: ButtonTextProps) {
-  return (
-    <span className={cn(styles.text, className)}>
-      {children}
-    </span>
-  );
+  return <span className={cn(styles.text, className)}>{children}</span>;
 }
 
-ButtonText.displayName = "Button.Text";
+ButtonText.displayName = 'Button.Text';

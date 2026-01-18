@@ -66,11 +66,20 @@ export const Complete: Story = {
       <>
         <Card.Header>
           <Card.Title>Complete Card</Card.Title>
-          <Card.Description>This card includes all subcomponents: Header, Title, Description, and Content.</Card.Description>
+          <Card.Description>
+            This card includes all subcomponents: Header, Title, Description,
+            and Content.
+          </Card.Description>
         </Card.Header>
         <Card.Content>
-          <p>This is the main content area of the card. You can put any content here.</p>
-          <p>Multiple paragraphs are supported and will be properly spaced according to accessibility settings.</p>
+          <p>
+            This is the main content area of the card. You can put any content
+            here.
+          </p>
+          <p>
+            Multiple paragraphs are supported and will be properly spaced
+            according to accessibility settings.
+          </p>
         </Card.Content>
       </>
     ),
@@ -95,7 +104,9 @@ export const HeaderOnly: Story = {
     children: (
       <Card.Header>
         <Card.Title>Header Only</Card.Title>
-        <Card.Description>This card only has a header section with title and description.</Card.Description>
+        <Card.Description>
+          This card only has a header section with title and description.
+        </Card.Description>
       </Card.Header>
     ),
   },
@@ -109,7 +120,9 @@ export const AsSection: Story = {
       <>
         <Card.Header>
           <Card.Title>Section Card</Card.Title>
-          <Card.Description>This card is rendered as a section element.</Card.Description>
+          <Card.Description>
+            This card is rendered as a section element.
+          </Card.Description>
         </Card.Header>
         <Card.Content>
           <p>Using semantic HTML elements improves accessibility and SEO.</p>
@@ -127,7 +140,9 @@ export const AsArticle: Story = {
       <>
         <Card.Header>
           <Card.Title>Article Card</Card.Title>
-          <Card.Description>This card is rendered as an article element.</Card.Description>
+          <Card.Description>
+            This card is rendered as an article element.
+          </Card.Description>
         </Card.Header>
         <Card.Content>
           <p>Article elements are useful for standalone content pieces.</p>
@@ -144,7 +159,9 @@ export const ComplexContent: Story = {
       <>
         <Card.Header>
           <Card.Title>Task Management</Card.Title>
-          <Card.Description>Manage your daily tasks and stay organized.</Card.Description>
+          <Card.Description>
+            Manage your daily tasks and stay organized.
+          </Card.Description>
         </Card.Header>
         <Card.Content>
           <div>
@@ -210,7 +227,9 @@ export const AccessibilityShowcase: Story = {
   render: () => (
     <div className="flex gap-6 flex-col p-6">
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Normal Settings
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -224,7 +243,10 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Normal Settings</Card.Title>
-              <Card.Description>Default accessibility settings with normal contrast, spacing, and font size.</Card.Description>
+              <Card.Description>
+                Default accessibility settings with normal contrast, spacing,
+                and font size.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>This card uses the default accessibility settings.</p>
@@ -234,7 +256,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -248,7 +272,9 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>High Contrast</Card.Title>
-              <Card.Description>Card with high contrast settings for better visibility.</Card.Description>
+              <Card.Description>
+                Card with high contrast settings for better visibility.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>Notice the enhanced border and text contrast.</p>
@@ -258,7 +284,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Compact Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -272,7 +300,9 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Compact Spacing</Card.Title>
-              <Card.Description>Card with compact spacing for users who prefer tighter layouts.</Card.Description>
+              <Card.Description>
+                Card with compact spacing for users who prefer tighter layouts.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>Notice the reduced padding and gaps between elements.</p>
@@ -282,7 +312,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Relaxed Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -296,7 +328,10 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Relaxed Spacing</Card.Title>
-              <Card.Description>Card with relaxed spacing for users who prefer more breathing room.</Card.Description>
+              <Card.Description>
+                Card with relaxed spacing for users who prefer more breathing
+                room.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>Notice the increased padding and gaps between elements.</p>
@@ -306,7 +341,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Small Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -320,7 +357,9 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Small Font</Card.Title>
-              <Card.Description>Card with small font size setting.</Card.Description>
+              <Card.Description>
+                Card with small font size setting.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>Text sizes are adjusted according to user preferences.</p>
@@ -330,7 +369,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Large Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -344,7 +385,9 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Large Font</Card.Title>
-              <Card.Description>Card with large font size setting for better readability.</Card.Description>
+              <Card.Description>
+                Card with large font size setting for better readability.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
               <p>Text sizes are adjusted according to user preferences.</p>
@@ -354,7 +397,9 @@ export const AccessibilityShowcase: Story = {
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Animations Disabled
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -368,17 +413,24 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>No Animations</Card.Title>
-              <Card.Description>Card with animations disabled for users sensitive to motion.</Card.Description>
+              <Card.Description>
+                Card with animations disabled for users sensitive to motion.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
-              <p>Transitions and animations are removed when this setting is enabled.</p>
+              <p>
+                Transitions and animations are removed when this setting is
+                enabled.
+              </p>
             </Card.Content>
           </Card>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Focus Mode</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Focus Mode
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -392,17 +444,24 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Focus Mode</Card.Title>
-              <Card.Description>Card with focus mode enabled to reduce distractions.</Card.Description>
+              <Card.Description>
+                Card with focus mode enabled to reduce distractions.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
-              <p>Focus mode applies additional styling to help maintain attention.</p>
+              <p>
+                Focus mode applies additional styling to help maintain
+                attention.
+              </p>
             </Card.Content>
           </Card>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">All Settings Combined</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          All Settings Combined
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -416,10 +475,16 @@ export const AccessibilityShowcase: Story = {
           <Card>
             <Card.Header>
               <Card.Title>Maximum Accessibility</Card.Title>
-              <Card.Description>Card with all accessibility enhancements enabled: high contrast, relaxed spacing, large font, no animations, and focus mode.</Card.Description>
+              <Card.Description>
+                Card with all accessibility enhancements enabled: high contrast,
+                relaxed spacing, large font, no animations, and focus mode.
+              </Card.Description>
             </Card.Header>
             <Card.Content>
-              <p>This combination provides the maximum level of accessibility support.</p>
+              <p>
+                This combination provides the maximum level of accessibility
+                support.
+              </p>
             </Card.Content>
           </Card>
         </CognitiveSettingsProvider>

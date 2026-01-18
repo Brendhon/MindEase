@@ -1,1 +1,1 @@
-export * from "./cognitive-settings-provider";
+export * from './cognitive-settings-provider';

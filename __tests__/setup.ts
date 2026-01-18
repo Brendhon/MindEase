@@ -26,7 +26,7 @@ vi.mock('@/contexts/cognitive-settings/cognitive-settings-context', () => {
     focusMode: false,
     textDetail: 'normal',
   };
-  
+
   return {
     useCognitiveSettingsContext: () => ({
       settings: mockSettings,
@@ -65,7 +65,6 @@ vi.mock('@/hooks/accessibility', () => ({
     getText: (key: string) => key, // Returns the key as fallback for testing
   }),
 }));
-
 
 // Mock cognitive settings hook
 vi.mock('@/hooks/cognitive-settings', () => ({

@@ -17,11 +17,16 @@ export const handleAPIRequest = (): NextResponse => {
  * @param request - The incoming Next.js request
  * @returns NextResponse with redirect to /login, or NextResponse.next() if redirect fails
  */
-export const handleUnauthenticatedAccess = (request: NextRequest): NextResponse => {
+export const handleUnauthenticatedAccess = (
+  request: NextRequest
+): NextResponse => {
   try {
     return NextResponse.redirect(new URL(PAGE_ROUTES.LOGIN, request.url));
   } catch (error) {
-    console.error('Error creating redirect URL in handleUnauthenticatedAccess:', error);
+    console.error(
+      'Error creating redirect URL in handleUnauthenticatedAccess:',
+      error
+    );
     // Fallback: return next to avoid breaking the application
     return NextResponse.next();
   }
@@ -33,11 +38,18 @@ export const handleUnauthenticatedAccess = (request: NextRequest): NextResponse 
  * @param request - The incoming Next.js request
  * @returns NextResponse with redirect to /dashboard, or NextResponse.next() if redirect fails
  */
-export const handleAuthenticatedAuthPageAccess = (request: NextRequest): NextResponse => {
+export const handleAuthenticatedAuthPageAccess = (
+  request: NextRequest
+): NextResponse => {
   try {
-    return NextResponse.redirect(new URL(PROTECTED_ROUTES.DASHBOARD, request.url));
+    return NextResponse.redirect(
+      new URL(PROTECTED_ROUTES.DASHBOARD, request.url)
+    );
   } catch (error) {
-    console.error('Error creating redirect URL in handleAuthenticatedAuthPageAccess:', error);
+    console.error(
+      'Error creating redirect URL in handleAuthenticatedAuthPageAccess:',
+      error
+    );
     // Fallback: return next to avoid breaking the application
     return NextResponse.next();
   }
@@ -50,9 +62,14 @@ export const handleAuthenticatedAuthPageAccess = (request: NextRequest): NextRes
  * @param hasToken - Whether the user has a valid authentication token
  * @returns NextResponse with redirect to appropriate route
  */
-export const handleRootRoute = (request: NextRequest, hasToken: boolean): NextResponse => {
+export const handleRootRoute = (
+  request: NextRequest,
+  hasToken: boolean
+): NextResponse => {
   try {
-    const redirectUrl = hasToken ? PROTECTED_ROUTES.DASHBOARD : PAGE_ROUTES.LOGIN;
+    const redirectUrl = hasToken
+      ? PROTECTED_ROUTES.DASHBOARD
+      : PAGE_ROUTES.LOGIN;
     return NextResponse.redirect(new URL(redirectUrl, request.url));
   } catch (error) {
     console.error('Error creating redirect URL in handleRootRoute:', error);

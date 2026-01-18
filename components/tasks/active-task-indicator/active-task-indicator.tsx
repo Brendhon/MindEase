@@ -1,43 +1,44 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useActiveTaskIndicator } from "@/hooks/tasks";
-import { useBeforeUnload } from "@/hooks/utils";
-import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useTextDetail } from "@/hooks/accessibility";
-import { PROTECTED_ROUTES } from "@/utils/routes/routes";
-import { cn } from "@/utils/ui";
-import { useRouter } from "next/navigation";
-import { useCallback, useMemo, useState } from "react";
-import { ActiveTaskIndicatorContent } from "./active-task-indicator-content";
-import { ActiveTaskIndicatorHeader } from "./active-task-indicator-header";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useActiveTaskIndicator } from '@/hooks/tasks';
+import { useBeforeUnload } from '@/hooks/utils';
+import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useTextDetail } from '@/hooks/accessibility';
+import { PROTECTED_ROUTES } from '@/utils/routes/routes';
+import { cn } from '@/utils/ui';
+import { useRouter } from 'next/navigation';
+import { useCallback, useMemo, useState } from 'react';
+import { ActiveTaskIndicatorContent } from './active-task-indicator-content';
+import { ActiveTaskIndicatorHeader } from './active-task-indicator-header';
 import {
   getContrastClasses,
   getTransitionClasses,
   getTypeClasses,
   styles,
-} from "./active-task-indicator-styles";
+} from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicator Component - MindEase
  * Global floating component that displays the active task in focus or break
- * 
+ *
  * This component is visible on all authenticated screens and shows:
  * - Task title (if available)
  * - Timer type (focus or break)
  * - Remaining time
- * 
+ *
  * The component is positioned fixed in the bottom-right corner and is fully accessible.
  */
 export function ActiveTaskIndicator() {
-  const { activeTimer, activeTask, timerType, remainingTime } = useActiveTaskIndicator();
+  const { activeTimer, activeTask, timerType, remainingTime } =
+    useActiveTaskIndicator();
   const { spacingClasses } = useAccessibilityClasses();
   const { settings } = useCognitiveSettings();
   const { getText } = useTextDetail();
   const router = useRouter();
   const [isMinimized, setIsMinimized] = useState(false);
-  
+
   // Get timer states to check if any timer is active (running or paused)
   const { isRunning: isFocusRunning } = useFocusTimer();
   const { isRunning: isBreakRunning } = useBreakTimer();
@@ -52,11 +53,14 @@ export function ActiveTaskIndicator() {
   useBeforeUnload(shouldBlockNavigation);
 
   // Get type-specific classes
-  const typeClasses = useMemo(() => timerType ? getTypeClasses(timerType) : null, [timerType]);
+  const typeClasses = useMemo(
+    () => (timerType ? getTypeClasses(timerType) : null),
+    [timerType]
+  );
 
   // Get contrast classes
   const contrastClasses = useMemo(
-    () => timerType ? getContrastClasses(settings.contrast, timerType) : null,
+    () => (timerType ? getContrastClasses(settings.contrast, timerType) : null),
     [settings.contrast, timerType]
   );
 
@@ -78,7 +82,13 @@ export function ActiveTaskIndicator() {
         isMinimized && styles.cardMinimized,
         transitionClasses
       ),
-    [typeClasses, contrastClasses, spacingClasses.padding, transitionClasses, isMinimized]
+    [
+      typeClasses,
+      contrastClasses,
+      spacingClasses.padding,
+      transitionClasses,
+      isMinimized,
+    ]
   );
 
   // Build container classes
@@ -89,14 +99,18 @@ export function ActiveTaskIndicator() {
 
   // Get status text
   const statusText = useMemo(() => {
-    const text = timerType === "focus"
-      ? "tasks_focus_session_active"
-      : "tasks_break_session_active";
+    const text =
+      timerType === 'focus'
+        ? 'tasks_focus_session_active'
+        : 'tasks_break_session_active';
     return getText(text);
   }, [timerType, getText]);
 
   // Handle click to navigate to tasks page
-  const handleClick = useCallback(() => router.push(PROTECTED_ROUTES.TASKS), [router]);
+  const handleClick = useCallback(
+    () => router.push(PROTECTED_ROUTES.TASKS),
+    [router]
+  );
 
   // Handle toggle minimize/maximize
   const handleToggleMinimize = useCallback((e: React.MouseEvent) => {
@@ -106,8 +120,8 @@ export function ActiveTaskIndicator() {
 
   // Build aria label
   const ariaLabel = useMemo(() => {
-    const taskTitle = activeTask?.title || "Sem título";
-    const status = timerType === "focus" ? "em foco" : "em pausa";
+    const taskTitle = activeTask?.title || 'Sem título';
+    const status = timerType === 'focus' ? 'em foco' : 'em pausa';
     return `Tarefa ${status}: ${taskTitle}, tempo restante: ${remainingTime} segundos`;
   }, [timerType, activeTask?.title, remainingTime]);
 
@@ -146,4 +160,4 @@ export function ActiveTaskIndicator() {
   );
 }
 
-ActiveTaskIndicator.displayName = "ActiveTaskIndicator";
+ActiveTaskIndicator.displayName = 'ActiveTaskIndicator';

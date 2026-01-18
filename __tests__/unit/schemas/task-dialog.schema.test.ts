@@ -150,7 +150,9 @@ describe('task-dialog schemas', () => {
         subtasks: [],
       };
 
-      expect(() => taskDialogSchema.parse(invalidTask)).toThrow('O título é obrigatório');
+      expect(() => taskDialogSchema.parse(invalidTask)).toThrow(
+        'O título é obrigatório'
+      );
     });
 
     it('should trim title with only spaces to empty string', () => {
@@ -408,7 +410,9 @@ describe('task-dialog schemas', () => {
         subtasks: [],
       };
 
-      expect(() => taskDialogOutputSchema.parse(invalidInput)).toThrow('O título é obrigatório');
+      expect(() => taskDialogOutputSchema.parse(invalidInput)).toThrow(
+        'O título é obrigatório'
+      );
     });
 
     it('should handle complex scenario with multiple filtering and reordering', () => {

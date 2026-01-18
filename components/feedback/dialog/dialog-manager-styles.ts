@@ -4,8 +4,8 @@
  */
 
 export const styles = {
-  content: "flex flex-col",
-  message: "text-text-primary",
-  info: "text-text-secondary",
-  actions: "flex justify-end gap-2 mt-4",
+  content: 'flex flex-col',
+  message: 'text-text-primary',
+  info: 'text-text-secondary',
+  actions: 'flex justify-end gap-2 mt-4',
 } as const;

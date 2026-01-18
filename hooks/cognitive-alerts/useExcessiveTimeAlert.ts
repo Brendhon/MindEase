@@ -1,33 +1,33 @@
-import { useExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { useFocusTimer } from "@/hooks/timer";
+import { useExcessiveTimeAlertContext } from '@/contexts/cognitive-alerts';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { useFocusTimer } from '@/hooks/timer';
 import {
   ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS,
-  EXCESSIVE_TIME_THRESHOLD_MS
-} from "@/utils/cognitive-alerts";
-import { useCallback, useEffect } from "react";
-import { useBaseAlertDismiss } from "./useBaseAlertDismiss";
-import { useDismissExpiry } from "./useDismissExpiry";
+  EXCESSIVE_TIME_THRESHOLD_MS,
+} from '@/utils/cognitive-alerts';
+import { useCallback, useEffect } from 'react';
+import { useBaseAlertDismiss } from './useBaseAlertDismiss';
+import { useDismissExpiry } from './useDismissExpiry';
 
 /**
  * useExcessiveTimeAlert Hook - MindEase
- * 
+ *
  * Centralized hook for managing excessive time alert state and business logic.
- * 
+ *
  * This hook handles:
  * - Tracking continuous focus time on the same task
  * - Determining threshold based on user level (60 min default, 90 min advanced)
  * - Managing alert visibility based on business rules
  * - Resetting tracking when task changes or focus stops
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * @example
  * ```tsx
  * // Check alert visibility
  * function AlertsComponent() {
  *   const { isExcessiveTimeAlertVisible, dismissExcessiveTimeAlert } = useExcessiveTimeAlert();
- *   
+ *
  *   return (
  *     <Alert
  *       isVisible={isExcessiveTimeAlertVisible}
@@ -36,7 +36,7 @@ import { useDismissExpiry } from "./useDismissExpiry";
  *   );
  * }
  * ```
- * 
+ *
  * @throws Error if used outside ExcessiveTimeAlertProvider
  */
 export function useExcessiveTimeAlert() {
@@ -62,8 +62,8 @@ export function useExcessiveTimeAlert() {
     return (settings.focusDuration || 25) > 25;
   }, [settings.focusDuration]);
 
-  const threshold = isAdvancedUser() 
-    ? ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS 
+  const threshold = isAdvancedUser()
+    ? ADVANCED_EXCESSIVE_TIME_THRESHOLD_MS
     : EXCESSIVE_TIME_THRESHOLD_MS;
 
   // Track focus timer state changes to detect task changes
@@ -119,10 +119,7 @@ export function useExcessiveTimeAlert() {
       const continuousFocusTime = now - focusStartTimestamp;
 
       // Show alert if threshold reached and not dismissed
-      if (
-        continuousFocusTime >= threshold &&
-        !isExcessiveTimeAlertDismissed
-      ) {
+      if (continuousFocusTime >= threshold && !isExcessiveTimeAlertDismissed) {
         _setIsExcessiveTimeAlertVisible(true);
       } else {
         _setIsExcessiveTimeAlertVisible(false);

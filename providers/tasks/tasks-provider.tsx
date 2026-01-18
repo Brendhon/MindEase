@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { TasksContext } from "@/contexts/tasks";
-import { Task } from "@/models/task";
-import { ReactNode, useCallback, useState } from "react";
+import { TasksContext } from '@/contexts/tasks';
+import { Task } from '@/models/task';
+import { ReactNode, useCallback, useState } from 'react';
 
 /**
  * Tasks Provider Props
@@ -18,7 +18,7 @@ export interface TasksProviderProps {
 /**
  * Tasks Provider Component - MindEase
  * Provides tasks context to children components
- * 
+ *
  * This provider manages ONLY basic state (tasks, loading, error).
  * All business logic is handled by the useTasks hook.
  */
@@ -32,9 +32,15 @@ export function TasksProvider({
   const [error, setError] = useState<string | null>(initialError);
 
   // Internal setters for useTasks hook to use
-  const setTasksState = useCallback((newTasks: Task[] | ((prev: Task[]) => Task[])) => setTasks(newTasks), []);
+  const setTasksState = useCallback(
+    (newTasks: Task[] | ((prev: Task[]) => Task[])) => setTasks(newTasks),
+    []
+  );
 
-  const setLoadingState = useCallback((isLoading: boolean) => setLoading(isLoading), []);
+  const setLoadingState = useCallback(
+    (isLoading: boolean) => setLoading(isLoading),
+    []
+  );
 
   const setErrorState = useCallback((msg: string | null) => setError(msg), []);
 

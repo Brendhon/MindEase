@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Card } from "@/components/ui/card";
-import { CardContent } from "@/components/ui/card/card-content";
-import { useTaskCard } from "@/hooks/tasks";
-import type { TaskCardProps } from "@/models/task-card-props";
-import { TaskChecklist } from "../task-checklist";
-import { TaskCardActions } from "./task-card-actions";
-import { TaskCardHeader } from "./task-card-header";
-import { TaskCardTimer } from "./task-card-timer";
+import { Card } from '@/components/ui/card';
+import { CardContent } from '@/components/ui/card/card-content';
+import { useTaskCard } from '@/hooks/tasks';
+import type { TaskCardProps } from '@/models/task-card-props';
+import { TaskChecklist } from '../task-checklist';
+import { TaskCardActions } from './task-card-actions';
+import { TaskCardHeader } from './task-card-header';
+import { TaskCardTimer } from './task-card-timer';
 
 /**
  * TaskCard Component - MindEase
@@ -20,7 +20,7 @@ export function TaskCard({
   onDelete,
   onStatusChange,
   onToggleSubtask,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TaskCardProps) {
   const {
     cardClasses,
@@ -88,4 +88,4 @@ export function TaskCard({
   );
 }
 
-TaskCard.displayName = "TaskCard";
+TaskCard.displayName = 'TaskCard';

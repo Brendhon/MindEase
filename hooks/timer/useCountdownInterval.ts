@@ -3,13 +3,13 @@
  * Reusable hooks for timer management
  */
 
-import { useEffect, useRef } from "react";
-import { COUNTDOWN_INTERVAL_MS } from "@/utils/timer/timer-constants";
+import { useEffect, useRef } from 'react';
+import { COUNTDOWN_INTERVAL_MS } from '@/utils/timer/timer-constants';
 
 /**
  * Hook to manage countdown interval
  * Handles setting up and cleaning up the countdown interval
- * 
+ *
  * @param isRunning - Whether the timer is currently running
  * @param onTick - Callback to execute on each tick
  */

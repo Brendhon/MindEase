@@ -1,54 +1,61 @@
-import { useTasksContext } from "@/contexts/tasks";
-import { useAuth } from "@/hooks/auth";
-import { useFeedback } from "@/hooks/feedback";
-import { Subtask, Task } from "@/models/task";
-import { tasksService } from "@/services/tasks";
-import { useCallback } from "react";
+import { useTasksContext } from '@/contexts/tasks';
+import { useAuth } from '@/hooks/auth';
+import { useFeedback } from '@/hooks/feedback';
+import { Subtask, Task } from '@/models/task';
+import { tasksService } from '@/services/tasks';
+import { useCallback } from 'react';
 
 /**
  * useTasks Hook - MindEase
  * Centralized hook for managing tasks with Firestore synchronization
- * 
+ *
  * This hook encapsulates all business logic following Next.js best practices:
  * - CRUD operations with Firestore
  * - State synchronization (local + remote)
  * - Loading and error handling
  * - User feedback (toasts)
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { tasks, createTask, updateTask } = useTasks();
- *   
+ *
  *   const handleCreate = async () => {
  *     await createTask({ title: "New Task" });
  *   };
- *   
+ *
  *   return <div>{tasks.length} tasks</div>;
  * }
  * ```
  */
 export function useTasks() {
-  const { tasks, loading, error, _setTasks, _setLoading, _setError } = useTasksContext();
+  const { tasks, loading, error, _setTasks, _setLoading, _setError } =
+    useTasksContext();
   const { user } = useAuth();
   const { success, error: showError } = useFeedback();
 
   /**
    * Initialize tasks from server data
    */
-  const initializeTasks = useCallback((newTasks: Task[], newError: string | null) => {
-    _setTasks(newTasks);
-    _setError(newError);
-  }, [_setTasks, _setError]);
+  const initializeTasks = useCallback(
+    (newTasks: Task[], newError: string | null) => {
+      _setTasks(newTasks);
+      _setError(newError);
+    },
+    [_setTasks, _setError]
+  );
 
   /**
    * Get a task by ID from local state
    */
-  const getTask = useCallback((taskId: string): Task | undefined => {
-    return tasks.find((t) => t.id === taskId);
-  }, [tasks]);
+  const getTask = useCallback(
+    (taskId: string): Task | undefined => {
+      return tasks.find((t) => t.id === taskId);
+    },
+    [tasks]
+  );
 
   /**
    * Create a new task
@@ -74,11 +81,12 @@ export function useTasks() {
         });
 
         _setTasks((prev) => [...prev, newTask]);
-        success("toast_success_task_created");
+        success('toast_success_task_created');
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to create task";
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to create task';
         _setError(errorMessage);
-        showError("toast_error_task_create_failed");
+        showError('toast_error_task_create_failed');
       } finally {
         _setLoading(false);
       }
@@ -98,17 +106,24 @@ export function useTasks() {
       _setError(null);
 
       try {
-        const updatedTask = await tasksService.updateTask(user.uid, taskId, updates);
-        _setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
+        const updatedTask = await tasksService.updateTask(
+          user.uid,
+          taskId,
+          updates
+        );
+        _setTasks((prev) =>
+          prev.map((t) => (t.id === taskId ? updatedTask : t))
+        );
 
         const isComplete = updatedTask.status === 2;
         if (isComplete) {
           success('toast_success_task_completed');
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to update task";
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to update task';
         _setError(errorMessage);
-        showError("toast_error_task_update_failed");
+        showError('toast_error_task_update_failed');
       } finally {
         _setLoading(false);
       }
@@ -130,11 +145,12 @@ export function useTasks() {
       try {
         await tasksService.deleteTask(user.uid, taskId);
         _setTasks((prev) => prev.filter((t) => t.id !== taskId));
-        success("toast_success_task_deleted");
+        success('toast_success_task_deleted');
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Failed to delete task";
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to delete task';
         _setError(errorMessage);
-        showError("toast_error_task_delete_failed");
+        showError('toast_error_task_delete_failed');
       } finally {
         _setLoading(false);
       }
@@ -156,7 +172,7 @@ export function useTasks() {
           _setTasks((prev) => prev.map((t) => (t.id === taskId ? task : t)));
         }
       } catch (error) {
-        console.error("Error refreshing task:", error);
+        console.error('Error refreshing task:', error);
       }
     },
     [user?.uid, _setTasks]
@@ -178,9 +194,12 @@ export function useTasks() {
    * @param taskId - Task id to exclude
    * @returns true if has tasks in progress, false otherwise
    */
-  const hasTasksInProgress = useCallback((taskId: string) => {
-    return tasks.some((t) => t.status === 1 && t.id !== taskId);
-  }, [tasks]);
+  const hasTasksInProgress = useCallback(
+    (taskId: string) => {
+      return tasks.some((t) => t.status === 1 && t.id !== taskId);
+    },
+    [tasks]
+  );
 
   /**
    * Toggle subtask completion

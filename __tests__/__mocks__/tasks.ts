@@ -58,8 +58,18 @@ export const taskMocks = {
     createTask({
       title: 'My Task',
       subtasks: [
-        createSubtask({ id: 'subtask-1', title: 'Subtask 1', completed: false, order: 0 }),
-        createSubtask({ id: 'subtask-2', title: 'Subtask 2', completed: true, order: 1 }),
+        createSubtask({
+          id: 'subtask-1',
+          title: 'Subtask 1',
+          completed: false,
+          order: 0,
+        }),
+        createSubtask({
+          id: 'subtask-2',
+          title: 'Subtask 2',
+          completed: true,
+          order: 1,
+        }),
       ],
     }),
 
@@ -81,17 +91,28 @@ export const subtaskMocks = {
   /**
    * A minimal valid subtask
    */
-  minimal: (): Subtask => createSubtask({ id: 'subtask-1', title: 'Subtask', order: 0 }),
+  minimal: (): Subtask =>
+    createSubtask({ id: 'subtask-1', title: 'Subtask', order: 0 }),
 
   /**
    * A completed subtask
    */
   completed: (): Subtask =>
-    createSubtask({ id: 'subtask-1', title: 'Completed Subtask', completed: true, order: 0 }),
+    createSubtask({
+      id: 'subtask-1',
+      title: 'Completed Subtask',
+      completed: true,
+      order: 0,
+    }),
 
   /**
    * A pending subtask
    */
   pending: (): Subtask =>
-    createSubtask({ id: 'subtask-1', title: 'Pending Subtask', completed: false, order: 0 }),
+    createSubtask({
+      id: 'subtask-1',
+      title: 'Pending Subtask',
+      completed: false,
+      order: 0,
+    }),
 };

@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { PageContent } from "@/components/layout/page-content";
-import { PageHeader } from "@/components/layout/page-header";
-import { useDialog } from "@/hooks/dialog";
-import { useTasks } from "@/hooks/tasks";
-import { useFocusTimer } from "@/hooks/timer";
-import { BaseComponentProps } from "@/models/base";
-import { Task } from "@/models/task";
-import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
-import { useCallback, useEffect, useState } from "react";
-import { TaskDialog } from "../task-dialog";
-import { TaskList } from "../task-list";
-import { TasksError } from "../tasks-error";
-import { TasksLoading } from "../tasks-loading";
-import { TasksToolbar } from "../tasks-toolbar";
+import { PageContent } from '@/components/layout/page-content';
+import { PageHeader } from '@/components/layout/page-header';
+import { useDialog } from '@/hooks/dialog';
+import { useTasks } from '@/hooks/tasks';
+import { useFocusTimer } from '@/hooks/timer';
+import { BaseComponentProps } from '@/models/base';
+import { Task } from '@/models/task';
+import { type TaskDialogFormData } from '@/schemas/task-dialog.schema';
+import { useCallback, useEffect, useState } from 'react';
+import { TaskDialog } from '../task-dialog';
+import { TaskList } from '../task-list';
+import { TasksError } from '../tasks-error';
+import { TasksLoading } from '../tasks-loading';
+import { TasksToolbar } from '../tasks-toolbar';
 
 /**
  * TasksContent Component - MindEase
@@ -22,7 +22,7 @@ import { TasksToolbar } from "../tasks-toolbar";
 export interface TasksContentProps extends BaseComponentProps {
   /** Initial tasks loaded from server */
   initialTasks: Task[];
-  
+
   /** Initial error (if any) */
   initialError: string | null;
 }
@@ -33,7 +33,7 @@ export interface TasksContentProps extends BaseComponentProps {
 export function TasksContent({
   initialTasks,
   initialError,
-  "data-testid": testId,
+  'data-testid': testId,
 }: TasksContentProps) {
   const { timerState, stopTimer } = useFocusTimer();
   const { openDialog } = useDialog();
@@ -57,36 +57,42 @@ export function TasksContent({
   const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
 
   // Delete task (after confirmation)
-  const handleDeleteTask = useCallback(async (taskId: string) => {
-    if (!taskId) return;
+  const handleDeleteTask = useCallback(
+    async (taskId: string) => {
+      if (!taskId) return;
 
-    try {
-      await deleteTask(taskId);
-      
-      // Stop timer if deleted task was active
-      if (timerState.activeTaskId === taskId) {
-        stopTimer();
+      try {
+        await deleteTask(taskId);
+
+        // Stop timer if deleted task was active
+        if (timerState.activeTaskId === taskId) {
+          stopTimer();
+        }
+      } catch (error) {
+        console.error('Error deleting task:', error);
       }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  }, [timerState.activeTaskId, stopTimer, deleteTask]);
+    },
+    [timerState.activeTaskId, stopTimer, deleteTask]
+  );
 
   // Request delete (show confirmation)
-  const handleRequestDelete = useCallback((taskId: string) => {
-    openDialog({
-      titleKey: "tasks_delete_confirm_title",
-      descriptionKey: "tasks_delete_confirm_message",
-      cancelLabelKey: "button_cancel",
-      confirmLabelKey: "tasks_delete_confirm_button",
-      confirmVariant: "danger",
-      onCancel: () => {},
-      onConfirm: async () => {
-        await handleDeleteTask(taskId);
-      },
-      "data-testid": "task-delete-dialog",
-    });
-  }, [openDialog, handleDeleteTask]);
+  const handleRequestDelete = useCallback(
+    (taskId: string) => {
+      openDialog({
+        titleKey: 'tasks_delete_confirm_title',
+        descriptionKey: 'tasks_delete_confirm_message',
+        cancelLabelKey: 'button_cancel',
+        confirmLabelKey: 'tasks_delete_confirm_button',
+        confirmVariant: 'danger',
+        onCancel: () => {},
+        onConfirm: async () => {
+          await handleDeleteTask(taskId);
+        },
+        'data-testid': 'task-delete-dialog',
+      });
+    },
+    [openDialog, handleDeleteTask]
+  );
 
   // Edit task
   const handleEdit = useCallback((task: Task) => {
@@ -95,16 +101,18 @@ export function TasksContent({
   }, []);
 
   // Save task (create or update)
-  const handleSaveTask = useCallback(async (taskData: TaskDialogFormData) => {
-    
-    if (editingTask) {
-      await updateTask(editingTask.id, taskData);
-    } else {
-      await createTask(taskData);
-    }
-    setIsDialogOpen(false);
-    setEditingTask(undefined);
-  }, [editingTask, updateTask, createTask]);
+  const handleSaveTask = useCallback(
+    async (taskData: TaskDialogFormData) => {
+      if (editingTask) {
+        await updateTask(editingTask.id, taskData);
+      } else {
+        await createTask(taskData);
+      }
+      setIsDialogOpen(false);
+      setEditingTask(undefined);
+    },
+    [editingTask, updateTask, createTask]
+  );
 
   // New task button
   const handleNewTask = useCallback(() => {
@@ -122,25 +130,19 @@ export function TasksContent({
 
   if (loading && tasks.length === 0) {
     return (
-      <PageContent data-testid={testId || "tasks-page"}>
-        <PageHeader
-          titleKey="tasks_title"
-          descriptionKey="tasks_description"
-        />
+      <PageContent data-testid={testId || 'tasks-page'}>
+        <PageHeader titleKey="tasks_title" descriptionKey="tasks_description" />
         <TasksLoading />
       </PageContent>
     );
   }
 
   return (
-    <PageContent 
-      data-testid={testId || "tasks-page"}
+    <PageContent
+      data-testid={testId || 'tasks-page'}
       mainClassName={styles.tasksMain}
     >
-      <PageHeader
-        titleKey="tasks_title"
-        descriptionKey="tasks_description"
-      />
+      <PageHeader titleKey="tasks_title" descriptionKey="tasks_description" />
 
       {error && <TasksError message={error} />}
 
@@ -169,8 +171,8 @@ export function TasksContent({
   );
 }
 
-TasksContent.displayName = "TasksContent";
+TasksContent.displayName = 'TasksContent';
 
 const styles = {
-  tasksMain: "max-w-7xl",
+  tasksMain: 'max-w-7xl',
 } as const;

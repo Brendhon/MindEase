@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./switch-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './switch-styles';
 
 /**
  * Switch.Label - Label subcomponent
- * 
+ *
  * @example
  * ```tsx
  * <Switch checked={enabled} onChange={setEnabled}>
@@ -20,7 +20,7 @@ import { styles } from "./switch-styles";
 export interface SwitchLabelProps extends BaseComponentProps {
   /** Label text */
   children: string;
-  
+
   /** Click handler (optional, defaults to toggle switch) */
   onClick?: () => void;
 }
@@ -28,7 +28,7 @@ export interface SwitchLabelProps extends BaseComponentProps {
 export function SwitchLabel({
   children,
   onClick,
-  "data-testid": testId,
+  'data-testid': testId,
 }: SwitchLabelProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -41,11 +41,11 @@ export function SwitchLabel({
     <label
       className={labelClasses}
       onClick={onClick}
-      data-testid={testId || "switch-label"}
+      data-testid={testId || 'switch-label'}
     >
       {children}
     </label>
   );
 }
 
-SwitchLabel.displayName = "Switch.Label";
+SwitchLabel.displayName = 'Switch.Label';

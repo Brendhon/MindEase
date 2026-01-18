@@ -1,1 +1,1 @@
-export { TasksContent } from "./tasks-content";
+export { TasksContent } from './tasks-content';

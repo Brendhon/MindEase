@@ -1,25 +1,28 @@
-import { useCallback } from "react";
-import { useCognitiveSettingsContext } from "@/contexts/cognitive-settings";
-import { useAuth } from "@/hooks/auth";
-import { userPreferencesService } from "@/services/user-preferences";
-import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/user-preferences";
+import { useCallback } from 'react';
+import { useCognitiveSettingsContext } from '@/contexts/cognitive-settings';
+import { useAuth } from '@/hooks/auth';
+import { userPreferencesService } from '@/services/user-preferences';
+import {
+  UserPreferences,
+  DEFAULT_ACCESSIBILITY_SETTINGS,
+} from '@/models/user-preferences';
 
 /**
  * useCognitiveSettings Hook - MindEase
- * 
+ *
  * Centralized hook for managing cognitive accessibility settings with Firestore synchronization.
- * 
+ *
  * This hook handles:
  * - CRUD operations with Firestore
  * - State synchronization (local + remote)
  * - Loading and error handling
- * 
+ *
  * For Tailwind classes generation, use `useAccessibilityClasses` hook instead.
  * For text detail helpers, use `useTextDetail` hook instead.
  * This separation reduces unnecessary re-renders and improves performance.
- * 
+ *
  * The provider only manages basic state, while this hook handles all business logic.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage - update setting (syncs with Firestore)
@@ -31,44 +34,38 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/user-p
  *     </button>
  *   );
  * }
- * 
+ *
  * // Load settings on mount
  * function SettingsPage() {
  *   const { loadSettings, isLoading } = useCognitiveSettings();
- *   
+ *
  *   useEffect(() => {
  *     loadSettings();
  *   }, [loadSettings]);
- *   
+ *
  *   if (isLoading) return <div>Loading...</div>;
  *   return <div>Settings loaded</div>;
  * }
- * 
+ *
  * // For classes, use useAccessibilityClasses instead
  * function StyledComponent() {
  *   const { spacingClasses } = useAccessibilityClasses();
  *   return <div className={spacingClasses.padding}>Content</div>;
  * }
- * 
+ *
  * // For text detail, use useTextDetail instead
  * function TextComponent() {
  *   const { getText } = useTextDetail();
  *   return <p>{getText("welcome")}</p>;
  * }
  * ```
- * 
+ *
  * @throws Error if used outside CognitiveSettingsProvider
  */
 export function useCognitiveSettings() {
-  const { 
-    settings, 
-    isLoading,
-    error,
-    _setSettings,
-    _setLoading,
-    _setError,
-  } = useCognitiveSettingsContext();
-  
+  const { settings, isLoading, error, _setSettings, _setLoading, _setError } =
+    useCognitiveSettingsContext();
+
   const { user } = useAuth();
 
   /**
@@ -82,11 +79,15 @@ export function useCognitiveSettings() {
     _setError(null);
 
     try {
-      const userPrefs = await userPreferencesService.getUserPreferences(user.uid);
+      const userPrefs = await userPreferencesService.getUserPreferences(
+        user.uid
+      );
       _setSettings(userPrefs);
     } catch (err) {
-      console.error("Error loading user preferences:", err);
-      _setError(err instanceof Error ? err : new Error("Failed to load preferences"));
+      console.error('Error loading user preferences:', err);
+      _setError(
+        err instanceof Error ? err : new Error('Failed to load preferences')
+      );
     } finally {
       _setLoading(false);
     }
@@ -111,13 +112,18 @@ export function useCognitiveSettings() {
       _setError(null);
 
       try {
-        const updated = await userPreferencesService.updateUserPreferences(user.uid, {
-          [key]: value,
-        });
+        const updated = await userPreferencesService.updateUserPreferences(
+          user.uid,
+          {
+            [key]: value,
+          }
+        );
         _setSettings(updated);
       } catch (err) {
-        console.error("Error updating user preferences:", err);
-        _setError(err instanceof Error ? err : new Error("Failed to update preferences"));
+        console.error('Error updating user preferences:', err);
+        _setError(
+          err instanceof Error ? err : new Error('Failed to update preferences')
+        );
         // Revert optimistic update on error
         _setSettings((prev) => {
           return prev;
@@ -147,11 +153,16 @@ export function useCognitiveSettings() {
       _setError(null);
 
       try {
-        const updated = await userPreferencesService.updateUserPreferences(user.uid, newSettings);
+        const updated = await userPreferencesService.updateUserPreferences(
+          user.uid,
+          newSettings
+        );
         _setSettings(updated);
       } catch (err) {
-        console.error("Error updating user preferences:", err);
-        _setError(err instanceof Error ? err : new Error("Failed to update preferences"));
+        console.error('Error updating user preferences:', err);
+        _setError(
+          err instanceof Error ? err : new Error('Failed to update preferences')
+        );
         // Reload from Firestore to get correct state
         await loadSettings();
       } finally {
@@ -179,8 +190,10 @@ export function useCognitiveSettings() {
       const reset = await userPreferencesService.resetUserPreferences(user.uid);
       _setSettings(reset);
     } catch (err) {
-      console.error("Error resetting user preferences:", err);
-      _setError(err instanceof Error ? err : new Error("Failed to reset preferences"));
+      console.error('Error resetting user preferences:', err);
+      _setError(
+        err instanceof Error ? err : new Error('Failed to reset preferences')
+      );
       // Reload from Firestore to get correct state
       await loadSettings();
     } finally {
@@ -193,7 +206,7 @@ export function useCognitiveSettings() {
     settings,
     isLoading,
     error,
-    
+
     // Operations
     loadSettings,
     updateSetting,

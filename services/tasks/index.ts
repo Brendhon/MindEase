@@ -1,2 +1,1 @@
-export { tasksService, type TasksService } from "./tasks";
-
+export { tasksService, type TasksService } from './tasks';

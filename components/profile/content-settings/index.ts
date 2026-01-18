@@ -1,2 +1,1 @@
-export { ContentSettings } from "./content-settings";
-
+export { ContentSettings } from './content-settings';

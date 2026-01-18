@@ -1,1 +1,1 @@
-export { TasksLoading } from "./tasks-loading";
+export { TasksLoading } from './tasks-loading';

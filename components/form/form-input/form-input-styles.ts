@@ -4,8 +4,7 @@
  */
 
 export const styles = {
-  helperText: "text-text-muted",
-  requiredIndicator: "text-feedback-error ml-1",
-  fieldError: "border-feedback-error focus:ring-feedback-error",
+  helperText: 'text-text-muted',
+  requiredIndicator: 'text-feedback-error ml-1',
+  fieldError: 'border-feedback-error focus:ring-feedback-error',
 } as const;
-

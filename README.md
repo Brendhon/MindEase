@@ -2,12 +2,12 @@
 
 Aplicação web desenvolvida como parte do **Hackathon Final da Pós-Graduação FIAP (Front-End)**, com foco em **Acessibilidade Cognitiva** para estudantes e profissionais que enfrentam desafios como:
 
-* TDAH
-* TEA (Autismo)
-* Dislexia
-* Burnout e sobrecarga mental
-* Ansiedade em ambientes digitais
-* Dificuldades de foco e retenção
+- TDAH
+- TEA (Autismo)
+- Dislexia
+- Burnout e sobrecarga mental
+- Ansiedade em ambientes digitais
+- Dificuldades de foco e retenção
 
 O **MindEase** busca reduzir a carga cognitiva causada por interfaces digitais caóticas, oferecendo uma experiência **previsível, controlável e de baixo estímulo**, priorizando clareza, ritmo guiado e personalização.
 
@@ -17,13 +17,13 @@ O **MindEase** busca reduzir a carga cognitiva causada por interfaces digitais c
 
 O objetivo do projeto é aplicar, de forma integrada, os conhecimentos adquiridos ao longo da pós-graduação, incluindo:
 
-* Arquitetura de software (Clean Architecture)
-* Desenvolvimento Web moderno
-* Acessibilidade digital com foco cognitivo
-* Persistência de dados por usuário
-* Autenticação segura
-* Testes automatizados
-* Pipeline de CI/CD
+- Arquitetura de software (Clean Architecture)
+- Desenvolvimento Web moderno
+- Acessibilidade digital com foco cognitivo
+- Persistência de dados por usuário
+- Autenticação segura
+- Testes automatizados
+- Pipeline de CI/CD
 
 Além de atender aos requisitos técnicos, o projeto busca **inovação funcional**, colocando o usuário neurodivergente no centro das decisões de design e arquitetura.
 
@@ -35,11 +35,11 @@ O Hackathon é o projeto final da Pós-Graduação FIAP, sendo o momento de cons
 
 O tema definido é **Acessibilidade Cognitiva**, com foco na redução de:
 
-* Excesso de informação na tela
-* Falta de previsibilidade e consistência
-* Navegação caótica
-* Textos longos e pouco adaptados
-* Sobrecarga sensorial
+- Excesso de informação na tela
+- Falta de previsibilidade e consistência
+- Navegação caótica
+- Textos longos e pouco adaptados
+- Sobrecarga sensorial
 
 A plataforma **MindEase** foi idealizada para resolver esses problemas de forma prática e acessível.
 
@@ -49,20 +49,20 @@ A plataforma **MindEase** foi idealizada para resolver esses problemas de forma 
 
 O MindEase aplica princípios de **Cognitive Load Reduction**, incluindo:
 
-* **Níveis ajustáveis de complexidade da interface**
-* **Modo foco para ocultar distrações**
-* **Modo resumo vs. modo detalhado**
-* **Controle de contraste, espaçamento e tamanho de fonte**
-* **Animações controláveis pelo usuário**
-* **Ritmo guiado de navegação**
-* **Avisos de transição entre atividades**
+- **Níveis ajustáveis de complexidade da interface**
+- **Modo foco para ocultar distrações**
+- **Modo resumo vs. modo detalhado**
+- **Controle de contraste, espaçamento e tamanho de fonte**
+- **Animações controláveis pelo usuário**
+- **Ritmo guiado de navegação**
+- **Avisos de transição entre atividades**
 
 Todos os componentes interativos utilizam **Headless UI**, garantindo:
 
-* Navegação por teclado
-* Foco visível
-* Uso correto de ARIA
-* Compatibilidade com leitores de tela
+- Navegação por teclado
+- Foco visível
+- Uso correto de ARIA
+- Compatibilidade com leitores de tela
 
 ---
 
@@ -70,22 +70,22 @@ Todos os componentes interativos utilizam **Headless UI**, garantindo:
 
 ### Frontend
 
-* [**Next.js 16 (App Router)**](https://nextjs.org/docs/app)
-* [**React 19**](https://react.dev/)
-* [**TypeScript 5+**](https://www.typescriptlang.org/)
-* [**Tailwind CSS**](https://tailwindcss.com/)
-* [**Headless UI**](https://headlessui.com/)
-* [**Lucide Icons**](https://lucide.dev/)
-* [**Framer Motion**](https://www.framer.com/motion/) (uso pontual e controlável)
-* [**React Hook Form**](https://react-hook-form.com/)
-* [**Zod**](https://zod.dev/)
+- [**Next.js 16 (App Router)**](https://nextjs.org/docs/app)
+- [**React 19**](https://react.dev/)
+- [**TypeScript 5+**](https://www.typescriptlang.org/)
+- [**Tailwind CSS**](https://tailwindcss.com/)
+- [**Headless UI**](https://headlessui.com/)
+- [**Lucide Icons**](https://lucide.dev/)
+- [**Framer Motion**](https://www.framer.com/motion/) (uso pontual e controlável)
+- [**React Hook Form**](https://react-hook-form.com/)
+- [**Zod**](https://zod.dev/)
 
 ### Backend / Infra
 
-* [**Firebase Authentication**](https://firebase.google.com/docs/auth) – Login com Google
-* [**Firestore**](https://firebase.google.com/docs/firestore) – Banco NoSQL
-* [**GitHub Actions**](https://github.com/features/actions) – CI/CD
-* [**Vercel**](https://vercel.com/) – Deploy
+- [**Firebase Authentication**](https://firebase.google.com/docs/auth) – Login com Google
+- [**Firestore**](https://firebase.google.com/docs/firestore) – Banco NoSQL
+- [**GitHub Actions**](https://github.com/features/actions) – CI/CD
+- [**Vercel**](https://vercel.com/) – Deploy
 
 ---
 
@@ -165,31 +165,31 @@ styles/
 
 ### 🔐 Login
 
-* Autenticação via Google
-* Sem formulários manuais
-* Criação automática do perfil do usuário no Firestore
+- Autenticação via Google
+- Sem formulários manuais
+- Criação automática do perfil do usuário no Firestore
 
 ### 🧠 Painel Cognitivo (Dashboard)
 
-* Ajuste de complexidade da interface
-* Modo foco
-* Controle de animações
-* Acesso rápido às tarefas
+- Ajuste de complexidade da interface
+- Modo foco
+- Controle de animações
+- Acesso rápido às tarefas
 
 ### ✅ Organizador de Tarefas
 
-* Lista ou etapas visuais simplificadas
-* Subtarefas (checklist inteligente)
-* Timer de foco (Pomodoro adaptado)
-* Avisos de transição entre atividades
+- Lista ou etapas visuais simplificadas
+- Subtarefas (checklist inteligente)
+- Timer de foco (Pomodoro adaptado)
+- Avisos de transição entre atividades
 
 ### ⚙️ Perfil e Preferências
 
-* Contraste
-* Espaçamento
-* Tamanho de fonte
-* Movimento
-* Persistência automática por usuário
+- Contraste
+- Espaçamento
+- Tamanho de fonte
+- Movimento
+- Persistência automática por usuário
 
 ---
 
@@ -197,16 +197,16 @@ styles/
 
 ### Ferramentas
 
-* **Jest**
-* **@testing-library/react**
-* **@testing-library/jest-dom**
+- **Jest**
+- **@testing-library/react**
+- **@testing-library/jest-dom**
 
 ### Escopo de Testes
 
-* Renderização de telas principais
-* Acessibilidade de componentes interativos
-* Fluxo de criação e exibição de tarefas
-* Persistência de preferências (Firestore mockado)
+- Renderização de telas principais
+- Acessibilidade de componentes interativos
+- Fluxo de criação e exibição de tarefas
+- Persistência de preferências (Firestore mockado)
 
 ---
 
@@ -214,9 +214,9 @@ styles/
 
 ### Pré-requisitos
 
-* Node.js **22+**
-* npm
-* Conta Firebase configurada
+- Node.js **22+**
+- npm
+- Conta Firebase configurada
 
 ### Instalação
 

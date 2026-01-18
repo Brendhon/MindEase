@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { FormErrorProps } from "@/models/form";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./input-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { FormErrorProps } from '@/models/form';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './input-styles';
 
 /**
  * Input.Error - Error message subcomponent
  * Use this for displaying error messages
- * 
+ *
  * @example
  * ```tsx
  * <Input>
@@ -25,10 +25,7 @@ export function InputError({ children, id, className }: FormErrorProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class (use sm for error messages)
-  const fontSizeClass = useMemo(
-    () => fontSizeClasses.sm,
-    [fontSizeClasses.sm]
-  );
+  const fontSizeClass = useMemo(() => fontSizeClasses.sm, [fontSizeClasses.sm]);
 
   return (
     <p
@@ -41,5 +38,4 @@ export function InputError({ children, id, className }: FormErrorProps) {
   );
 }
 
-InputError.displayName = "Input.Error";
-
+InputError.displayName = 'Input.Error';

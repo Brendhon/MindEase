@@ -60,7 +60,8 @@ export const Basic: Story = {
     children: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          This is a basic dialog with some content. You can close it by clicking outside or pressing ESC.
+          This is a basic dialog with some content. You can close it by clicking
+          outside or pressing ESC.
         </p>
         <div className="flex justify-end gap-3">
           <Button variant="ghost" onClick={fn()}>
@@ -80,7 +81,11 @@ export const PreventClose: Story = {
   args: {
     isOpen: true,
     title: 'Prevent Close Dialog',
-    children: <div>This dialog cannot be closed by clicking outside or pressing ESC.</div>,
+    children: (
+      <div>
+        This dialog cannot be closed by clicking outside or pressing ESC.
+      </div>
+    ),
     preventClose: true,
   },
 };
@@ -93,7 +98,10 @@ export const WithForm: Story = {
     children: (
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-text-primary mb-1">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-text-primary mb-1"
+          >
             Title
           </label>
           <input
@@ -104,7 +112,10 @@ export const WithForm: Story = {
           />
         </div>
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-text-primary mb-1">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-text-primary mb-1"
+          >
             Description
           </label>
           <textarea
@@ -135,7 +146,8 @@ export const Confirmation: Story = {
     children: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          Are you sure you want to delete this item? This action cannot be undone.
+          Are you sure you want to delete this item? This action cannot be
+          undone.
         </p>
         <div className="flex justify-end gap-3">
           <Button variant="ghost" onClick={fn()}>
@@ -162,7 +174,8 @@ export const InfoMessage: Story = {
           <Info className="w-5 h-5 text-feedback-info shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-text-secondary">
-              Your changes have been saved successfully. You can continue working or close this dialog.
+              Your changes have been saved successfully. You can continue
+              working or close this dialog.
             </p>
           </div>
         </div>
@@ -212,7 +225,8 @@ export const WarningMessage: Story = {
           <AlertCircle className="w-5 h-5 text-feedback-warning shrink-0 mt-0.5" />
           <div className="flex-1">
             <p className="text-text-secondary">
-              This action will permanently delete your data. Please make sure you want to proceed.
+              This action will permanently delete your data. Please make sure
+              you want to proceed.
             </p>
           </div>
         </div>
@@ -238,16 +252,20 @@ export const LongContent: Story = {
       <div className="space-y-4 max-h-96 overflow-y-auto">
         <div className="text-text-secondary space-y-3">
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
           </p>
           <p>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+            nisi ut aliquip ex ea commodo consequat.
           </p>
           <p>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur.
           </p>
           <p>
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+            officia deserunt mollit anim id est laborum.
           </p>
         </div>
         <div className="flex justify-end gap-3 pt-4 border-t border-border-subtle">
@@ -271,7 +289,8 @@ export const Interactive: Story = {
     children: (
       <div className="space-y-4">
         <p className="text-text-secondary">
-          This is an interactive dialog. Click the button below to close it, or click outside the dialog.
+          This is an interactive dialog. Click the button below to close it, or
+          click outside the dialog.
         </p>
         <div className="flex justify-end">
           <Button variant="primary" onClick={fn()}>
@@ -289,11 +308,7 @@ export const Interactive: Story = {
         <Button variant="primary" onClick={() => _setIsOpen(true)}>
           <Button.Text>Open Dialog</Button.Text>
         </Button>
-        <Dialog
-          {...args}
-          isOpen={isOpen}
-          onClose={() => _setIsOpen(false)}
-        />
+        <Dialog {...args} isOpen={isOpen} onClose={() => _setIsOpen(false)} />
       </>
     );
   },
@@ -318,7 +333,9 @@ export const AccessibilityShowcase: Story = {
     return (
       <div className="flex gap-6 flex-col p-6">
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Normal Settings
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'normal',
@@ -345,7 +362,10 @@ export const AccessibilityShowcase: Story = {
                   <Button variant="ghost" onClick={() => _setNormalOpen(false)}>
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => _setNormalOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => _setNormalOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -355,7 +375,9 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            High Contrast
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'high',
@@ -376,13 +398,20 @@ export const AccessibilityShowcase: Story = {
             >
               <div className="space-y-4">
                 <p className="text-text-secondary">
-                  This dialog has stronger borders and outlines for better visibility.
+                  This dialog has stronger borders and outlines for better
+                  visibility.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setHighContrastOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setHighContrastOpen(false)}
+                  >
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setHighContrastOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => setHighContrastOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -392,7 +421,9 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Compact Spacing
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'normal',
@@ -403,7 +434,10 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => _setCompactSpacingOpen(true)}>
+            <Button
+              variant="primary"
+              onClick={() => _setCompactSpacingOpen(true)}
+            >
               <Button.Text>Open Compact Spacing Dialog</Button.Text>
             </Button>
             <Dialog
@@ -416,10 +450,16 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses compact spacing for tighter layout.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => _setCompactSpacingOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => _setCompactSpacingOpen(false)}
+                  >
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => _setCompactSpacingOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => _setCompactSpacingOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -429,7 +469,9 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Relaxed Spacing
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'normal',
@@ -440,7 +482,10 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => _setRelaxedSpacingOpen(true)}>
+            <Button
+              variant="primary"
+              onClick={() => _setRelaxedSpacingOpen(true)}
+            >
               <Button.Text>Open Relaxed Spacing Dialog</Button.Text>
             </Button>
             <Dialog
@@ -453,10 +498,16 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses relaxed spacing for more breathing room.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => _setRelaxedSpacingOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => _setRelaxedSpacingOpen(false)}
+                  >
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => _setRelaxedSpacingOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => _setRelaxedSpacingOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -466,7 +517,9 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Large Font
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'normal',
@@ -490,10 +543,16 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses larger font sizes for better readability.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => _setLargeFontOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => _setLargeFontOpen(false)}
+                  >
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => _setLargeFontOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => _setLargeFontOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -503,7 +562,9 @@ export const AccessibilityShowcase: Story = {
         </div>
 
         <div>
-          <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+          <h3 className="mb-3 text-sm font-medium text-text-secondary">
+            Animations Disabled
+          </h3>
           <CognitiveSettingsProvider
             initialSettings={{
               contrast: 'normal',
@@ -524,13 +585,20 @@ export const AccessibilityShowcase: Story = {
             >
               <div className="space-y-4">
                 <p className="text-text-secondary">
-                  This dialog uses minimal transitions when animations are disabled.
+                  This dialog uses minimal transitions when animations are
+                  disabled.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setNoAnimationsOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setNoAnimationsOpen(false)}
+                  >
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setNoAnimationsOpen(false)}>
+                  <Button
+                    variant="primary"
+                    onClick={() => setNoAnimationsOpen(false)}
+                  >
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -545,4 +613,3 @@ export const AccessibilityShowcase: Story = {
     layout: 'fullscreen',
   },
 };
-

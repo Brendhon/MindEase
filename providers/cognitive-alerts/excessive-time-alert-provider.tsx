@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { ExcessiveTimeAlertContext } from "@/contexts/cognitive-alerts";
-import { useCommonAlertState } from "./create-alert-provider";
-import { useCallback, useState } from "react";
+import { ExcessiveTimeAlertContext } from '@/contexts/cognitive-alerts';
+import { useCommonAlertState } from './create-alert-provider';
+import { useCallback, useState } from 'react';
 
 interface ExcessiveTimeAlertProviderProps {
   children: React.ReactNode;
@@ -10,9 +10,9 @@ interface ExcessiveTimeAlertProviderProps {
 
 /**
  * Excessive Time Alert Provider - MindEase
- * 
+ *
  * Provides excessive time alert context to children components.
- * 
+ *
  * This provider manages ONLY basic state (task tracking, alert visibility).
  * All business logic is handled by the useExcessiveTimeAlert hook.
  */
@@ -24,7 +24,9 @@ export function ExcessiveTimeAlertProvider({
 
   // Additional state specific to excessive time alert
   const [currentTaskId, setCurrentTaskId] = useState<string | null>(null);
-  const [focusStartTimestamp, setFocusStartTimestamp] = useState<number | null>(null);
+  const [focusStartTimestamp, setFocusStartTimestamp] = useState<number | null>(
+    null
+  );
 
   // Setters for additional state
   const setCurrentTaskIdState = useCallback(

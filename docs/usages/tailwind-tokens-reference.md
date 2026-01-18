@@ -355,4 +355,3 @@ Não é necessário usar classes `dark:` manualmente, pois os tokens já mudam s
 ---
 
 > **MindEase:** Design que respeita a cognição do usuário 🧠✨
-

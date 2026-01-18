@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { TimerType } from "@/models/timer";
-import { cn } from "@/utils/ui";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ActiveTaskIndicatorIcon } from "./active-task-indicator-icon";
-import { styles } from "./active-task-indicator-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { TimerType } from '@/models/timer';
+import { cn } from '@/utils/ui';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ActiveTaskIndicatorIcon } from './active-task-indicator-icon';
+import { styles } from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicatorHeader Component - MindEase
@@ -15,13 +15,13 @@ import { styles } from "./active-task-indicator-styles";
 export interface ActiveTaskIndicatorHeaderProps extends BaseComponentProps {
   /** Whether the indicator is minimized */
   isMinimized: boolean;
-  
+
   /** Status text to display when not minimized */
   statusText: string;
-  
+
   /** Timer type: "focus" or "break" */
   timerType: TimerType;
-  
+
   /** Callback function to toggle minimize state */
   onToggleMinimize: (e: React.MouseEvent) => void;
 }
@@ -31,19 +31,17 @@ export function ActiveTaskIndicatorHeader({
   statusText,
   timerType,
   onToggleMinimize,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ActiveTaskIndicatorHeaderProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   return (
     <div
       className={cn(styles.header, isMinimized && styles.headerMinimized)}
-      data-testid={testId || "active-task-indicator-header"}
+      data-testid={testId || 'active-task-indicator-header'}
     >
       {!isMinimized ? (
-        <p className={cn(styles.status, fontSizeClasses.sm)}>
-          {statusText}
-        </p>
+        <p className={cn(styles.status, fontSizeClasses.sm)}>{statusText}</p>
       ) : (
         <ActiveTaskIndicatorIcon
           timerType={timerType}
@@ -54,7 +52,11 @@ export function ActiveTaskIndicatorHeader({
         type="button"
         onClick={onToggleMinimize}
         className={styles.minimizeButton}
-        aria-label={isMinimized ? "Maximizar indicador de tarefa" : "Minimizar indicador de tarefa"}
+        aria-label={
+          isMinimized
+            ? 'Maximizar indicador de tarefa'
+            : 'Minimizar indicador de tarefa'
+        }
         aria-expanded={!isMinimized}
         data-testid="active-task-indicator-toggle"
       >
@@ -68,4 +70,4 @@ export function ActiveTaskIndicatorHeader({
   );
 }
 
-ActiveTaskIndicatorHeader.displayName = "ActiveTaskIndicatorHeader";
+ActiveTaskIndicatorHeader.displayName = 'ActiveTaskIndicatorHeader';

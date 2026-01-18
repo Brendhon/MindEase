@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { BaseComponentProps } from "@/models/base";
-import { formatTime } from "@/utils/timer";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./active-task-indicator-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { BaseComponentProps } from '@/models/base';
+import { formatTime } from '@/utils/timer';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './active-task-indicator-styles';
 
 /**
  * ActiveTaskIndicatorTimer Component - MindEase
@@ -18,7 +18,7 @@ export interface ActiveTaskIndicatorTimerProps extends BaseComponentProps {
 
 export function ActiveTaskIndicatorTimer({
   remainingTime,
-  "data-testid": testId,
+  'data-testid': testId,
 }: ActiveTaskIndicatorTimerProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
@@ -29,8 +29,8 @@ export function ActiveTaskIndicatorTimer({
 
   return (
     <p
-      className={cn(styles.timer, fontSizeClasses["2xl"])}
-      data-testid={testId || "active-task-indicator-timer"}
+      className={cn(styles.timer, fontSizeClasses['2xl'])}
+      data-testid={testId || 'active-task-indicator-timer'}
       aria-label={`Tempo restante: ${formattedTime}`}
     >
       {formattedTime}
@@ -38,4 +38,4 @@ export function ActiveTaskIndicatorTimer({
   );
 }
 
-ActiveTaskIndicatorTimer.displayName = "ActiveTaskIndicatorTimer";
+ActiveTaskIndicatorTimer.displayName = 'ActiveTaskIndicatorTimer';

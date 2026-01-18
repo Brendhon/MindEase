@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 /**
  * Schema for subtask validation
@@ -15,16 +15,9 @@ export const subtaskSchema = z.object({
  * Used with react-hook-form and zodResolver
  */
 export const taskDialogSchema = z.object({
-  title: z
-    .string()
-    .min(1, "O título é obrigatório")
-    .trim(),
-  description: z
-    .string()
-    .default(""),
-  subtasks: z
-    .array(subtaskSchema)
-    .default([]),
+  title: z.string().min(1, 'O título é obrigatório').trim(),
+  description: z.string().default(''),
+  subtasks: z.array(subtaskSchema).default([]),
 });
 
 /**

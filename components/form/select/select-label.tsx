@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { FormLabelProps } from "@/models/form";
-import { cn } from "@/utils/ui";
-import { useMemo } from "react";
-import { styles } from "./select-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { FormLabelProps } from '@/models/form';
+import { cn } from '@/utils/ui';
+import { useMemo } from 'react';
+import { styles } from './select-styles';
 
 /**
  * Select.Label - Label subcomponent
  * Use this for consistent label styling within selects
- * 
+ *
  * @example
  * ```tsx
  * <Select>
@@ -27,10 +27,7 @@ export function SelectLabel({ children, className, ...props }: FormLabelProps) {
   const { fontSizeClasses } = useAccessibilityClasses();
 
   // Get fontSize class (use sm for labels)
-  const fontSizeClass = useMemo(
-    () => fontSizeClasses.sm,
-    [fontSizeClasses.sm]
-  );
+  const fontSizeClass = useMemo(() => fontSizeClasses.sm, [fontSizeClasses.sm]);
 
   return (
     <label
@@ -42,4 +39,4 @@ export function SelectLabel({ children, className, ...props }: FormLabelProps) {
   );
 }
 
-SelectLabel.displayName = "Select.Label";
+SelectLabel.displayName = 'Select.Label';

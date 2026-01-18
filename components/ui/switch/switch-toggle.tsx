@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { Switch as HeadlessSwitch } from "@headlessui/react";
-import { styles } from "./switch-styles";
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { Switch as HeadlessSwitch } from '@headlessui/react';
+import { styles } from './switch-styles';
 
 /**
  * Switch.Toggle - Toggle switch visual component
- * 
+ *
  * @example
  * ```tsx
  * <Switch checked={enabled} onChange={setEnabled}>
@@ -19,10 +19,10 @@ import { styles } from "./switch-styles";
 export interface SwitchToggleProps extends BaseComponentProps {
   /** Current checked state */
   checked: boolean;
-  
+
   /** Change handler */
   onChange: (checked: boolean) => void;
-  
+
   /** Disable the switch */
   disabled?: boolean;
 }
@@ -31,7 +31,7 @@ export function SwitchToggle({
   checked,
   onChange,
   disabled = false,
-  "data-testid": testId,
+  'data-testid': testId,
 }: SwitchToggleProps) {
   return (
     <HeadlessSwitch
@@ -43,7 +43,7 @@ export function SwitchToggle({
         checked ? styles.switchChecked : styles.switchUnchecked,
         disabled && styles.switchDisabled
       )}
-      data-testid={testId || "switch-toggle"}
+      data-testid={testId || 'switch-toggle'}
     >
       <span
         className={cn(
@@ -56,4 +56,4 @@ export function SwitchToggle({
   );
 }
 
-SwitchToggle.displayName = "Switch.Toggle";
+SwitchToggle.displayName = 'Switch.Toggle';

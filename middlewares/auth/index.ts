@@ -1,18 +1,26 @@
-import { getToken } from "next-auth/jwt";
-import { isAPIRoute, isAuthenticated, isAuthPage, isRootRoute } from "./guards";
-import { handleAPIRequest, handleAuthenticatedAuthPageAccess, handleDefaultCase, handleRootRoute, handleUnauthenticatedAccess } from "./handlers";
-import { NextRequest, NextResponse } from "next/server";
+import { getToken } from 'next-auth/jwt';
+import { isAPIRoute, isAuthenticated, isAuthPage, isRootRoute } from './guards';
+import {
+  handleAPIRequest,
+  handleAuthenticatedAuthPageAccess,
+  handleDefaultCase,
+  handleRootRoute,
+  handleUnauthenticatedAccess,
+} from './handlers';
+import { NextRequest, NextResponse } from 'next/server';
 
 /**
  * Authentication middleware handler
  * Handles authentication and routing logic for incoming requests.
  * Includes error handling and validation of environment variables.
- * 
+ *
  * @param request - The incoming Next.js request
  * @returns The response from the authentication middleware handler
  * @throws Will log errors but return NextResponse.next() as fallback to prevent application breakage
  */
-export const authMiddleware = async (request: NextRequest): Promise<NextResponse> => {
+export const authMiddleware = async (
+  request: NextRequest
+): Promise<NextResponse> => {
   try {
     // Validate environment variable
     if (!process.env.NEXTAUTH_SECRET) {
@@ -24,9 +32,9 @@ export const authMiddleware = async (request: NextRequest): Promise<NextResponse
     }
 
     // Get the token from the request
-    const token = await getToken({ 
-      req: request, 
-      secret: process.env.NEXTAUTH_SECRET 
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
     });
 
     // Get path from the request
@@ -68,4 +76,4 @@ export const authMiddleware = async (request: NextRequest): Promise<NextResponse
     // In a fail-closed approach, you could redirect to an error page based on security requirements
     return NextResponse.next();
   }
-}
+};

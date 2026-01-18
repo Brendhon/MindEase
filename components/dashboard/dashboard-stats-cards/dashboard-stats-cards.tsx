@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Card } from "@/components/ui/card";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useTextDetail } from "@/hooks/accessibility";
-import { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import { cn } from "@/utils/ui";
-import { BarChart3, CheckCircle2, Clock, ListTodo } from "lucide-react";
-import { useMemo } from "react";
+import { Card } from '@/components/ui/card';
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useTextDetail } from '@/hooks/accessibility';
+import { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import { cn } from '@/utils/ui';
+import { BarChart3, CheckCircle2, Clock, ListTodo } from 'lucide-react';
+import { useMemo } from 'react';
 
 /**
  * DashboardStatsCards Component - MindEase
@@ -18,7 +18,10 @@ export interface DashboardStatsCardsProps extends BaseComponentProps {
   tasks: Task[];
 }
 
-export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardStatsCardsProps) {
+export function DashboardStatsCards({
+  tasks,
+  'data-testid': testId,
+}: DashboardStatsCardsProps) {
   const { getText } = useTextDetail();
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
 
@@ -43,15 +46,18 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
   );
 
   const valueClasses = useMemo(
-    () => cn(styles.value, fontSizeClasses["2xl"]),
+    () => cn(styles.value, fontSizeClasses['2xl']),
     [fontSizeClasses]
   );
 
   return (
-    <div className={containerClasses} data-testid={testId || "dashboard-stats-cards"}>
+    <div
+      className={containerClasses}
+      data-testid={testId || 'dashboard-stats-cards'}
+    >
       <StatCard
         icon={BarChart3}
-        title={getText("dashboard_stats_total")}
+        title={getText('dashboard_stats_total')}
         value={stats.total}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -59,7 +65,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={ListTodo}
-        title={getText("dashboard_stats_pending")}
+        title={getText('dashboard_stats_pending')}
         value={stats.pending}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -67,7 +73,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={Clock}
-        title={getText("dashboard_stats_in_progress")}
+        title={getText('dashboard_stats_in_progress')}
         value={stats.inProgress}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -75,7 +81,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
       />
       <StatCard
         icon={CheckCircle2}
-        title={getText("dashboard_stats_completed")}
+        title={getText('dashboard_stats_completed')}
         value={stats.completed}
         titleClasses={titleClasses}
         valueClasses={valueClasses}
@@ -85,7 +91,7 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
   );
 }
 
-DashboardStatsCards.displayName = "DashboardStatsCards";
+DashboardStatsCards.displayName = 'DashboardStatsCards';
 
 /**
  * StatCard Component - Internal component for individual stat card
@@ -96,7 +102,7 @@ interface StatCardProps {
   value: number;
   titleClasses: string;
   valueClasses: string;
-  "data-testid"?: string;
+  'data-testid'?: string;
 }
 
 function StatCard({
@@ -105,7 +111,7 @@ function StatCard({
   value,
   titleClasses,
   valueClasses,
-  "data-testid": testId,
+  'data-testid': testId,
 }: StatCardProps) {
   return (
     <Card className={styles.card} data-testid={testId}>
@@ -126,11 +132,11 @@ function StatCard({
  */
 
 export const styles = {
-  container: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4",
-  card: "gap-2",
-  cardHeader: "flex items-center gap-2",
-  icon: "text-text-secondary",
-  title: "text-text-secondary font-medium",
-  cardValue: "flex items-center",
-  value: "font-semibold text-text-primary",
+  container: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4',
+  card: 'gap-2',
+  cardHeader: 'flex items-center gap-2',
+  icon: 'text-text-secondary',
+  title: 'text-text-secondary font-medium',
+  cardValue: 'flex items-center',
+  value: 'font-semibold text-text-primary',
 } as const;

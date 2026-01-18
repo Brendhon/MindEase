@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { PageContent } from "@/components/layout";
-import { ProfileInfo } from "@/components/profile";
-import { AuthUser } from "@/models/auth";
-import { BaseComponentProps } from "@/models/base";
+import { PageContent } from '@/components/layout';
+import { ProfileInfo } from '@/components/profile';
+import { AuthUser } from '@/models/auth';
+import { BaseComponentProps } from '@/models/base';
 
 /**
  * ProfileContent Component - MindEase
  * Client-side interactive content for profile page
- * 
+ *
  * This component handles all client-side interactivity including:
  * - Cognitive settings management
  * - Real-time accessibility adjustments
@@ -18,20 +18,15 @@ export interface ProfileContentProps extends BaseComponentProps {
   user: AuthUser | null;
 }
 
-export function ProfileContent({ 
+export function ProfileContent({
   user,
-  "data-testid": testId 
+  'data-testid': testId,
 }: ProfileContentProps) {
   return (
-    <PageContent 
-      data-testid={testId || "profile-page-container"}
-    >
-      <ProfileInfo 
-        user={user}
-        data-testid="profile-page-info" 
-      />
+    <PageContent data-testid={testId || 'profile-page-container'}>
+      <ProfileInfo user={user} data-testid="profile-page-info" />
     </PageContent>
   );
 }
 
-ProfileContent.displayName = "ProfileContent";
+ProfileContent.displayName = 'ProfileContent';

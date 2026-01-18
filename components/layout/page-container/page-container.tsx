@@ -1,11 +1,15 @@
-import { PageContainerComponentProps } from "@/models/layout";
-import { cn } from "@/utils/ui";
+import { PageContainerComponentProps } from '@/models/layout';
+import { cn } from '@/utils/ui';
 
 /**
  * Page Container Component - MindEase
  * Consistent page container with cognitive accessibility features
  */
-export function PageContainer({ children, className = "", "data-testid": dataTestId = "page-container" }: PageContainerComponentProps) {
+export function PageContainer({
+  children,
+  className = '',
+  'data-testid': dataTestId = 'page-container',
+}: PageContainerComponentProps) {
   return (
     <div className={cn(styles.container, className)} data-testid={dataTestId}>
       {children}
@@ -14,5 +18,5 @@ export function PageContainer({ children, className = "", "data-testid": dataTes
 }
 
 const styles = {
-  container: "max-w-4xl mx-auto p-8",
+  container: 'max-w-4xl mx-auto p-8',
 } as const;

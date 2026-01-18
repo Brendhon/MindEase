@@ -1,7 +1,7 @@
 /**
  * useTaskCard Hook - MindEase
  * Encapsulates all business logic for TaskCard component
- * 
+ *
  * This hook handles:
  * - Timer state management (focus and break)
  * - Task status management
@@ -9,9 +9,9 @@
  * - Subtask validation and toggling
  * - Event handlers
  * - Derived state calculations
- * 
+ *
  * The component only needs to call this hook and render the UI.
- * 
+ *
  * @example
  * ```tsx
  * function TaskCard({ task, onEdit, onDelete, onStatusChange, onToggleSubtask }) {
@@ -35,29 +35,35 @@
  *     onToggleSubtask,
  *     testId,
  *   });
- *   
+ *
  *   return <Card className={cardClasses}>...</Card>;
  * }
  * ```
  */
 
-"use client";
+'use client';
 
 import {
   createCompletePendingSubtasksDialogConfig,
   createSubtaskBreakRequiredDialogConfig,
   createSubtaskFocusRequiredDialogConfig,
-} from "@/components/tasks/task-card/task-card-dialogs";
-import { getTaskCardClasses } from "@/components/tasks/task-card/task-card-styles";
-import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cognitive-alerts";
-import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
-import { useDialog } from "@/hooks/dialog";
-import { useFeedback } from "@/hooks/feedback";
-import { useTasks } from "@/hooks/tasks";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { UseTaskCardProps, UseTaskCardReturn } from "@/models/task-card-props";
-import { canCompleteTask, getPendingSubtasks } from "@/utils/tasks";
-import { useCallback, useMemo } from "react";
+} from '@/components/tasks/task-card/task-card-dialogs';
+import { getTaskCardClasses } from '@/components/tasks/task-card/task-card-styles';
+import {
+  useMissingBreakAlert,
+  useProlongedNavigationAlert,
+} from '@/hooks/cognitive-alerts';
+import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
+import { useDialog } from '@/hooks/dialog';
+import { useFeedback } from '@/hooks/feedback';
+import { useTasks } from '@/hooks/tasks';
+import { useTextDetail } from '@/hooks/accessibility';
+import type {
+  UseTaskCardProps,
+  UseTaskCardReturn,
+} from '@/models/task-card-props';
+import { canCompleteTask, getPendingSubtasks } from '@/utils/tasks';
+import { useCallback, useMemo } from 'react';
 
 /**
  * Hook for managing TaskCard business logic
@@ -73,8 +79,17 @@ export function useTaskCard({
   testId,
 }: UseTaskCardProps): UseTaskCardReturn {
   // Hooks
-  const { startTimer, stopTimer, isActive: isFocusActive, isRunning: isFocusRunning } = useFocusTimer();
-  const { stopBreak, isActive: isBreakActive, isRunning: isBreakRunning } = useBreakTimer();
+  const {
+    startTimer,
+    stopTimer,
+    isActive: isFocusActive,
+    isRunning: isFocusRunning,
+  } = useFocusTimer();
+  const {
+    stopBreak,
+    isActive: isBreakActive,
+    isRunning: isBreakRunning,
+  } = useBreakTimer();
   const { recordTaskFinished } = useMissingBreakAlert();
   const { recordUserAction } = useProlongedNavigationAlert();
   const { openDialog } = useDialog();
@@ -86,7 +101,8 @@ export function useTaskCard({
   const hasActiveTask = hasTasksInProgress(task.id);
   const isActive = isFocusActive(task.id);
   const isRunning = isFocusRunning(task.id);
-  const isBreakRunningForTask = isBreakActive(task.id) && isBreakRunning(task.id);
+  const isBreakRunningForTask =
+    isBreakActive(task.id) && isBreakRunning(task.id);
   const isFocused = isActive || isBreakActive(task.id);
 
   // Check if task has pending subtasks (using centralized utility)
@@ -140,7 +156,17 @@ export function useTaskCard({
       // Record that task was finished (reset counter)
       recordTaskFinished();
     }
-  }, [hasPendingSubtasks, pendingSubtasks, getText, testId, openDialog, stopTimer, task.id, onStatusChange, recordTaskFinished]);
+  }, [
+    hasPendingSubtasks,
+    pendingSubtasks,
+    getText,
+    testId,
+    openDialog,
+    stopTimer,
+    task.id,
+    onStatusChange,
+    recordTaskFinished,
+  ]);
 
   const handleEdit = useCallback(() => {
     onEdit?.(task);
@@ -187,9 +213,9 @@ export function useTaskCard({
 
       // Show feedback based on new state (opposite of current state)
       if (wasCompleted) {
-        success("tasks_checklist_step_pending");
+        success('tasks_checklist_step_pending');
       } else {
-        success("tasks_checklist_step_completed");
+        success('tasks_checklist_step_completed');
         // Record user action when subtask is completed (resets prolonged navigation timer)
         recordUserAction();
       }

@@ -3,7 +3,12 @@ import { authService, convertSession } from '@/services/auth/auth';
 import { signIn, signOut, getSession } from 'next-auth/react';
 import { tasksService } from '@/services/tasks';
 import { userPreferencesService } from '@/services/user-preferences';
-import { createSession, createAuthUser, sessionMocks, authUserMocks } from '@/__tests__/__mocks__/auth';
+import {
+  createSession,
+  createAuthUser,
+  sessionMocks,
+  authUserMocks,
+} from '@/__tests__/__mocks__/auth';
 
 // Mock next-auth
 vi.mock('next-auth/react', () => ({
@@ -49,7 +54,9 @@ const setupSignOutFailure = (errorMessage: string = 'Sign out failed') => {
   vi.mocked(signOut).mockRejectedValue(new Error(errorMessage));
 };
 
-const setupGetSessionSuccess = (session: ReturnType<typeof createSession> | null) => {
+const setupGetSessionSuccess = (
+  session: ReturnType<typeof createSession> | null
+) => {
   vi.mocked(getSession).mockResolvedValue(session);
 };
 
@@ -59,7 +66,9 @@ const setupGetSessionFailure = (errorMessage: string = 'Session error') => {
 
 const setupDeleteAccountSuccess = () => {
   vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
-  vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(undefined);
+  vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(
+    undefined
+  );
   vi.mocked(signOut).mockResolvedValue(undefined);
 };
 
@@ -129,7 +138,9 @@ describe('authService', () => {
       const errorMessage = 'Sign in failed';
       setupSignInFailure(errorMessage);
 
-      await expect(authService.signInWithGoogle()).rejects.toThrow(errorMessage);
+      await expect(authService.signInWithGoogle()).rejects.toThrow(
+        errorMessage
+      );
     });
   });
 
@@ -230,7 +241,9 @@ describe('authService', () => {
       await authService.deleteAccount(MOCK_USER_ID);
 
       expect(tasksService.deleteAllTasks).toHaveBeenCalledWith(MOCK_USER_ID);
-      expect(userPreferencesService.deleteUserPreferences).toHaveBeenCalledWith(MOCK_USER_ID);
+      expect(userPreferencesService.deleteUserPreferences).toHaveBeenCalledWith(
+        MOCK_USER_ID
+      );
       expect(signOut).toHaveBeenCalledWith({
         callbackUrl: '/login',
         redirect: true,
@@ -239,10 +252,16 @@ describe('authService', () => {
 
     it('should throw error if tasks deletion fails', async () => {
       const errorMessage = 'Failed to delete tasks';
-      vi.mocked(tasksService.deleteAllTasks).mockRejectedValue(new Error(errorMessage));
+      vi.mocked(tasksService.deleteAllTasks).mockRejectedValue(
+        new Error(errorMessage)
+      );
 
-      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
-      expect(userPreferencesService.deleteUserPreferences).not.toHaveBeenCalled();
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(
+        errorMessage
+      );
+      expect(
+        userPreferencesService.deleteUserPreferences
+      ).not.toHaveBeenCalled();
       expect(signOut).not.toHaveBeenCalled();
     });
 
@@ -253,17 +272,23 @@ describe('authService', () => {
         new Error(errorMessage)
       );
 
-      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(
+        errorMessage
+      );
       expect(signOut).not.toHaveBeenCalled();
     });
 
     it('should throw error if sign out fails', async () => {
       const errorMessage = 'Failed to sign out';
       vi.mocked(tasksService.deleteAllTasks).mockResolvedValue(undefined);
-      vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(undefined);
+      vi.mocked(userPreferencesService.deleteUserPreferences).mockResolvedValue(
+        undefined
+      );
       vi.mocked(signOut).mockRejectedValue(new Error(errorMessage));
 
-      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(errorMessage);
+      await expect(authService.deleteAccount(MOCK_USER_ID)).rejects.toThrow(
+        errorMessage
+      );
     });
   });
 });

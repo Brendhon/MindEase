@@ -1,21 +1,25 @@
-"use client";
+'use client';
 
-import { Header, Sidebar } from "@/components/layout";
-import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
-import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
-import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { ExcessiveTimeAlertProvider, MissingBreakAlertProvider, ProlongedNavigationAlertProvider } from "@/providers/cognitive-alerts";
-import { SidebarProvider } from "@/providers/sidebar";
-import { TasksProvider } from "@/providers/tasks";
-import { BreakTimerProvider, FocusTimerProvider } from "@/providers/timer";
-import { useEffect } from "react";
+import { Header, Sidebar } from '@/components/layout';
+import { ActiveTaskIndicator } from '@/components/tasks/active-task-indicator';
+import { BreakSessionCompleteDialogWrapper } from '@/components/tasks/break-session-complete-dialog';
+import { FocusSessionCompleteDialogWrapper } from '@/components/tasks/focus-session-complete-dialog';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import {
+  ExcessiveTimeAlertProvider,
+  MissingBreakAlertProvider,
+  ProlongedNavigationAlertProvider,
+} from '@/providers/cognitive-alerts';
+import { SidebarProvider } from '@/providers/sidebar';
+import { TasksProvider } from '@/providers/tasks';
+import { BreakTimerProvider, FocusTimerProvider } from '@/providers/timer';
+import { useEffect } from 'react';
 
 /**
  * Authenticated Layout - MindEase
- * 
+ *
  * Layout with sidebar + header for authenticated routes.
- * 
+ *
  * Provides:
  * - FocusTimerProvider: Global timer management for task-focused sessions
  * - BreakTimerProvider: Global break timer management for Pomodoro sessions
@@ -25,7 +29,7 @@ import { useEffect } from "react";
  * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
  * - BreakSessionCompleteDialogWrapper: Global dialog for completed break sessions
  * - Cognitive settings loading: Loads user preferences from Firestore before rendering
- * 
+ *
  * Note: Session verification is handled by middleware (proxy.ts)
  */
 export default function AuthenticatedLayout({
@@ -69,11 +73,11 @@ export default function AuthenticatedLayout({
   );
 }
 
-
 const styles = {
-  container: "flex min-h-screen bg-bg-secondary font-sans",
-  main: "flex-1 flex flex-col",
-  content: "flex-1 flex flex-col",
-  loadingContainer: "flex min-h-screen items-center justify-center bg-bg-secondary",
-  loadingText: "text-text-primary text-lg",
+  container: 'flex min-h-screen bg-bg-secondary font-sans',
+  main: 'flex-1 flex flex-col',
+  content: 'flex-1 flex flex-col',
+  loadingContainer:
+    'flex min-h-screen items-center justify-center bg-bg-secondary',
+  loadingText: 'text-text-primary text-lg',
 };

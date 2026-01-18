@@ -2,4 +2,4 @@ export {
   hasPendingSubtasks,
   getPendingSubtasks,
   canCompleteTask,
-} from "./tasks";
+} from './tasks';

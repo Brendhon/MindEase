@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useState } from 'react';
 
 /**
  * Common alert state and setters returned by useCommonAlertState
@@ -16,12 +16,12 @@ export interface CommonAlertState {
 
 /**
  * Hook to manage common alert state (visibility, dismissed, dismissedAt).
- * 
+ *
  * This hook encapsulates the common state management pattern used by all cognitive alert providers.
  * Reduces duplication by providing memoized setters for the three common fields.
- * 
+ *
  * @returns Common alert state and setters
- * 
+ *
  * @example
  * ```typescript
  * function AlertProvider({ children }) {

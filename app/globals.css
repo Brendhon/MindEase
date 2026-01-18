@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /**
  * MindEase Design Tokens
@@ -11,10 +11,10 @@
   --color-bg-primary: #f9fafb;
   --color-bg-secondary: #f3f4f6;
   --color-bg-tertiary: #e5e7eb;
-  
+
   --color-surface-primary: #ffffff;
   --color-surface-secondary: #f9fafb;
-  
+
   --color-border-subtle: #e5e7eb;
   --color-border-strong: #d1d5db;
 
@@ -37,7 +37,7 @@
   --color-action-danger-hover: #b91c1c;
   --color-action-warning: #d97706;
   --color-action-warning-hover: #b45309;
-  
+
   /* High Contrast Variants - For better visibility in high contrast mode */
   --color-action-primary-high: #1e40af; /* Darker blue for high contrast */
   --color-action-danger-high: #b91c1c; /* Darker red for high contrast */
@@ -54,35 +54,35 @@
   /* ========================================
      📏 SPACING TOKENS - Density Control
      ======================================== */
-  --space-1: 0.25rem;  /* 4px */
-  --space-2: 0.5rem;   /* 8px */
-  --space-3: 0.75rem;  /* 12px */
-  --space-4: 1rem;     /* 16px */
-  --space-6: 1.5rem;   /* 24px */
-  --space-8: 2rem;     /* 32px */
-  --space-12: 3rem;    /* 48px */
-  --space-16: 4rem;    /* 64px */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem; /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem; /* 16px */
+  --space-6: 1.5rem; /* 24px */
+  --space-8: 2rem; /* 32px */
+  --space-12: 3rem; /* 48px */
+  --space-16: 4rem; /* 64px */
 
   /* ========================================
      🧱 RADIUS TOKENS - Soft Interfaces
      ======================================== */
-  --radius-sm: 0.375rem;  /* 6px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
+  --radius-sm: 0.375rem; /* 6px */
+  --radius-md: 0.5rem; /* 8px */
+  --radius-lg: 0.75rem; /* 12px */
   --radius-full: 9999px;
 
   /* ========================================
      🔤 TYPOGRAPHY TOKENS
      ======================================== */
-  --font-family-base: "Inter", system-ui, -apple-system, sans-serif;
-  
-  --font-size-xs: 0.75rem;    /* 12px */
-  --font-size-sm: 0.875rem;   /* 14px */
-  --font-size-md: 1rem;       /* 16px */
-  --font-size-lg: 1.125rem;   /* 18px */
-  --font-size-xl: 1.25rem;    /* 20px */
-  --font-size-2xl: 1.5rem;    /* 24px */
-  --font-size-3xl: 1.875rem;  /* 30px */
+  --font-family-base: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-md: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -96,8 +96,10 @@
      🌫 ELEVATION TOKENS - Soft Shadows
      ======================================== */
   --elevation-none: none;
-  --elevation-soft: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --elevation-medium: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --elevation-soft:
+    0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --elevation-medium:
+    0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 
   /* ========================================
      🎞 MOTION TOKENS - Controlled Animation
@@ -160,18 +162,18 @@
   --color-bg-primary: var(--color-bg-primary);
   --color-bg-secondary: var(--color-bg-secondary);
   --color-bg-tertiary: var(--color-bg-tertiary);
-  
+
   --color-surface-primary: var(--color-surface-primary);
   --color-surface-secondary: var(--color-surface-secondary);
-  
+
   --color-border-subtle: var(--color-border-subtle);
   --color-border-strong: var(--color-border-strong);
-  
+
   --color-text-primary: var(--color-text-primary);
   --color-text-secondary: var(--color-text-secondary);
   --color-text-muted: var(--color-text-muted);
   --color-text-inverse: var(--color-text-inverse);
-  
+
   --color-action-primary: var(--color-action-primary);
   --color-action-primary-hover: var(--color-action-primary-hover);
   --color-action-primary-high: var(--color-action-primary-high);
@@ -183,12 +185,12 @@
   --color-action-warning: var(--color-action-warning);
   --color-action-warning-hover: var(--color-action-warning-hover);
   --color-action-warning-high: var(--color-action-warning-high);
-  
+
   --color-feedback-success: var(--color-feedback-success);
   --color-feedback-warning: var(--color-feedback-warning);
   --color-feedback-error: var(--color-feedback-error);
   --color-feedback-info: var(--color-feedback-info);
-  
+
   /* Feedback colors generate: bg-feedback-*, text-feedback-*, border-feedback-* */
 
   /* ========================================
@@ -218,7 +220,7 @@
      Usage: font-sans, text-sm, text-lg, font-medium
      ======================================== */
   --font-sans: var(--font-family-base);
-  
+
   --font-size-xs: var(--font-size-xs);
   --font-size-sm: var(--font-size-sm);
   --font-size-md: var(--font-size-md);
@@ -273,13 +275,21 @@ body {
  * Subtle bell ringing animation for cognitive alert icons
  */
 @keyframes bell-ring {
-  0%, 100% {
+  0%,
+  100% {
     transform: rotate(0deg);
   }
-  10%, 30%, 50%, 70%, 90% {
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
     transform: rotate(-10deg);
   }
-  20%, 40%, 60%, 80% {
+  20%,
+  40%,
+  60%,
+  80% {
     transform: rotate(10deg);
   }
 }
@@ -299,7 +309,7 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   .animate-bell-ring {
     animation: none !important;
   }

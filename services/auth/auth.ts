@@ -2,11 +2,11 @@
  * Auth Service - MindEase
  * Authentication service using NextAuth
  */
-import { signIn, signOut, getSession } from "next-auth/react";
-import { Session } from "next-auth";
-import { tasksService } from "../tasks";
-import { userPreferencesService } from "../user-preferences";
-import { AuthUser } from "@/models/auth";
+import { signIn, signOut, getSession } from 'next-auth/react';
+import { Session } from 'next-auth';
+import { tasksService } from '../tasks';
+import { userPreferencesService } from '../user-preferences';
+import { AuthUser } from '@/models/auth';
 
 /**
  * Auth Service interface
@@ -41,12 +41,12 @@ export const authService: AuthService = {
    */
   signInWithGoogle: async (): Promise<void> => {
     try {
-      await signIn("google", {
-        callbackUrl: "/dashboard",
+      await signIn('google', {
+        callbackUrl: '/dashboard',
         redirect: true,
       });
     } catch (error) {
-      console.error("Error signing in with Google:", error);
+      console.error('Error signing in with Google:', error);
       throw error;
     }
   },
@@ -57,11 +57,11 @@ export const authService: AuthService = {
   signOut: async (): Promise<void> => {
     try {
       await signOut({
-        callbackUrl: "/login",
+        callbackUrl: '/login',
         redirect: true,
       });
     } catch (error) {
-      console.error("Error signing out:", error);
+      console.error('Error signing out:', error);
       throw error;
     }
   },
@@ -74,7 +74,7 @@ export const authService: AuthService = {
       const session = await getSession();
       return convertSession(session);
     } catch (error) {
-      console.error("Error getting current user:", error);
+      console.error('Error getting current user:', error);
       return null;
     }
   },
@@ -86,7 +86,7 @@ export const authService: AuthService = {
     try {
       return await getSession();
     } catch (error) {
-      console.error("Error getting session:", error);
+      console.error('Error getting session:', error);
       return null;
     }
   },
@@ -101,16 +101,15 @@ export const authService: AuthService = {
     try {
       // Delete all tasks
       await tasksService.deleteAllTasks(userId);
-      
+
       // Delete user preferences
       await userPreferencesService.deleteUserPreferences(userId);
-      
+
       // Sign out the user
       await authService.signOut();
     } catch (error) {
-      console.error("Error deleting account:", error);
+      console.error('Error deleting account:', error);
       throw error;
     }
   },
 };
-

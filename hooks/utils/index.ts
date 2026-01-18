@@ -1,1 +1,1 @@
-export * from "./useBeforeUnload";
+export * from './useBeforeUnload';

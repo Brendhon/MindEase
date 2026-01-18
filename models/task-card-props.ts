@@ -3,10 +3,10 @@
  * Centralized type definitions for TaskCard component and its subcomponents
  */
 
-import type { AccessibilityTextKey } from "@/utils/accessibility";
-import type { ReactNode } from "react";
-import type { BaseComponentProps } from "./base";
-import type { Task } from "./task";
+import type { AccessibilityTextKey } from '@/utils/accessibility';
+import type { ReactNode } from 'react';
+import type { BaseComponentProps } from './base';
+import type { Task } from './task';
 
 /**
  * Base props shared across TaskCard components
@@ -89,24 +89,24 @@ export interface TaskCardTimerProps extends TaskCardBaseProps {}
  * TaskCardActions component props
  */
 export interface TaskCardActionsProps
-  extends TaskCardBaseProps,
-    TaskCardTimerState,
-    TaskCardSimpleCallbacks {}
+  extends TaskCardBaseProps, TaskCardTimerState, TaskCardSimpleCallbacks {}
 
 /**
  * TaskCardFocusActions component props
  */
 export interface TaskCardFocusActionsProps
-  extends TaskCardBaseProps,
-    Pick<TaskCardTimerState, "isRunning" | "hasActiveTask" | "isBreakRunning">,
-    Pick<TaskCardSimpleCallbacks, "onStartFocus" | "onStop" | "onComplete"> {}
+  extends
+    TaskCardBaseProps,
+    Pick<TaskCardTimerState, 'isRunning' | 'hasActiveTask' | 'isBreakRunning'>,
+    Pick<TaskCardSimpleCallbacks, 'onStartFocus' | 'onStop' | 'onComplete'> {}
 
 /**
  * TaskCardEditActions component props
  */
 export interface TaskCardEditActionsProps
-  extends TaskCardBaseProps,
-    Pick<TaskCardSimpleCallbacks, "onEdit" | "onDelete"> {}
+  extends
+    TaskCardBaseProps,
+    Pick<TaskCardSimpleCallbacks, 'onEdit' | 'onDelete'> {}
 
 /**
  * Dialog configuration for complete pending subtasks
@@ -116,7 +116,7 @@ export interface CompletePendingSubtasksDialogConfig {
   descriptionKey: AccessibilityTextKey;
   info: ReactNode;
   confirmLabelKey: AccessibilityTextKey;
-  "data-testid": string;
+  'data-testid': string;
 }
 
 /**
@@ -130,7 +130,7 @@ export interface SubtaskFocusRequiredDialogConfig {
   confirmLabelKey: AccessibilityTextKey;
   onCancel: () => void;
   onConfirm?: () => void;
-  "data-testid": string;
+  'data-testid': string;
 }
 
 /**

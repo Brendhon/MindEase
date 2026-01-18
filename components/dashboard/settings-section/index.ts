@@ -1,3 +1,2 @@
-export { SettingsSection } from "./settings-section";
-export type { SettingsSectionProps } from "./settings-section";
-
+export { SettingsSection } from './settings-section';
+export type { SettingsSectionProps } from './settings-section';

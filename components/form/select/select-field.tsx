@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { useAccessibilityClasses } from "@/hooks/accessibility";
-import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { cn } from "@/utils/ui";
-import { Select as HeadlessSelect } from "@headlessui/react";
-import { ReactNode, SelectHTMLAttributes, forwardRef, useMemo } from "react";
-import { getContrastClasses, styles } from "./select-styles";
+import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useCognitiveSettings } from '@/hooks/cognitive-settings';
+import { cn } from '@/utils/ui';
+import { Select as HeadlessSelect } from '@headlessui/react';
+import { ReactNode, SelectHTMLAttributes, forwardRef, useMemo } from 'react';
+import { getContrastClasses, styles } from './select-styles';
 
 /**
  * Select.Field - Select field subcomponent
  * Use this for the actual select element
  * Built on top of Headless UI Select for enhanced accessibility
- * 
+ *
  * @example
  * ```tsx
  * <Select>
@@ -28,18 +28,18 @@ export interface SelectFieldProps extends SelectHTMLAttributes<HTMLSelectElement
 }
 
 const SelectFieldRoot = forwardRef<HTMLSelectElement, SelectFieldProps>(
-  ({ className = "", ...props }, ref) => {
+  ({ className = '', ...props }, ref) => {
     const isDisabled = props.disabled;
-    const isInvalid = props["aria-invalid"] === true;
+    const isInvalid = props['aria-invalid'] === true;
 
     // Use accessibility classes hook for optimized class generation
     // Only re-renders when relevant settings change
-    const { 
+    const {
       fontSizeClasses, // Recalculates only when settings.fontSize changes
       spacingClasses, // Recalculates only when settings.spacing changes
       animationClasses, // Recalculates only when settings.animations changes
     } = useAccessibilityClasses();
-    
+
     // Get contrast setting directly from (only re-renders when contrast changes)
     const { settings } = useCognitiveSettings();
 
@@ -79,6 +79,6 @@ const SelectFieldRoot = forwardRef<HTMLSelectElement, SelectFieldProps>(
   }
 );
 
-SelectFieldRoot.displayName = "Select.Field";
+SelectFieldRoot.displayName = 'Select.Field';
 
 export const SelectField = SelectFieldRoot;

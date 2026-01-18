@@ -3,7 +3,10 @@
  * Reusable mock factories for UserPreferences and UserPreferencesDocument entities
  */
 
-import type { UserPreferences, UserPreferencesDocument } from '@/models/user-preferences';
+import type {
+  UserPreferences,
+  UserPreferencesDocument,
+} from '@/models/user-preferences';
 import { DEFAULT_ACCESSIBILITY_SETTINGS } from '@/models/user-preferences';
 
 /**

@@ -90,22 +90,24 @@ __tests__/
 **Arquivos de teste**: `__tests__/unit/utils/timer-helpers.test.ts`
 
 **Funções a testar**:
+
 - `formatTime(seconds: number)`: Formatação de tempo em MM:SS
   - Casos: 0s, 59s, 60s, 125s, 3661s, valores negativos
 - `isTimerCompleted(remainingTime: number)`: Verificação de conclusão
   - Casos: 0, -1, 1, valores positivos
 
 **Exemplo de teste**:
+
 ```typescript
 describe('formatTime', () => {
   it('should format 0 seconds as 00:00', () => {
     expect(formatTime(0)).toBe('00:00');
   });
-  
+
   it('should format 125 seconds as 02:05', () => {
     expect(formatTime(125)).toBe('02:05');
   });
-  
+
   it('should format 3661 seconds as 61:01', () => {
     expect(formatTime(3661)).toBe('61:01');
   });
@@ -121,6 +123,7 @@ describe('formatTime', () => {
 **Arquivos de teste**: `__tests__/unit/utils/tasks.test.ts`
 
 **Funções a testar**:
+
 - `hasPendingSubtasks(task: Task)`: Verifica se há subtarefas pendentes
   - Casos: sem subtarefas, todas completas, algumas pendentes, todas pendentes
 - `getPendingSubtasks(task: Task)`: Retorna subtarefas pendentes
@@ -129,13 +132,21 @@ describe('formatTime', () => {
   - Casos: sem subtarefas, todas completas, com pendentes
 
 **Exemplo de teste**:
+
 ```typescript
 describe('hasPendingSubtasks', () => {
   it('should return false when task has no subtasks', () => {
-    const task: Task = { id: '1', userId: 'user1', title: 'Task', status: 0, createdAt: new Date(), updatedAt: new Date() };
+    const task: Task = {
+      id: '1',
+      userId: 'user1',
+      title: 'Task',
+      status: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
     expect(hasPendingSubtasks(task)).toBe(false);
   });
-  
+
   it('should return true when task has pending subtasks', () => {
     const task: Task = {
       id: '1',
@@ -163,20 +174,22 @@ describe('hasPendingSubtasks', () => {
 **Arquivos de teste**: `__tests__/unit/utils/ui.test.ts`
 
 **Funções a testar**:
+
 - `cn(...inputs: ClassValue[])`: Merge de classes Tailwind
   - Casos: classes simples, arrays, objetos condicionais, valores null/undefined
 
 **Exemplo de teste**:
+
 ```typescript
 describe('cn', () => {
   it('should merge simple classes', () => {
     expect(cn('foo', 'bar')).toBe('foo bar');
   });
-  
+
   it('should handle conditional classes', () => {
     expect(cn('foo', false && 'bar', 'baz')).toBe('foo baz');
   });
-  
+
   it('should merge Tailwind classes correctly', () => {
     expect(cn('p-4 p-2')).toBe('p-2'); // p-2 sobrescreve p-4
   });
@@ -192,6 +205,7 @@ describe('cn', () => {
 **Arquivos de teste**: `__tests__/unit/utils/uuid.test.ts`
 
 **Funções a testar**:
+
 - `generateRandomUUID()`: Geração de UUID único
   - Casos: gera string, formato válido, valores únicos em múltiplas chamadas
 
@@ -206,6 +220,7 @@ describe('cn', () => {
 **Arquivos de teste**: `__tests__/unit/schemas/task-dialog.schema.test.ts`
 
 **Schemas a testar**:
+
 - `taskDialogSchema`: Validação de formulário
   - Casos válidos: título válido, descrição opcional, subtarefas válidas
   - Casos inválidos: título vazio, título apenas espaços, subtarefas inválidas
@@ -213,6 +228,7 @@ describe('cn', () => {
   - Casos: remove espaços em branco, filtra subtarefas vazias, reordena subtarefas
 
 **Exemplo de teste**:
+
 ```typescript
 describe('taskDialogSchema', () => {
   it('should validate a valid task', () => {
@@ -223,12 +239,12 @@ describe('taskDialogSchema', () => {
     };
     expect(() => taskDialogSchema.parse(valid)).not.toThrow();
   });
-  
+
   it('should reject empty title', () => {
     const invalid = { title: '', description: '', subtasks: [] };
     expect(() => taskDialogSchema.parse(invalid)).toThrow();
   });
-  
+
   it('should reject title with only spaces', () => {
     const invalid = { title: '   ', description: '', subtasks: [] };
     expect(() => taskDialogSchema.parse(invalid)).toThrow();
@@ -249,6 +265,7 @@ describe('taskDialogSchema', () => {
 **Arquivos de teste**: `__tests__/components/ui/button.test.tsx`
 
 **Cenários a testar**:
+
 - Renderização básica com texto
 - Todas as variantes (primary, secondary, ghost, danger, warning)
 - Todos os tamanhos (sm, md, lg)
@@ -259,6 +276,7 @@ describe('taskDialogSchema', () => {
 - Interação via teclado
 
 **Exemplo de teste**:
+
 ```typescript
 describe('Button', () => {
   it('should render with text', () => {
@@ -269,7 +287,7 @@ describe('Button', () => {
     );
     expect(screen.getByText('Click me')).toBeInTheDocument();
   });
-  
+
   it('should apply primary variant styles', () => {
     render(
       <Button variant="primary">
@@ -279,7 +297,7 @@ describe('Button', () => {
     const button = screen.getByRole('button');
     expect(button).toHaveClass(/* classes esperadas */);
   });
-  
+
   it('should show loading state', () => {
     render(
       <Button isLoading>
@@ -301,6 +319,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/ui/input.test.tsx`
 
 **Cenários a testar**:
+
 - Renderização com label e field
 - Campo de texto básico
 - Campo textarea
@@ -317,6 +336,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/ui/card.test.tsx`
 
 **Cenários a testar**:
+
 - Renderização básica
 - Composição com Card.Header, Card.Title, Card.Description, Card.Content
 - Prop `focused` (focus mode)
@@ -332,6 +352,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/ui/checkbox.test.tsx`
 
 **Cenários a testar**:
+
 - Renderização checked/unchecked
 - Toggle ao clicar
 - Toggle via teclado (Enter, Space)
@@ -350,6 +371,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/form/form-input.test.tsx`
 
 **Cenários a testar**:
+
 - Integração com React Hook Form
 - Validação de erros
 - Exibição de mensagens de erro
@@ -366,6 +388,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/tasks/task-checklist.test.tsx`
 
 **Cenários a testar**:
+
 - Renderização de lista de subtarefas
 - Ordenação por `order`
 - Cálculo de progresso
@@ -384,6 +407,7 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/tasks/task-checklist-progress.test.tsx`
 
 **Cenários a testar**:
+
 - Exibição correta de progresso (completedCount/totalCount)
 - Formatação de texto de progresso
 - Casos extremos (0/0, 0/5, 5/5)
@@ -406,11 +430,13 @@ describe('Button', () => {
 **Arquivos de teste**: `__tests__/components/ui/*.snapshot.test.tsx`
 
 **Estratégia**:
+
 - Criar snapshots iniciais após implementação
 - Atualizar snapshots apenas quando mudanças visuais forem intencionais
 - Revisar diffs cuidadosamente antes de aceitar
 
 **Exemplo**:
+
 ```typescript
 describe('Button Snapshot', () => {
   it('should match snapshot for primary variant', () => {
@@ -435,6 +461,7 @@ describe('Button Snapshot', () => {
 **Justificativa**: Fluxo crítico de entrada na aplicação. Testar integração completa com NextAuth e Firebase.
 
 **Cenários**:
+
 1. **Login com Google**
    - Acessar `/login`
    - Clicar em botão de login
@@ -452,6 +479,7 @@ describe('Button Snapshot', () => {
    - Verificar que rotas protegidas não são acessíveis
 
 **Setup necessário**:
+
 - Mock ou conta de teste do Google OAuth
 - Configuração de autenticação de teste no Playwright
 
@@ -464,6 +492,7 @@ describe('Button Snapshot', () => {
 **Justificativa**: Funcionalidade core da aplicação. Testar CRUD completo de tarefas.
 
 **Cenários**:
+
 1. **Criar Nova Tarefa**
    - Acessar `/tasks`
    - Clicar em botão "Nova Tarefa"
@@ -496,6 +525,7 @@ describe('Button Snapshot', () => {
    - Verificar estados (To Do, In Progress, Done)
 
 **Setup necessário**:
+
 - Autenticação prévia (via `auth.spec.ts` ou setup global)
 - Dados de teste no Firestore (ou mock)
 
@@ -508,6 +538,7 @@ describe('Button Snapshot', () => {
 **Justificativa**: Funcionalidade importante para foco. Testar ciclo completo do timer.
 
 **Cenários**:
+
 1. **Iniciar Timer de Foco**
    - Abrir uma tarefa
    - Clicar em "Iniciar Foco"
@@ -533,6 +564,7 @@ describe('Button Snapshot', () => {
    - Ou verificar aviso de navegação (se implementado)
 
 **Setup necessário**:
+
 - Timer de teste com duração curta (configurável)
 - Mock de `setInterval`/`setTimeout` se necessário
 
@@ -543,21 +575,25 @@ describe('Button Snapshot', () => {
 ### 5.1 Mocks Necessários
 
 #### Firebase/Firestore
+
 - **Arquivo**: `__tests__/__mocks__/firebase.ts`
 - **Uso**: Mockar `firestoreService` em testes unitários de serviços
 - **Estratégia**: Criar implementação in-memory para testes
 
 #### NextAuth
+
 - **Arquivo**: `__tests__/__mocks__/next-auth.ts`
 - **Uso**: Mockar `getServerSession` e hooks de autenticação
 - **Estratégia**: Retornar sessão mockada baseada em contexto de teste
 
 #### Hooks de Acessibilidade
+
 - **Arquivo**: `__tests__/__mocks__/hooks/accessibility.ts`
 - **Uso**: Mockar `useAccessibilityClasses`, `useTextDetail`, `useCognitiveSettings`
 - **Estratégia**: Retornar valores padrão ou configuráveis
 
 #### React Router (Next.js)
+
 - **Uso**: Mockar `useRouter`, `usePathname` em componentes
 - **Estratégia**: Usar `@testing-library/react` com mocks do Next.js
 
@@ -655,6 +691,7 @@ export default defineConfig({
 ## 7. Comandos de Execução
 
 ### Desenvolvimento
+
 ```bash
 # Executar todos os testes em modo watch
 npm run test:watch
@@ -673,6 +710,7 @@ npm run test:ui
 ```
 
 ### CI/CD
+
 ```bash
 # Executar todos os testes e gerar cobertura
 npm run test:coverage
@@ -682,6 +720,7 @@ npm run test:e2e -- --headed
 ```
 
 ### Manutenção
+
 ```bash
 # Atualizar snapshots
 npm run test:snapshot -- -u
@@ -695,18 +734,21 @@ npm run test -- --inspect-brk
 ## 8. Metas e Priorização
 
 ### Prioridade Alta (Implementar Primeiro)
+
 1. ✅ Utils puros (`timer-helpers`, `tasks`, `ui`)
 2. ✅ Schemas de validação (`task-dialog.schema`)
 3. ✅ Componentes UI base (`Button`, `Input`, `Card`, `Checkbox`)
 4. ✅ Fluxo E2E de autenticação
 
 ### Prioridade Média
+
 1. Componentes de formulário (`form-input`)
 2. Componentes de tarefas (`task-checklist`, `task-checklist-progress`)
 3. Fluxo E2E de tarefas (CRUD)
 4. Testes de snapshot
 
 ### Prioridade Baixa (Opcional)
+
 1. Hooks simples (se isoláveis)
 2. Fluxo E2E de timer (pode ser complexo)
 3. Testes de integração mais complexos
@@ -716,6 +758,7 @@ npm run test -- --inspect-brk
 ## 9. Checklist de Implementação
 
 ### Fase 1: Infraestrutura
+
 - [ ] Configurar `vitest.config.ts` com projetos separados
 - [ ] Configurar `playwright.config.ts`
 - [ ] Criar estrutura de diretórios `__tests__/`
@@ -724,6 +767,7 @@ npm run test -- --inspect-brk
 - [ ] Instalar dependências faltantes (`@testing-library/react`, `@testing-library/jest-dom`)
 
 ### Fase 2: Testes Unitários
+
 - [ ] `utils/timer/timer-helpers.test.ts`
 - [ ] `utils/tasks/tasks.test.ts`
 - [ ] `utils/ui/ui.test.ts`
@@ -731,6 +775,7 @@ npm run test -- --inspect-brk
 - [ ] `schemas/task-dialog.schema.test.ts`
 
 ### Fase 3: Testes de Componentes
+
 - [ ] `components/ui/button.test.tsx`
 - [ ] `components/ui/input.test.tsx`
 - [ ] `components/ui/card.test.tsx`
@@ -740,14 +785,17 @@ npm run test -- --inspect-brk
 - [ ] `components/tasks/task-checklist-progress.test.tsx`
 
 ### Fase 4: Testes de Snapshot
+
 - [ ] Snapshots para componentes UI principais
 
 ### Fase 5: Testes E2E
+
 - [ ] `e2e/auth.spec.ts`
 - [ ] `e2e/tasks.spec.ts`
 - [ ] `e2e/timer.spec.ts`
 
 ### Fase 6: Validação
+
 - [ ] Executar `npm run test:coverage` e verificar 60-70%
 - [ ] Revisar relatório de cobertura
 - [ ] Ajustar exclusões se necessário
@@ -758,17 +806,20 @@ npm run test -- --inspect-brk
 ## 10. Notas e Considerações
 
 ### Por que não 100% de cobertura?
+
 - **Custo-benefício**: Alguns componentes são difíceis de testar isoladamente (muitas dependências)
 - **Foco**: Priorizar o que traz mais valor (lógica de negócio, componentes reutilizáveis)
 - **Manutenibilidade**: Testes complexos podem se tornar difíceis de manter
 
 ### Componentes Excluídos (Justificativa)
+
 - **Páginas completas**: Testadas via E2E, não precisam de testes unitários
 - **Providers complexos**: Muitas dependências (Firebase, Context), melhor testar via E2E
 - **Hooks com muitas dependências**: Difíceis de mockar, melhor testar via componentes que os usam
 - **Componentes de layout complexos**: Testados via E2E
 
 ### Quando Adicionar Mais Testes?
+
 - Quando bugs forem encontrados em produção
 - Quando componentes críticos forem modificados
 - Quando novos fluxos importantes forem adicionados

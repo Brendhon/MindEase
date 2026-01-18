@@ -1,12 +1,15 @@
-"use client";
+'use client';
 
-import { SessionCompleteDialog, type SessionAction } from "@/components/tasks/session-complete-dialog";
-import { useTextDetail } from "@/hooks/accessibility";
-import type { Task } from "@/models/task";
-import { BaseComponentProps } from "@/models/base";
-import { canCompleteTask } from "@/utils/tasks";
-import { Check, Coffee, Play } from "lucide-react";
-import { useMemo } from "react";
+import {
+  SessionCompleteDialog,
+  type SessionAction,
+} from '@/components/tasks/session-complete-dialog';
+import { useTextDetail } from '@/hooks/accessibility';
+import type { Task } from '@/models/task';
+import { BaseComponentProps } from '@/models/base';
+import { canCompleteTask } from '@/utils/tasks';
+import { Check, Coffee, Play } from 'lucide-react';
+import { useMemo } from 'react';
 
 /**
  * FocusSessionCompleteDialog Component - MindEase
@@ -48,7 +51,7 @@ export function FocusSessionCompleteDialog({
   onStartBreak,
   onContinueFocus,
   onFinishTask,
-  "data-testid": testId,
+  'data-testid': testId,
 }: FocusSessionCompleteDialogProps) {
   const { getTextWithReplace, getText } = useTextDetail();
 
@@ -58,16 +61,30 @@ export function FocusSessionCompleteDialog({
   }, [activeTask]);
 
   // Get localized texts with placeholders replaced
-  const titleText = getText("tasks_focus_session_complete_title");
-  const messageText = getTextWithReplace("tasks_focus_session_complete_message", { minutes: focusDuration.toString() });
-  const questionText = getText("tasks_focus_session_complete");
+  const titleText = getText('tasks_focus_session_complete_title');
+  const messageText = getTextWithReplace(
+    'tasks_focus_session_complete_message',
+    { minutes: focusDuration.toString() }
+  );
+  const questionText = getText('tasks_focus_session_complete');
 
-  const startBreakText = getTextWithReplace("tasks_focus_session_start_break", { minutes: breakDuration.toString() });
-  const startBreakAria = getTextWithReplace("tasks_focus_session_start_break_aria", { minutes: breakDuration.toString() });
-  const continueFocusText = getTextWithReplace("tasks_focus_session_continue_focus", { minutes: focusDuration.toString() });
-  const continueFocusAria = getTextWithReplace("tasks_focus_session_continue_focus_aria", { minutes: focusDuration.toString() });
-  const finishText = getText("tasks_focus_session_finish");
-  const finishAria = getText("tasks_focus_session_finish_aria");
+  const startBreakText = getTextWithReplace('tasks_focus_session_start_break', {
+    minutes: breakDuration.toString(),
+  });
+  const startBreakAria = getTextWithReplace(
+    'tasks_focus_session_start_break_aria',
+    { minutes: breakDuration.toString() }
+  );
+  const continueFocusText = getTextWithReplace(
+    'tasks_focus_session_continue_focus',
+    { minutes: focusDuration.toString() }
+  );
+  const continueFocusAria = getTextWithReplace(
+    'tasks_focus_session_continue_focus_aria',
+    { minutes: focusDuration.toString() }
+  );
+  const finishText = getText('tasks_focus_session_finish');
+  const finishAria = getText('tasks_focus_session_finish_aria');
 
   // Build actions array
   const actions = useMemo<SessionAction[]>(() => {
@@ -75,8 +92,8 @@ export function FocusSessionCompleteDialog({
 
     if (onStartBreak) {
       actionList.push({
-        id: "start-break",
-        variant: "secondary",
+        id: 'start-break',
+        variant: 'secondary',
         icon: Coffee,
         text: startBreakText,
         ariaLabel: startBreakAria,
@@ -84,15 +101,15 @@ export function FocusSessionCompleteDialog({
           onStartBreak();
           onClose();
         },
-        testId: "focus-session-complete-start-break",
+        testId: 'focus-session-complete-start-break',
         condition: true,
       });
     }
 
     if (onContinueFocus) {
       actionList.push({
-        id: "continue-focus",
-        variant: "primary",
+        id: 'continue-focus',
+        variant: 'primary',
         icon: Play,
         text: continueFocusText,
         ariaLabel: continueFocusAria,
@@ -100,15 +117,15 @@ export function FocusSessionCompleteDialog({
           onContinueFocus();
           onClose();
         },
-        testId: "focus-session-complete-continue",
+        testId: 'focus-session-complete-continue',
         condition: true,
       });
     }
 
     if (onFinishTask) {
       actionList.push({
-        id: "finish-task",
-        variant: "primary",
+        id: 'finish-task',
+        variant: 'primary',
         icon: Check,
         text: finishText,
         ariaLabel: finishAria,
@@ -116,7 +133,7 @@ export function FocusSessionCompleteDialog({
           onFinishTask();
           onClose();
         },
-        testId: "focus-session-complete-finish",
+        testId: 'focus-session-complete-finish',
         condition: canFinish,
       });
     }
@@ -144,9 +161,9 @@ export function FocusSessionCompleteDialog({
       message={messageText}
       question={questionText}
       actions={actions}
-      data-testid={testId || "focus-session-complete-dialog"}
+      data-testid={testId || 'focus-session-complete-dialog'}
     />
   );
 }
 
-FocusSessionCompleteDialog.displayName = "FocusSessionCompleteDialog";
+FocusSessionCompleteDialog.displayName = 'FocusSessionCompleteDialog';

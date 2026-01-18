@@ -76,7 +76,9 @@ export const WithError: Story = {
         aria-invalid="true"
         aria-describedby="error-input-error"
       />
-      <Input.Error id="error-input-error">Please enter a valid email address</Input.Error>
+      <Input.Error id="error-input-error">
+        Please enter a valid email address
+      </Input.Error>
     </Input>
   ),
 };
@@ -250,7 +252,9 @@ export const FormExample: Story = {
             id="form-email"
             type="email"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, email: e.target.value })
+            }
             aria-invalid={errors.email ? 'true' : 'false'}
             aria-describedby={errors.email ? 'form-email-error' : undefined}
           />
@@ -266,7 +270,9 @@ export const FormExample: Story = {
             as="textarea"
             rows={4}
             value={formData.message}
-            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+            onChange={(e) =>
+              setFormData({ ...formData, message: e.target.value })
+            }
             aria-invalid={errors.message ? 'true' : 'false'}
             aria-describedby={errors.message ? 'form-message-error' : undefined}
           />
@@ -297,22 +303,39 @@ export const AllTypes: Story = {
 
       <Input>
         <Input.Label htmlFor="showcase-email">Email Input</Input.Label>
-        <Input.Field id="showcase-email" type="email" placeholder="Enter email" />
+        <Input.Field
+          id="showcase-email"
+          type="email"
+          placeholder="Enter email"
+        />
       </Input>
 
       <Input>
         <Input.Label htmlFor="showcase-password">Password Input</Input.Label>
-        <Input.Field id="showcase-password" type="password" placeholder="Enter password" />
+        <Input.Field
+          id="showcase-password"
+          type="password"
+          placeholder="Enter password"
+        />
       </Input>
 
       <Input>
         <Input.Label htmlFor="showcase-number">Number Input</Input.Label>
-        <Input.Field id="showcase-number" type="number" placeholder="Enter number" />
+        <Input.Field
+          id="showcase-number"
+          type="number"
+          placeholder="Enter number"
+        />
       </Input>
 
       <Input>
         <Input.Label htmlFor="showcase-textarea">Textarea</Input.Label>
-        <Input.Field id="showcase-textarea" as="textarea" placeholder="Enter text" rows={3} />
+        <Input.Field
+          id="showcase-textarea"
+          as="textarea"
+          placeholder="Enter text"
+          rows={3}
+        />
       </Input>
     </div>
   ),
@@ -326,7 +349,9 @@ export const AccessibilityShowcase: Story = {
   render: () => (
     <div className="flex gap-6 flex-col p-6 w-full max-w-2xl">
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Normal Settings
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -339,13 +364,19 @@ export const AccessibilityShowcase: Story = {
         >
           <Input>
             <Input.Label htmlFor="normal-input">Normal Input</Input.Label>
-            <Input.Field id="normal-input" type="text" placeholder="Enter text" />
+            <Input.Field
+              id="normal-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
@@ -357,14 +388,22 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Input>
-            <Input.Label htmlFor="high-contrast-input">High Contrast Input</Input.Label>
-            <Input.Field id="high-contrast-input" type="text" placeholder="Enter text" />
+            <Input.Label htmlFor="high-contrast-input">
+              High Contrast Input
+            </Input.Label>
+            <Input.Field
+              id="high-contrast-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Compact Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -377,13 +416,19 @@ export const AccessibilityShowcase: Story = {
         >
           <Input>
             <Input.Label htmlFor="compact-input">Compact Spacing</Input.Label>
-            <Input.Field id="compact-input" type="text" placeholder="Enter text" />
+            <Input.Field
+              id="compact-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Relaxed Spacing
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -396,13 +441,19 @@ export const AccessibilityShowcase: Story = {
         >
           <Input>
             <Input.Label htmlFor="relaxed-input">Relaxed Spacing</Input.Label>
-            <Input.Field id="relaxed-input" type="text" placeholder="Enter text" />
+            <Input.Field
+              id="relaxed-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Small Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Small Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -414,14 +465,22 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Input>
-            <Input.Label htmlFor="small-font-input">Small Font Input</Input.Label>
-            <Input.Field id="small-font-input" type="text" placeholder="Enter text" />
+            <Input.Label htmlFor="small-font-input">
+              Small Font Input
+            </Input.Label>
+            <Input.Field
+              id="small-font-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Large Font
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -433,14 +492,22 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Input>
-            <Input.Label htmlFor="large-font-input">Large Font Input</Input.Label>
-            <Input.Field id="large-font-input" type="text" placeholder="Enter text" />
+            <Input.Label htmlFor="large-font-input">
+              Large Font Input
+            </Input.Label>
+            <Input.Field
+              id="large-font-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          Animations Disabled
+        </h3>
         <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'normal',
@@ -452,15 +519,23 @@ export const AccessibilityShowcase: Story = {
           }}
         >
           <Input>
-            <Input.Label htmlFor="no-animations-input">No Animations</Input.Label>
-            <Input.Field id="no-animations-input" type="text" placeholder="Enter text" />
+            <Input.Label htmlFor="no-animations-input">
+              No Animations
+            </Input.Label>
+            <Input.Field
+              id="no-animations-input"
+              type="text"
+              placeholder="Enter text"
+            />
           </Input>
         </CognitiveSettingsProvider>
       </div>
 
       <div>
-        <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
-        <CognitiveSettingsProvider    
+        <h3 className="mb-3 text-sm font-medium text-text-secondary">
+          High Contrast with Error
+        </h3>
+        <CognitiveSettingsProvider
           initialSettings={{
             contrast: 'high',
             spacing: 'normal',
@@ -479,7 +554,9 @@ export const AccessibilityShowcase: Story = {
               aria-invalid="true"
               aria-describedby="error-input-error"
             />
-            <Input.Error id="error-input-error">Please enter a valid email address</Input.Error>
+            <Input.Error id="error-input-error">
+              Please enter a valid email address
+            </Input.Error>
           </Input>
         </CognitiveSettingsProvider>
       </div>
@@ -489,4 +566,3 @@ export const AccessibilityShowcase: Story = {
     layout: 'padded',
   },
 };
-
