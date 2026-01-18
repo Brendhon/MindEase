@@ -99,4 +99,4 @@ jobs:
         run: npm run build
 
       - name: Deploy to Production
-        run: vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }}
