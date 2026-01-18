@@ -4,6 +4,9 @@
  */
 
 export * from './auth';
+export * from './firestore-service';
 export * from './next-auth';
 export * from './services';
 export * from './tasks';
+export * from './user-preferences';
+

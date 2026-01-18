@@ -16,10 +16,37 @@ vi.mock('@/services/firestore/firestore', () => ({
   },
 }));
 
-describe('tasksService', () => {
-  const mockUserId = 'user-123';
-  const mockTaskId = 'task-456';
+// Test constants
+const MOCK_USER_ID = 'user-123';
+const MOCK_TASK_ID = 'task-456';
+const MOCK_COLLECTION_PATH = `users/${MOCK_USER_ID}/tasks`;
 
+// Helper functions for common mock setups
+const setupGetCollectionSuccess = <T>(data: T[]) => {
+  vi.mocked(firestoreService.getCollection).mockResolvedValue(data);
+};
+
+const setupGetDocumentSuccess = <T>(data: T | null) => {
+  vi.mocked(firestoreService.getDocument).mockResolvedValue(data);
+};
+
+const setupCreateDocumentSuccess = <T extends { id: string }>(data: T) => {
+  (vi.mocked(firestoreService.createDocument) as any).mockResolvedValue(data);
+};
+
+const setupUpdateDocumentSuccess = <T>(data: T) => {
+  vi.mocked(firestoreService.updateDocument).mockResolvedValue(data);
+};
+
+const setupDeleteDocumentSuccess = () => {
+  vi.mocked(firestoreService.deleteDocument).mockResolvedValue(undefined);
+};
+
+const setupDeleteCollectionSuccess = () => {
+  vi.mocked(firestoreService.deleteCollection).mockResolvedValue(undefined);
+};
+
+describe('tasksService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -27,50 +54,53 @@ describe('tasksService', () => {
   describe('getTasks', () => {
     it('should get all tasks for a user', async () => {
       const mockTasks: Task[] = [
-        createTask({ id: 'task-1', userId: mockUserId, title: 'Task 1' }),
-        createTask({ id: 'task-2', userId: mockUserId, title: 'Task 2' }),
+        createTask({ id: 'task-1', userId: MOCK_USER_ID, title: 'Task 1' }),
+        createTask({ id: 'task-2', userId: MOCK_USER_ID, title: 'Task 2' }),
       ];
 
-      vi.mocked(firestoreService.getCollection).mockResolvedValue(mockTasks);
+      setupGetCollectionSuccess(mockTasks);
 
-      const result = await tasksService.getTasks(mockUserId);
+      const result = await tasksService.getTasks(MOCK_USER_ID);
 
       expect(result).toEqual(mockTasks);
-      expect(firestoreService.getCollection).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`
-      );
+      expect(firestoreService.getCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
     });
 
     it('should return empty array when user has no tasks', async () => {
-      vi.mocked(firestoreService.getCollection).mockResolvedValue([]);
+      setupGetCollectionSuccess([]);
 
-      const result = await tasksService.getTasks(mockUserId);
+      const result = await tasksService.getTasks(MOCK_USER_ID);
 
       expect(result).toEqual([]);
+      expect(firestoreService.getCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
     });
   });
 
   describe('getTask', () => {
     it('should get a specific task by ID', async () => {
-      const mockTask = createTask({ id: mockTaskId, userId: mockUserId });
+      const mockTask = createTask({ id: MOCK_TASK_ID, userId: MOCK_USER_ID });
 
-      vi.mocked(firestoreService.getDocument).mockResolvedValue(mockTask);
+      setupGetDocumentSuccess(mockTask);
 
-      const result = await tasksService.getTask(mockUserId, mockTaskId);
+      const result = await tasksService.getTask(MOCK_USER_ID, MOCK_TASK_ID);
 
       expect(result).toEqual(mockTask);
       expect(firestoreService.getDocument).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`,
-        mockTaskId
+        MOCK_COLLECTION_PATH,
+        MOCK_TASK_ID
       );
     });
 
     it('should return null when task does not exist', async () => {
-      vi.mocked(firestoreService.getDocument).mockResolvedValue(null);
+      setupGetDocumentSuccess(null);
 
-      const result = await tasksService.getTask(mockUserId, 'non-existent');
+      const result = await tasksService.getTask(MOCK_USER_ID, 'non-existent');
 
       expect(result).toBeNull();
+      expect(firestoreService.getDocument).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH,
+        'non-existent'
+      );
     });
   });
 
@@ -84,22 +114,22 @@ describe('tasksService', () => {
 
       const createdTask = createTask({
         id: 'new-task-id',
-        userId: mockUserId,
+        userId: MOCK_USER_ID,
         ...taskData,
       });
 
-      vi.mocked(firestoreService.createDocument).mockResolvedValue(createdTask);
+      setupCreateDocumentSuccess(createdTask);
 
-      const result = await tasksService.createTask(mockUserId, taskData);
+      const result = await tasksService.createTask(MOCK_USER_ID, taskData);
 
       expect(result).toEqual(createdTask);
       expect(firestoreService.createDocument).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`,
+        MOCK_COLLECTION_PATH,
         expect.objectContaining({
           title: taskData.title,
           description: taskData.description,
           status: 0,
-          userId: mockUserId,
+          userId: MOCK_USER_ID,
           createdAt: expect.any(Date),
           updatedAt: expect.any(Date),
         })
@@ -114,13 +144,13 @@ describe('tasksService', () => {
 
       const createdTask = createTask({
         id: 'new-task-id',
-        userId: mockUserId,
+        userId: MOCK_USER_ID,
         ...taskData,
       });
 
-      vi.mocked(firestoreService.createDocument).mockResolvedValue(createdTask);
+      setupCreateDocumentSuccess(createdTask);
 
-      await tasksService.createTask(mockUserId, taskData);
+      await tasksService.createTask(MOCK_USER_ID, taskData);
 
       expect(firestoreService.createDocument).toHaveBeenCalledWith(
         expect.any(String),
@@ -138,13 +168,13 @@ describe('tasksService', () => {
 
       const createdTask = createTask({
         id: 'new-task-id',
-        userId: mockUserId,
+        userId: MOCK_USER_ID,
         ...taskData,
       });
 
-      vi.mocked(firestoreService.createDocument).mockResolvedValue(createdTask);
+      setupCreateDocumentSuccess(createdTask);
 
-      await tasksService.createTask(mockUserId, taskData);
+      await tasksService.createTask(MOCK_USER_ID, taskData);
 
       const callArgs = vi.mocked(firestoreService.createDocument).mock.calls[0][1] as any;
       expect(callArgs.createdAt).toBeInstanceOf(Date);
@@ -160,19 +190,19 @@ describe('tasksService', () => {
       };
 
       const updatedTask = createTask({
-        id: mockTaskId,
-        userId: mockUserId,
+        id: MOCK_TASK_ID,
+        userId: MOCK_USER_ID,
         ...updates,
       });
 
-      vi.mocked(firestoreService.updateDocument).mockResolvedValue(updatedTask);
+      setupUpdateDocumentSuccess(updatedTask);
 
-      const result = await tasksService.updateTask(mockUserId, mockTaskId, updates);
+      const result = await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
 
       expect(result).toEqual(updatedTask);
       expect(firestoreService.updateDocument).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`,
-        mockTaskId,
+        MOCK_COLLECTION_PATH,
+        MOCK_TASK_ID,
         expect.objectContaining({
           ...updates,
           updatedAt: expect.any(Date),
@@ -186,14 +216,14 @@ describe('tasksService', () => {
       };
 
       const updatedTask = createTask({
-        id: mockTaskId,
-        userId: mockUserId,
+        id: MOCK_TASK_ID,
+        userId: MOCK_USER_ID,
         title: updates.title,
       });
 
-      vi.mocked(firestoreService.updateDocument).mockResolvedValue(updatedTask);
+      setupUpdateDocumentSuccess(updatedTask);
 
-      await tasksService.updateTask(mockUserId, mockTaskId, updates);
+      await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
 
       expect(firestoreService.updateDocument).toHaveBeenCalledWith(
         expect.any(String),
@@ -207,11 +237,11 @@ describe('tasksService', () => {
 
     it('should include updatedAt timestamp', async () => {
       const updates = { title: 'Updated' };
-      const updatedTask = createTask({ id: mockTaskId, userId: mockUserId, ...updates });
+      const updatedTask = createTask({ id: MOCK_TASK_ID, userId: MOCK_USER_ID, ...updates });
 
-      vi.mocked(firestoreService.updateDocument).mockResolvedValue(updatedTask);
+      setupUpdateDocumentSuccess(updatedTask);
 
-      await tasksService.updateTask(mockUserId, mockTaskId, updates);
+      await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
 
       const callArgs = vi.mocked(firestoreService.updateDocument).mock.calls[0][2] as any;
       expect(callArgs.updatedAt).toBeInstanceOf(Date);
@@ -220,26 +250,24 @@ describe('tasksService', () => {
 
   describe('deleteTask', () => {
     it('should delete a task', async () => {
-      vi.mocked(firestoreService.deleteDocument).mockResolvedValue(undefined);
+      setupDeleteDocumentSuccess();
 
-      await tasksService.deleteTask(mockUserId, mockTaskId);
+      await tasksService.deleteTask(MOCK_USER_ID, MOCK_TASK_ID);
 
       expect(firestoreService.deleteDocument).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`,
-        mockTaskId
+        MOCK_COLLECTION_PATH,
+        MOCK_TASK_ID
       );
     });
   });
 
   describe('deleteAllTasks', () => {
     it('should delete all tasks for a user', async () => {
-      vi.mocked(firestoreService.deleteCollection).mockResolvedValue(undefined);
+      setupDeleteCollectionSuccess();
 
-      await tasksService.deleteAllTasks(mockUserId);
+      await tasksService.deleteAllTasks(MOCK_USER_ID);
 
-      expect(firestoreService.deleteCollection).toHaveBeenCalledWith(
-        `users/${mockUserId}/tasks`
-      );
+      expect(firestoreService.deleteCollection).toHaveBeenCalledWith(MOCK_COLLECTION_PATH);
     });
   });
 });
