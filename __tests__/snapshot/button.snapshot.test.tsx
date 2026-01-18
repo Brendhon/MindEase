@@ -1,46 +1,22 @@
 import { Button } from '@/components/ui/button/button';
 import { render } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+import {
+  accessibilityMocks,
+  textDetailMocks,
+  cognitiveSettingsMocks,
+} from '@/__tests__/__mocks__/hooks';
 
 // Mock useAccessibilityClasses directly in this test file
 // This ensures the mock is applied before the component imports it
 vi.mock('@/hooks/accessibility', () => ({
-  useAccessibilityClasses: () => ({
-    spacingClasses: {
-      padding: 'p-4',
-      gap: 'gap-2',
-      margin: 'm-4',
-    },
-    fontSizeClasses: {
-      sm: 'text-sm',
-      base: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
-      '2xl': 'text-2xl',
-      '3xl': 'text-3xl',
-    },
-    contrastClasses: 'contrast-normal',
-    animationClasses: 'animate-normal',
-  }),
-  useTextDetail: () => ({
-    getText: (key: string) => key,
-  }),
+  useAccessibilityClasses: () => accessibilityMocks.default(),
+  useTextDetail: () => textDetailMocks.default(),
 }));
 
 // Mock useCognitiveSettings
 vi.mock('@/hooks/cognitive-settings', () => ({
-  useCognitiveSettings: () => ({
-    settings: {
-      fontSize: 'base',
-      contrast: 'normal',
-      spacing: 'normal',
-      animations: 'normal',
-      complexity: 'normal',
-      focusMode: false,
-      textDetail: 'normal',
-    },
-    updateSettings: vi.fn(),
-  }),
+  useCognitiveSettings: () => cognitiveSettingsMocks.default(),
 }));
 
 /**

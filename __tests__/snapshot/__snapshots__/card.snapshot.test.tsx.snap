@@ -1,0 +1,102 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Card Snapshot > should match snapshot for basic card with content 1`] = `
+<div
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal"
+  data-testid="card-basic"
+>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Card content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshot > should match snapshot for card with all subcomponents 1`] = `
+<div
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal"
+  data-testid="card-complete"
+>
+  <div
+    class="flex flex-col border-b gap-2 border-border-subtle"
+  >
+    <h2
+      class="font-semibold text-lg text-text-primary"
+    >
+      Card Title
+    </h2>
+    <p
+      class="mt-1 text-sm text-text-secondary"
+    >
+      Card description
+    </p>
+  </div>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Card content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshot > should match snapshot for card with different HTML element > card-article 1`] = `
+<article
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal"
+  data-testid="card-article"
+>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Article card
+  </div>
+</article>
+`;
+
+exports[`Card Snapshot > should match snapshot for card with different HTML element > card-section 1`] = `
+<section
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal"
+  data-testid="card-section"
+>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Section card
+  </div>
+</section>
+`;
+
+exports[`Card Snapshot > should match snapshot for card with header and title 1`] = `
+<div
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal"
+  data-testid="card-header"
+>
+  <div
+    class="flex flex-col border-b gap-2 border-border-subtle"
+  >
+    <h2
+      class="font-semibold text-lg text-text-primary"
+    >
+      Card Title
+    </h2>
+  </div>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Card content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshot > should match snapshot for focused card 1`] = `
+<div
+  class="flex flex-col bg-surface-primary border rounded-lg p-4 gap-2 contrast-normal border-border-subtle animate-normal ring-2 ring-blue-500 ring-offset-2 shadow-lg"
+  data-testid="card-focused"
+>
+  <div
+    class="flex flex-col gap-2"
+  >
+    Focused card content
+  </div>
+</div>
+`;
