@@ -63,6 +63,9 @@ jobs:
       - name: Run component tests
         run: npm run test:components
 
+      - name: Run snapshot tests
+        run: npm run test:snapshot
+
   deploy:
     needs: [build, test]
     runs-on: ubuntu-latest

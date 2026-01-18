@@ -74,6 +74,7 @@ export default defineConfig({
             '**/__tests__/components/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
           ],
           environment: 'jsdom',
+          setupFiles: ['./__tests__/setup.ts'],
         },
         resolve: {
           alias: {
@@ -86,9 +87,10 @@ export default defineConfig({
         test: {
           name: 'snapshot',
           include: [
-            '**/__tests__/**/*.snapshot.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
+            '**/__tests__/snapshot/**/*.snapshot.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
           ],
           environment: 'jsdom',
+          setupFiles: ['./__tests__/setup.ts'],
         },
         resolve: {
           alias: {

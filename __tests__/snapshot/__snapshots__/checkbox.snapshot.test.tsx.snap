@@ -1,0 +1,152 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Checkbox Snapshot > should match snapshot for checkbox with label 1`] = `
+<div
+  class="flex items-center gap-2"
+  data-testid="checkbox-label"
+>
+  <button
+    aria-checked="false"
+    class="flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50 bg-surface-primary border-border-strong"
+    data-headlessui-state=""
+    data-testid="checkbox-label-checkbox"
+    role="checkbox"
+    type="button"
+  />
+  <div
+    class="flex flex-col"
+  >
+    <span
+      class="text-text-primary cursor-pointer font-medium truncate max-w-64 text-sm"
+      data-testid="checkbox-label"
+      title="Checkbox label"
+    >
+      Checkbox label
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Checkbox Snapshot > should match snapshot for checked checkbox 1`] = `
+<div
+  class="flex items-center gap-2"
+  data-testid="checkbox-checked"
+>
+  <button
+    aria-checked="true"
+    class="flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50 bg-feedback-success border-feedback-success"
+    data-headlessui-state=""
+    data-testid="checkbox-checked-checkbox"
+    role="checkbox"
+    type="button"
+  >
+    <svg
+      aria-hidden="true"
+      class="lucide lucide-check text-text-inverse stroke-[3]"
+      fill="none"
+      height="14"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      width="14"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 6 9 17l-5-5"
+      />
+    </svg>
+  </button>
+</div>
+`;
+
+exports[`Checkbox Snapshot > should match snapshot for checked checkbox with label 1`] = `
+<div
+  class="flex items-center gap-2"
+  data-testid="checkbox-checked-label"
+>
+  <button
+    aria-checked="true"
+    class="flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50 bg-feedback-success border-feedback-success"
+    data-headlessui-state=""
+    data-testid="checkbox-checked-label-checkbox"
+    role="checkbox"
+    type="button"
+  >
+    <svg
+      aria-hidden="true"
+      class="lucide lucide-check text-text-inverse stroke-[3]"
+      fill="none"
+      height="14"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      viewBox="0 0 24 24"
+      width="14"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20 6 9 17l-5-5"
+      />
+    </svg>
+  </button>
+  <div
+    class="flex flex-col"
+  >
+    <span
+      class="cursor-pointer font-medium truncate max-w-64 text-sm line-through text-text-secondary"
+      data-testid="checkbox-label"
+      title="Checked label"
+    >
+      Checked label
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Checkbox Snapshot > should match snapshot for disabled checkbox 1`] = `
+<div
+  class="flex items-center gap-2"
+  data-testid="checkbox-disabled"
+>
+  <button
+    aria-checked="false"
+    class="flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50 bg-surface-primary border-border-strong opacity-50 cursor-not-allowed"
+    data-disabled=""
+    data-headlessui-state="disabled"
+    data-testid="checkbox-disabled-checkbox"
+    disabled=""
+    role="checkbox"
+    type="button"
+  />
+  <div
+    class="flex flex-col"
+  >
+    <span
+      class="text-text-primary cursor-pointer font-medium truncate max-w-64 text-sm"
+      data-testid="checkbox-label"
+      title="Disabled checkbox"
+    >
+      Disabled checkbox
+    </span>
+  </div>
+</div>
+`;
+
+exports[`Checkbox Snapshot > should match snapshot for unchecked checkbox 1`] = `
+<div
+  class="flex items-center gap-2"
+  data-testid="checkbox-unchecked"
+>
+  <button
+    aria-checked="false"
+    class="flex items-center justify-center w-5 h-5 border-2 rounded flex-shrink-0 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-action-primary focus:ring-offset-2 focus:ring-offset-surface-primary disabled:cursor-not-allowed disabled:opacity-50 bg-surface-primary border-border-strong"
+    data-headlessui-state=""
+    data-testid="checkbox-unchecked-checkbox"
+    role="checkbox"
+    type="button"
+  />
+</div>
+`;
