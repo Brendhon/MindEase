@@ -5,10 +5,10 @@ import { ActiveTaskIndicator } from "@/components/tasks/active-task-indicator";
 import { BreakSessionCompleteDialogWrapper } from "@/components/tasks/break-session-complete-dialog";
 import { FocusSessionCompleteDialogWrapper } from "@/components/tasks/focus-session-complete-dialog";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
-import { BreakTimerProvider, FocusTimerProvider } from "@/providers/timer";
 import { ExcessiveTimeAlertProvider, MissingBreakAlertProvider, ProlongedNavigationAlertProvider } from "@/providers/cognitive-alerts";
 import { SidebarProvider } from "@/providers/sidebar";
 import { TasksProvider } from "@/providers/tasks";
+import { BreakTimerProvider, FocusTimerProvider } from "@/providers/timer";
 import { useEffect } from "react";
 
 /**

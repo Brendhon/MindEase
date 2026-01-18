@@ -86,7 +86,7 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
             onChange={(e) => updateSetting("focusDuration", +e.target.value)}
             data-testid="profile-focus-duration"
           >
-            <option value="1">1 minuto - Para testes</option>
+            <option value="1">{textDetail.getText("profile_setting_focus_duration_1")}</option>
             <option value="15">{textDetail.getText("profile_setting_focus_duration_15")}</option>
             <option value="25">{textDetail.getText("profile_setting_focus_duration_25")}</option>
             <option value="30">{textDetail.getText("profile_setting_focus_duration_30")}</option>
@@ -108,7 +108,7 @@ export function InteractionSettings({ "data-testid": testId }: InteractionSettin
             onChange={(e) => updateSetting("shortBreakDuration", +e.target.value)}
             data-testid="profile-break-duration"
           >
-            <option value="1">1 minuto - Para testes</option>
+            <option value="1">{textDetail.getText("profile_setting_break_duration_1")}</option>
             <option value="5">{textDetail.getText("profile_setting_break_duration_5")}</option>
             <option value="10">{textDetail.getText("profile_setting_break_duration_10")}</option>
           </Select.Field>
