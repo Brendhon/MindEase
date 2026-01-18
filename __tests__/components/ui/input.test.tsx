@@ -2,44 +2,21 @@ import { InputRoot as Input } from '@/components/form/input/input';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi, afterEach } from 'vitest';
+import {
+  accessibilityMocks,
+  textDetailMocks,
+  cognitiveSettingsContextMocks,
+} from '@/__tests__/__mocks__/hooks';
 
 // Mock useAccessibilityClasses
 vi.mock('@/hooks/accessibility', () => ({
-  useAccessibilityClasses: () => ({
-    spacingClasses: {
-      padding: 'p-4',
-      gap: 'gap-2',
-      margin: 'm-4',
-    },
-    fontSizeClasses: {
-      sm: 'text-sm',
-      base: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
-      '2xl': 'text-2xl',
-      '3xl': 'text-3xl',
-    },
-    contrastClasses: 'contrast-normal',
-    animationClasses: 'animate-normal',
-  }),
-  useTextDetail: () => ({
-    getText: (key: string) => key,
-  }),
+  useAccessibilityClasses: () => accessibilityMocks.default(),
+  useTextDetail: () => textDetailMocks.default(),
 }));
 
 // Mock useCognitiveSettingsContext
 vi.mock('@/contexts/cognitive-settings/cognitive-settings-context', () => ({
-  useCognitiveSettingsContext: () => ({
-    settings: {
-      fontSize: 'base',
-      contrast: 'normal',
-      spacing: 'normal',
-      animations: 'normal',
-      complexity: 'normal',
-      focusMode: false,
-      textDetail: 'normal',
-    },
-  }),
+  useCognitiveSettingsContext: () => cognitiveSettingsContextMocks.default(),
 }));
 
 /**

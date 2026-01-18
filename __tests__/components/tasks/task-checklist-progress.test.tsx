@@ -1,35 +1,19 @@
 import { TaskChecklistProgress } from '@/components/tasks/task-checklist/task-checklist-progress';
 import { render, screen, cleanup } from '@testing-library/react';
 import { describe, expect, it, vi, afterEach } from 'vitest';
+import {
+  accessibilityMocks,
+  textDetailMocks,
+} from '@/__tests__/__mocks__/hooks';
 
 // Mock useAccessibilityClasses
 vi.mock('@/hooks/accessibility', () => ({
-  useAccessibilityClasses: () => ({
-    spacingClasses: {
-      padding: 'p-4',
-      gap: 'gap-2',
-      margin: 'm-4',
-    },
-    fontSizeClasses: {
-      sm: 'text-sm',
-      base: 'text-base',
-      lg: 'text-lg',
-      xl: 'text-xl',
-      '2xl': 'text-2xl',
-      '3xl': 'text-3xl',
-    },
-    contrastClasses: 'contrast-normal',
-    animationClasses: 'animate-normal',
-  }),
-  useTextDetail: () => ({
-    getText: (key: string) => {
-      const translations: Record<string, string> = {
-        tasks_progress: 'of',
-        tasks_progress_steps: 'steps',
-      };
-      return translations[key] || key;
-    },
-  }),
+  useAccessibilityClasses: () => accessibilityMocks.default(),
+  useTextDetail: () =>
+    textDetailMocks.withTranslations({
+      tasks_progress: 'of',
+      tasks_progress_steps: 'steps',
+    }),
 }));
 
 /**

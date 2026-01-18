@@ -5,6 +5,7 @@
 
 export * from './auth';
 export * from './firestore-service';
+export * from './hooks';
 export * from './next-auth';
 export * from './services';
 export * from './tasks';
