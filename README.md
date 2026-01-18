@@ -192,7 +192,7 @@ O projeto utiliza um **pipeline simplificado** com GitHub Actions para automatiz
 O pipeline é executado em três etapas:
 
 1. **Build**: Compilação do código, instalação das dependências e execução do linter
-2. **Testes**: Execução de testes automatizados (unitários, componentes e E2E com Playwright)
+2. **Testes**: Execução de testes automatizados (unitários e componentes)
 3. **Deploy**: Deploy automático em produção (apenas após merge aprovado na `main`)
 
 ### Configuração Necessária
