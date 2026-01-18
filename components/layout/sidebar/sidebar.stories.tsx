@@ -126,7 +126,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Normal</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -149,7 +148,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">High Contrast</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'high',
             spacing: 'normal',
@@ -172,7 +170,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Compact Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'compact',
@@ -195,7 +192,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'relaxed',
@@ -218,7 +214,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Large Font</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -243,7 +238,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-2 text-sm font-medium text-text-secondary">Summary Mode</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',

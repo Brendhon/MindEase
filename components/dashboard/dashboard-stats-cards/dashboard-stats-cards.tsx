@@ -34,17 +34,17 @@ export function DashboardStatsCards({ tasks, "data-testid": testId }: DashboardS
 
   const containerClasses = useMemo(
     () => cn(styles.container, spacingClasses.gap),
-    [spacingClasses.gap]
+    [spacingClasses]
   );
 
   const titleClasses = useMemo(
     () => cn(styles.title, fontSizeClasses.sm),
-    [fontSizeClasses.sm]
+    [fontSizeClasses]
   );
 
   const valueClasses = useMemo(
     () => cn(styles.value, fontSizeClasses["2xl"]),
-    [fontSizeClasses["2xl"]]
+    [fontSizeClasses]
   );
 
   return (

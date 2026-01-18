@@ -7,7 +7,7 @@ import { PAGE_ROUTES, PROTECTED_ROUTES } from '@/utils/routes';
  * @param request - The incoming Next.js request
  * @returns NextResponse allowing the request to continue
  */
-export const handleAPIRequest = (_request: NextRequest): NextResponse => {
+export const handleAPIRequest = (): NextResponse => {
   return NextResponse.next();
 };
 
@@ -66,6 +66,6 @@ export const handleRootRoute = (request: NextRequest, hasToken: boolean): NextRe
  * @param request - The incoming Next.js request
  * @returns NextResponse allowing the request to continue
  */
-export const handleDefaultCase = (_request: NextRequest): NextResponse => {
+export const handleDefaultCase = (): NextResponse => {
   return NextResponse.next();
 };

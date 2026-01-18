@@ -120,9 +120,6 @@ export function useCognitiveSettings() {
         _setError(err instanceof Error ? err : new Error("Failed to update preferences"));
         // Revert optimistic update on error
         _setSettings((prev) => {
-          const reverted = { ...prev };
-          // Restore previous value - we need to get it from the current state before update
-          // For simplicity, we'll reload from Firestore on error
           return prev;
         });
         // Reload from Firestore to get correct state

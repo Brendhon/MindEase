@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render } from '@testing-library/react';
 import { Button } from '@/components/ui/button/button';
+import { render } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 
 // Mock useAccessibilityClasses directly in this test file
 // This ensures the mock is applied before the component imports it

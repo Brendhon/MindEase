@@ -5,7 +5,7 @@ import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useTasks } from "@/hooks/tasks";
 import { Task } from "@/models/task";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from "react";
 import { FocusSessionCompleteDialog } from "./focus-session-complete-dialog";
 
 /**
@@ -23,14 +23,12 @@ export function FocusSessionCompleteDialogWrapper() {
 
   const [showSessionCompleteDialog, setShowSessionCompleteDialog] = useState(false);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
-  const [loadingTask, setLoadingTask] = useState(false);
 
   // Monitor timer completion - use a ref to track previous state
   const prevTimerStateRef = useRef(timerState);
 
   // Fetch active task when needed
   const fetchActiveTask = useCallback(async (taskId: string) => {
-    setLoadingTask(true);
     try {
       // First try to get from local state
       let task = getTask(taskId);
@@ -45,8 +43,6 @@ export function FocusSessionCompleteDialogWrapper() {
     } catch (error) {
       console.error("Error fetching active task:", error);
       setActiveTask(null);
-    } finally {
-      setLoadingTask(false);
     }
   }, [getTask, refreshTask]);
 
@@ -64,16 +60,22 @@ export function FocusSessionCompleteDialogWrapper() {
       prev.activeTaskId === current.activeTaskId
     ) {
       // Fetch the task and show dialog
-      if (current.activeTaskId) {
-        fetchActiveTask(current.activeTaskId);
-        setShowSessionCompleteDialog(true);
+      // Use startTransition to avoid cascading renders
+      const taskId = current.activeTaskId;
+      if (taskId) {
+        startTransition(() => {
+          fetchActiveTask(taskId);
+          setShowSessionCompleteDialog(true);
+        });
       }
     }
 
     // Hide dialog when timer is fully stopped (no activeTaskId)
     if (current.timerState === "idle" && current.activeTaskId === null) {
-      setShowSessionCompleteDialog(false);
-      setActiveTask(null);
+      startTransition(() => {
+        setShowSessionCompleteDialog(false);
+        setActiveTask(null);
+      });
     }
 
     prevTimerStateRef.current = current;

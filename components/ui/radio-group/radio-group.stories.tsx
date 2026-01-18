@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
 import { SessionProvider } from 'next-auth/react';
 import { RadioGroup } from './index';
+import { fn } from 'storybook/test';
 
 const meta = {
   title: 'Components/UI/RadioGroup',
@@ -42,7 +43,11 @@ type Story = StoryObj<typeof meta>;
 
 // Basic radio group
 export const Basic: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'option1',
+    onChange: fn(),
+  },
   render: () => {
     const [value, setValue] = useState('option1');
     return (
@@ -60,7 +65,11 @@ export const Basic: Story = {
 
 // Radio group with description
 export const WithDescription: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'option1',
+    onChange: fn(),
+  },
   render: () => {
     const [value, setValue] = useState('option1');
     return (
@@ -79,7 +88,11 @@ export const WithDescription: Story = {
 
 // Radio group with option descriptions
 export const WithOptionDescriptions: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'email',
+    onChange: fn(),
+  },
   render: () => {
     const [value, setValue] = useState('email');
     return (
@@ -115,7 +128,11 @@ export const WithOptionDescriptions: Story = {
 
 // Disabled radio group
 export const Disabled: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'option1',
+    onChange: fn(),
+  },
   render: () => {
     const [value, setValue] = useState('option1');
     return (
@@ -134,7 +151,11 @@ export const Disabled: Story = {
 
 // Radio group without header
 export const WithoutHeader: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'option1',
+    onChange: fn(),
+  },
   render: () => {
     const [value, setValue] = useState('option1');
     return (
@@ -149,7 +170,11 @@ export const WithoutHeader: Story = {
 
 // Multiple radio groups
 export const MultipleGroups: Story = {
-  args: {} as any,
+  args: {
+    children: null,
+    value: 'light',
+    onChange: fn(),
+  },
   render: () => {
     const [theme, setTheme] = useState('light');
     const [language, setLanguage] = useState('en');

@@ -7,13 +7,6 @@ import { UserPreferences, DEFAULT_ACCESSIBILITY_SETTINGS } from "@/models/user-p
 interface CognitiveSettingsProviderProps {
   children: React.ReactNode;
   initialSettings?: UserPreferences;
-  /**
-   * When true, this provider will not apply settings to the global DOM.
-   * Useful for isolated scenarios like Storybook stories where multiple
-   * providers need to coexist without interfering with each other.
-   * @default false
-   */
-  isolated?: boolean;
 }
 
 /**
@@ -32,7 +25,7 @@ interface CognitiveSettingsProviderProps {
  * </CognitiveSettingsProvider>
  * 
  * // Isolated usage - for stories/tests with multiple providers
- * <CognitiveSettingsProvider isolated={true} initialSettings={{ contrast: 'high' }}>
+ * <CognitiveSettingsProvider initialSettings={{ contrast: 'high' }}>
  *   <Component />
  * </CognitiveSettingsProvider>
  * ```
@@ -40,7 +33,6 @@ interface CognitiveSettingsProviderProps {
 export function CognitiveSettingsProvider({
   children,
   initialSettings,
-  isolated = false,
 }: CognitiveSettingsProviderProps) {
   const [settings, setSettings] = useState<UserPreferences>(
     initialSettings || DEFAULT_ACCESSIBILITY_SETTINGS

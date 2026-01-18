@@ -102,7 +102,9 @@ export function useTasks() {
         _setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
 
         const isComplete = updatedTask.status === 2;
-        isComplete && success('toast_success_task_completed');
+        if (isComplete) {
+          success('toast_success_task_completed');
+        }
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : "Failed to update task";
         _setError(errorMessage);

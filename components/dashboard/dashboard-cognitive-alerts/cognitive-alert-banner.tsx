@@ -85,7 +85,7 @@ export function CognitiveAlertBanner({
       styles.icon.color,
       settings.animations ? styles.icon.animate : ""
     ),
-    [styles.icon.color, styles.icon.animate, settings.animations]
+    [settings]
   );
 
   const dismissAriaLabel = getText("cognitive_alerts_dismiss_aria") || "Dismiss alert";

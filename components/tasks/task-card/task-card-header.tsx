@@ -30,7 +30,7 @@ export function TaskCardHeader({
       default:
         return getText("tasks_status_done");
     }
-  }, [task.status]);
+  }, [task.status, getText]);
 
   return (
     <CardHeader>

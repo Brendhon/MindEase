@@ -1,0 +1,4 @@
+{
+  "*.{js,jsx,ts,tsx}": ["npx --no prettier --write", "npx --no eslint --fix", "npx --no eslint"],
+  "*.{json,md,yml}": ["npx --no prettier --write"]
+}

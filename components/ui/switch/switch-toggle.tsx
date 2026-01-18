@@ -1,9 +1,8 @@
 "use client";
 
 import { BaseComponentProps } from "@/models/base";
-import { Switch as HeadlessSwitch } from "@headlessui/react";
-import { useMemo } from "react";
 import { cn } from "@/utils/ui";
+import { Switch as HeadlessSwitch } from "@headlessui/react";
 import { styles } from "./switch-styles";
 
 /**

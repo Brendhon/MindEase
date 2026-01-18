@@ -46,7 +46,7 @@ export const authMiddleware = async (request: NextRequest): Promise<NextResponse
 
       // Allow API requests to pass through
       case isAPI:
-        return handleAPIRequest(request);
+        return handleAPIRequest();
 
       // Redirect unauthenticated users to home/login
       case !hasToken && !isAuth:
@@ -58,7 +58,7 @@ export const authMiddleware = async (request: NextRequest): Promise<NextResponse
 
       // Default: allow request to continue
       default:
-        return handleDefaultCase(request);
+        return handleDefaultCase();
     }
   } catch (error) {
     // Log error for debugging and monitoring

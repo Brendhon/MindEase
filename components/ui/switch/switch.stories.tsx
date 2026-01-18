@@ -38,12 +38,12 @@ type Story = StoryObj<typeof meta>;
 
 // Basic switch (prop-based API)
 export const Basic: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [checked, setChecked] = useState(false);
+    const [checked, _setChecked] = useState(false);
     return (
       <Switch>
-        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Toggle checked={checked} onChange={_setChecked} />
         <Switch.Label>Enable notifications</Switch.Label>
       </Switch>
     );
@@ -52,12 +52,12 @@ export const Basic: Story = {
 
 // Switch with description (prop-based API)
 export const WithDescription: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [checked, setChecked] = useState(false);
+    const [checked, _setChecked] = useState(false);
     return (
       <Switch>
-        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Toggle checked={checked} onChange={_setChecked} />
         <Switch.Label>Enable notifications</Switch.Label>
         <Switch.Description>Receive email notifications about important updates</Switch.Description>
       </Switch>
@@ -67,12 +67,12 @@ export const WithDescription: Story = {
 
 // Switch checked state
 export const Checked: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [checked, setChecked] = useState(true);
+    const [checked, _setChecked] = useState(true);
     return (
       <Switch  >
-        <Switch.Toggle checked={checked} onChange={setChecked} />
+        <Switch.Toggle checked={checked} onChange={_setChecked} />
         <Switch.Label>Notifications enabled</Switch.Label>
         <Switch.Description>You will receive notifications</Switch.Description>
       </Switch>
@@ -82,12 +82,12 @@ export const Checked: Story = {
 
 // Disabled switch
 export const Disabled: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [checked, setChecked] = useState(false);
+    const [checked, _setChecked] = useState(false);
     return (
       <Switch>
-        <Switch.Toggle checked={checked} onChange={setChecked} disabled />
+        <Switch.Toggle checked={checked} onChange={_setChecked} disabled />
         <Switch.Label>Disabled switch</Switch.Label>
         <Switch.Description>This switch is disabled and cannot be toggled</Switch.Description>
       </Switch>
@@ -97,12 +97,12 @@ export const Disabled: Story = {
 
 // Disabled checked switch
 export const DisabledChecked: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [checked, setChecked] = useState(true);
+    const [checked, _setChecked] = useState(true);
     return (
       <Switch>
-        <Switch.Toggle checked={checked} onChange={setChecked} disabled />
+        <Switch.Toggle checked={checked} onChange={_setChecked} disabled />
         <Switch.Label>Disabled and checked</Switch.Label>
         <Switch.Description>This switch is disabled and checked</Switch.Description>
       </Switch>
@@ -112,15 +112,15 @@ export const DisabledChecked: Story = {
 
 // Multiple switches
 export const MultipleSwitches: Story = {
-  args: {} as any,
+  args: {},
   render: () => {
-    const [notifications, setNotifications] = useState(true);
+    const [notifications, _setNotifications] = useState(true);
     const [push, setPush] = useState(false);
 
     return (
       <div className="flex flex-col gap-4 max-w-md">
         <Switch>
-          <Switch.Toggle checked={notifications} onChange={setNotifications} />
+          <Switch.Toggle checked={notifications} onChange={_setNotifications} />
           <Switch.Label>Email notifications</Switch.Label>
           <Switch.Description>Receive notifications via email</Switch.Description>
         </Switch>

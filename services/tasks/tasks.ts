@@ -1,6 +1,6 @@
 import { Task } from "@/models/task";
+import { getTasksCollectionPath } from "@/utils/firestore/paths";
 import { firestoreService } from "../firestore";
-import { getTasksCollectionPath, getTaskDocumentPath } from "@/utils/firestore/paths";
 
 /**
  * Tasks Service - MindEase

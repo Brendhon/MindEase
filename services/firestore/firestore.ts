@@ -37,11 +37,11 @@ const convertTimestamps = <T>(data: DocumentData): T => {
  * Remove undefined fields from an object
  * Firestore does not accept undefined values
  */
-export const removeUndefinedFields = <T extends Record<string, any>>(data: T): Partial<T> => {
+export const removeUndefinedFields = <T extends Record<string, unknown>>(data: T): Partial<T> => {
   const cleaned: Partial<T> = {};
   Object.keys(data).forEach((key) => {
     if (data[key] !== undefined) {
-      cleaned[key as keyof T] = data[key];
+      cleaned[key as keyof T] = data[key] as T[keyof T];
     }
   });
   return cleaned;
@@ -144,7 +144,7 @@ export const firestoreService: FirestoreService = {
     try {
       const collectionRef = collection(db, collectionPath);
       // Remove undefined fields before sending to Firestore
-      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      const cleanedData = removeUndefinedFields(data as Record<string, unknown>);
       const docRef = await addDoc(collectionRef, cleanedData);
       
       const docSnap = await getDoc(docRef);
@@ -175,7 +175,7 @@ export const firestoreService: FirestoreService = {
     try {
       const docRef = doc(db, collectionPath, id);
       // Remove undefined fields before sending to Firestore
-      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      const cleanedData = removeUndefinedFields(data as Record<string, unknown>);
       await setDoc(docRef, cleanedData, { merge: true });
       
       const docSnap = await getDoc(docRef);
@@ -205,7 +205,7 @@ export const firestoreService: FirestoreService = {
     try {
       const docRef = doc(db, collectionPath, id);
       // Remove undefined fields before sending to Firestore
-      const cleanedData = removeUndefinedFields(data as Record<string, any>);
+      const cleanedData = removeUndefinedFields(data as Record<string, unknown>);
       await updateDoc(docRef, cleanedData as DocumentData);
       
       const docSnap = await getDoc(docRef);
@@ -248,7 +248,7 @@ export const firestoreService: FirestoreService = {
       const querySnapshot = await getDocs(collectionRef);
 
       const BATCH_SIZE = 500; // Firestore limit
-      let docs = querySnapshot.docs;
+      const docs = querySnapshot.docs;
 
       for (let i = 0; i < docs.length; i += BATCH_SIZE) {
         const batch = writeBatch(db);

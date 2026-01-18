@@ -1,13 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { userPreferencesService } from '@/services/user-preferences/user-preferences';
-import { firestoreService } from '@/services/firestore/firestore';
-import { DEFAULT_ACCESSIBILITY_SETTINGS } from '@/models/user-preferences';
 import {
-  createUserPreferences,
   createUserPreferencesDocument,
-  userPreferencesDocumentMocks,
+  userPreferencesDocumentMocks
 } from '@/__tests__/__mocks__/user-preferences';
-import type { UserPreferences, UserPreferencesDocument } from '@/models/user-preferences';
+import type { UserPreferences } from '@/models/user-preferences';
+import { DEFAULT_ACCESSIBILITY_SETTINGS } from '@/models/user-preferences';
+import { firestoreService } from '@/services/firestore/firestore';
+import { userPreferencesService } from '@/services/user-preferences/user-preferences';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock firestore service
 vi.mock('@/services/firestore/firestore', () => ({

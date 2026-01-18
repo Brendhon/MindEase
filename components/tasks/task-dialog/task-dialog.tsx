@@ -5,12 +5,11 @@ import { InputField } from "@/components/form/input/input-field";
 import { InputLabel } from "@/components/form/input/input-label";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { useAccessibilityClasses } from "@/hooks/accessibility";
+import { useAccessibilityClasses, useTextDetail } from "@/hooks/accessibility";
 import { useFeedback } from "@/hooks/feedback";
-import { useTextDetail } from "@/hooks/accessibility";
-import { Subtask, Task } from "@/models/task";
 import { BaseComponentProps } from "@/models/base";
-import { taskDialogOutputSchema, taskDialogSchema, TaskDialogFormData } from "@/schemas/task-dialog.schema";
+import { Task } from "@/models/task";
+import { TaskDialogFormData, taskDialogOutputSchema, taskDialogSchema } from "@/schemas/task-dialog.schema";
 import { cn } from "@/utils/ui";
 import { generateRandomUUID } from "@/utils/uuid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,7 +74,9 @@ export function TaskDialog({
 
   // Initialize form when task changes
   useEffect(() => {
-    isOpen && resetForm(task);
+    if (isOpen) {
+      resetForm(task);
+    }
   }, [isOpen, task, resetForm]);
 
   const handleAddSubtask = useCallback(() => {

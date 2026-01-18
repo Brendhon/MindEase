@@ -1,8 +1,8 @@
 "use client";
 
-import { ReactNode, useState, useCallback, useEffect } from "react";
-import { Task } from "@/models/task";
 import { TasksContext } from "@/contexts/tasks";
+import { Task } from "@/models/task";
+import { ReactNode, useCallback, useState } from "react";
 
 /**
  * Tasks Provider Props
@@ -30,9 +30,6 @@ export function TasksProvider({
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(initialError);
-
-  // Sync error when initialError changes
-  useEffect(() => setError(initialError), [initialError]);
 
   // Internal setters for useTasks hook to use
   const setTasksState = useCallback((newTasks: Task[] | ((prev: Task[]) => Task[])) => setTasks(newTasks), []);

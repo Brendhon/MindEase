@@ -48,37 +48,37 @@ export default function LoginPage() {
   // Generate main classes with spacing preference
   const mainClasses = useMemo(
     () => cn(styles.main, spacingClasses.padding, spacingClasses.gap),
-    [spacingClasses.padding, spacingClasses.gap]
+    [spacingClasses]
   );
 
   // Generate card classes with spacing preference
   const cardClasses = useMemo(
     () => cn(styles.card, spacingClasses.padding),
-    [spacingClasses.padding]
+    [spacingClasses]
   );
 
   // Generate title classes with fontSize preference
   const titleClasses = useMemo(
     () => cn(styles.title, fontSizeClasses["3xl"], "mb-4"),
-    [fontSizeClasses["3xl"]]
+    [fontSizeClasses]
   );
 
   // Generate description classes with fontSize preference
   const descriptionClasses = useMemo(
     () => cn(styles.description, fontSizeClasses.base, "mb-8"),
-    [fontSizeClasses.base]
+    [fontSizeClasses]
   );
 
   // Generate button container classes with spacing preference
   const buttonContainerClasses = useMemo(
     () => cn(styles.buttonContainer, spacingClasses.gap),
-    [spacingClasses.gap]
+    [spacingClasses]
   );
 
   // Generate disclaimer classes with fontSize preference
   const disclaimerClasses = useMemo(
     () => cn(styles.disclaimer, fontSizeClasses.sm, "mt-6"),
-    [fontSizeClasses.sm]
+    [fontSizeClasses]
   );
 
   return (

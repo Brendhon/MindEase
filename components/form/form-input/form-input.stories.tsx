@@ -307,7 +307,6 @@ export const AccessibilityDemo: Story = {
             <li>✅ Unique IDs for label association</li>
             <li>✅ aria-invalid when field has error</li>
             <li>✅ aria-describedby linking to error/helper text</li>
-            <li>✅ role="alert" on error messages</li>
             <li>✅ Proper focus management</li>
             <li>✅ Adapts to user accessibility preferences (font size, spacing, contrast, animations)</li>
           </ul>
@@ -334,7 +333,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -364,7 +362,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'high',
             spacing: 'normal',
@@ -393,7 +390,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'compact',
@@ -422,7 +418,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'relaxed',
@@ -451,7 +446,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -481,7 +475,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast with Error</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'high',
             spacing: 'normal',

@@ -1,15 +1,15 @@
 import { Button } from '@/components/ui/button';
 import { useFeedbackContext } from '@/contexts/feedback';
+import { useTextDetail } from '@/hooks/accessibility';
 import type { FeedbackMessage } from '@/hooks/feedback';
 import { useFeedback } from '@/hooks/feedback';
-import { useTextDetail } from '@/hooks/accessibility';
+import { AuthProvider } from '@/providers/auth';
 import { CognitiveSettingsProvider } from '@/providers/cognitive-settings';
 import { FeedbackProvider } from '@/providers/feedback';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { SessionProvider } from 'next-auth/react';
 import { useEffect } from 'react';
 import { ToastContainer } from '.';
-import { AuthProvider } from '@/providers/auth';
 
 const meta = {
   title: 'Components/Feedback/Toast',
@@ -249,7 +249,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Normal</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -270,7 +269,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">High Contrast</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'high',
             spacing: 'normal',
@@ -291,7 +289,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Compact Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'compact',
@@ -312,7 +309,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'relaxed',
@@ -333,7 +329,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Small Font</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -354,7 +349,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">Large Font</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -375,7 +369,6 @@ export const AccessibilityShowcase: Story = {
       <div>
         <h3 className="mb-4 text-sm font-medium text-text-secondary">No Animations</h3>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -409,8 +402,7 @@ export const TextDetailModes: Story = {
         <p className="mb-4 text-xs text-text-muted">
           Shows full messages with complete information. Click the buttons below to see detailed toast messages.
         </p>
-        <CognitiveSettingsProvider
-          isolated={true}
+        <CognitiveSettingsProvider  
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',
@@ -434,7 +426,6 @@ export const TextDetailModes: Story = {
           Shows concise messages for reduced cognitive load. In summary mode, developers can use <code className="text-xs bg-gray-100 px-1 rounded">useCognitiveSettings().textDetail</code> to render shorter messages or access text content from the JSON system. Click the buttons below to see summary toast messages.
         </p>
         <CognitiveSettingsProvider
-          isolated={true}
           initialSettings={{
             contrast: 'normal',
             spacing: 'normal',

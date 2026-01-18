@@ -57,8 +57,9 @@ export function useActiveTaskIndicator(): UseActiveTaskIndicatorReturn {
 
   // Fetch task if there's a taskId
   const activeTask = useMemo(() => {
-    return !!activeTimer?.taskId && getTask(activeTimer.taskId);
-  }, [activeTimer?.taskId, getTask]);
+    if (!activeTimer?.taskId) return null;
+    return getTask(activeTimer.taskId);
+  }, [activeTimer, getTask]);
 
   return {
     activeTimer,

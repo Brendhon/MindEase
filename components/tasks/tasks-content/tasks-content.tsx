@@ -3,11 +3,10 @@
 import { PageContent } from "@/components/layout/page-content";
 import { PageHeader } from "@/components/layout/page-header";
 import { useDialog } from "@/hooks/dialog";
-import { useFeedback } from "@/hooks/feedback";
-import { useFocusTimer } from "@/hooks/timer";
 import { useTasks } from "@/hooks/tasks";
-import { Task } from "@/models/task";
+import { useFocusTimer } from "@/hooks/timer";
 import { BaseComponentProps } from "@/models/base";
+import { Task } from "@/models/task";
 import { type TaskDialogFormData } from "@/schemas/task-dialog.schema";
 import { useCallback, useEffect, useState } from "react";
 import { TaskDialog } from "../task-dialog";
@@ -38,7 +37,6 @@ export function TasksContent({
 }: TasksContentProps) {
   const { timerState, stopTimer } = useFocusTimer();
   const { openDialog } = useDialog();
-  const { success } = useFeedback();
   const {
     tasks,
     loading,
@@ -106,7 +104,7 @@ export function TasksContent({
     }
     setIsDialogOpen(false);
     setEditingTask(undefined);
-  }, [editingTask, updateTask, createTask, success]);
+  }, [editingTask, updateTask, createTask]);
 
   // New task button
   const handleNewTask = useCallback(() => {

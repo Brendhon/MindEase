@@ -282,17 +282,17 @@ export const Interactive: Story = {
     ),
   },
   render: (args) => {
-    const [isOpen, setIsOpen] = useState(args.isOpen);
+    const [isOpen, _setIsOpen] = useState(args.isOpen);
 
     return (
       <>
-        <Button variant="primary" onClick={() => setIsOpen(true)}>
+        <Button variant="primary" onClick={() => _setIsOpen(true)}>
           <Button.Text>Open Dialog</Button.Text>
         </Button>
         <Dialog
           {...args}
           isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
+          onClose={() => _setIsOpen(false)}
         />
       </>
     );
@@ -308,11 +308,11 @@ export const AccessibilityShowcase: Story = {
     children: null,
   },
   render: () => {
-    const [normalOpen, setNormalOpen] = useState(false);
+    const [normalOpen, _setNormalOpen] = useState(false);
     const [highContrastOpen, setHighContrastOpen] = useState(false);
-    const [compactSpacingOpen, setCompactSpacingOpen] = useState(false);
-    const [relaxedSpacingOpen, setRelaxedSpacingOpen] = useState(false);
-    const [largeFontOpen, setLargeFontOpen] = useState(false);
+    const [compactSpacingOpen, _setCompactSpacingOpen] = useState(false);
+    const [relaxedSpacingOpen, _setRelaxedSpacingOpen] = useState(false);
+    const [largeFontOpen, _setLargeFontOpen] = useState(false);
     const [noAnimationsOpen, setNoAnimationsOpen] = useState(false);
 
     return (
@@ -320,7 +320,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">Normal Settings</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
@@ -330,12 +329,12 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => setNormalOpen(true)}>
+            <Button variant="primary" onClick={() => _setNormalOpen(true)}>
               <Button.Text>Open Normal Dialog</Button.Text>
             </Button>
             <Dialog
               isOpen={normalOpen}
-              onClose={() => setNormalOpen(false)}
+              onClose={() => _setNormalOpen(false)}
               title="Normal Dialog"
             >
               <div className="space-y-4">
@@ -343,10 +342,10 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses normal accessibility settings.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setNormalOpen(false)}>
+                  <Button variant="ghost" onClick={() => _setNormalOpen(false)}>
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setNormalOpen(false)}>
+                  <Button variant="primary" onClick={() => _setNormalOpen(false)}>
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -358,7 +357,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">High Contrast</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'high',
               spacing: 'normal',
@@ -396,7 +394,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">Compact Spacing</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'normal',
               spacing: 'compact',
@@ -406,12 +403,12 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => setCompactSpacingOpen(true)}>
+            <Button variant="primary" onClick={() => _setCompactSpacingOpen(true)}>
               <Button.Text>Open Compact Spacing Dialog</Button.Text>
             </Button>
             <Dialog
               isOpen={compactSpacingOpen}
-              onClose={() => setCompactSpacingOpen(false)}
+              onClose={() => _setCompactSpacingOpen(false)}
               title="Compact Spacing"
             >
               <div className="space-y-4">
@@ -419,10 +416,10 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses compact spacing for tighter layout.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setCompactSpacingOpen(false)}>
+                  <Button variant="ghost" onClick={() => _setCompactSpacingOpen(false)}>
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setCompactSpacingOpen(false)}>
+                  <Button variant="primary" onClick={() => _setCompactSpacingOpen(false)}>
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -434,7 +431,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">Relaxed Spacing</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'normal',
               spacing: 'relaxed',
@@ -444,12 +440,12 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => setRelaxedSpacingOpen(true)}>
+            <Button variant="primary" onClick={() => _setRelaxedSpacingOpen(true)}>
               <Button.Text>Open Relaxed Spacing Dialog</Button.Text>
             </Button>
             <Dialog
               isOpen={relaxedSpacingOpen}
-              onClose={() => setRelaxedSpacingOpen(false)}
+              onClose={() => _setRelaxedSpacingOpen(false)}
               title="Relaxed Spacing"
             >
               <div className="space-y-4">
@@ -457,10 +453,10 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses relaxed spacing for more breathing room.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setRelaxedSpacingOpen(false)}>
+                  <Button variant="ghost" onClick={() => _setRelaxedSpacingOpen(false)}>
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setRelaxedSpacingOpen(false)}>
+                  <Button variant="primary" onClick={() => _setRelaxedSpacingOpen(false)}>
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -472,7 +468,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">Large Font</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'normal',
               spacing: 'normal',
@@ -482,12 +477,12 @@ export const AccessibilityShowcase: Story = {
               textDetail: 'detailed',
             }}
           >
-            <Button variant="primary" onClick={() => setLargeFontOpen(true)}>
+            <Button variant="primary" onClick={() => _setLargeFontOpen(true)}>
               <Button.Text>Open Large Font Dialog</Button.Text>
             </Button>
             <Dialog
               isOpen={largeFontOpen}
-              onClose={() => setLargeFontOpen(false)}
+              onClose={() => _setLargeFontOpen(false)}
               title="Large Font Dialog"
             >
               <div className="space-y-4">
@@ -495,10 +490,10 @@ export const AccessibilityShowcase: Story = {
                   This dialog uses larger font sizes for better readability.
                 </p>
                 <div className="flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setLargeFontOpen(false)}>
+                  <Button variant="ghost" onClick={() => _setLargeFontOpen(false)}>
                     <Button.Text>Cancel</Button.Text>
                   </Button>
-                  <Button variant="primary" onClick={() => setLargeFontOpen(false)}>
+                  <Button variant="primary" onClick={() => _setLargeFontOpen(false)}>
                     <Button.Text>Confirm</Button.Text>
                   </Button>
                 </div>
@@ -510,7 +505,6 @@ export const AccessibilityShowcase: Story = {
         <div>
           <h3 className="mb-3 text-sm font-medium text-text-secondary">Animations Disabled</h3>
           <CognitiveSettingsProvider
-            isolated={true}
             initialSettings={{
               contrast: 'normal',
               spacing: 'normal',

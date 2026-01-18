@@ -4,7 +4,7 @@ import { useMissingBreakAlert, useProlongedNavigationAlert } from "@/hooks/cogni
 import { useBreakTimer, useFocusTimer } from "@/hooks/timer";
 import { useCognitiveSettings } from "@/hooks/cognitive-settings";
 import { useTasks } from "@/hooks/tasks";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, startTransition } from "react";
 import { BreakSessionCompleteDialog } from "./break-session-complete-dialog";
 
 /**
@@ -35,12 +35,17 @@ export function BreakSessionCompleteDialogWrapper() {
       current.breakTimerState === "breakEnded"
     ) {
       // Show dialog when break completes
-      setShowBreakCompleteDialog(true);
+      // Use startTransition to avoid cascading renders
+      startTransition(() => {
+        setShowBreakCompleteDialog(true);
+      });
     }
 
     // Hide dialog when break timer is fully stopped (idle)
     if (current.breakTimerState === "idle") {
-      setShowBreakCompleteDialog(false);
+      startTransition(() => {
+        setShowBreakCompleteDialog(false);
+      });
     }
 
     prevBreakTimerStateRef.current = current;

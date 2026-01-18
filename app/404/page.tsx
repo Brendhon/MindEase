@@ -25,37 +25,37 @@ export default function NotFound404Page() {
   // Generate content classes with spacing preference
   const contentClasses = useMemo(
     () => cn(styles.content, spacingClasses.gap),
-    [spacingClasses.gap]
+    [spacingClasses]
   );
 
   // Generate header classes with spacing preference
   const headerClasses = useMemo(
     () => cn(styles.header, spacingClasses.gap),
-    [spacingClasses.gap]
+    [spacingClasses]
   );
 
   // Generate title classes with fontSize preference
   const titleClasses = useMemo(
     () => cn(styles.title, fontSizeClasses["3xl"]),
-    [fontSizeClasses["3xl"]]
+    [fontSizeClasses]
   );
 
   // Generate subtitle classes with fontSize preference
   const subtitleClasses = useMemo(
     () => cn(styles.subtitle, fontSizeClasses.xl),
-    [fontSizeClasses.xl]
+    [fontSizeClasses]
   );
 
   // Generate description classes with fontSize preference
   const descriptionClasses = useMemo(
     () => cn(styles.description, fontSizeClasses.base),
-    [fontSizeClasses.base]
+    [fontSizeClasses]
   );
 
   // Generate actions classes with spacing preference
   const actionsClasses = useMemo(
     () => cn(styles.actions, spacingClasses.gap, "mt-4"),
-    [spacingClasses.gap]
+    [spacingClasses]
   );
 
   return (
