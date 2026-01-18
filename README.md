@@ -183,6 +183,93 @@ Cobertura inclui:
 
 ---
 
+## 🚀 CI/CD Pipeline
+
+O projeto utiliza um **pipeline simplificado** com GitHub Actions para automatizar o processo de build, testes e deploy na Vercel.
+
+### Estrutura do Pipeline
+
+O pipeline é executado em três etapas:
+
+1. **Build**: Compilação do código, instalação das dependências e execução do linter
+2. **Testes**: Execução de testes automatizados (unitários e componentes)
+3. **Deploy**: Deploy automático em produção (apenas após merge aprovado na `main`)
+
+### Configuração Necessária
+
+#### 1. Secrets do GitHub
+
+Configure os seguintes secrets no repositório GitHub (`Settings > Secrets and variables > Actions`):
+
+##### Secrets Obrigatórios
+
+**Vercel:**
+
+- **`VERCEL_TOKEN`**: Token de autenticação da Vercel
+  - Obtenha em: [Vercel Dashboard > Settings > Tokens](https://vercel.com/account/tokens)
+
+**Firebase:**
+
+- **`NEXT_PUBLIC_FIREBASE_API_KEY`**: API Key do Firebase
+- **`NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`**: Auth Domain do Firebase (ex: `seu-projeto.firebaseapp.com`)
+- **`NEXT_PUBLIC_FIREBASE_PROJECT_ID`**: Project ID do Firebase
+- **`NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`**: Storage Bucket do Firebase (ex: `seu-projeto.appspot.com`)
+- **`NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`**: Messaging Sender ID do Firebase
+- **`NEXT_PUBLIC_FIREBASE_APP_ID`**: App ID do Firebase
+- **`NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`**: Measurement ID do Firebase (opcional, para Google Analytics)
+
+**NextAuth:**
+
+- **`NEXTAUTH_SECRET`**: Secret do NextAuth (gere com: `openssl rand -base64 32`)
+- **`NEXTAUTH_URL`**: URL da aplicação em produção (ex: `https://seu-app.vercel.app`)
+
+**Google OAuth:**
+
+- **`GOOGLE_CLIENT_ID`**: Client ID do Google OAuth
+- **`GOOGLE_CLIENT_SECRET`**: Client Secret do Google OAuth
+
+**Aplicação:**
+
+- **`NEXT_PUBLIC_APP_URL`**: URL da aplicação (opcional, padrão: URL do ambiente)
+
+> 💡 **Dica**: Todos esses valores podem ser encontrados no arquivo `.env.local` do seu ambiente de desenvolvimento. Copie os valores do arquivo local para os secrets do GitHub.
+
+#### 2. Ambientes do GitHub
+
+Configure o ambiente de produção no repositório (`Settings > Environments`):
+
+- **`production`**: Ambiente de produção
+  - Configure **protection rules** para exigir aprovação manual (opcional):
+    - Clique em "Required reviewers" e adicione os revisores que devem aprovar antes do deploy
+    - Isso criará um gate de aprovação manual antes do job `deploy` executar
+  - Configure a **URL de produção** no campo "Environment URL" (ex: `https://seu-app.vercel.app`)
+    - Esta URL será exibida no GitHub Actions após o deploy
+  - **Opcional**: Você pode configurar os secrets diretamente no ambiente `production` ao invés de no repositório
+    - Isso permite ter valores diferentes para cada ambiente (staging, production, etc.)
+
+#### 3. Branches
+
+O projeto utiliza duas branches principais:
+
+- **`dev`**: Branch de desenvolvimento (não executa deploy)
+- **`main`**: Branch principal (executa deploy após merge aprovado)
+
+### Fluxo de Trabalho
+
+1. **Pull Request para `main`**:
+   - Executa Build e Testes (validação antes do merge)
+   - Não executa deploy
+
+2. **Merge aprovado na `main`**:
+   - Executa Build e Testes
+   - Executa Deploy em Produção (com aprovação manual opcional via GitHub Environments)
+
+### Arquivo de Workflow
+
+O pipeline está configurado em: `.github/workflows/ci-cd.yml`
+
+---
+
 ## 📦 Como Rodar o Projeto
 
 ### Pré-requisitos
