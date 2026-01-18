@@ -183,6 +183,61 @@ Cobertura inclui:
 
 ---
 
+## 🚀 CI/CD Pipeline
+
+O projeto utiliza um **pipeline simplificado** com GitHub Actions para automatizar o processo de build, testes e deploy na Vercel.
+
+### Estrutura do Pipeline
+
+O pipeline é executado em três etapas:
+
+1. **Build**: Compilação do código, instalação das dependências e execução do linter
+2. **Testes**: Execução de testes automatizados (unitários, componentes e E2E com Playwright)
+3. **Deploy**: Deploy automático em produção (apenas após merge aprovado na `main`)
+
+### Configuração Necessária
+
+#### 1. Secrets do GitHub
+
+Configure os seguintes secrets no repositório GitHub (`Settings > Secrets and variables > Actions`):
+
+- **`VERCEL_TOKEN`**: Token de autenticação da Vercel
+  - Obtenha em: [Vercel Dashboard > Settings > Tokens](https://vercel.com/account/tokens)
+
+#### 2. Ambientes do GitHub
+
+Configure o ambiente de produção no repositório (`Settings > Environments`):
+
+- **`production`**: Ambiente de produção
+  - Configure **protection rules** para exigir aprovação manual (opcional):
+    - Clique em "Required reviewers" e adicione os revisores que devem aprovar antes do deploy
+    - Isso criará um gate de aprovação manual antes do job `deploy` executar
+  - Adicione o secret `VERCEL_TOKEN`
+  - Configure a URL: `https://frontend-ci-cd.vercel.app` (ou sua URL de produção)
+
+#### 3. Branches
+
+O projeto utiliza duas branches principais:
+
+- **`dev`**: Branch de desenvolvimento (não executa deploy)
+- **`main`**: Branch principal (executa deploy após merge aprovado)
+
+### Fluxo de Trabalho
+
+1. **Pull Request para `main`**:
+   - Executa Build e Testes (validação antes do merge)
+   - Não executa deploy
+
+2. **Merge aprovado na `main`**:
+   - Executa Build e Testes
+   - Executa Deploy em Produção (com aprovação manual opcional via GitHub Environments)
+
+### Arquivo de Workflow
+
+O pipeline está configurado em: `.github/workflows/ci-cd.yml`
+
+---
+
 ## 📦 Como Rodar o Projeto
 
 ### Pré-requisitos
