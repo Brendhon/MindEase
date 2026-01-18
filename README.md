@@ -13,6 +13,16 @@ O **MindEase** foi projetado para reduzir a **carga cognitiva** causada por inte
 
 ---
 
+## 🌐 Acesso à Aplicação
+
+A aplicação está disponível em produção através da Vercel:
+
+**🔗 [https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app)**
+
+A aplicação utiliza autenticação via Google OAuth. Para acessar, você precisará de uma conta Google.
+
+---
+
 ## 🎯 Objetivo do Projeto
 
 O objetivo do projeto é consolidar os conhecimentos adquiridos ao longo da pós-graduação, aplicando-os de forma integrada em uma aplicação real, com foco em impacto social e técnico:
@@ -141,7 +151,7 @@ Objetivo: **auxiliar a autorregulação**, não interromper desnecessariamente.
 - **Firebase Authentication** – Login com Google
 - **Firestore** – Banco NoSQL
 - **GitHub Actions** – CI/CD
-- **Vercel** – Deploy
+- **Vercel** – Deploy ([https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app))
 
 ---
 
@@ -187,6 +197,8 @@ Cobertura inclui:
 
 O projeto utiliza um **pipeline simplificado** com GitHub Actions para automatizar o processo de build, testes e deploy na Vercel.
 
+**🌐 Aplicação em Produção**: [https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app)
+
 ### Estrutura do Pipeline
 
 O pipeline é executado em três etapas:
@@ -221,7 +233,7 @@ Configure os seguintes secrets no repositório GitHub (`Settings > Secrets and v
 **NextAuth:**
 
 - **`NEXTAUTH_SECRET`**: Secret do NextAuth (gere com: `openssl rand -base64 32`)
-- **`NEXTAUTH_URL`**: URL da aplicação em produção (ex: `https://seu-app.vercel.app`)
+- **`NEXTAUTH_URL`**: URL da aplicação em produção (ex: `https://mind-ease-web.vercel.app`)
 
 **Google OAuth:**
 
@@ -242,7 +254,7 @@ Configure o ambiente de produção no repositório (`Settings > Environments`):
   - Configure **protection rules** para exigir aprovação manual (opcional):
     - Clique em "Required reviewers" e adicione os revisores que devem aprovar antes do deploy
     - Isso criará um gate de aprovação manual antes do job `deploy` executar
-  - Configure a **URL de produção** no campo "Environment URL" (ex: `https://seu-app.vercel.app`)
+  - Configure a **URL de produção** no campo "Environment URL": `https://mind-ease-web.vercel.app`
     - Esta URL será exibida no GitHub Actions após o deploy
   - **Opcional**: Você pode configurar os secrets diretamente no ambiente `production` ao invés de no repositório
     - Isso permite ter valores diferentes para cada ambiente (staging, production, etc.)
@@ -368,7 +380,7 @@ Para habilitar o login com Google, você precisa criar credenciais OAuth no [Goo
 5. Configure o tipo de aplicativo como **Aplicativo da Web**
 6. Adicione a URI de redirecionamento autorizada:
    - Desenvolvimento: `http://localhost:3000/api/auth/callback/google`
-   - Produção: `https://seu-dominio.com/api/auth/callback/google`
+   - Produção: `https://mind-ease-web.vercel.app/api/auth/callback/google`
 
 ```bash
 # Google OAuth Client ID
