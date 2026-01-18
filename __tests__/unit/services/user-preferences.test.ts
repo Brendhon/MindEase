@@ -6,7 +6,7 @@ import type { UserPreferences } from '@/models/user-preferences';
 import { DEFAULT_ACCESSIBILITY_SETTINGS } from '@/models/user-preferences';
 import { firestoreService } from '@/services/firestore/firestore';
 import { userPreferencesService } from '@/services/user-preferences/user-preferences';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 
 // Mock firestore service
 vi.mock('@/services/firestore/firestore', () => ({
@@ -36,7 +36,7 @@ const setupGetDocumentFailure = (
 };
 
 const setupSetDocumentSuccess = <T extends { id: string }>(data: T) => {
-  (vi.mocked(firestoreService.setDocument) as any).mockResolvedValue(data);
+  (vi.mocked(firestoreService.setDocument) as Mock).mockResolvedValue(data);
 };
 
 const setupSetDocumentFailure = (

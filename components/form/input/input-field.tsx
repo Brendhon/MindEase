@@ -69,7 +69,7 @@ const InputFieldRoot = forwardRef<
 
   return (
     <Component
-      ref={ref as any}
+      ref={ref as never}
       type={inputType}
       className={cn(
         styles.field.base,

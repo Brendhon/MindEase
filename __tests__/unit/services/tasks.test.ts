@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
 import { tasksService } from '@/services/tasks/tasks';
 import { firestoreService } from '@/services/firestore/firestore';
 import { createTask } from '@/__tests__/__mocks__/tasks';
@@ -31,7 +31,7 @@ const setupGetDocumentSuccess = <T>(data: T | null) => {
 };
 
 const setupCreateDocumentSuccess = <T extends { id: string }>(data: T) => {
-  (vi.mocked(firestoreService.createDocument) as any).mockResolvedValue(data);
+  (vi.mocked(firestoreService.createDocument) as Mock).mockResolvedValue(data);
 };
 
 const setupUpdateDocumentSuccess = <T>(data: T) => {
@@ -181,7 +181,7 @@ describe('tasksService', () => {
       await tasksService.createTask(MOCK_USER_ID, taskData);
 
       const callArgs = vi.mocked(firestoreService.createDocument).mock
-        .calls[0][1] as any;
+        .calls[0][1] as Record<string, unknown>;
       expect(callArgs.createdAt).toBeInstanceOf(Date);
       expect(callArgs.updatedAt).toBeInstanceOf(Date);
     });
@@ -257,7 +257,7 @@ describe('tasksService', () => {
       await tasksService.updateTask(MOCK_USER_ID, MOCK_TASK_ID, updates);
 
       const callArgs = vi.mocked(firestoreService.updateDocument).mock
-        .calls[0][2] as any;
+        .calls[0][2] as Record<string, unknown>;
       expect(callArgs.updatedAt).toBeInstanceOf(Date);
     });
   });

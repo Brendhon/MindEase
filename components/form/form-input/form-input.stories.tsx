@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -73,8 +73,8 @@ function FormWrapper({
   defaultValues = {},
 }: {
   children: React.ReactNode;
-  schema: z.ZodObject<any>;
-  defaultValues?: any;
+  schema: z.ZodObject<Record<string, z.ZodType<unknown>>>;
+  defaultValues?: Record<string, unknown>;
 }) {
   const methods = useForm({
     resolver: zodResolver(schema),
@@ -82,7 +82,7 @@ function FormWrapper({
     mode: 'onChange',
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: Record<string, unknown>) => {
     console.log('Form submitted:', data);
     alert(JSON.stringify(data, null, 2));
   };
