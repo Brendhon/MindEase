@@ -43,6 +43,23 @@ export const styles = {
       warning: "border-action-warning outline-action-warning/30",
     } as const,
   } as const,
+  // Icon subcomponent styles
+  icon: {
+    base: "flex-shrink-0",
+    sizes: {
+      sm: "w-3.5 h-3.5",
+      md: "w-4 h-4",
+      lg: "w-5 h-5",
+    } as const,
+    left: "order-first",
+    right: "order-last",
+  } as const,
+  // Loading subcomponent styles
+  loading: {
+    spinner: "flex-shrink-0 animate-spin",
+  } as const,
+  // Text subcomponent styles
+  text: "flex items-center",
 } as const;
 
 /**

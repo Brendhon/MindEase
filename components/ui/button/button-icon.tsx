@@ -2,6 +2,7 @@
 
 import { LucideIcon } from "lucide-react";
 import { cn } from "@/utils/ui";
+import { styles } from "./button-styles";
 
 /**
  * Button.Icon - Icon subcomponent
@@ -26,10 +27,10 @@ export function ButtonIcon({ icon: Icon, position = "left", size = "md", classNa
   return (
     <Icon
       className={cn(
-        styles.icon,
-        styles.iconSizes[size],
-        position === "left" && styles.iconLeft,
-        position === "right" && styles.iconRight,
+        styles.icon.base,
+        styles.icon.sizes[size],
+        position === "left" && styles.icon.left,
+        position === "right" && styles.icon.right,
         className
       )}
       aria-hidden="true"
@@ -38,14 +39,3 @@ export function ButtonIcon({ icon: Icon, position = "left", size = "md", classNa
 }
 
 ButtonIcon.displayName = "Button.Icon";
-
-const styles = {
-  icon: "flex-shrink-0",
-  iconSizes: {
-    sm: "w-3.5 h-3.5",
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
-  } as const,
-  iconLeft: "order-first",
-  iconRight: "order-last",
-} as const;

@@ -3,6 +3,7 @@
 import { BaseComponentProps } from "@/models/base";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/utils/ui";
+import { styles } from "./button-styles";
 
 /**
  * Button.Loading - Loading indicator subcomponent
@@ -25,7 +26,7 @@ export interface ButtonLoadingProps extends Omit<BaseComponentProps, "data-testi
 export function ButtonLoading({ size = "md", className, "aria-label": ariaLabel = "Loading" }: ButtonLoadingProps) {
   return (
     <Loader2
-      className={cn(styles.loadingSpinner, styles.iconSizes[size], className)}
+      className={cn(styles.loading.spinner, styles.icon.sizes[size], className)}
       aria-label={ariaLabel}
       role="status"
       aria-hidden="false"
@@ -34,12 +35,3 @@ export function ButtonLoading({ size = "md", className, "aria-label": ariaLabel 
 }
 
 ButtonLoading.displayName = "Button.Loading";
-
-const styles = {
-  iconSizes: {
-    sm: "w-3.5 h-3.5",
-    md: "w-4 h-4",
-    lg: "w-5 h-5",
-  } as const,
-  loadingSpinner: "flex-shrink-0 animate-spin",
-} as const;

@@ -2,6 +2,7 @@
 
 import { ReactNode } from "react";
 import { cn } from "@/utils/ui";
+import { styles } from "./button-styles";
 
 /**
  * Button.Text - Text subcomponent
@@ -28,7 +29,3 @@ export function ButtonText({ children, className }: ButtonTextProps) {
 }
 
 ButtonText.displayName = "Button.Text";
-
-const styles = {
-  text: "flex items-center",
-} as const;
