@@ -74,6 +74,7 @@ export default defineConfig({
             '**/__tests__/components/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
           ],
           environment: 'jsdom',
+          setupFiles: ['./__tests__/setup.ts'],
         },
         resolve: {
           alias: {
