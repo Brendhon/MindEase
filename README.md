@@ -213,7 +213,8 @@ Configure o ambiente de produção no repositório (`Settings > Environments`):
     - Clique em "Required reviewers" e adicione os revisores que devem aprovar antes do deploy
     - Isso criará um gate de aprovação manual antes do job `deploy` executar
   - Adicione o secret `VERCEL_TOKEN`
-  - Configure a URL: `https://frontend-ci-cd.vercel.app` (ou sua URL de produção)
+  - Configure a **URL de produção** no campo "Environment URL" (ex: `https://seu-app.vercel.app`)
+    - Esta URL será exibida no GitHub Actions após o deploy
 
 #### 3. Branches
 
