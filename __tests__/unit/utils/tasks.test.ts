@@ -1,25 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { hasPendingSubtasks, getPendingSubtasks, canCompleteTask } from '@/utils/tasks/tasks';
-import type { Task, Subtask } from '@/models/task';
+import { createTask, createSubtask } from '@/__tests__/__mocks__/tasks';
 
 describe('tasks utils', () => {
-  const createTask = (overrides?: Partial<Task>): Task => ({
-    id: '1',
-    userId: 'user1',
-    title: 'Test Task',
-    status: 0,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...overrides,
-  });
-
-  const createSubtask = (overrides?: Partial<Subtask>): Subtask => ({
-    id: '1',
-    title: 'Subtask',
-    completed: false,
-    order: 0,
-    ...overrides,
-  });
 
   describe('hasPendingSubtasks', () => {
     it('should return false when task has no subtasks', () => {
@@ -85,9 +68,9 @@ describe('tasks utils', () => {
     });
 
     it('should return only pending subtasks', () => {
-      const pending1 = createSubtask({ id: '1', title: 'Pending 1', completed: false });
+      const pending1 = createSubtask({ id: '1', title: 'Pending 1' });
       const completed = createSubtask({ id: '2', title: 'Completed', completed: true });
-      const pending2 = createSubtask({ id: '3', title: 'Pending 2', completed: false });
+      const pending2 = createSubtask({ id: '3', title: 'Pending 2' });
 
       const task = createTask({
         subtasks: [pending1, completed, pending2],
@@ -101,8 +84,8 @@ describe('tasks utils', () => {
     });
 
     it('should return all subtasks when none are completed', () => {
-      const pending1 = createSubtask({ id: '1', completed: false });
-      const pending2 = createSubtask({ id: '2', completed: false });
+      const pending1 = createSubtask({ id: '1' });
+      const pending2 = createSubtask({ id: '2' });
 
       const task = createTask({
         subtasks: [pending1, pending2],
