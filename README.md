@@ -2,12 +2,12 @@
 
 Aplicação web desenvolvida como parte do **Hackathon Final da Pós-Graduação FIAP (Front-End)**, com foco em **Acessibilidade Cognitiva**, voltada a usuários que enfrentam desafios como:
 
-- TDAH
-- TEA (Autismo)
-- Dislexia
-- Burnout e sobrecarga mental
-- Ansiedade em ambientes digitais
-- Dificuldades de foco, organização e retenção
+* TDAH
+* TEA (Autismo)
+* Dislexia
+* Burnout e sobrecarga mental
+* Ansiedade em ambientes digitais
+* Dificuldades de foco, organização e retenção
 
 O **MindEase** foi projetado para reduzir a **carga cognitiva** causada por interfaces digitais complexas, oferecendo uma experiência **previsível, guiada e personalizável**, com estímulos controlados e clareza visual como prioridade.
 
