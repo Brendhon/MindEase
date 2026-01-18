@@ -23,15 +23,11 @@ export interface SwitchLabelProps extends BaseComponentProps {
   
   /** Click handler (optional, defaults to toggle switch) */
   onClick?: () => void;
-  
-  /** Disable the switch */
-  disabled?: boolean;
 }
 
 export function SwitchLabel({
   children,
   onClick,
-  disabled = false,
   "data-testid": testId,
 }: SwitchLabelProps) {
   const { fontSizeClasses } = useAccessibilityClasses();

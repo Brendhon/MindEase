@@ -11,6 +11,7 @@ export const styles = {
   container: "fixed inset-0 flex items-center justify-center",
   panel: "w-full max-w-md rounded-lg bg-surface-primary shadow-lg",
   title: "font-semibold text-text-primary",
+  marginBottom: "mb-4",
   contrast: {
     // Normal contrast: standard styling
     normal: {

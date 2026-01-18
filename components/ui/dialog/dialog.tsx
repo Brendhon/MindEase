@@ -70,7 +70,7 @@ export function Dialog({
       styles.title,
       fontSizeClasses.lg, // Dynamically updates based on settings.fontSize
       contrastClasses.title,
-      "mb-4" // Margin bottom for spacing
+      styles.marginBottom // Margin bottom for spacing
     ),
     [fontSizeClasses.lg, contrastClasses.title]
   );
