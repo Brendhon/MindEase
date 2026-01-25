@@ -77,6 +77,7 @@ describe('userPreferencesService', () => {
         textDetail: 'detailed',
         focusDuration: 30,
         shortBreakDuration: 5,
+        longBreakDuration: 15,
       });
 
       setupGetDocumentSuccess(mockPreferences);
@@ -93,6 +94,7 @@ describe('userPreferencesService', () => {
         textDetail: 'detailed',
         focusDuration: 30,
         shortBreakDuration: 5,
+        longBreakDuration: 15,
       });
       expect(firestoreService.getDocument).toHaveBeenCalledWith(
         MOCK_COLLECTION_PATH,
@@ -187,6 +189,7 @@ describe('userPreferencesService', () => {
         textDetail: 'detailed',
         focusDuration: 25,
         shortBreakDuration: 5,
+        longBreakDuration: 15,
       });
 
       const updates: Partial<UserPreferences> = {
