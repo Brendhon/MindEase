@@ -23,6 +23,23 @@ export interface UserPreferencesService {
 }
 
 /**
+ * Extract preferences from document (removes metadata)
+ */
+const extractPreferences = (
+  document: UserPreferencesDocument
+): UserPreferences => ({
+  contrast: document.contrast,
+  spacing: document.spacing,
+  fontSize: document.fontSize,
+  animations: document.animations,
+  focusMode: document.focusMode,
+  textDetail: document.textDetail,
+  focusDuration: document.focusDuration,
+  shortBreakDuration: document.shortBreakDuration,
+  longBreakDuration: document.longBreakDuration,
+});
+
+/**
  * User Preferences Service implementation
  */
 export const userPreferencesService: UserPreferencesService = {
@@ -40,16 +57,7 @@ export const userPreferencesService: UserPreferencesService = {
 
       if (document) {
         // Return only the preferences, not metadata
-        return {
-          contrast: document.contrast,
-          spacing: document.spacing,
-          fontSize: document.fontSize,
-          animations: document.animations,
-          focusMode: document.focusMode,
-          textDetail: document.textDetail,
-          focusDuration: document.focusDuration,
-          shortBreakDuration: document.shortBreakDuration,
-        };
+        return extractPreferences(document);
       }
 
       // If no preferences exist, return defaults
