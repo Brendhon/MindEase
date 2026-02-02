@@ -124,11 +124,17 @@ export function useTaskCard({
   const isChecklistInteractive = isActive && isRunning;
 
   // Handle focus actions
+  // Update status to "In Progress" first, then start timer so sync effect sees status 1
   const handleStartFocus = useCallback(() => {
-    startTimer(task.id);
-    onStatusChange?.(task.id, 1); // Set to In Progress
-    // Record user action (resets prolonged navigation timer)
-    recordUserAction();
+    const startTimerAndRecord = () => {
+      startTimer(task.id);
+      recordUserAction();
+    };
+    if (onStatusChange) {
+      Promise.resolve(onStatusChange(task.id, 1)).then(startTimerAndRecord);
+    } else {
+      startTimerAndRecord();
+    }
   }, [startTimer, task.id, onStatusChange, recordUserAction]);
 
   const handleStop = useCallback(() => {
