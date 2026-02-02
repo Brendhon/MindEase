@@ -1,3 +1,4 @@
+import { Unsubscribe } from 'firebase/firestore';
 import { Task } from '@/models/task';
 import { getTasksCollectionPath } from '@/utils/firestore/paths';
 import { firestoreService } from '../firestore';
@@ -8,6 +9,11 @@ import { firestoreService } from '../firestore';
  */
 export interface TasksService {
   getTasks: (userId: string) => Promise<Task[]>;
+  subscribeTasks: (
+    userId: string,
+    callback: (tasks: Task[]) => void,
+    onError?: (err: Error) => void
+  ) => Unsubscribe;
   getTask: (userId: string, taskId: string) => Promise<Task | null>;
   createTask: (
     userId: string,
@@ -28,6 +34,18 @@ export const tasksService: TasksService = {
    */
   getTasks: async (userId: string): Promise<Task[]> => {
     return firestoreService.getCollection<Task>(getTasksCollectionPath(userId));
+  },
+
+  /**
+   * Subscribe to tasks collection for real-time updates
+   */
+  subscribeTasks: (
+    userId: string,
+    callback: (tasks: Task[]) => void,
+    onError?: (err: Error) => void
+  ): Unsubscribe => {
+    const path = getTasksCollectionPath(userId);
+    return firestoreService.subscribeCollection<Task>(path, callback, onError);
   },
 
   /**

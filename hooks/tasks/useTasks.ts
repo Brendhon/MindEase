@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/auth';
 import { useFeedback } from '@/hooks/feedback';
 import { Subtask, Task } from '@/models/task';
 import { tasksService } from '@/services/tasks';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 /**
  * useTasks Hook - MindEase
@@ -46,6 +46,25 @@ export function useTasks() {
     },
     [_setTasks, _setError]
   );
+
+  /**
+   * Subscribe to tasks collection for real-time sync (web + mobile).
+   * Runs when user is available; cleanup on unmount or user change.
+   */
+  useEffect(() => {
+    if (!user?.uid) return;
+    const unsubscribe = tasksService.subscribeTasks(
+      user.uid,
+      (newTasks) => {
+        _setTasks(newTasks);
+        _setError(null);
+      },
+      (err) => {
+        _setError(err.message);
+      }
+    );
+    return () => unsubscribe();
+  }, [user?.uid, _setTasks, _setError]);
 
   /**
    * Get a task by ID from local state

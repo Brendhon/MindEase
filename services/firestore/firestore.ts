@@ -11,11 +11,13 @@ import {
   setDoc,
   updateDoc,
   deleteDoc,
+  onSnapshot,
   query,
   QueryConstraint,
   QueryDocumentSnapshot,
   DocumentData,
   Timestamp,
+  Unsubscribe,
   writeBatch,
 } from 'firebase/firestore';
 import { db } from '@/config/firebase';
@@ -75,6 +77,11 @@ export interface FirestoreService {
   ) => Promise<T>;
   deleteDocument: (collectionPath: string, id: string) => Promise<void>;
   deleteCollection: (collectionPath: string) => Promise<void>;
+  subscribeCollection: <T>(
+    collectionPath: string,
+    onNext: (data: T[]) => void,
+    onError?: (err: Error) => void
+  ) => Unsubscribe;
 }
 
 /**
@@ -267,6 +274,40 @@ export const firestoreService: FirestoreService = {
       console.error(`Error deleting document ${collectionPath}/${id}:`, error);
       throw error;
     }
+  },
+
+  /**
+   * Subscribe to a collection for real-time updates.
+   * Returns an unsubscribe function to stop listening.
+   */
+  subscribeCollection: <T>(
+    collectionPath: string,
+    onNext: (data: T[]) => void,
+    onError?: (err: Error) => void
+  ): Unsubscribe => {
+    const collectionRef = collection(db, collectionPath);
+    return onSnapshot(
+      collectionRef,
+      (querySnapshot) => {
+        const data = querySnapshot.docs.map(
+          (doc: QueryDocumentSnapshot<DocumentData>) => {
+            const docData = doc.data();
+            return convertTimestamps<T>({
+              id: doc.id,
+              ...docData,
+            });
+          }
+        );
+        onNext(data);
+      },
+      (err) => {
+        console.error(
+          `Error subscribing to collection ${collectionPath}:`,
+          err
+        );
+        onError?.(err instanceof Error ? err : new Error(String(err)));
+      }
+    );
   },
 
   /**

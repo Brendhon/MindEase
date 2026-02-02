@@ -21,6 +21,7 @@ vi.mock('next-auth/react', () => ({
 vi.mock('@/services/tasks', () => ({
   tasksService: {
     deleteAllTasks: vi.fn(),
+    subscribeTasks: vi.fn(() => () => {}),
   },
 }));
 

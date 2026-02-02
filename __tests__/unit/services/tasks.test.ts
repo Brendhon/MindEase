@@ -13,6 +13,7 @@ vi.mock('@/services/firestore/firestore', () => ({
     updateDocument: vi.fn(),
     deleteDocument: vi.fn(),
     deleteCollection: vi.fn(),
+    subscribeCollection: vi.fn(),
   },
 }));
 
@@ -46,6 +47,10 @@ const setupDeleteCollectionSuccess = () => {
   vi.mocked(firestoreService.deleteCollection).mockResolvedValue(undefined);
 };
 
+const setupSubscribeCollection = () => {
+  vi.mocked(firestoreService.subscribeCollection).mockReturnValue(vi.fn());
+};
+
 describe('tasksService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -76,6 +81,41 @@ describe('tasksService', () => {
       expect(result).toEqual([]);
       expect(firestoreService.getCollection).toHaveBeenCalledWith(
         MOCK_COLLECTION_PATH
+      );
+    });
+  });
+
+  describe('subscribeTasks', () => {
+    it('should subscribe to tasks collection and return unsubscribe', () => {
+      const mockUnsubscribe = vi.fn();
+      vi.mocked(firestoreService.subscribeCollection).mockReturnValue(
+        mockUnsubscribe
+      );
+
+      const callback = vi.fn();
+      const unsubscribe = tasksService.subscribeTasks(MOCK_USER_ID, callback);
+
+      expect(firestoreService.subscribeCollection).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH,
+        expect.any(Function),
+        undefined
+      );
+      expect(unsubscribe).toBe(mockUnsubscribe);
+
+      unsubscribe();
+      expect(mockUnsubscribe).toHaveBeenCalled();
+    });
+
+    it('should pass onError when provided', () => {
+      setupSubscribeCollection();
+      const onError = vi.fn();
+
+      tasksService.subscribeTasks(MOCK_USER_ID, vi.fn(), onError);
+
+      expect(firestoreService.subscribeCollection).toHaveBeenCalledWith(
+        MOCK_COLLECTION_PATH,
+        expect.any(Function),
+        onError
       );
     });
   });
