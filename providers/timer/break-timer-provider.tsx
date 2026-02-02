@@ -7,7 +7,10 @@ import {
   BreakTimerState,
 } from '@/models/timer';
 import { useCognitiveSettings } from '@/hooks/cognitive-settings';
-import { useCountdownInterval } from '@/hooks/timer';
+import {
+  useCountdownInterval,
+  useSyncBreakTimerWithTasks,
+} from '@/hooks/timer';
 import {
   createBreakEndedTimerState,
   createIdleTimerState,
@@ -129,6 +132,9 @@ export function BreakTimerProvider({ children }: BreakTimerProviderProps) {
   const stopBreak = useCallback(() => {
     dispatch({ type: 'STOP', defaultDuration });
   }, [defaultDuration]);
+
+  // Sync break timer with remote task changes (e.g. task completed on another device)
+  useSyncBreakTimerWithTasks(breakTimerState.activeTaskId, stopBreak);
 
   // Memoize context value to prevent unnecessary re-renders
   const contextValue = useMemo<BreakTimerContextValue>(
