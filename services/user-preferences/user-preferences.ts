@@ -7,6 +7,7 @@ import {
   UserPreferences,
   UserPreferencesDocument,
 } from '@/models/user-preferences';
+import { Unsubscribe } from 'firebase/firestore';
 import { firestoreService } from '../firestore/firestore';
 
 /**
@@ -14,6 +15,11 @@ import { firestoreService } from '../firestore/firestore';
  */
 export interface UserPreferencesService {
   getUserPreferences: (userId: string) => Promise<UserPreferences>;
+  subscribeUserPreferences: (
+    userId: string,
+    onNext: (preferences: UserPreferences) => void,
+    onError?: (err: Error) => void
+  ) => Unsubscribe;
   updateUserPreferences: (
     userId: string,
     preferences: Partial<UserPreferences>
@@ -70,6 +76,30 @@ export const userPreferencesService: UserPreferencesService = {
       // Return defaults on error
       return DEFAULT_ACCESSIBILITY_SETTINGS;
     }
+  },
+
+  /**
+   * Subscribe to user preferences document for real-time updates.
+   * Returns an unsubscribe function to stop listening.
+   * Calls onNext with defaults when the document does not exist.
+   */
+  subscribeUserPreferences: (
+    userId: string,
+    onNext: (preferences: UserPreferences) => void,
+    onError?: (err: Error) => void
+  ): Unsubscribe => {
+    return firestoreService.subscribeDocument<UserPreferencesDocument>(
+      'users',
+      userId,
+      (doc) => {
+        if (doc) {
+          onNext(extractPreferences(doc));
+        } else {
+          onNext(DEFAULT_ACCESSIBILITY_SETTINGS);
+        }
+      },
+      onError
+    );
   },
 
   /**

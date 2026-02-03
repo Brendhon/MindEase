@@ -15,6 +15,7 @@ import {
   query,
   QueryConstraint,
   QueryDocumentSnapshot,
+  DocumentSnapshot,
   DocumentData,
   Timestamp,
   Unsubscribe,
@@ -80,6 +81,12 @@ export interface FirestoreService {
   subscribeCollection: <T>(
     collectionPath: string,
     onNext: (data: T[]) => void,
+    onError?: (err: Error) => void
+  ) => Unsubscribe;
+  subscribeDocument: <T>(
+    collectionPath: string,
+    documentId: string,
+    onNext: (data: T | null) => void,
     onError?: (err: Error) => void
   ) => Unsubscribe;
 }
@@ -303,6 +310,42 @@ export const firestoreService: FirestoreService = {
       (err) => {
         console.error(
           `Error subscribing to collection ${collectionPath}:`,
+          err
+        );
+        onError?.(err instanceof Error ? err : new Error(String(err)));
+      }
+    );
+  },
+
+  /**
+   * Subscribe to a single document for real-time updates.
+   * Returns an unsubscribe function to stop listening.
+   * Calls onNext(null) when the document does not exist.
+   */
+  subscribeDocument: <T>(
+    collectionPath: string,
+    documentId: string,
+    onNext: (data: T | null) => void,
+    onError?: (err: Error) => void
+  ): Unsubscribe => {
+    const docRef = doc(db, collectionPath, documentId);
+    return onSnapshot(
+      docRef,
+      (docSnapshot: DocumentSnapshot<DocumentData>) => {
+        if (!docSnapshot.exists()) {
+          onNext(null);
+          return;
+        }
+        const docData = docSnapshot.data();
+        const data = convertTimestamps<T>({
+          id: docSnapshot.id,
+          ...docData,
+        });
+        onNext(data);
+      },
+      (err) => {
+        console.error(
+          `Error subscribing to document ${collectionPath}/${documentId}:`,
           err
         );
         onError?.(err instanceof Error ? err : new Error(String(err)));

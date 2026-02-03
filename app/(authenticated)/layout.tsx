@@ -4,7 +4,6 @@ import { Header, Sidebar } from '@/components/layout';
 import { ActiveTaskIndicator } from '@/components/tasks/active-task-indicator';
 import { BreakSessionCompleteDialogWrapper } from '@/components/tasks/break-session-complete-dialog';
 import { FocusSessionCompleteDialogWrapper } from '@/components/tasks/focus-session-complete-dialog';
-import { useCognitiveSettings } from '@/hooks/cognitive-settings';
 import {
   ExcessiveTimeAlertProvider,
   MissingBreakAlertProvider,
@@ -13,7 +12,6 @@ import {
 import { SidebarProvider } from '@/providers/sidebar';
 import { TasksProvider } from '@/providers/tasks';
 import { BreakTimerProvider, FocusTimerProvider } from '@/providers/timer';
-import { useEffect } from 'react';
 
 /**
  * Authenticated Layout - MindEase
@@ -28,7 +26,8 @@ import { useEffect } from 'react';
  * - ProlongedNavigationAlertProvider: Global prolonged navigation alert state management
  * - FocusSessionCompleteDialogWrapper: Global dialog for completed focus sessions
  * - BreakSessionCompleteDialogWrapper: Global dialog for completed break sessions
- * - Cognitive settings loading: Loads user preferences from Firestore before rendering
+ *
+ * Cognitive settings are synced in real time via useCognitiveSettings (used by providers below).
  *
  * Note: Session verification is handled by middleware (proxy.ts)
  */
@@ -37,14 +36,6 @@ export default function AuthenticatedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { loadSettings } = useCognitiveSettings();
-
-  // Load settings from Firestore on mount
-  // This ensures settings are available before any component renders
-  useEffect(() => {
-    loadSettings();
-  }, [loadSettings]);
-
   return (
     <TasksProvider>
       <FocusTimerProvider>

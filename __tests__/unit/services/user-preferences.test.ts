@@ -14,6 +14,7 @@ vi.mock('@/services/firestore/firestore', () => ({
     getDocument: vi.fn(),
     setDocument: vi.fn(),
     deleteDocument: vi.fn(),
+    subscribeDocument: vi.fn(() => vi.fn()),
   },
 }));
 
