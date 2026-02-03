@@ -49,21 +49,22 @@ import {
   createSubtaskFocusRequiredDialogConfig,
 } from '@/components/tasks/task-card/task-card-dialogs';
 import { getTaskCardClasses } from '@/components/tasks/task-card/task-card-styles';
+import { useTextDetail } from '@/hooks/accessibility';
 import {
   useMissingBreakAlert,
   useProlongedNavigationAlert,
 } from '@/hooks/cognitive-alerts';
-import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
 import { useDialog } from '@/hooks/dialog';
 import { useFeedback } from '@/hooks/feedback';
 import { useTasks } from '@/hooks/tasks';
-import { useTextDetail } from '@/hooks/accessibility';
+import { useBreakTimer, useFocusTimer } from '@/hooks/timer';
 import type {
   UseTaskCardProps,
   UseTaskCardReturn,
 } from '@/models/task-card-props';
 import { canCompleteTask, getPendingSubtasks } from '@/utils/tasks';
 import { useCallback, useMemo } from 'react';
+import { useCognitiveSettings } from '../cognitive-settings/useCognitiveSettings';
 
 /**
  * Hook for managing TaskCard business logic
@@ -96,6 +97,7 @@ export function useTaskCard({
   const { getText } = useTextDetail();
   const { success } = useFeedback();
   const { hasTasksInProgress } = useTasks();
+  const { settings } = useCognitiveSettings();
 
   // Derived state
   const hasActiveTask = hasTasksInProgress(task.id);
@@ -103,7 +105,7 @@ export function useTaskCard({
   const isRunning = isFocusRunning(task.id);
   const isBreakRunningForTask =
     isBreakActive(task.id) && isBreakRunning(task.id);
-  const isFocused = isActive || isBreakActive(task.id);
+  const isFocused = (isActive || isBreakActive(task.id)) && settings.focusMode;
 
   // Check if task has pending subtasks (using centralized utility)
   const hasPendingSubtasks = useMemo(() => {
