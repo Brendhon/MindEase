@@ -1,284 +1,172 @@
 # 🧠 MindEase – Plataforma de Acessibilidade Cognitiva (Web)
 
-Aplicação web desenvolvida como parte do **Hackathon Final da Pós-Graduação FIAP (Front-End)**, com foco em **Acessibilidade Cognitiva**, voltada a usuários que enfrentam desafios como:
+> Aplicação **web** do projeto **MindEase**, desenvolvida com Next.js e React, com foco em oferecer uma experiência de acessibilidade cognitiva para usuários neurodivergentes.
 
-- TDAH
-- TEA (Autismo)
+**Acesse a aplicação em produção: 🔗 [https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app)**
+
+---
+
+## 📜 Sumário
+
+- [🧠 MindEase – Plataforma de Acessibilidade Cognitiva (Web)](#-mindease--plataforma-de-acessibilidade-cognitiva-web)
+  - [📜 Sumário](#-sumário)
+  - [🎯 Sobre o Projeto](#-sobre-o-projeto)
+  - [✨ Funcionalidades Principais](#-funcionalidades-principais)
+    - [🔐 Autenticação Simplificada](#-autenticação-simplificada)
+    - [🧠 Dashboard Cognitivo](#-dashboard-cognitivo)
+    - [⏱️ Sessão de Foco Adaptável](#️-sessão-de-foco-adaptável)
+    - [✅ Organizador de Tarefas](#-organizador-de-tarefas)
+    - [⚙️ Perfil e Preferências](#️-perfil-e-preferências)
+  - [♿ Acessibilidade Cognitiva: O Pilar Central](#-acessibilidade-cognitiva-o-pilar-central)
+  - [🧱 Arquitetura e Stack](#-arquitetura-e-stack)
+    - [Arquitetura](#arquitetura)
+    - [Stack Tecnológica](#stack-tecnológica)
+      - [Frontend](#frontend)
+      - [Backend \& Infra](#backend--infra)
+  - [🧪 Qualidade e Testes](#-qualidade-e-testes)
+    - [Ferramentas de Qualidade](#ferramentas-de-qualidade)
+    - [Testes Automatizados](#testes-automatizados)
+  - [🚀 Pipeline de CI/CD](#-pipeline-de-cicd)
+    - [Configuração de Variáveis de Ambiente (.env.local)](#configuração-de-variáveis-de-ambiente-envlocal)
+  - [📦 Como Rodar o Projeto](#-como-rodar-o-projeto)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Instalação e Configuração](#instalação-e-configuração)
+    - [Execução](#execução)
+  - [📱 Relação com o Projeto Mobile](#-relação-com-o-projeto-mobile)
+  - [👥 Autor](#-autor)
+
+---
+
+## 🎯 Sobre o Projeto
+
+O MindEase Web nasceu como uma solução focada em **acessibilidade cognitiva**, projetada para reduzir a sobrecarga causada por interfaces digitais complexas. O projeto foi desenvolvido como parte do **Hackathon Final da Pós-Graduação FIAP (Front-End)**.
+
+A plataforma oferece uma experiência **previsível, guiada e personalizável**, com estímulos controlados e clareza visual como prioridade, atendendo usuários que enfrentam desafios como:
+
+- TDAH (Transtorno do Déficit de Atenção com Hiperatividade)
+- TEA (Transtorno do Espectro Autista)
 - Dislexia
 - Burnout e sobrecarga mental
 - Ansiedade em ambientes digitais
-- Dificuldades de foco, organização e retenção
+- Dificuldades de foco, organização e autorregulação
 
-O **MindEase** foi projetado para reduzir a **carga cognitiva** causada por interfaces digitais complexas, oferecendo uma experiência **previsível, guiada e personalizável**, com estímulos controlados e clareza visual como prioridade.
-
----
-
-## 🌐 Acesso à Aplicação
-
-A aplicação está disponível em produção através da Vercel:
-
-**🔗 [https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app)**
-
-A aplicação utiliza autenticação via Google OAuth. Para acessar, você precisará de uma conta Google.
+O objetivo é consolidar práticas de desenvolvimento web moderno e arquitetura limpa para criar uma aplicação com impacto social real.
 
 ---
 
-## 🎯 Objetivo do Projeto
+## ✨ Funcionalidades Principais
 
-O objetivo do projeto é consolidar os conhecimentos adquiridos ao longo da pós-graduação, aplicando-os de forma integrada em uma aplicação real, com foco em impacto social e técnico:
+Cada funcionalidade foi desenhada com uma **responsabilidade única** para evitar sobrecarga de informações e decisões simultâneas.
 
-- Arquitetura limpa e escalável (Clean Architecture)
-- Desenvolvimento Web moderno com React e Next.js
-- Acessibilidade digital com foco **cognitivo** (não apenas visual)
-- Persistência de preferências por usuário
-- Autenticação segura
-- Testes automatizados em múltiplos níveis
+### 🔐 Autenticação Simplificada
 
-* Pipeline de CI/CD
+- Login exclusivo via Google (Firebase Auth), eliminando formulários longos.
+- Criação automática do perfil do usuário no Firestore.
 
-Além dos requisitos técnicos, o MindEase prioriza **decisões conscientes de UX**, sempre partindo das necessidades de usuários neurodivergentes.
+### 🧠 Dashboard Cognitivo
 
----
+- Centraliza controle e previsibilidade, com uma visão simples do estado do usuário.
+- Ativação do modo foco e acesso rápido às funcionalidades.
+- Exibição de alertas cognitivos apenas quando relevantes.
 
-## 📄 Contexto – Hackathon FIAP
+### ⏱️ Sessão de Foco Adaptável
 
-O Hackathon representa o projeto final da Pós-Graduação FIAP, sendo o momento de aplicar, de forma prática, todos os conceitos abordados ao longo do curso.
-
-O tema definido foi **Acessibilidade Cognitiva**, com foco em reduzir:
-
-- Excesso de informação simultânea
-- Falta de previsibilidade na navegação
-- Interfaces visualmente caóticas
-- Textos longos sem hierarquia clara
-- Sobrecarga sensorial e decisória
-
-O **MindEase** surge como uma resposta direta a esses problemas, oferecendo uma plataforma centrada no usuário e não apenas na funcionalidade.
-
----
-
-## ♿ Acessibilidade Cognitiva (Pilar Central)
-
-A aplicação segue princípios de **Cognitive Load Reduction**, aplicados de forma prática no design e na arquitetura da interface:
-
-- **Sessões de foco com tempo controlado e pausas orientadas**
-- **Modo foco para ocultar distrações visuais**
-- **Alertas cognitivos contextuais** (transições, pausas, excesso de tempo)
-- **Níveis ajustáveis de complexidade da interface**
-- **Modo resumo vs. modo detalhado**
-- **Controle de contraste, espaçamento e tamanho de fonte**
-- **Animações opcionais e controláveis**
-- **Ritmo guiado de navegação**
-
-Todos os componentes interativos utilizam **Headless UI**, garantindo:
-
-- Navegação completa por teclado
-- Foco visível e previsível
-- Uso correto de ARIA
-- Compatibilidade com leitores de tela
-
----
-
-## 🧠 Estrutura Funcional e Responsabilidade das Páginas
-
-A aplicação foi estruturada para que cada página tenha **responsabilidade clara**, evitando sobrecarga de informações e decisões simultâneas.
-
-### 🔐 Autenticação
-
-- Login exclusivo via Google (Firebase Auth)
-- Elimina formulários longos e validações complexas
-- Criação automática do perfil do usuário no Firestore
-
-### 🧠 Dashboard (Painel Cognitivo)
-
-Responsável por **centralizar controle e previsibilidade**:
-
-- Visualização simples do estado atual do usuário
-- Ativação do modo foco
-- Exibição de alertas cognitivos apenas quando relevantes
-- Acesso rápido às sessões de foco e tarefas
-
-### ⏱️ Sessão de Foco
-
-- Timer de foco inspirado no Pomodoro, porém **adaptável**
-- Opções pré-definidas de foco e pausa (curta, média e longa)
-- Pausas obrigatórias para evitar hiperfoco
-- Alertas cognitivos ao final de ciclos ou longos períodos contínuos
-
-### 🚨 Alertas Cognitivos
-
-Os alertas não são notificações constantes, mas **intervenções conscientes**, exibidas apenas quando:
-
-- O tempo de foco ultrapassa limites seguros
-- É necessário iniciar uma pausa
-- O usuário retorna de uma pausa
-- Há mudança significativa de contexto
-
-Objetivo: **auxiliar a autorregulação**, não interromper desnecessariamente.
+- Timer de foco inspirado no método Pomodoro, mas com ciclos flexíveis.
+- Pausas obrigatórias para evitar hiperfoco e promover descanso mental.
+- Alertas contextuais ao final de ciclos ou longos períodos de atividade.
 
 ### ✅ Organizador de Tarefas
 
-- Tarefas simples e hierarquizadas
-- Subtarefas em formato de checklist
-- Redução de decisões simultâneas
-- Integração opcional com sessões de foco
+- Criação de tarefas simples e hierarquizadas (com subtarefas).
+- Interface projetada para reduzir a paralisia decisória.
+- Integração opcional com as sessões de foco.
 
 ### ⚙️ Perfil e Preferências
 
-- Contraste
-- Espaçamento
-- Tamanho de fonte
-- Redução de movimento
-- Persistência automática por usuário
+- Personalização da interface: contraste, espaçamento, tamanho de fonte.
+- Opção para reduzir movimento e animações.
+- Todas as preferências são salvas automaticamente por usuário.
 
 ---
 
-## 🚀 Stack Utilizada (Web)
+## ♿ Acessibilidade Cognitiva: O Pilar Central
 
-### Frontend
+A aplicação segue princípios de **Cognitive Load Reduction**, aplicados de forma prática no design e na arquitetura:
+
+- **Sessões de foco** com tempo controlado.
+- **Modo foco** para ocultar distrações visuais.
+- **Alertas cognitivos** contextuais e não intrusivos.
+- **Interface personalizável** (contraste, fonte, espaçamento).
+- **Ritmo guiado** de navegação.
+
+Todos os componentes interativos foram construídos com **Headless UI**, garantindo navegação completa por teclado, foco visível e previsível, uso correto de ARIA e compatibilidade com leitores de tela.
+
+---
+
+## 🧱 Arquitetura e Stack
+
+### Arquitetura
+
+O projeto adota os princípios da **Clean Architecture** para garantir um código escalável e de fácil manutenção, com uma clara separação entre as camadas de UI, aplicação e domínio.
+
+### Stack Tecnológica
+
+#### Frontend
 
 - **Next.js 16 (App Router)**
 - **React 19**
 - **TypeScript 5+**
 - **Tailwind CSS**
-- **Headless UI**
-- **Lucide Icons**
-- **Framer Motion** (uso pontual e opcional)
-- **React Hook Form**
-- **Zod**
+- **Headless UI** e **Lucide Icons**
+- **React Hook Form** e **Zod** (formulários e validação)
 
-### Backend / Infra
+#### Backend & Infra
 
-- **Firebase Authentication** – Login com Google
-- **Firestore** – Banco NoSQL
-- **GitHub Actions** – CI/CD
-- **Vercel** – Deploy ([https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app))
+- **Firebase Authentication** (Login com Google)
+- **Firestore** (Banco de dados NoSQL)
+- **Vercel** (Deploy e Hosting)
+- **GitHub Actions** (CI/CD)
 
 ---
 
-## ✨ Qualidade de Código e Padrões
+## 🧪 Qualidade e Testes
 
-O projeto adota um conjunto de ferramentas que garantem **padronização, manutenibilidade e qualidade contínua**.
+O projeto adota um conjunto de ferramentas que garantem padronização, manutenibilidade e qualidade contínua.
 
-### 🔧 Ferramentas
+### Ferramentas de Qualidade
 
-- **ESLint** – Análise estática
-- **Prettier** – Formatação automática
-- **Commitlint** – Conventional Commits
-- **Husky** – Git Hooks
-- **Lint-staged** – Execução otimizada
+- **ESLint**: Análise estática de código.
+- **Prettier**: Formatação automática.
+- **Commitlint**: Padrão de commits (Conventional Commits).
+- **Husky + lint-staged**: Execução de validações antes de cada commit.
 
-### 🎯 Benefícios
+### Testes Automatizados
 
-- Código consistente
-- Histórico de commits semântico
-- Menos bugs em produção
-- Onboarding facilitado
-- Pipeline de CI/CD mais confiável
+- **Vitest**: Testes unitários e de componentes.
+- **Testing Library**: Foco no comportamento do usuário, não na implementação.
+- **Playwright**: Testes End-to-End (E2E).
+- **Storybook**: Documentação e teste visual de componentes.
 
 ---
 
-## 🧪 Testes Automatizados
+## 🚀 Pipeline de CI/CD
 
-- **Vitest** – Unitários e componentes
-- **Testing Library** – Foco em comportamento do usuário
-- **Playwright** – E2E
-- **Storybook** – Testes e documentação de componentes
+O projeto utiliza **GitHub Actions** para automatizar o processo de build, testes e deploy na Vercel, garantindo entregas seguras e consistentes.
 
-Cobertura inclui:
+O fluxo é dividido em:
 
-- Componentes críticos
-- Fluxos principais do usuário
-- Acessibilidade
-- Persistência de preferências
+1. **Build e Teste**: Executado em cada pull request para a branch `main`.
+2. **Deploy**: Realizado automaticamente na Vercel após o merge na `main`.
 
----
+> Para detalhes completos sobre a configuração de secrets e ambientes do GitHub, consulte o workflow em [`.github/workflows/ci-cd.yml`](.github/workflows/ci-cd.yml). As instruções detalhadas sobre as variáveis de ambiente necessárias estão no arquivo `environment.example`.
 
-## 🚀 CI/CD Pipeline
+### Configuração de Variáveis de Ambiente (.env.local)
 
-O projeto utiliza um **pipeline simplificado** com GitHub Actions para automatizar o processo de build, testes e deploy na Vercel.
+Para o pipeline e o ambiente local funcionarem, configure as seguintes variáveis, conforme o `environment.example`:
 
-**🌐 Aplicação em Produção**: [https://mind-ease-web.vercel.app](https://mind-ease-web.vercel.app)
-
-### Estrutura do Pipeline
-
-O pipeline é executado em três etapas:
-
-1. **Build**: Compilação do código, instalação das dependências e execução do linter
-2. **Testes**: Execução de testes automatizados (unitários e componentes)
-3. **Deploy**: Deploy automático em produção (apenas após merge aprovado na `main`)
-
-### Configuração Necessária
-
-#### 1. Secrets do GitHub
-
-Configure os seguintes secrets no repositório GitHub (`Settings > Secrets and variables > Actions`):
-
-##### Secrets Obrigatórios
-
-**Vercel:**
-
-- **`VERCEL_TOKEN`**: Token de autenticação da Vercel
-  - Obtenha em: [Vercel Dashboard > Settings > Tokens](https://vercel.com/account/tokens)
-
-**Firebase:**
-
-- **`NEXT_PUBLIC_FIREBASE_API_KEY`**: API Key do Firebase
-- **`NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`**: Auth Domain do Firebase (ex: `seu-projeto.firebaseapp.com`)
-- **`NEXT_PUBLIC_FIREBASE_PROJECT_ID`**: Project ID do Firebase
-- **`NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`**: Storage Bucket do Firebase (ex: `seu-projeto.appspot.com`)
-- **`NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`**: Messaging Sender ID do Firebase
-- **`NEXT_PUBLIC_FIREBASE_APP_ID`**: App ID do Firebase
-- **`NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID`**: Measurement ID do Firebase (opcional, para Google Analytics)
-
-**NextAuth:**
-
-- **`NEXTAUTH_SECRET`**: Secret do NextAuth (gere com: `openssl rand -base64 32`)
-- **`NEXTAUTH_URL`**: URL da aplicação em produção (ex: `https://mind-ease-web.vercel.app`)
-
-**Google OAuth:**
-
-- **`GOOGLE_CLIENT_ID`**: Client ID do Google OAuth
-- **`GOOGLE_CLIENT_SECRET`**: Client Secret do Google OAuth
-
-**Aplicação:**
-
-- **`NEXT_PUBLIC_APP_URL`**: URL da aplicação (opcional, padrão: URL do ambiente)
-
-> 💡 **Dica**: Todos esses valores podem ser encontrados no arquivo `.env.local` do seu ambiente de desenvolvimento. Copie os valores do arquivo local para os secrets do GitHub.
-
-#### 2. Ambientes do GitHub
-
-Configure o ambiente de produção no repositório (`Settings > Environments`):
-
-- **`production`**: Ambiente de produção
-  - Configure **protection rules** para exigir aprovação manual (opcional):
-    - Clique em "Required reviewers" e adicione os revisores que devem aprovar antes do deploy
-    - Isso criará um gate de aprovação manual antes do job `deploy` executar
-  - Configure a **URL de produção** no campo "Environment URL": `https://mind-ease-web.vercel.app`
-    - Esta URL será exibida no GitHub Actions após o deploy
-  - **Opcional**: Você pode configurar os secrets diretamente no ambiente `production` ao invés de no repositório
-    - Isso permite ter valores diferentes para cada ambiente (staging, production, etc.)
-
-#### 3. Branches
-
-O projeto utiliza duas branches principais:
-
-- **`dev`**: Branch de desenvolvimento (não executa deploy)
-- **`main`**: Branch principal (executa deploy após merge aprovado)
-
-### Fluxo de Trabalho
-
-1. **Pull Request para `main`**:
-   - Executa Build e Testes (validação antes do merge)
-   - Não executa deploy
-
-2. **Merge aprovado na `main`**:
-   - Executa Build e Testes
-   - Executa Deploy em Produção (com aprovação manual opcional via GitHub Environments)
-
-### Arquivo de Workflow
-
-O pipeline está configurado em: `.github/workflows/ci-cd.yml`
+- **Firebase**: `NEXT_PUBLIC_FIREBASE_*` (API_KEY, AUTH_DOMAIN, etc.)
+- **NextAuth**: `NEXTAUTH_SECRET`, `NEXTAUTH_URL`
+- **Google OAuth**: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`
 
 ---
 
@@ -286,159 +174,60 @@ O pipeline está configurado em: `.github/workflows/ci-cd.yml`
 
 ### Pré-requisitos
 
-Antes de começar, certifique-se de ter instalado:
+- **Node.js 22+**
+- **npm** (ou pnpm/yarn)
+- **Git**
+- **Conta Firebase** e **Google Cloud** (para credenciais OAuth)
 
-- **Node.js 22+** – [Download](https://nodejs.org/)
-- **npm** (vem junto com o Node.js) ou **pnpm/yarn** (opcional)
-- **Git** – Para clonar o repositório
-- **Conta Firebase** – Para autenticação e banco de dados
-- **Conta Google Cloud** – Para OAuth (login com Google)
-
-> 💡 **Dica**: Verifique sua versão do Node.js com `node --version`. O projeto requer Node.js 22 ou superior.
-
-### Instalação
+### Instalação e Configuração
 
 1. **Clone o repositório**:
-
-```bash
-git clone https://github.com/Brendhon/MindEase.git
-cd MindEase
-```
-
+   ```bash
+   git clone https://github.com/Brendhon/MindEase.git
+   cd MindEase
+   ```
 2. **Instale as dependências**:
-
-```bash
-npm install
-```
-
+   ```bash
+   npm install
+   ```
 3. **Configure as variáveis de ambiente**:
-
-Copie o arquivo de exemplo e preencha com suas credenciais:
-
-```bash
-cp environment.example .env.local
-```
-
-### Configuração das Variáveis de Ambiente
-
-O arquivo `.env.local` contém todas as configurações necessárias para o projeto funcionar. Abra o arquivo e preencha os valores conforme descrito abaixo.
-
-#### 🔥 Firebase Configuration
-
-Todas as variáveis do Firebase podem ser obtidas no [Firebase Console](https://console.firebase.google.com/):
-
-1. Acesse seu projeto no Firebase Console
-2. Vá em **Configurações do Projeto** (ícone de engrenagem)
-3. Role até a seção **Seus apps** e selecione o app web
-4. Copie os valores do objeto de configuração
-
-```bash
-# Firebase API Key
-NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key-here
-
-# Firebase Auth Domain (geralmente: seu-project-id.firebaseapp.com)
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project-id.firebaseapp.com
-
-# Firebase Project ID (nome do seu projeto)
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your-project-id
-
-# Firebase Storage Bucket (geralmente: seu-project-id.appspot.com)
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project-id.appspot.com
-
-# Firebase Messaging Sender ID
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your-sender-id
-
-# Firebase App ID
-NEXT_PUBLIC_FIREBASE_APP_ID=your-app-id
-
-# Firebase Measurement ID (opcional - para Google Analytics)
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your-measurement-id
-```
-
-#### 🔐 NextAuth Configuration
-
-O NextAuth é usado para gerenciar sessões de autenticação:
-
-```bash
-# Gere um secret seguro: openssl rand -base64 32
-NEXTAUTH_SECRET=your-nextauth-secret-here
-
-# URL da aplicação (desenvolvimento: http://localhost:3000)
-NEXTAUTH_URL=http://localhost:3000
-```
-
-> ⚠️ **Importante**: O `NEXTAUTH_SECRET` deve ser uma string aleatória e segura. Use o comando `openssl rand -base64 32` para gerar um valor seguro.
-
-#### 🔑 Google OAuth Credentials
-
-Para habilitar o login com Google, você precisa criar credenciais OAuth no [Google Cloud Console](https://console.cloud.google.com/):
-
-1. Acesse o Google Cloud Console
-2. Crie um novo projeto ou selecione um existente
-3. Ative a **Google+ API** (ou Google Identity API)
-4. Vá em **Credenciais** > **Criar credenciais** > **ID do cliente OAuth 2.0**
-5. Configure o tipo de aplicativo como **Aplicativo da Web**
-6. Adicione a URI de redirecionamento autorizada:
-   - Desenvolvimento: `http://localhost:3000/api/auth/callback/google`
-   - Produção: `https://mind-ease-web.vercel.app/api/auth/callback/google`
-
-```bash
-# Google OAuth Client ID
-GOOGLE_CLIENT_ID=your-google-client-id
-
-# Google OAuth Client Secret
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-```
-
-#### 🌐 Application URL (Opcional)
-
-```bash
-# URL da aplicação (padrão: http://localhost:3000)
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-> 📝 **Nota**: Esta variável é opcional e tem como padrão `http://localhost:3000` se não for definida.
+   Copie o arquivo de exemplo e preencha com suas credenciais. As instruções detalhadas estão no próprio arquivo.
+   ```bash
+   cp environment.example .env.local
+   ```
 
 ### Execução
 
-#### Modo de Desenvolvimento
+- **Modo de Desenvolvimento**:
 
-Para iniciar o servidor de desenvolvimento:
+  ```bash
+  npm run dev
+  ```
 
-```bash
-npm run dev
-```
+  A aplicação estará disponível em [http://localhost:3000](http://localhost:3000).
 
-A aplicação estará disponível em: [http://localhost:3000](http://localhost:3000)
+- **Outros Comandos**:
+  ```bash
+  npm run build     # Build para produção
+  npm run start     # Iniciar servidor de produção
+  npm run lint      # Executar linter
+  npm run test      # Executar testes
+  npm run storybook # Iniciar Storybook
+  ```
 
-O Next.js possui **Hot Module Replacement (HMR)**, então as alterações no código serão refletidas automaticamente no navegador.
+---
 
-#### Outros Comandos Disponíveis
+## 📱 Relação com o Projeto Mobile
 
-```bash
-# Build para produção
-npm run build
+O MindEase também possui uma versão mobile, desenvolvida em React Native, que compartilha a mesma lógica de domínio e propósito.
 
-# Iniciar servidor de produção (após o build)
-npm start
-
-# Executar linter
-npm run lint
-
-# Executar testes
-npm run test
-
-# Executar testes E2E com Playwright
-npm run test:e2e
-
-# Executar Storybook
-npm run storybook
-```
+- **GitHub do App Mobile**: [https://github.com/Brendhon/MindEase-Mobile](https://github.com/Brendhon/MindEase-Mobile)
 
 ---
 
 ## 👥 Autor
 
 **Brendhon Moreira**
-[LinkedIn](https://www.linkedin.com/in/brendhon-moreira)
-📧 [brendhon.e.c.m@gmail.com](mailto:brendhon.e.c.m@gmail.com)
+
+- LinkedIn: [https://www.linkedin.com/in/brendhon-moreira](https://www.linkedin.com/in/brendhon-moreira)
+- Email: [brendhon.e.c.m@gmail.com](mailto:brendhon.e.c.m@gmail.com)
