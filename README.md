@@ -221,7 +221,7 @@ Para o pipeline e o ambiente local funcionarem, configure as seguintes variávei
 
 O MindEase também possui uma versão mobile, desenvolvida em React Native, que compartilha a mesma lógica de domínio e propósito.
 
-- **GitHub do App Mobile**: [https://github.com/Brendhon/MindEase-Mobile](https://github.com/Brendhon/MindEase-Mobile)
+- **GitHub do App Mobile**: [https://github.com/Brendhon/MindEase-Mobile](https://github.com/Brendhon/MindEase_Mobile)
 
 ---
 
