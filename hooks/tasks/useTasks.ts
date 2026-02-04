@@ -109,7 +109,7 @@ export function useTasks() {
         _setLoading(false);
       }
     },
-    [user?.uid, _setTasks, _setLoading, _setError, success, showError]
+    [user?.uid, _setLoading, _setError, success, showError]
   );
 
   /**
@@ -143,7 +143,7 @@ export function useTasks() {
         _setLoading(false);
       }
     },
-    [user?.uid, _setTasks, _setLoading, _setError, success, showError]
+    [user?.uid, _setLoading, _setError, success, showError]
   );
 
   /**
@@ -159,7 +159,6 @@ export function useTasks() {
 
       try {
         await tasksService.deleteTask(user.uid, taskId);
-        _setTasks((prev) => prev.filter((t) => t.id !== taskId));
         success('toast_success_task_deleted');
       } catch (err) {
         const errorMessage =
@@ -170,7 +169,7 @@ export function useTasks() {
         _setLoading(false);
       }
     },
-    [user?.uid, _setTasks, _setLoading, _setError, success, showError]
+    [user?.uid, _setLoading, _setError, success, showError]
   );
 
   /**

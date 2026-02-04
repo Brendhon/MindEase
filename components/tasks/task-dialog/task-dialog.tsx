@@ -93,7 +93,7 @@ export function TaskDialog({
       completed: false,
       order: fields.length,
     });
-  }, [append, fields.length, info]);
+  }, [append, fields.length]);
 
   const handleRemoveSubtask = useCallback(
     (index: number) => {
