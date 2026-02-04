@@ -92,14 +92,13 @@ export function useTasks() {
       _setError(null);
 
       try {
-        const newTask = await tasksService.createTask(user.uid, {
+        await tasksService.createTask(user.uid, {
           title: taskData.title,
           description: taskData.description,
           subtasks: taskData.subtasks,
           status: 0,
         });
 
-        _setTasks((prev) => [...prev, newTask]);
         success('toast_success_task_created');
       } catch (err) {
         const errorMessage =
@@ -129,9 +128,6 @@ export function useTasks() {
           user.uid,
           taskId,
           updates
-        );
-        _setTasks((prev) =>
-          prev.map((t) => (t.id === taskId ? updatedTask : t))
         );
 
         const isComplete = updatedTask.status === 2;

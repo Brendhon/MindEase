@@ -93,7 +93,6 @@ export function TaskDialog({
       completed: false,
       order: fields.length,
     });
-    info('tasks_checklist_added');
   }, [append, fields.length, info]);
 
   const handleRemoveSubtask = useCallback(
