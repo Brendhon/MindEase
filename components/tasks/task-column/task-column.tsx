@@ -93,9 +93,9 @@ export function TaskColumn({
         <h2 className={titleClasses}>{getText(titleKey)}</h2>
         <span
           className={countClasses}
-          aria-label={`${sortedTasks.length} tarefas`}
+          aria-label={`${sortedTasks.length} ${getText('tasks_count_caption')}`}
         >
-          {sortedTasks.length}
+          {sortedTasks.length} {getText('tasks_count_caption')}
         </span>
       </div>
       <div className={contentClasses}>
@@ -131,10 +131,9 @@ TaskColumn.displayName = 'TaskColumn';
 const styles = {
   column: 'flex flex-col min-h-[400px] lg:h-full min-w-[280px] lg:min-w-0',
   header:
-    'flex items-center justify-between mb-4 sticky top-0 bg-bg-secondary z-10 pb-2 border-b border-border-subtle',
+    'flex flex-col gap-0.5 mb-4 sticky top-0 bg-bg-secondary z-10 pb-2 border-b border-border-subtle',
   title: 'font-semibold text-text-primary',
-  count:
-    'px-2 py-1 rounded-full bg-action-info/10 text-action-info font-medium min-w-[2rem] text-center',
+  count: 'text-text-secondary font-normal',
   content: 'flex flex-col flex-1 gap-4 min-h-0 pb-4',
   empty: 'flex items-center justify-center py-8 text-center',
   emptyText: 'text-text-secondary',
