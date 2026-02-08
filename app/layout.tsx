@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     'neurodivergência',
     'interface acessível',
     'baixo estímulo visual',
+    'mindease',
   ],
   authors: [{ name: 'Brendhon Moreira' }],
   creator: 'Brendhon Moreira',
