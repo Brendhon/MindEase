@@ -1,5 +1,1 @@
-export {
-  hasPendingSubtasks,
-  getPendingSubtasks,
-  canCompleteTask,
-} from './tasks';
+export * from './tasks';

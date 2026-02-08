@@ -1,10 +1,10 @@
 'use client';
 
-import { useAccessibilityClasses } from '@/hooks/accessibility';
-import { useTextDetail } from '@/hooks/accessibility';
-import type { Task } from '@/models/task';
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
 import { BaseComponentProps } from '@/models/base';
+import type { Task } from '@/models/task';
 import type { AccessibilityTextKey } from '@/utils/accessibility';
+import { normalizeText } from '@/utils/tasks';
 import { cn } from '@/utils/ui';
 import { useMemo } from 'react';
 import { TaskCard } from '../task-card';
@@ -23,6 +23,9 @@ export interface TaskColumnProps extends BaseComponentProps {
   /** Column status filter (0 = To Do, 1 = In Progress, 2 = Done) */
   status: number;
 
+  /** Search searchTerm */
+  searchTerm: string;
+
   /** Callback when task is edited */
   onEdit?: (task: Task) => void;
 
@@ -40,6 +43,7 @@ export function TaskColumn({
   titleKey,
   tasks,
   status,
+  searchTerm,
   onEdit,
   onDelete,
   onStatusChange,
@@ -49,15 +53,20 @@ export function TaskColumn({
   const { fontSizeClasses, spacingClasses } = useAccessibilityClasses();
   const { getText } = useTextDetail();
 
-  // Sort tasks: most recent first for To Do and Done, active first for In Progress
   const sortedTasks = useMemo(() => {
-    return tasks
+    return [...tasks]
       .filter((task) => task.status === status)
+      .filter((task) => {
+        if (!searchTerm) return true;
+        const normalizedTitle = normalizeText(task.title);
+        const normalizedSearch = normalizeText(searchTerm);
+        return normalizedTitle.includes(normalizedSearch);
+      })
       .sort(
         (a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       );
-  }, [tasks, status]);
+  }, [tasks, status, searchTerm]);
 
   const columnClasses = useMemo(
     () => cn(styles.column, spacingClasses.gap),

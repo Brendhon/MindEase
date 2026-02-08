@@ -3,7 +3,22 @@
  * Utility functions for task operations
  */
 
-import type { Task, Subtask } from '@/models/task';
+import type { Subtask, Task } from '@/models/task';
+
+/**
+ * Normalize text for search comparison
+ * Removes accents, extra spaces and converts to lowercase
+ * @param text - Text to normalize
+ * @returns Normalized text for comparison
+ */
+export function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD') // Decomposes accented characters
+    .replace(/[\u0300-\u036f]/g, '') // Removes accent marks
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .trim(); // Remove leading/trailing whitespace
+}
 
 /**
  * Check if a task has pending (incomplete) subtasks
