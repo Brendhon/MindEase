@@ -20,8 +20,6 @@ import { tasksService } from '@/services/tasks';
 import { Task } from '@/models/task';
 import { DashboardContent } from '@/components/dashboard/dashboard-content';
 
-export const dynamic = 'force-dynamic';
-
 export default async function DashboardPage() {
   // Get session on server side
   const session = await getServerSession(authOptions);
@@ -44,8 +42,8 @@ export default async function DashboardPage() {
 
   return (
     <DashboardContent
-      tasks={tasks}
-      error={error}
+      initialTasks={tasks}
+      initialError={error}
       data-testid="dashboard-page-container"
     />
   );

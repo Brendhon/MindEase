@@ -9,12 +9,13 @@ import {
 } from '@/components/dashboard';
 import { PageContent, PageHeader } from '@/components/layout';
 import { ContentSettings, ProfileResetButton } from '@/components/profile';
-import { useAccessibilityClasses } from '@/hooks/accessibility';
+import { useAccessibilityClasses, useTextDetail } from '@/hooks/accessibility';
 import { useCognitiveSettings } from '@/hooks/cognitive-settings';
-import { useTextDetail } from '@/hooks/accessibility';
-import { Task } from '@/models/task';
+import { useTasks } from '@/hooks/tasks';
 import { BaseComponentProps } from '@/models/base';
+import { Task } from '@/models/task';
 import { cn } from '@/utils/ui';
+import { useEffect } from 'react';
 
 /**
  * DashboardContent Component - MindEase
@@ -25,16 +26,16 @@ import { cn } from '@/utils/ui';
  * - Real-time accessibility adjustments
  */
 export interface DashboardContentProps extends BaseComponentProps {
-  /** Tasks data fetched from server */
-  tasks: Task[];
+  /** Initial tasks loaded from server */
+  initialTasks: Task[];
 
-  /** Error message if any */
-  error?: string | null;
+  /** Initial error (if any) */
+  initialError: string | null;
 }
 
 export function DashboardContent({
-  tasks,
-  error,
+  initialTasks,
+  initialError,
   'data-testid': testId,
 }: DashboardContentProps) {
   const { error: settingsError } = useCognitiveSettings();
@@ -46,6 +47,13 @@ export function DashboardContent({
   // Use text detail hook for optimized text helpers
   // Only re-renders when textDetail setting changes
   const textDetail = useTextDetail();
+
+  // Use tasks hook for managing tasks
+  const { tasks, error, initializeTasks } = useTasks();
+
+  useEffect(() => {
+    initializeTasks(initialTasks, initialError);
+  }, [initialTasks, initialError, initializeTasks]);
 
   const hasError = error || settingsError;
 
