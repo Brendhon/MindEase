@@ -41,6 +41,7 @@ export function useTasks() {
    */
   const initializeTasks = useCallback(
     (newTasks: Task[], newError: string | null) => {
+      if (tasks.length > 0) return; // Prevent overwriting existing tasks
       _setTasks(newTasks);
       _setError(newError);
     },
